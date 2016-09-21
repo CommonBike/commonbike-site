@@ -1,0 +1,14 @@
+motd file = /etc/rsyncd.motd
+log file = /var/log/rsyncd.log
+pid file = /var/run/rsyncd.pid
+lock file = /var/run/rsync.lock
+
+[commonbike-site]
+   path = /home/tuxion
+   comment = Rsync server for commonbike-site
+   uid = nobody
+   gid = nobody
+   read only = no
+   list = yes
+   auth users = tuxion
+   secrets file = /etc/rsyncd.commonbike-site.scrt

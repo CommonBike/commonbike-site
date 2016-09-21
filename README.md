@@ -6,16 +6,22 @@ This is the (web) app of CommonBike. With this app you can open locks that are c
 
 - [Documentation](https://github.com/CommonBike/commonbike-documentation/wiki)
 
-## Deployment
+## 1. Development
 
-`cd folderOfYourProject`
+### 1.1 Running the app
 
-`meteor`
+1. `cd folderOfYourProject`
+2. `meteor`
+3. Go to localhost:3000 to see the app running
 
-## Current state
+## 2. Deploying the app to the server
+
+See [DEPLOY.md](DEPLOY.md)
+
+## 3. Current state
 
 ![img](http://bartroorda.nl/upimg/201512-jkd897j3/s-20160819-230428.png)
 
-## Future plans
+## 4. Future plans
 
 To be continued.
