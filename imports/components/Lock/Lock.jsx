@@ -13,8 +13,8 @@ class Lock extends Component {
 
   render() {
     return (
-      <div style={Object.assign({}, s.base, {color: this.props.lock.isAvailable ? 'green' : 'red'})} onClick={this.claimLock.bind(this)}>
-        {this.props.lock.title}
+      <div style={Object.assign({}, s.base, {backgroundColor: this.props.lock.isAvailable ? '#316b21' : '#612b2b'})} onClick={this.claimLock.bind(this)}>
+        <i className="fa fa-lock" style={{marginRight: '5px'}}></i> {this.props.lock.title}
       </div>
     );
   }
@@ -22,8 +22,12 @@ class Lock extends Component {
 
 var s = {
   base: {
-    border: 'solid #000 1px',
-    padding: '10px'
+    background: '#316b21',
+    color: '#fff',
+    fontWeight: 'bold',
+    padding: '15px 30px',
+    margin: '10px 0',
+    cursor: 'pointer'
   }
 }
 

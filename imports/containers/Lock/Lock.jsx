@@ -14,7 +14,9 @@ class Lock extends Component {
 
   claimLock() {
 
-    if(this.state.isAvailable) alert('Dank voor het gebruik van CommonBike');
+    if(this.state.isAvailable) {
+      document.location = '/checkin/'+this.props.lock.title;
+    }
 
     this.setState({isAvailable: ! this.state.isAvailable});
 

@@ -38,7 +38,7 @@ class LockOverview extends Component {
         <p>
           Kies hieronder jouw gewenste kluis.
         </p>
-        <form onSubmit={this.handleSubmit.bind(this)} >
+        <form onSubmit={this.handleSubmit.bind(this)} hidden="hidden">
           <input type="text" ref="textInput" placeholder="To add a lock, enter the lock (e.g. Zeist 2)" />
         </form>
         {this.renderLocks()}
