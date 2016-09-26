@@ -18,8 +18,8 @@ In your local branch, run:
 
 ### 2.4 Server configuration
 
-1. `vi /etc/apache2/sites-available/app.common.bike.vhost`
-2. Paste the contents of `./deploy/examples/app.common.bike.vhost`
+1. `vi /etc/apache2/sites-available/go.common.bike.vhost`
+2. Paste the contents of `./deploy/examples/go.common.bike.vhost`
 3. Save the file
-2. Symlink `sites-available/app.common.bike.vhost` to `sites-enabled/app.common.bike.vhost`
+2. Symlink `sites-available/go.common.bike.vhost` to `sites-enabled/go.common.bike.vhost`
 4. Restart apache

@@ -1,25 +1,25 @@
-<Directory /var/www/app.common.bike>
+<Directory /var/www/go.common.bike>
     AllowOverride None
         Order Deny,Allow
     Deny from all
     </Directory>
 
   <VirtualHost *:80>
-    DocumentRoot /var/www/app.common.bike/web
+    DocumentRoot /var/www/go.common.bike/web
     
     SetEnv MONGO_URL mongodb://localhost:27017/commonbike
     SetEnv PORT 3004
-    SetEnv ROOT_URL http://app.common.bike
+    SetEnv ROOT_URL http://go.common.bike
   
-    ServerName app.common.bike
+    ServerName go.common.bike
     ServerAdmin webmaster@common.bike
 
     ProxyPass / http://127.0.0.1:3004/ retry=0
     ProxyPassReverse / http://127.0.0.1:3004/
 
-    ErrorLog /var/log/ispconfig/httpd/app.common.bike/error.log
+    ErrorLog /var/log/ispconfig/httpd/go.common.bike/error.log
 
-    Alias /error/ "/var/www/app.common.bike/web/error/"
+    Alias /error/ "/var/www/go.common.bike/web/error/"
     ErrorDocument 400 /error/400.html
     ErrorDocument 401 /error/401.html
     ErrorDocument 403 /error/403.html
@@ -32,7 +32,7 @@
     <IfModule mod_ssl.c>
     </IfModule>
 
-    <Directory /var/www/app.common.bike/web>
+    <Directory /var/www/go.common.bike/web>
         # Clear PHP settings of this website
         <FilesMatch ".+\.ph(p[345]?|t|tml)$">
             SetHandler None
@@ -64,7 +64,7 @@
     php_admin_value upload_tmp_dir /var/www/clients/client2/web143/tmp
     php_admin_value session.save_path /var/www/clients/client2/web143/tmp
   # PHPIniDir /var/www/conf/web143
-    php_admin_value open_basedir /var/www/clients/client2/web143/web:/var/www/clients/client2/web143/private:/var/www/clients/client2/web143/tmp:/var/www/app.common.bike/web:/srv/www/app.common.bike/web:/usr/share/php5:/usr/share/php:/tmp:/usr/share/phpmyadmin:/etc/phpmyadmin:/var/lib/phpmyadmin
+    php_admin_value open_basedir /var/www/clients/client2/web143/web:/var/www/clients/client2/web143/private:/var/www/clients/client2/web143/tmp:/var/www/go.common.bike/web:/srv/www/go.common.bike/web:/usr/share/php5:/usr/share/php:/tmp:/usr/share/phpmyadmin:/etc/phpmyadmin:/var/lib/phpmyadmin
 
 
     # add support for apache mpm_itk
