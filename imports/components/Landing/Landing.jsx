@@ -16,18 +16,31 @@ export default class Landing extends Component {
 
   render() {
     return (
-      <div>
+      <div style={s.base}>
 
-        <img src="https://avatars0.githubusercontent.com/u/16703580?v=3" />
+        <div style={s.content}>
 
-        <h1>Welkom bij CommonBike!</h1>
+          <p>
+            {this.props.currentUser ? '' : 'Welkom bij CommonBike. Log in om een fietskluis te huren.'}
+          </p>
 
-        <AccountsUIWrapper />
+          <AccountsUIWrapper />
 
-        {this.props.currentUser ? <LockOverview /> : null}
+          {this.props.currentUser ? <LockOverview /> : null}
+
+        </div>
 
       </div>
     );
+  }
+}
+
+var s = {
+  base: {
+    width: '100%',
+  },
+  content: {
+    padding: '15px'
   }
 }
 
