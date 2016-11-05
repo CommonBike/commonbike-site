@@ -8,7 +8,7 @@ import AccountsUIWrapper from '/imports/containers/AccountsUIWrapper/AccountsUIW
 import LockOverview from '/imports/containers/LockOverview/LockOverview.jsx';
 
 // App component - represents the whole app
-export default class Landing extends Component {
+class Landing extends Component {
  
   constructor(props) {
     super(props)

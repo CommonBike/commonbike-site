@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 
-export default class CheckIn extends Component {
+class CheckIn extends Component {
  
   constructor(props) {
     super(props)
