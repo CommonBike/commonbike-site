@@ -1,0 +1,35 @@
+{
+  "name": "CommonBike - Just pick a bike",
+  "shortname": "CommonBike",
+  "description": "Want to have a bike - everywhere?",
+  "icons": [
+    {
+      "src": "favicon/favicon.jpg",
+      "sizes": "48x48",
+      "type": "image/jpg",
+      "density": 1.0
+    },
+    {
+      "src": "favicon/favicon.jpg",
+      "sizes": "96x96",
+      "type": "image/jpg",
+      "density": 2.0
+    },
+    {
+      "src": "favicon/favicon.jpg",
+      "sizes": "144x144",
+      "type": "image/jpg",
+      "density": 3.0
+    },
+    {
+      "src": "favicon/favicon.jpg",
+      "sizes": "192x192",
+      "type": "image/jpg",
+      "density": 4.0
+    }
+  ],
+  "start_url": "/?homescreen=1",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFFFFF"
+}
