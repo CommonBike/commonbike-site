@@ -1,4 +1,4 @@
-# CommonBike App
+# CommonBike App 1.0.0
 
 We are on a mission to create open source locks and bike sharing.
 
@@ -35,3 +35,7 @@ Current state:
 ## 4. Future plans
 
 To be continued.
+
+## 4. Used libraries
+
+- For mobile swiping: https://github.com/voronianski/react-swipe

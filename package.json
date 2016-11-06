@@ -8,11 +8,17 @@
     "bcrypt": "^0.8.7",
     "bufferutil": "^1.2.1",
     "google-map-react": "^0.21.0",
+    "material-ui": "^0.16.1",
     "meteor-node-stubs": "~0.2.0",
+    "radium": "^0.18.1",
+    "ramda": "^0.22.1",
     "react": "^15.3.2",
     "react-addons-pure-render-mixin": "^15.3.1",
     "react-dom": "^15.3.2",
     "react-mounter": "^1.2.0",
+    "react-swipe": "^5.0.5",
+    "react-tap-event-plugin": "^1.0.0",
+    "swipe-js-iso": "^2.0.3",
     "utf-8-validate": "^1.2.1"
   }
 }

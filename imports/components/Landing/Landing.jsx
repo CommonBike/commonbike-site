@@ -17,19 +17,17 @@ class Landing extends Component {
   render() {
     return (
       <div style={s.base}>
-
         <div style={s.content}>
 
           <p>
-            {this.props.currentUser ? '' : 'Welkom bij CommonBike. Log in om een fietskluis te huren.'}
+            {this.props.currentUser ? '' : 'Welkom bij CommonBike. Log in om te starten.'}
           </p>
 
           <AccountsUIWrapper />
 
-          {this.props.currentUser ? <LockOverview /> : null}
+          {this.props.currentUser ? <BikePicker /> : null}
 
         </div>
-
       </div>
     );
   }
