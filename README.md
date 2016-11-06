@@ -26,11 +26,9 @@ This is the (web) app of CommonBike. With this app you can open locks that are c
 
 See [DEPLOY.md](DEPLOY.md) for information about deployment on the server.
 
-## 3. Screenshots
+## 3. DEMO
 
-Current state:
-
-![img](http://bartroorda.nl/upimg/201512-jkd897j3/s-20160819-230428.png)
+Go to [common.bike](https://app.common.bike) for a live demo.
 
 ## 4. Future plans
 
