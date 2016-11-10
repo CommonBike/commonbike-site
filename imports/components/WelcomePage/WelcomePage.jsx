@@ -46,15 +46,15 @@ class WelcomePage extends Component {
   render() {
     slides = [
       {
-        title: 'Open CommonBike app', description: 'on-the-go (in train or bus or car)',
+        title: 'Find a bike', description: 'on-the-go (in train or bus or car)',
         image: '/files/WelcomePage/slide1.jpg'//https://www.instagram.com/p/BH7ay5ZBa6H/
       },
       {
-        title: 'Make sure a bike will be waiting for you', description: 'be ready to go (make reservation) {for a smooth transfer}',
+        title: 'Make sure a bike will be waiting for you', description: 'Make a reservation',
         image: '/files/WelcomePage/slide2.jpg'//https://www.instagram.com/p/BMGTP_bBBf6/
       },
       {
-        title: 'Go!', description: 'go go!',
+        title: 'Ready to go!', description: 'enjoy your ride',
         image: '/files/WelcomePage/slide3.jpg'//https://www.facebook.com/rotterdamfietschic/photos/a.856460737791713.1073741829.853861664718287/870227543081699/?type=3&theater
                                               //https://www.facebook.com/rotterdamfietschic/photos/a.856460737791713.1073741829.853861664718287/861041654000288/?type=3&theater
                                               //https://www.facebook.com/rotterdamfietschic/photos/a.856460737791713.1073741829.853861664718287/861039667333820/?type=3&theater
