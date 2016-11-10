@@ -1,8 +1,8 @@
 # CommonBike App 1.0.0
 
-We are on a mission to create open source locks and bike sharing.
+We are on a mission to create open bike sharing.
 
-This is the (web) app of CommonBike. With this app you can open locks that are connected to the free and open CommonBike lock system.
+This is the (web) app of CommonBike. With this app you can rent of share bikes. And you can open locks that are connected to the free and open CommonBike lock system.
 
 - [Project website](http://common.bike)
 - [Documentation](https://github.com/CommonBike/commonbike-documentation/wiki)
