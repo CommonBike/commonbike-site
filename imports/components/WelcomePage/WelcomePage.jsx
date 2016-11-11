@@ -3,17 +3,10 @@ import { createContainer } from 'meteor/react-meteor-data';
 import ReactSwipe from 'react-swipe';
 import R from 'ramda';
 
-// Necessary for material-ui
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-
-// Import templates
-import RaisedButton from 'material-ui/RaisedButton';
-
 // Import components
 import ImageSlide from '../ImageSlide/ImageSlide.jsx';
 import BulletNav from '../BulletNav/BulletNav.jsx';
+import SignUp from '../SignUp/SignUp.jsx';
 
 class WelcomePage extends Component {
 
@@ -21,14 +14,6 @@ class WelcomePage extends Component {
     super(props);
 
     this.state = { activeSlide: 0 }
-
-    // Needed for onTouchTap
-    // http://stackoverflow.com/a/34015469/988941
-    injectTapEventPlugin();
-  }
-
-  getChildContext() {
-    return { muiTheme: getMuiTheme(baseTheme) };
   }
 
   // renderImageSlide :: String -> Component
@@ -63,15 +48,14 @@ class WelcomePage extends Component {
     ];
     return (
       <div style={s.base}>
-        <h1 style={Object.assign({}, s.logoWrapper, this.state.activeSlide == 3 && {color: '#000'})}>
+        <h1 style={Object.assign({}, s.logoWrapper, this.state.activeSlide == 3 && {color: '#000', display: 'none'})}>
           <span style={s.logoName}>CommonBike</span>
           <span style={s.logoTagLine}>Pak een fiets</span>
         </h1>
         <ReactSwipe ref="reactSwipe" swipeOptions={{continuous: false, callback: this.swipeCallback.bind(this)}} style={s.slideWrapper}>
           {R.map(this.renderImageSlide, slides)}
           <div>
-            <RaisedButton label="Aanmelden" primary={true} style={s.signUpButton} />
-            <RaisedButton label="Inloggen" secondary={true} style={s.signUpButton} />
+            <SignUp />
           </div>
         </ReactSwipe>
         <BulletNav numSlides="3" activeSlide={this.state.activeSlide} setActiveSlide={this.setActiveSlide.bind(this)} />
@@ -87,8 +71,8 @@ var s = {
     lineHeight: 'default',
     width: '100%',
     height: '100%',
+    overflow: 'auto',
     color: '#fff',
-    filter: 'brightness(80%)',
   },
   logoWrapper: {
     position: 'fixed',
@@ -108,10 +92,11 @@ var s = {
   },
   slideWrapper: {
     container: {
+      height: '100%',
       overflow: 'hidden',
       visibility: 'hidden',
       position: 'relative',
-      height: '100%'
+      textAlign: 'center',
     },
     wrapper: {
       overflow: 'hidden',
@@ -123,22 +108,14 @@ var s = {
       width: '100%',
       position: 'relative',
       transitionProperty: 'transform',
-
-      padding: '20px',
+      padding: '20px 20px 20px 20px',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
       textAlign: 'center',
-      height: '100%'
+      height: '100%',
     },
   },
-  signUpButton: {
-    margin: '10px 0',
-  }
-}
-
-WelcomePage.childContextTypes = {
-  muiTheme: PropTypes.object
 }
 
 export default createContainer((props) => {
