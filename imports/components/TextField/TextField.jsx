@@ -10,7 +10,7 @@ class TextField extends Component {
 
   render() {
     return (
-      <input style={Object.assign({}, s, this.props.style)} type={this.props.type} name={this.props.name} onChange={this.props.handleChange} onBlur={this.props.handleChange} />
+      <input style={Object.assign({}, s, this.props.style)} type={this.props.type} name={this.props.name} placeholder={this.props.placeholder} onChange={this.props.onChange} onBlur={this.props.onChange} />
     )
   }
 

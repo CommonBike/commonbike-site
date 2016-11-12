@@ -15,14 +15,14 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import RaisedButton from 'material-ui/RaisedButton';
 import SquareButton from '../SquareButton/SquareButton.jsx';
 import SocialShare from '../SocialShare/SocialShare.jsx';
-import SignUpForm from '../../containers/SignUpForm/SignUpForm.jsx';
+import LoginForm from '../../containers/LoginForm/LoginForm.jsx';
 
 class Login extends Component {
 
   /**
    *  APP DASHBOARDS
    * 
-   * Facebook: https://console.developers.google.com/apis/credentials?highlightClient=347856876516-if94srm24tciclpid7keqibf02p4dctn.apps.googleusercontent.com&project=commonbike-149108
+   * Facebook: https://developers.facebook.com/apps/328645994158360/settings/
    * Google: https://console.developers.google.com/apis/credentials?highlightClient=347856876516-if94srm24tciclpid7keqibf02p4dctn.apps.googleusercontent.com&project=commonbike-149108
    * GitHub: https://github.com/settings/applications/437650
    */
@@ -42,29 +42,29 @@ class Login extends Component {
   }
 
   onError(err) {
-    if( ! err) return;
-    console.log(err);
-    alert(err.message);
+    if(err) {
+      console.log(err);
+      alert(err.message);
+    }
   }
 
   logout() { Meteor.logout() }
 
-  // @bartwr READ LATER: https://themeteorchef.com/recipes/roll-your-own-authentication/
   loginWithGoogle() { Meteor.loginWithGoogle({ requestPermissions: ['email'] }, this.onError) }
   loginWithGithub() { Meteor.loginWithGithub({ requestPermissions: ['email'] }), this.onError }
-  loginWithTwitter() { Meteor.loginWithTwitter() }
-  loginWithFacebook() { Meteor.loginWithFacebook({ requestPermissions: ['email'] }, this.onError) }
+  loginWithTwitter() { Meteor.loginWithTwitter({}, this.onError) }
+  loginWithFacebook() { Meteor.loginWithFacebook({ requestPermissions: ['public_profile'] }, this.onError) }
 
   renderIntro() {
     return (
       <div>
 
         <p>
-          Do you want to be the first that can test the app?
+          Wil je als eerste de CommonBike app uitproberen?
         </p>
 
         <p>
-          <b>Log in with your favorite account</b>
+          <b>Log in met je favoriete account</b>
         </p>
 
         <div style={s.socialButtonsWrapper}>
@@ -74,10 +74,10 @@ class Login extends Component {
           <SquareButton src="facebook" size="64" title="Login with Facebook" onClick={this.loginWithFacebook.bind(this)} style={s.facebook} />
         </div>
 
-        <b>Or sign up using your email</b>
+        <b>Of meld je aan met je mailadres</b>
 
         <div style={{textAlign: 'center'}}>
-          <SignUpForm />
+          <LoginForm />
         </div>
 
       </div>
@@ -89,7 +89,7 @@ class Login extends Component {
       <div>
         <p>Leuk dat je meedoet! We sturen je als eerste een bericht als de app gebruikt kan worden.</p>
         <p>In november starten we een pilot in Leiden. Daarna breiden we uit.</p>
-        <p><button onClick={this.logout()}>Log out</button></p>
+        <p><button onClick={this.logout}>Log out</button></p>
       </div>
     )
   }
@@ -109,6 +109,9 @@ class Login extends Component {
 
 var s = {
   base: {
+    width: '480px',
+    maxWidth: '100%',
+    margin: '0 auto',
     fontSize: 'default',
     lineHeight: 'default',
     color: '#000',
@@ -127,6 +130,7 @@ Login.childContextTypes = {
 }
 
 export default createContainer((props) => {
+  Meteor.subscribe("userList");
   return {
     currentUser: Meteor.user()
   };

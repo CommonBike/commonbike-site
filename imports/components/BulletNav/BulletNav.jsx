@@ -39,11 +39,11 @@ var s = {
     height: '10px',
     borderRadius: '5px',
     padding: '5px',
-    backgroundColor: '#fff',
-    cursor: 'pointer'
+    backgroundColor: '#eee',
+    cursor: 'pointer',
   },
   navigationItemActive: {
-    backgroundColor: '#333'
+    backgroundColor: '#009999',
   }
 }
 

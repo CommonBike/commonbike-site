@@ -66,7 +66,6 @@ class WelcomePage extends Component {
 
 var s = {
   base: {
-    background: 'linear-gradient(90deg, #e3e4e5, transparent)',
     fontSize: 'default',
     lineHeight: 'default',
     width: '100%',
