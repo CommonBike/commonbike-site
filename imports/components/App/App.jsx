@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+import PageHeader from '../PageHeader/PageHeader.jsx';
  
 // App component - represents the whole app
 export default class App extends Component {
@@ -7,6 +8,7 @@ export default class App extends Component {
   render() {
     return (
       <div style={s.base}>
+        <PageHeader />
         {this.props.content}
       </div>
     );

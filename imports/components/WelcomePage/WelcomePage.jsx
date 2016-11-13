@@ -48,10 +48,6 @@ class WelcomePage extends Component {
     ];
     return (
       <div style={s.base}>
-        <h1 style={Object.assign({}, s.logoWrapper, this.state.activeSlide == 3 && {color: '#000', display: 'none'})}>
-          <span style={s.logoName}>CommonBike</span>
-          <span style={s.logoTagLine}>Pak een fiets</span>
-        </h1>
         <ReactSwipe ref="reactSwipe" swipeOptions={{continuous: false, callback: this.swipeCallback.bind(this)}} style={s.slideWrapper}>
           {R.map(this.renderImageSlide, slides)}
           <div>
@@ -69,25 +65,9 @@ var s = {
     fontSize: 'default',
     lineHeight: 'default',
     width: '100%',
-    height: '100%',
+    height: 'calc(100% - 64px)',
     overflow: 'auto',
     color: '#fff',
-  },
-  logoWrapper: {
-    position: 'fixed',
-    zIndex: 5,
-    top: '10px',
-    left: '10px',
-    width: '100%',
-    fontWeight: '500',
-    textAlign: 'center',
-  },
-  logoName: {
-    fontSize: '1em'
-  },
-  logoTagLine: {
-    display: 'block',
-    fontSize: '0.5em'
   },
   slideWrapper: {
     container: {

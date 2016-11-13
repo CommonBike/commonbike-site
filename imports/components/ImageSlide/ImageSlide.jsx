@@ -39,7 +39,7 @@ var s = {
     top: 0,
     left: 0,
     width: '100%',
-    height: '100%',
+    bottom: 0,
     backgroundPosition: 'center center',
     backgroundColor: 'linear-gradient(90deg, #e3e4e5, transparent)',
     backgroundSize: 'cover',

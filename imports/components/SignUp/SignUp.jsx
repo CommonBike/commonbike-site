@@ -6,11 +6,6 @@ import AccountsUIWrapper from '/imports/containers/AccountsUIWrapper/AccountsUIW
 import ReactSwipe from 'react-swipe';
 import R from 'ramda';
 
-// Necessary for material-ui
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-
 // Import templates
 import RaisedButton from 'material-ui/RaisedButton';
 import SquareButton from '../SquareButton/SquareButton.jsx';
@@ -31,14 +26,6 @@ class Login extends Component {
     super(props);
 
     this.state = { activeSlide: 0 }
-
-    // Needed for onTouchTap for material-ui buttons
-    // http://stackoverflow.com/a/34015469/988941
-    injectTapEventPlugin();
-  }
-
-  getChildContext() {
-    return { muiTheme: getMuiTheme(baseTheme) };
   }
 
   onError(err) {
@@ -95,8 +82,6 @@ class Login extends Component {
   }
 
   render() {
-    // <RaisedButton label="Aanmelden" primary={true} style={s.signUpButton} />
-    // <RaisedButton label="Inloggen" secondary={true} style={s.signUpButton} />
     return (
       <div style={s.base}>
 
@@ -115,6 +100,7 @@ var s = {
     fontSize: 'default',
     lineHeight: 'default',
     color: '#000',
+    textAlign: 'center'
   },
   signUpButton: {
     margin: '10px 0',
@@ -123,10 +109,6 @@ var s = {
     display: 'flex',
     justifyContent: 'space-around'
   }
-}
-
-Login.childContextTypes = {
-  muiTheme: PropTypes.object
 }
 
 export default createContainer((props) => {

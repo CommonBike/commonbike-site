@@ -28,7 +28,8 @@ Go to [common.bike](https://app.common.bike) for a live demo.
 
 ### Used libraries
 
-- For mobile swiping: https://github.com/voronianski/react-swipe
+- For mobile swiping: [react-swipe](https://github.com/voronianski/react-swipe)
+- For UI elements: [material-ui](http://www.material-ui.com/)
 
 ## 3. Deployment
 
