@@ -7,7 +7,6 @@ import ReactSwipe from 'react-swipe';
 import R from 'ramda';
 
 // Import templates
-import RaisedButton from 'material-ui/RaisedButton';
 import SquareButton from '../SquareButton/SquareButton.jsx';
 import SocialShare from '../SocialShare/SocialShare.jsx';
 import LoginForm from '../../containers/LoginForm/LoginForm.jsx';

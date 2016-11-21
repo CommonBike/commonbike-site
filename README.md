@@ -16,7 +16,7 @@ This is the (web) app of CommonBike. With this app you can open locks that are c
 
 ## 1. Demo
 
-Go to [common.bike](https://app.common.bike) for a live demo.
+Go to [common.bike](https://go.common.bike) for a live demo.
 
 ## 2. Development
 
@@ -30,6 +30,9 @@ Go to [common.bike](https://app.common.bike) for a live demo.
 
 - For mobile swiping: [react-swipe](https://github.com/voronianski/react-swipe)
 - For UI elements: [material-ui](http://www.material-ui.com/)
+- [meteor-simple-schema](https://github.com/aldeed/meteor-simple-schema) - A simple, reactive schema validation package for Meteor
+- [react-contenteditable](https://github.com/lovasoa/react-contenteditable) - React component for a div with editable contents
+- [draft.js](http://facebook.github.io/draft-js/) - Rich text editor framework for react
 
 ## 3. Deployment
 

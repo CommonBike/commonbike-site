@@ -10,7 +10,10 @@ class RaisedButton extends Component {
 
   render() {
     return (
-      <input type={this.props.type} name={this.props.name} style={Object.assign({}, s, this.props.style)} value={this.props.label} />
+      <button
+        style={Object.assign({}, s, this.props.style)}
+        onClick={this.props.onClick}
+        >{this.props.children}</button>
     )
   }
 
@@ -18,13 +21,15 @@ class RaisedButton extends Component {
 
 var s = {
   border: 'none',
+  display: 'block',
   backgroundColor: '#41a81b',
   lineHeight: '40px',
   height: '40px',
+  width: '100%',
+  margin: '20px',
+  maxWidth: '400px',
   textAlign: 'center',
   color: '#fff',
-  marginTop: '45px',
-  marginBottom: '45px',
   fontWeight: 'bold',
   cursor: 'pointer'
 }
@@ -46,6 +51,7 @@ RaisedButton.propTypes = {
    * will be displayed in addition to the content provided here.
    */
   children: PropTypes.node,
+  onClick: PropTypes.func,
   /**
    * The CSS class name of the root element.
    */

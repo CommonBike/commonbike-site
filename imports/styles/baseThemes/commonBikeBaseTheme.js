@@ -26,4 +26,4 @@ export default {
     clockCircleColor: fade(darkBlack, 0.07),
     shadowColor: fullBlack,
   },
-};1
+};

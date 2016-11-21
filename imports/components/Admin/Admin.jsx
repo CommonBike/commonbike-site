@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-// UserApp component - represents the whole app
-export default class UserApp extends Component {
+// AdminApp component - represents the whole app
+export default class AdminApp extends Component {
 
   render() {
     return (
@@ -15,6 +15,7 @@ export default class UserApp extends Component {
 
 var s = {
   base: {
+    background: '#fbae17',
     maxWidth: '100%',
     height: '100%',
     margin: '0 auto'
