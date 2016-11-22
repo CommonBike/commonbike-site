@@ -15,6 +15,7 @@ export default class AdminApp extends Component {
 
 var s = {
   base: {
+    textAlign: 'center',
     background: '#fbae17',
     maxWidth: '100%',
     height: '100%',

@@ -17,6 +17,10 @@ class ItemBlock extends Component {
     this.state = { title: props.item.title }
   }
 
+  componentWillReceiveProps(newProps) {
+    this.state = { title: newProps.item.title }
+  }
+
   //+handleChange :: Event -> StateChange
   handleChange(e) {
     this.state.title = e.target.value;
@@ -52,9 +56,8 @@ var s = {
     fontWeight: 'normal',
     lineHeight: 'normal',
     padding: '10px',
-    width: '100%',
     maxWidth: '400px',
-    margin: '20px',
+    margin: '20px auto',
     borderBottom: 'solid 5px #bc8311',
   },
   avatar: {

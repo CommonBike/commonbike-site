@@ -22,16 +22,16 @@ class RaisedButton extends Component {
 var s = {
   border: 'none',
   display: 'block',
-  backgroundColor: '#41a81b',
-  lineHeight: '40px',
-  height: '40px',
+  backgroundColor: '#000',
   width: '100%',
-  margin: '20px',
+  margin: '20px auto',
+  padding: '15px 0',
   maxWidth: '400px',
   textAlign: 'center',
   color: '#fff',
   fontWeight: 'bold',
-  cursor: 'pointer'
+  cursor: 'pointer',
+  fontSize: '20px',
 }
 
 RaisedButton.propTypes = {

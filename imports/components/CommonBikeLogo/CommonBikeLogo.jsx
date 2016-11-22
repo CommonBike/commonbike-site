@@ -10,7 +10,7 @@ class CommonBikeLogo extends Component {
 
   render() {
     return (
-      <div style={s.base}>
+      <div style={{...s.base, ...this.props.style}}>
         CommonBike
       </div>
     );
@@ -23,6 +23,11 @@ var s = {
     lineHeight: 'default',
     color: '#fff',
     fontWeight: 'bold',
+    backgroundImage: 'url("/files/CommonBikeLogo/logo.png")',
+    backgroundPosition: 'center center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain',
+    textIndent: '-9999px',
   },
 }
 
