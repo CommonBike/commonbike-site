@@ -59,6 +59,7 @@ var s = {
     maxWidth: '400px',
     margin: '20px auto',
     borderBottom: 'solid 5px #bc8311',
+    textAlign: 'left',
   },
   avatar: {
     flex: 1,

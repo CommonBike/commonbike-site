@@ -71,7 +71,7 @@ class LoginForm extends Component {
           <TextField type="password" ref="password2" placeholder="Herhaal je wachtwoord" name="password2" style={s.textField} />
         </div>
 
-        <RaisedButton label="Meld me aan" type="submit" style={s.button} />
+        <RaisedButton type="submit" style={s.button}>Meld me aan</RaisedButton>
 
       </form>
     )

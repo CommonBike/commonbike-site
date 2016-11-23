@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
+import Radium, { StyleRoot } from 'radium';
 import R from 'ramda';
 
 // Import components
@@ -14,21 +16,27 @@ class Landing extends Component {
     this.state = { activeSlide: 0 }
   }
 
+  componentDidMount() {
+    ReactDOM.findDOMNode(this.refs.base).style.display = 'flex';
+  }
+
   login() { FlowRouter.go('login') }
 
   render() {
     return (
-      <div style={s.base}>
+      <div style={s.base} ref="base">
 
         <CommonBikeLogo style={s.logo} />
 
-        <p style={s.introText}>
-          Welkom bij het nieuwe fiets-deel-systeem van Nederland. Wij delen fietsen. Ons doel: overal en altijd een fiets voor iedereen.
-        </p>
+        <StyleRoot>
+          <p style={s.introText}>
+            Welkom bij het nieuwe fiets-deel-systeem van Nederland. Wij maken bike sharing leuk en gemakkelijk. Ons doel: overal en altijd een fiets voor iedereen.
+          </p>
+        </StyleRoot>
 
         <div style={s.bottomWrapper}>
           <p>
-            <a style={s.smallText} href="http://commonbike.com" target="_blank">euhm, maar hoe werkt dat dan?</a>
+            <a style={s.smallText} href="/join">euhm, maar hoe werkt dat dan?</a>
           </p>
 
           <RaisedButton onClick={this.login}>
@@ -66,6 +74,9 @@ var s = {
     fontWeight: '500',
     fontSize: '1.45em',
     lineHeight: '1.3em',
+    '@media (min-width: 700px)': {
+      maxWidth: '500px'
+    }
   },
   smallText: {
     color: '#fff',
@@ -78,4 +89,4 @@ export default createContainer((props) => {
   return {
     currentUser: Meteor.user()
   };
-}, Landing);
+}, Radium(Landing));

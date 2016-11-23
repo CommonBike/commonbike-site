@@ -1,0 +1,58 @@
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
+import { createContainer } from 'meteor/react-meteor-data';
+import R from 'ramda';
+
+// Import components
+import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
+import RaisedButton from '../RaisedButton/RaisedButton.jsx'
+
+class PageHeader extends Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div style={s.base}>
+        <div style={s.flex}>
+          <a style={s.arrowBack} href="/">Back</a>
+          <CommonBikeLogo type="common" style={s.logo} />
+          <div>&nbsp;</div>
+        </div>
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
+var s = {
+  base: {
+    fontSize: 'default',
+    lineHeight: 'default',
+  },
+  flex: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  arrowBack: {
+    backgroundImage: 'url("/files/PageHeader/arrow.svg")',
+    height: '36px',
+    width: '36px',
+    backgroundPosition: 'center center',
+    backgroundRepeat: 'repeat',
+    backgroundSize: 'cover',
+    textIndent: '-9999px'
+  },
+  logo: {
+    width: '230px',
+    height: '36px'
+  },
+}
+
+PageHeader.propTypes = {
+  children: PropTypes.any,
+};
+
+export default PageHeader;

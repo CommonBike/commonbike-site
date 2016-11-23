@@ -2,15 +2,9 @@ import React, { Component, PropTypes } from 'react';
 
 class CommonBikeLogo extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = { activeSlide: 0 }
-  }
-
   render() {
     return (
-      <div style={{...s.base, ...this.props.style}}>
+      <div style={Object.assign({}, s.base, this.props.style, this.props.type == 'common' && {backgroundImage: 'url("/files/PageHeader/common-white.svg")'})}>
         CommonBike
       </div>
     );
@@ -23,7 +17,7 @@ var s = {
     lineHeight: 'default',
     color: '#fff',
     fontWeight: 'bold',
-    backgroundImage: 'url("/files/CommonBikeLogo/logo.png")',
+    backgroundImage: 'url("/files/PageHeader/commonbike-white.svg")',
     backgroundPosition: 'center center',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
