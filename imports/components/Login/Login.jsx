@@ -62,7 +62,9 @@ class Login extends Component {
           <SquareButton src="facebook" size="64" title="Login with Facebook" onClick={this.loginWithFacebook.bind(this)} style={s.facebook} />
         </div>
 
-        <b>Of meld je aan met je mailadres</b>
+        <p>
+          <b>Of meld je aan met je mailadres</b>
+        </p>
 
         <div style={{textAlign: 'center'}}>
           <LoginForm />
@@ -108,7 +110,8 @@ var s = {
   },
   socialButtonsWrapper: {
     display: 'flex',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    background: '#fff'
   }
 }
 

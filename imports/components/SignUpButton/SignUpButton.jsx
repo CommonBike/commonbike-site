@@ -7,6 +7,8 @@ import RaisedButton from '../RaisedButton/RaisedButton.jsx'
 
 class SignUpButton extends Component {
 
+  login() { FlowRouter.go('login') }
+
   render() {
     return (
       <RaisedButton onClick={this.login}>

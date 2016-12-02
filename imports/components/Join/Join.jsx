@@ -67,7 +67,7 @@ class Join extends Component {
           </a>
         </div>
 
-        <hr />
+        <Hr />
 
         <p>
           <b>Nog veel meer informatie over het concept vind je op de website: <a href="http://commonbike.com/" target="_blank">commonbike.com</a>.</b>

@@ -37,12 +37,12 @@ class ItemBlock extends Component {
 
   render() {
     return (
-      <article style={s.base}>
+      <article style={s.base} onClick={this.props.onClick}>
         <div style={s.avatar}>
           <img src="/files/ItemBlock/bike.png" alt="Bike" title="Le bike." />
         </div>
-        <ContentEditable style={s.title} html={this.state.title} disabled={false} onChange={this.handleChange.bind(this)} />
-        <a style={s.delete} onClick={this.deleteItem.bind(this)}>delete</a>
+        {this.props.isEditable ? <ContentEditable style={s.title} html={this.state.title} disabled={false} onChange={this.handleChange.bind(this)} /> : <span style={s.title}>{this.state.title}</span>}
+        <a style={Object.assign({display: 'none'}, s.delete, this.props.isEditable && {display: 'block'})} onClick={this.deleteItem.bind(this)}>delete</a>
       </article>
     );
   }
@@ -56,14 +56,15 @@ var s = {
     fontWeight: 'normal',
     lineHeight: 'normal',
     padding: '10px',
-    maxWidth: '400px',
+    maxWidth: '100%',
+    width: '400px',
     margin: '20px auto',
     borderBottom: 'solid 5px #bc8311',
     textAlign: 'left',
   },
   avatar: {
     flex: 1,
-    height: '148px'
+    maxHeight: '148px'
   },
   title: {
     flex: 2,
@@ -74,7 +75,9 @@ var s = {
 }
 
 ItemBlock.propTypes = {
-  item: PropTypes.object.isRequired
+  item: PropTypes.object.isRequired,
+  isEditable: PropTypes.bool,
+  onClick: PropTypes.any,
 };
 
 export default ItemBlock;

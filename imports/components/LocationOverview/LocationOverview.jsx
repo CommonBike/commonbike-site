@@ -9,7 +9,13 @@ import { Locations } from '/imports/api/locations.js';
 import ItemBlock from '../ItemBlock/ItemBlock'
 import RaisedButton from '../RaisedButton/RaisedButton'
 
-class AdminLocations extends Component {
+/**
+ *  LocationOverview
+ * 
+ * @param {Object} locations
+ * @param {Boolean} isEditable
+ */
+class LocationOverview extends Component {
 
   constructor(props) {
     super(props);
@@ -30,15 +36,20 @@ class AdminLocations extends Component {
 
   render() {
     return (
-      <div>
-        <h1 style={s.title}>CommonBike locatiebeheer</h1>
-        <p style={s.paragraph}>
-          Klik op <b>Nieuwe locatie</b> of <b><i>pas een titel aan</i></b>.
-        </p>
-        <div>
+      <div style={s.base}>
+
+        <div style={Object.assign({display: 'none'}, this.props.isEditable && {display: 'block'})}>
+
+          <h1 style={s.title}>CommonBike locatiebeheer</h1>
+          <p style={s.paragraph}>
+            Klik op <b>Nieuwe locatie</b> of <b><i>pas een titel aan</i></b>.
+          </p>
           <RaisedButton onClick={this.newLocation.bind(this)}>Nieuwe locatie</RaisedButton>
+
         </div>
+
         {R.map((location) => <ItemBlock key={location._id} item={location} />, this.props.locations)}
+
       </div>
     );
   }
@@ -46,6 +57,9 @@ class AdminLocations extends Component {
 }
 
 var s = {
+  base: {
+    padding: '10px 20px'
+  },
   title: {
     margin: 0,
     padding: '10px 20px',
@@ -55,8 +69,9 @@ var s = {
   }
 }
 
-AdminLocations.propTypes = {
-  locations: PropTypes.array.isRequired
+LocationOverview.propTypes = {
+  locations: PropTypes.array.isRequired,
+  isEditable: PropTypes.array
 };
 
 export default createContainer((props) => {
@@ -65,4 +80,4 @@ export default createContainer((props) => {
     currentUser: Meteor.user(),
     locations: Locations.find({}, { sort: {_id: -1} }).fetch()
   };
-}, AdminLocations);
+}, LocationOverview);

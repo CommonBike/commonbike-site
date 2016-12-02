@@ -14,13 +14,9 @@ class ContentPage extends Component {
     super(props);
   }
 
-  login() { FlowRouter.go('login') }
-
   render() {
     return (
       <div style={s.base}>
-
-        <PageHeader />
 
         {this.props.children}
 
@@ -38,11 +34,9 @@ var s = {
     fontSize: 'default',
     lineHeight: 'default',
     padding: '40px 20px 0 20px',
-    background: '#fbae17',
     margin: '0 auto',
     width: '100%',
-    height: '100%',
-    overflow: 'auto',
+    minHeight: '100%',
     display: 'flex',
     textAlign: 'center',
     flexDirection: 'column',

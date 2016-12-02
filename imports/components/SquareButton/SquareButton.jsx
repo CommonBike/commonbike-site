@@ -25,6 +25,8 @@ var s = {
     cursor: 'pointer',
     width: '128px',
     height: '128px',
+    // minHeight: '75px',
+    maxHeight: '128px',
     backgroundPosition: 'center center',
     backgroundRepeat: 'no-repeat',
     display: 'block',

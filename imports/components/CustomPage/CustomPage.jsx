@@ -18,11 +18,7 @@ class CustomPage extends Component {
   render() {
     return (
       <div style={s.base}>
-
-        <PageHeader />
-
         {this.props.children}
-
       </div>
     );
   }
@@ -33,11 +29,8 @@ var s = {
     fontSize: 'default',
     lineHeight: 'default',
     padding: '40px 20px 0 20px',
-    background: '#fbae17',
     margin: '0 auto',
     width: '100%',
-    height: '100%',
-    overflow: 'auto',
     display: 'flex',
     textAlign: 'center',
     flexDirection: 'column',
