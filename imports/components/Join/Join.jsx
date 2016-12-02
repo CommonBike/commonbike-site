@@ -4,10 +4,14 @@ import { createContainer } from 'meteor/react-meteor-data';
 import Radium, { StyleRoot } from 'radium';
 import R from 'ramda';
 
-class HowItWorks extends Component {
+class Join extends Component {
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    ReactDOM.findDOMNode(this.refs.flex).style.display = 'flex';
   }
 
   render() {
@@ -21,9 +25,9 @@ class HowItWorks extends Component {
         </p>
 
         <p>
-          Fiets mee<br />
-          Bouw mee<br />
-          Beslis mee!
+          &raquo; Fiets mee<br />
+          &raquo; Bouw mee<br />
+          &raquo; Beslis mee!
         </p>
 
         <h2>Hoe werkt het?</h2>
@@ -44,7 +48,7 @@ class HowItWorks extends Component {
           Communiceren doen we vooral via <a href="http://slack.common.bike/" target="_blank">CommonBike op Slack</a>. De source code van de mobiele app, website en sloten staat op <a href="https://github.com/commonbike" target="_blank">github.com/CommonBike</a>. Wil je enkel op hoogte gehouden worden van de hoogtepunten, meld je dan aan voor <a href="http://commonbike.com/about/" target="_blank">de nieuwsbrief</a>.
         </p>
 
-        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', height: '120px'}}>
+        <div ref="flex" style={{width: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', height: '120px'}}>
           <a style={{display: 'flex', flex: 1}} href="http://slack.common.bike/" target="_blank">
             <img style={{height: '30px'}} src="https://forger.typo3.org/images/slack.svg" alt="Slack" />
           </a>
@@ -69,15 +73,17 @@ class HowItWorks extends Component {
 
 var s = {
   base: {
+    maxWidth: '400px',
+    margin: '0 auto',
     textAlign: 'left'
   },
 }
 
-HowItWorks.propTypes = {
+Join.propTypes = {
 };
 
 export default createContainer((props) => {
   return {
     currentUser: Meteor.user()
   };
-}, Radium(HowItWorks));
+}, Radium(Join));
