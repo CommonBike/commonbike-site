@@ -9,7 +9,17 @@ class CommonBikeUI extends Component {
     return (
       <div style={s.base}>
 
-        <ItemBlock item={{title: 'This is an item block'}} />
+        <tt>
+          <b>Hr</b> :: void
+        </tt>
+
+        <Hr />
+
+        <tt>
+          <b>ItemBlock</b> :: Object [ title: String, isEditable: Boolean ]
+        </tt>
+
+        <ItemBlock item={{title: 'This is an item block'}} isEditable={true} />
 
       </div>
     );
