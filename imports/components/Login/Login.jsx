@@ -45,6 +45,8 @@ class Login extends Component {
     return (
       <div>
 
+        <br />
+
         <p>
           Wil je als eerste de CommonBike app uitproberen?
         </p>
@@ -74,7 +76,7 @@ class Login extends Component {
     return (
       <div>
         <p>Leuk dat je meedoet! We sturen je als eerste een bericht als de app gebruikt kan worden.</p>
-        <p>In november starten we een pilot in Leiden. Daarna breiden we uit.</p>
+        <p>In december starten we een pilot bij een IC treinstation. Daarna breiden we uit.</p>
         <p><button onClick={this.logout}>Log out</button></p>
       </div>
     )
