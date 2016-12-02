@@ -32,8 +32,8 @@ var s = {
   base: {
     fontSize: 'default',
     lineHeight: 'default',
-    padding: '0 20px 0 20px',
-    background: '#fff',
+    padding: '40px 20px 0 20px',
+    background: '#fbae17',
     margin: '0 auto',
     width: '100%',
     height: '100%',
@@ -41,7 +41,7 @@ var s = {
     display: 'flex',
     textAlign: 'center',
     flexDirection: 'column',
-    justifyContent: 'space-between'
+    justifyContent: 'flex-start'
   },
   logo: {
     height: '36px'

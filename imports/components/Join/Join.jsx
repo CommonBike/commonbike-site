@@ -4,6 +4,9 @@ import { createContainer } from 'meteor/react-meteor-data';
 import Radium, { StyleRoot } from 'radium';
 import R from 'ramda';
 
+import SignUpButton from '../SignUpButton/SignUpButton.jsx';
+import Hr from '../Hr/Hr.jsx';
+
 class Join extends Component {
 
   constructor(props) {
@@ -29,6 +32,10 @@ class Join extends Component {
           &raquo; Bouw mee<br />
           &raquo; Beslis mee!
         </p>
+
+        <SignUpButton />
+
+        <Hr />
 
         <h2>Hoe werkt het?</h2>
 

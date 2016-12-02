@@ -6,7 +6,7 @@ import R from 'ramda';
 
 // Import components
 import PageHeader from '../PageHeader/PageHeader.jsx'
-import RaisedButton from '../RaisedButton/RaisedButton.jsx'
+import SignUpButton from '../SignUpButton/SignUpButton.jsx'
 
 class ContentPage extends Component {
 
@@ -25,9 +25,7 @@ class ContentPage extends Component {
         {this.props.children}
 
         <div style={s.bottomWrapper}>
-          <RaisedButton onClick={this.login}>
-            Gaaf, meld me aan voor de pilot!
-          </RaisedButton>
+          <SignUpButton />
         </div>
 
       </div>
