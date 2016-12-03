@@ -9,10 +9,7 @@ export default class UserApp extends Component {
   render() {
     return (
       <div style={Object.assign({}, s.base, {background: this.props.background})}>
-        {this.props.showPageHeader ? 
-          <div style={{padding: '40px 20px 0 20px'}}>
-            <PageHeader />
-          </div> : null}
+        {this.props.showPageHeader ? <PageHeader /> : null}
         {this.props.content}
       </div>
     );

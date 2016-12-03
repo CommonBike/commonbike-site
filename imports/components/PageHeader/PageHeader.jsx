@@ -31,6 +31,7 @@ var s = {
   base: {
     fontSize: 'default',
     lineHeight: 'default',
+    padding: '20px 20px 0 20px'
   },
   flex: {
     display: 'flex',
@@ -41,8 +42,8 @@ var s = {
     height: '36px',
     width: '36px',
     backgroundPosition: 'center center',
-    backgroundRepeat: 'repeat',
-    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain',
     textIndent: '-9999px'
   },
   logo: {

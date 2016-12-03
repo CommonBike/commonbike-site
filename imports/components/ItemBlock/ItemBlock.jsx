@@ -14,11 +14,7 @@ class ItemBlock extends Component {
   constructor(props) {
     super(props);
     
-    this.state = { title: props.item.title }
-  }
-
-  componentWillReceiveProps(newProps) {
-    this.state = { title: newProps.item.title }
+    this.state = { title: props.item.title, imageUrl: props.item.imageUrl }
   }
 
   //+handleChange :: Event -> StateChange
@@ -26,6 +22,17 @@ class ItemBlock extends Component {
     this.state.title = e.target.value;
     
     Meteor.call('locations.update', this.props.item._id, this.state);
+  }
+
+  // newAvatar :: Event -> NOT PURE
+  newAvatar(e) {
+    var imageUrl =
+      prompt('Wat is de URL van de nieuwe avatar? Wil je geen nieuwe avatar toevoegen, klik dan op Annuleren/Cancel')
+
+    if(imageUrl) {
+      this.state.imageUrl = imageUrl;
+      Meteor.call('locations.update', this.props.item._id, this.state);
+    }
   }
 
   deleteItem() {
@@ -38,11 +45,11 @@ class ItemBlock extends Component {
   render() {
     return (
       <article style={s.base} onClick={this.props.onClick}>
-        <div style={s.avatar}>
-          <img src="/files/ItemBlock/bike.png" alt="Bike" title="Le bike." />
+        <div style={s.avatar} onClick={this.newAvatar.bind(this)}>
+          <img src={this.state.imageUrl ? this.state.imageUrl : '/files/ItemBlock/bike.png'} alt="Bike" title="Le bike." />
         </div>
-        {this.props.isEditable ? <ContentEditable style={s.title} html={this.state.title} disabled={false} onChange={this.handleChange.bind(this)} /> : <span style={s.title}>{this.state.title}</span>}
-        <a style={Object.assign({display: 'none'}, s.delete, this.props.isEditable && {display: 'block'})} onClick={this.deleteItem.bind(this)}>delete</a>
+        {this.props.isEditable ? <ContentEditable style={s.title} html={this.state.title} disabled={false} onChange={this.handleChange.bind(this)} /> : <span style={s.title} dangerouslySetInnerHTML={{__html: this.state.title}}></span>}
+        <a style={Object.assign({display: 'none'}, this.props.isEditable && {display: 'block'})} onClick={this.deleteItem.bind(this)}>delete</a>
       </article>
     );
   }
@@ -70,14 +77,18 @@ var s = {
     flex: 2,
     fontSize: '1.2em',
     margin: '0 10px',
-    fontWeight: 'bold'
+    fontWeight: 500
   },
 }
 
 ItemBlock.propTypes = {
   item: PropTypes.object.isRequired,
-  isEditable: PropTypes.bool,
+  isEditable: PropTypes.any,
   onClick: PropTypes.any,
 };
+
+ItemBlock.defaultProps = {
+  isEditable: false
+}
 
 export default ItemBlock;

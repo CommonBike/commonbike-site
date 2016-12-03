@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 // Import components
 import ItemBlock from '/imports/components/ItemBlock/ItemBlock.jsx';
+import Hr from '/imports/components/Hr/Hr.jsx';
 
 class CommonBikeUI extends Component {
 

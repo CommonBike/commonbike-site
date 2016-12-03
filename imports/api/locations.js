@@ -14,7 +14,13 @@ LocationsSchema = new SimpleSchema({
     label: "Description",
     optional: true,
     max: 1000
-  }
+  },
+  imageUrl: {
+    type: String,
+    label: "Image URL",
+    optional: true,
+    max: 1000
+  },
 });
 
 
@@ -44,7 +50,8 @@ Meteor.methods({
     // check(data, LocationsSchema);
 
     Locations.update(_id, {
-      title: data.title
+      title: data.title,
+      imageUrl: data.imageUrl
     });
   },
   'locations.remove'(_id){

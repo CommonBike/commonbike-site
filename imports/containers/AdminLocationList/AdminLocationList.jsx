@@ -6,16 +6,15 @@ import R from 'ramda';
 import { Locations } from '/imports/api/locations.js'; 
 
 // Import components
-import ItemBlock from '../ItemBlock/ItemBlock'
-import RaisedButton from '../RaisedButton/RaisedButton'
+import LocationListComponent from '../../components/LocationList/LocationList';
 
 /**
- *  LocationOverview
+ *  LocationList
  * 
  * @param {Object} locations
  * @param {Boolean} isEditable
  */
-class LocationOverview extends Component {
+class LocationList extends Component {
 
   constructor(props) {
     super(props);
@@ -34,23 +33,13 @@ class LocationOverview extends Component {
     Meteor.call('locations.insert', data);
   }
 
+  clickItemHandler(item) {
+    FlowRouter.go('somewhere', {})
+  }
+
   render() {
     return (
-      <div style={s.base}>
-
-        <div style={Object.assign({display: 'none'}, this.props.isEditable && {display: 'block'})}>
-
-          <h1 style={s.title}>CommonBike locatiebeheer</h1>
-          <p style={s.paragraph}>
-            Klik op <b>Nieuwe locatie</b> of <b><i>pas een titel aan</i></b>.
-          </p>
-          <RaisedButton onClick={this.newLocation.bind(this)}>Nieuwe locatie</RaisedButton>
-
-        </div>
-
-        {R.map((location) => <ItemBlock key={location._id} item={location} />, this.props.locations)}
-
-      </div>
+      <LocationListComponent isEditable="true" clickItemHandler={self.clickItemHandler} />
     );
   }
 
@@ -60,18 +49,15 @@ var s = {
   base: {
     padding: '10px 20px'
   },
-  title: {
-    margin: 0,
-    padding: '10px 20px',
-  },
   paragraph: {
     padding: '0 20px'
   }
 }
 
-LocationOverview.propTypes = {
+LocationList.propTypes = {
   locations: PropTypes.array.isRequired,
-  isEditable: PropTypes.array
+  isEditable: PropTypes.any,
+  onClickHandler: PropTypes.any,
 };
 
 export default createContainer((props) => {
@@ -80,4 +66,4 @@ export default createContainer((props) => {
     currentUser: Meteor.user(),
     locations: Locations.find({}, { sort: {_id: -1} }).fetch()
   };
-}, LocationOverview);
+}, LocationList);

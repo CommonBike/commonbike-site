@@ -5,7 +5,7 @@ export default class AdminApp extends Component {
 
   render() {
     return (
-      <div style={[s.base, {background: this.props.background}]}>
+      <div style={Object.assign({}, s.base, {background: this.props.background})}>
         {this.props.content}
       </div>
     );
@@ -24,7 +24,7 @@ AdminApp.defaultProps = {
 var s = {
   base: {
     maxWidth: '100%',
-    height: '100%',
+    minHeight: '100%',
     margin: '0 auto'
   },
 }
