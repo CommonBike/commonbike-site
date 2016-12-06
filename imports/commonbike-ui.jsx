@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 // Import components
-import ItemBlock from '/imports/components/ItemBlock/ItemBlock.jsx';
+import Block from '/imports/components/Block/Block.jsx';
 import Hr from '/imports/components/Hr/Hr.jsx';
 
 class CommonBikeUI extends Component {
@@ -17,10 +17,10 @@ class CommonBikeUI extends Component {
         <Hr />
 
         <tt>
-          <b>ItemBlock</b> :: Object [ title: String, isEditable: Boolean ]
+          <b>Block</b> :: Object [ title: String, isEditable: Boolean ]
         </tt>
 
-        <ItemBlock item={{title: 'This is an item block'}} isEditable={true} />
+        <Block item={{title: 'This is an item block'}} isEditable={true} />
 
       </div>
     );

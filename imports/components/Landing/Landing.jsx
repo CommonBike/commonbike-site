@@ -62,7 +62,8 @@ var s = {
     display: 'flex',
     textAlign: 'center',
     flexDirection: 'column',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    minHeight: '600px',
   },
   logo: {
     height: '100px'

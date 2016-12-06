@@ -3,18 +3,18 @@ import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
 
 // Import models
-import { Locations } from '/imports/api/locations.js'; 
+import { Objects } from '/imports/api/locations.js'; 
 
 // Import components
-import LocationListComponent from '../../components/LocationList/LocationList';
+import ObjectListComponent from '../../components/ObjectList/ObjectList';
 
 /**
- *  LocationList
+ *  ObjectList
  * 
  * @param {Object} locations
  * @param {Boolean} isEditable
  */
-class LocationList extends Component {
+class ObjectList extends Component {
 
   constructor(props) {
     super(props);
@@ -23,23 +23,17 @@ class LocationList extends Component {
   }
 
   /**
-   *  newLocation
+   *  newObject
    * 
    * Adds a new location to the database having the title "Locatie-naam"
    */
-  newLocation() {
-    let data = {title: "Nieuwe locatie"};
+  newObject() { Meteor.call('locations.insert', {title: "Nieuwe fiets"}) }
 
-    Meteor.call('locations.insert', data);
-  }
-
-  clickItemHandler(item) {
-    FlowRouter.go('somewhere', {})
-  }
+  clickItemHandler(item) { FlowRouter.go('somewhere', {}) }
 
   render() {
     return (
-      <LocationListComponent locations={this.props.locations} isEditable="true" clickItemHandler={self.clickItemHandler} />
+      <ObjectListComponent locations={this.props.locations} isEditable="true" clickItemHandler={self.clickItemHandler} />
     );
   }
 
@@ -54,15 +48,14 @@ var s = {
   }
 }
 
-LocationList.propTypes = {
-  locations: PropTypes.array,
+ObjectList.propTypes = {
+  objects: PropTypes.array,
   isEditable: PropTypes.any,
   onClickHandler: PropTypes.any,
 };
 
 export default createContainer((props) => {
-  Meteor.subscribe('locations');
   return {
     currentUser: Meteor.user(),
   };
-}, LocationList);
+}, ObjectList);

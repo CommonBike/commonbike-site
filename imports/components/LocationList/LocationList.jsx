@@ -6,8 +6,8 @@ import R from 'ramda';
 import { Locations } from '/imports/api/locations.js'; 
 
 // Import components
-import ItemBlock from '../ItemBlock/ItemBlock'
-import RaisedButton from '../RaisedButton/RaisedButton'
+import Block from '../Block/Block';
+import RaisedButton from '../RaisedButton/RaisedButton';
 
 /**
  *  LocationList
@@ -29,9 +29,7 @@ class LocationList extends Component {
    * Adds a new location to the database having the title "Locatie-naam"
    */
   newLocation() {
-    let data = {title: "Nieuwe locatie"};
-
-    Meteor.call('locations.insert', data);
+    Meteor.call('locations.insert', {title: "Nieuwe locatie"});
   }
 
   render() {
@@ -49,7 +47,7 @@ class LocationList extends Component {
 
         </div>
 
-        {R.map((location) => <ItemBlock key={location._id} item={location} isEditable={self.props.isEditable} onClick={self.props.clickItemHandler} />, this.props.locations)}
+        {R.map((location) => <Block key={location._id} item={location} isEditable={self.props.isEditable} onClick={self.props.clickItemHandler} />, this.props.locations)}
 
       </div>
     );
@@ -59,7 +57,8 @@ class LocationList extends Component {
 
 var s = {
   base: {
-    padding: '10px 20px'
+    padding: '10px 20px',
+    textAlign: 'center'
   },
   paragraph: {
     padding: '0 20px'
@@ -67,15 +66,14 @@ var s = {
 }
 
 LocationList.propTypes = {
-  locations: PropTypes.array.isRequired,
+  locations: PropTypes.array,
   isEditable: PropTypes.any,
   clickItemHandler: PropTypes.any,
 };
 
 export default createContainer((props) => {
-  Meteor.subscribe('locations');
   return {
     currentUser: Meteor.user(),
-    locations: Locations.find({}, { sort: {_id: -1} }).fetch()
+    locations: Locations.find({}, { sort: {title: 1} }).fetch()
   };
 }, LocationList);

@@ -78,7 +78,7 @@ class Login extends Component {
     return (
       <div>
         <p>Leuk dat je meedoet! We sturen je als eerste een bericht als de app gebruikt kan worden.</p>
-        <p>In december starten we een pilot bij een IC treinstation. Daarna breiden we uit.</p>
+        <p>In december starten we een pilot bij een intercity treinstation. Daarna breiden we uit.</p>
         <p><button onClick={this.logout}>Log out</button></p>
       </div>
     )
