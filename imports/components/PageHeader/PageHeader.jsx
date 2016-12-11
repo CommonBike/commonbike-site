@@ -17,8 +17,8 @@ class PageHeader extends Component {
     return (
       <div style={s.base}>
         <div style={s.flex}>
-          <a style={s.arrowBack} href="/">Back</a>
-          <CommonBikeLogo type="common" style={s.logo} />
+          <a style={s.arrowBack} onClick={() => history.back()}>Back</a>
+          <a href="/"><CommonBikeLogo type="common" style={s.logo} /></a>
           <div>&nbsp;</div>
         </div>
         {this.props.children}
@@ -44,7 +44,8 @@ var s = {
     backgroundPosition: 'center center',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
-    textIndent: '-9999px'
+    textIndent: '-9999px',
+    cursor: 'pointer'
   },
   logo: {
     width: '230px',
