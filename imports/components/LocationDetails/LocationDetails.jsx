@@ -2,13 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
 
-// Import models
-import { Locations } from '/imports/api/locations.js'; 
-import { Objects } from '/imports/api/objects.js'; 
-import Block from '../Block/Block';
-
 // Import components
 import RaisedButton from '../RaisedButton/RaisedButton.jsx'
+import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
 
 class LocationDetails extends Component {
 
@@ -16,11 +12,31 @@ class LocationDetails extends Component {
     super(props);
   }
 
+  newObject() {
+    this.props.newObject(this.props.locationId);
+  }
+
   render() {
     return (
       <div style={s.base}>
-        <h1 style={s.title} dangerouslySetInnerHTML={{__html: 'Fietsen bij ' + (this.props.location ? this.props.location.title : '') }}></h1>
-        {R.map((object) => <Block key={object._id} item={object} isEditable={this.props.isEditable} onClick={this.props.clickItemHandler} />, this.props.objects)}
+
+        <h1 style={s.title} dangerouslySetInnerHTML={{__html: this.props.location.title}}></h1>
+
+        <p>
+          Pak je fiets bij <b><span dangerouslySetInnerHTML={{__html: this.props.location.title}} /></b>. Kies hieronder je gewenste fiets. 
+        </p>
+
+        <RaisedButton style={Object.assign({display: 'none'}, this.props.isEditable && {display: 'block'})} onClick={this.newObject.bind(this)}>
+          Nieuwe fiets
+        </RaisedButton>
+
+        {R.map((object) =>  <ObjectBlock
+                              key={object._id}
+                              item={object}
+                              isEditable={this.props.isEditable}
+                              onClick={this.props.clickItemHandler} />
+                            , this.props.objects)}
+
       </div>
     );
   }
@@ -39,12 +55,12 @@ var s = {
 }
 
 LocationDetails.propTypes = {
-  // children: PropTypes.any,
+  location: PropTypes.object,
+  objects: PropTypes.array,
 };
 
-export default createContainer((props) => {
-  return {
-    location: Locations.find({_id: props.locationId}).fetch()[0],
-    objects: Objects.find({}, {sort: {title: 1}}).fetch()
-  };
-}, LocationDetails);
+LocationDetails.defaultProps = {
+  location: {}
+}
+
+export default LocationDetails;

@@ -31,6 +31,7 @@ var s = {
   base: {
     maxWidth: '100%',
     minHeight: '100%',
+    height: '100%',
     overflow: 'auto',
     margin: '0 auto'
   },

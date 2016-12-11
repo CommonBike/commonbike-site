@@ -4,6 +4,7 @@ import R from 'ramda';
 
 // Import models
 import { Locations } from '/imports/api/locations.js'; 
+import { Objects } from '/imports/api/objects.js'; 
 
 // Import components
 import LocationDetailsComponent from '../../components/LocationDetails/LocationDetails';
@@ -23,17 +24,23 @@ class LocationDetails extends Component {
   }
 
   /**
-   *  newLocation
+   *  newObject
    * 
-   * Adds a new location to the database having the title "Locatie-naam"
+   * Adds a new object to the database having the title "Nieuwe fiets"
    */
-  newLocation() { Meteor.call('locations.insert', {title: "Nieuwe locatie"}) }
-
-  clickItemHandler(item) { FlowRouter.go('somewhere', {}) }
+  newObject(locationId) { Meteor.call('objects.insert', {
+    locationId: locationId,
+    title: "Nieuwe fiets",
+    imageUrl: '/files/Block/bike.png'
+  })}
 
   render() {
     return (
-      <LocationDetailsComponent isEditable="true" clickItemHandler={this.clickItemHandler} />
+      <LocationDetailsComponent
+        location={this.props.location}
+        objects={this.props.objects}
+        newObject={() => this.newObject(this.props.locationId)}
+        isEditable={this.props.isEditable} />
     );
   }
 
@@ -54,9 +61,16 @@ LocationDetails.propTypes = {
   onClickHandler: PropTypes.any,
 };
 
+LocationDetails.defaultProps = {
+  isEditable: false
+}
+
 export default createContainer((props) => {
   Meteor.subscribe('locations');
+  Meteor.subscribe('objects');
   return {
     currentUser: Meteor.user(),
+    location: Locations.find({_id: props.locationId}).fetch()[0],
+    objects: Objects.find({locationId: props.locationId}, {sort: {title: 1}}).fetch()
   };
 }, LocationDetails);

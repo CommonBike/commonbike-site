@@ -15,55 +15,27 @@ class Block extends Component {
 
   constructor(props) {
     super(props);
-    
-    this.state = { title: props.item.title, imageUrl: props.item.imageUrl }
   }
     
   componentDidMount() {
     ReactDOM.findDOMNode(this.refs.base).style.display = 'flex';
   }
 
-  //+handleChange :: Event -> StateChange
-  handleChange(e) {
-    this.state.title = e.target.value;
-    
-    Meteor.call('locations.update', this.props.item._id, this.state);
-  }
-
-  // newAvatar :: Event -> NO PURE FUNCTION
-  newAvatar(e) {
-    if( ! this.props.isEditable) return;
-
-    var imageUrl =
-      prompt('Wat is de URL van de nieuwe avatar? Wil je geen nieuwe avatar toevoegen, klik dan op Annuleren/Cancel')
-
-    if(imageUrl) {
-      this.state.imageUrl = imageUrl;
-      Meteor.call('locations.update', this.props.item._id, this.state);
-    }
-  }
-
-  viewItem() {
-    console.log('viewItem: ', this.props.item._id);
-    FlowRouter.go('adminLocation', {locationId: this.props.item._id})
-  }
-
-  deleteItem() {
-    if( ! confirm('Weet je zeker dat je locatie '+this.props.item.title+' wilt verwijderen?') || ! confirm('Sure? If not sure: don\'t') )
-      return;
-
-    Meteor.call('locations.remove', this.props.item._id);
-  }
-
   render() {
     return (
-      <article style={s.base} onClick={this.props.onClick} ref="base">
-        <div style={s.avatar} onClick={this.newAvatar.bind(this)}>
-          <img src={this.state.imageUrl ? this.state.imageUrl : '/files/Block/bike.png'} alt="Bike" title="Le bike." />
+      <article style={Object.assign({}, s.base, ! this.props.isEditable && {cursor: 'pointer'})} onClick={this.props.onClick} ref="base">
+
+        <div style={s.avatar} onClick={this.props.newAvatar.bind(this)}>
+          <img src={this.props.item.imageUrl ? this.props.item.imageUrl : '/files/Block/bike.png'} alt="Bike" title="Le bike." />
         </div>
-        {this.props.isEditable ? <ContentEditable style={s.title} html={this.state.title} disabled={false} onChange={this.handleChange.bind(this)} /> : <span style={s.title} dangerouslySetInnerHTML={{__html: this.state.title}}></span>}
-        <button style={Object.assign({display: 'none'}, s.deleteButton, this.props.isEditable && {display: 'block'})} onClick={this.deleteItem.bind(this)}>delete</button>
-        <button style={Object.assign({display: 'none'}, s.infoButton, this.props.isEditable && {display: 'block'})} onClick={this.viewItem.bind(this)}>info</button>
+
+        { this.props.isEditable
+          ? <ContentEditable style={s.title} html={this.props.item.title} disabled={false} onChange={this.props.handleChange.bind(this)} />
+          : <span style={s.title} dangerouslySetInnerHTML={{__html: this.props.item.title}}></span> }
+
+        <button style={Object.assign({display: 'none'}, s.deleteButton, this.props.isEditable && {display: 'block'})} onClick={this.props.deleteItem.bind(this)}>delete</button>
+        <button style={Object.assign({display: 'none'}, s.infoButton, this.props.isEditable && {display: 'block'})} onClick={this.props.viewItem.bind(this)}>info</button>
+
       </article>
     );
   }
@@ -110,10 +82,13 @@ Block.propTypes = {
   item: PropTypes.object.isRequired,
   isEditable: PropTypes.any,
   onClick: PropTypes.any,
+  handleChange: PropTypes.any,
+  viewItem: PropTypes.any,
+  deleteItem: PropTypes.any,
 };
 
 Block.defaultProps = {
-  isEditable: false
+  isEditable: false,
 }
 
 export default Radium(Block);

@@ -6,7 +6,7 @@ import R from 'ramda';
 import { Locations } from '/imports/api/locations.js'; 
 
 // Import components
-import Block from '../Block/Block';
+import LocationBlock from '../../containers/LocationBlock/LocationBlock';
 import RaisedButton from '../RaisedButton/RaisedButton';
 
 /**
@@ -47,7 +47,12 @@ class LocationList extends Component {
 
         </div>
 
-        {R.map((location) => <Block key={location._id} item={location} isEditable={self.props.isEditable} onClick={self.props.clickItemHandler} />, this.props.locations)}
+        {R.map((location) =>  <LocationBlock
+                                key={location._id}
+                                item={location}
+                                isEditable={self.props.isEditable}
+                                onClick={self.props.clickItemHandler} />
+                              , this.props.locations)}
 
       </div>
     );
@@ -70,6 +75,10 @@ LocationList.propTypes = {
   isEditable: PropTypes.any,
   clickItemHandler: PropTypes.any,
 };
+
+LocationList.defaultProps = {
+  isEditable: false
+}
 
 export default createContainer((props) => {
   return {

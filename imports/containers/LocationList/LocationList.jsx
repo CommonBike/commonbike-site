@@ -28,18 +28,15 @@ class LocationList extends Component {
    * Adds a new location to the database having the title "Locatie-naam"
    */
   newLocation() {
-    let data = {title: "Nieuwe locatie"};
-
-    Meteor.call('locations.insert', data);
-  }
-
-  clickItemHandler(item) {
-    FlowRouter.go('somewhere', {})
+    Meteor.call('locations.insert', {
+      title: "Nieuwe locatie",
+      imageUrl: 'https://cdn2.iconfinder.com/data/icons/location-3/128/Location-26-512.png'
+    });
   }
 
   render() {
     return (
-      <LocationListComponent locations={this.props.locations} isEditable="true" clickItemHandler={self.clickItemHandler} />
+      <LocationListComponent locations={this.props.locations} isEditable={this.props.isEditable} />
     );
   }
 
@@ -56,12 +53,14 @@ var s = {
 
 LocationList.propTypes = {
   locations: PropTypes.array,
-  isEditable: PropTypes.any,
-  onClickHandler: PropTypes.any,
+  isEditable: PropTypes.any
 };
 
+LocationList.defaultProps = {
+  isEditable: false
+}
+
 export default createContainer((props) => {
-  Meteor.subscribe('locations');
   return {
     currentUser: Meteor.user(),
   };
