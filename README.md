@@ -20,6 +20,15 @@ Go to [common.bike](https://go.common.bike) for a live demo.
 
 ## 2. Development
 
+### Prerequisites
+
+* Install [git flow](https://github.com/nvie/gitflow)
+  `sudo apt-get install git-flow`
+  Or try: [Install guide](https://github.com/nvie/gitflow/wiki/Installation)
+* Initialize git flow
+  `cd commonbike-site`
+  [`git flow init`](https://github.com/nvie/gitflow/wiki/Command-Line-Arguments#git-flow-init--fd)
+
 ### Running the app
 
 1. `cd folderOfYourProject`
