@@ -8,7 +8,6 @@ import R from 'ramda';
 
 // Import templates
 import SquareButton from '../SquareButton/SquareButton.jsx';
-import SocialShare from '../SocialShare/SocialShare.jsx';
 import LoginForm from '../../containers/LoginForm/LoginForm.jsx';
 
 class Login extends Component {
