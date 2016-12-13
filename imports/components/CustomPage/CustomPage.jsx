@@ -17,7 +17,7 @@ class CustomPage extends Component {
 
   render() {
     return (
-      <div style={s.base}>
+      <div style={Object.assign({}, s.base, {backgroundColor: this.props.backgroundColor})}>
         {this.props.children}
       </div>
     );
@@ -28,9 +28,9 @@ var s = {
   base: {
     fontSize: 'default',
     lineHeight: 'default',
-    padding: '20px 20px 0 20px',
     margin: '0 auto',
     width: '100%',
+    minHeight: 'calc(100% - 66px)',
     display: 'flex',
     textAlign: 'center',
     flexDirection: 'column',
@@ -43,6 +43,11 @@ var s = {
 
 CustomPage.propTypes = {
   children: PropTypes.any.isRequired,
+  backgroundColor: PropTypes.string,
+};
+
+CustomPage.defaultProps = {
+  backgroundColor: '#fff',
 };
 
 export default createContainer((props) => {

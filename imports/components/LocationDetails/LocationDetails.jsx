@@ -20,10 +20,8 @@ class LocationDetails extends Component {
     return (
       <div style={s.base}>
 
-        <h1 style={s.title} dangerouslySetInnerHTML={{__html: this.props.location.title}}></h1>
-
-        <p>
-          Pak je fiets bij <b><span dangerouslySetInnerHTML={{__html: this.props.location.title}} /></b>. Kies hieronder je gewenste fiets. 
+        <p style={s.intro}>
+          Haal je fiets bij <i><span dangerouslySetInnerHTML={{__html: this.props.location.title}} /></i>. Kies hieronder je gewenste fiets
         </p>
 
         <RaisedButton style={Object.assign({display: 'none'}, this.props.isEditable && {display: 'block'})} onClick={this.newObject.bind(this)}>
@@ -48,10 +46,17 @@ var s = {
     lineHeight: 'default',
     padding: '20px 20px 0 20px',
     textAlign: 'center',
+    minHeight: 'calc(100vh - 66px)',
   },
-  title: {
-    textAlign: 'center',
-  }
+  intro: {
+    paddingLeft: '70px',
+    textAlign: 'left',
+    minHeight: '80px',
+    fontSize: '1.2em',
+    fontWeight: '500',
+    background: 'url("/files/LocationDetails/marker.svg") 0 0 / auto 60px no-repeat',
+  },
+
 }
 
 LocationDetails.propTypes = {

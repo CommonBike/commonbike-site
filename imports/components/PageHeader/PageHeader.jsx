@@ -1,4 +1,6 @@
+import { Meteor } from 'meteor/meteor'
 import React, { Component, PropTypes } from 'react';
+
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
@@ -6,6 +8,7 @@ import R from 'ramda';
 // Import components
 import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
 import RaisedButton from '../RaisedButton/RaisedButton.jsx'
+import Avatar from '../Avatar/Avatar.jsx'
 
 class PageHeader extends Component {
 
@@ -18,8 +21,8 @@ class PageHeader extends Component {
       <div style={s.base}>
         <div style={s.flex}>
           <a style={s.arrowBack} onClick={() => history.back()}>Back</a>
-          <a href="/"><CommonBikeLogo type="common" style={s.logo} /></a>
-          <div>&nbsp;</div>
+          <a href="/" style={{display: 'flex'}}><CommonBikeLogo type="common" style={s.logo} /></a>
+          { Meteor.userId() ? <Avatar /> : <div /> }
         </div>
         {this.props.children}
       </div>
@@ -31,7 +34,7 @@ var s = {
   base: {
     fontSize: 'default',
     lineHeight: 'default',
-    padding: '20px 20px 0 20px'
+    padding: '15px 20px 15px 20px'
   },
   flex: {
     display: 'flex',
@@ -45,11 +48,13 @@ var s = {
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     textIndent: '-9999px',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    alignSelf: 'center',
   },
   logo: {
-    width: '230px',
-    height: '36px'
+    width: '174px',
+    height: '28px',
+    alignSelf: 'center'
   },
 }
 

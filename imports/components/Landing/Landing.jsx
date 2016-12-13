@@ -63,7 +63,7 @@ var s = {
     textAlign: 'center',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    minHeight: '600px',
+    minHeight: '568px',
   },
   logo: {
     height: '100px'

@@ -82,7 +82,7 @@ var s = {
   base: {
     maxWidth: '400px',
     margin: '0 auto',
-    textAlign: 'left'
+    textAlign: 'left',
   },
 }
 

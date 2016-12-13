@@ -43,12 +43,12 @@ class Login extends Component {
 
   renderIntro() {
     return (
-      <div>
+      <div style={s.base}>
 
         <br />
 
         <p>
-          Wil je als eerste de CommonBike app uitproberen?
+          Wil je als eerste<br />de CommonBike app uitproberen?
         </p>
 
         <p>
@@ -76,7 +76,7 @@ class Login extends Component {
 
   renderTeaser() {
     return (
-      <div>
+      <div style={Object.assign({padding: '20px'}, s.base)}>
         <p>Leuk dat je meedoet! We sturen je als eerste een bericht als de app gebruikt kan worden.</p>
         <p>In december starten we een pilot bij een intercity treinstation. Daarna breiden we uit.</p>
         <p><button onClick={this.logout}>Log out</button></p>
@@ -100,10 +100,11 @@ var s = {
     width: '480px',
     maxWidth: '100%',
     margin: '0 auto',
-    fontSize: 'default',
     lineHeight: 'default',
     color: '#000',
-    textAlign: 'center'
+    fontSize: '1.2em',
+    textAlign: 'center',
+    fontWeight: '500',
   },
   signUpButton: {
     margin: '10px 0',

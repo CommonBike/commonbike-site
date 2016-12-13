@@ -29,9 +29,17 @@ class Block extends Component {
           <img src={this.props.item.imageUrl ? this.props.item.imageUrl : '/files/Block/bike.png'} alt="Bike" title="Le bike." />
         </div>
 
-        { this.props.isEditable
-          ? <ContentEditable style={s.title} html={this.props.item.title} disabled={false} onChange={this.props.handleChange.bind(this)} />
-          : <span style={s.title} dangerouslySetInnerHTML={{__html: this.props.item.title}}></span> }
+        <div style={s.textWrapper}>
+
+          { this.props.isEditable
+            ? <ContentEditable style={s.title} html={this.props.item.title} disabled={false} onChange={this.props.handleChange.bind(this)} />
+            : <div style={s.title} dangerouslySetInnerHTML={{__html: this.props.item.title}}></div> }
+
+          <div style={Object.assign({display: 'none'}, s.price, this.props.showPrice && {display: 'block'})}>
+            &euro;3,00 per dag
+          </div>
+
+        </div>
 
         <button style={Object.assign({display: 'none'}, s.deleteButton, this.props.isEditable && {display: 'block'})} onClick={this.props.deleteItem.bind(this)}>delete</button>
         <button style={Object.assign({display: 'none'}, s.infoButton, this.props.isEditable && {display: 'block'})} onClick={this.props.viewItem.bind(this)}>info</button>
@@ -59,11 +67,20 @@ var s = {
     flex: 1,
     maxHeight: '148px'
   },
-  title: {
+  textWrapper: {
     flex: 2,
+    fontWeight: 500,
     fontSize: '1.2em',
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+    padding: '5px',
+  },
+  title: {
     margin: '0 10px',
-    fontWeight: 500
+  },
+  price: {
+    margin: '0 10px',
   },
   deleteButton: {
     cursor: 'cross',
@@ -89,6 +106,7 @@ Block.propTypes = {
 
 Block.defaultProps = {
   isEditable: false,
+  showPrice: false,
 }
 
 export default Radium(Block);

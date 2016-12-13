@@ -19,8 +19,6 @@ class LocationDetails extends Component {
 
   constructor(props) {
     super(props);
-
-    if( ! Meteor.userId() ) FlowRouter.go('/login', {redirectTo: '/admin'});
   }
 
   /**
@@ -39,6 +37,7 @@ class LocationDetails extends Component {
       <LocationDetailsComponent
         location={this.props.location}
         objects={this.props.objects}
+        clickItemHandler={this.props.clickItemHandler}
         newObject={() => this.newObject(this.props.locationId)}
         isEditable={this.props.isEditable} />
     );

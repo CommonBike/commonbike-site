@@ -38,9 +38,7 @@ class ObjectBlock extends Component {
     }
   }
 
-  viewItem() {
-    // FlowRouter.go('adminLocation', {locationId: this.props.item._id})
-  }
+  viewItem() { FlowRouter.go('object', {objectId: this.props.item._id}) }
 
   deleteItem() {
     if( ! confirm('Weet je zeker dat je de fiets "'+this.props.item.title+'" wilt verwijderen?') || ! confirm('Sure? If not sure: don\'t') )
@@ -53,12 +51,13 @@ class ObjectBlock extends Component {
     return (
       <Block
         item={this.props.item}
+        showPrice="true"
         isEditable={this.props.isEditable}
         newAvatar={this.newAvatar.bind(this)}
         handleChange={this.handleChange.bind(this)}
         deleteItem={this.deleteItem.bind(this)}
         viewItem={this.viewItem.bind(this)}
-        onClick={this.props.onClick} />
+        onClick={this.viewItem.bind(this)} />
     );
   }
 

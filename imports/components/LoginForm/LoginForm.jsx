@@ -9,6 +9,7 @@ import Future from 'fluture';
 // Import components
 import TextField from '../TextField/TextField.jsx';
 import RaisedButton from '../RaisedButton/RaisedButton.jsx';
+import Button from '../Button/Button';
 
 // getUserBasedOnEmail :: String -> Future
 const getUserBasedOnEmail = email => Future.of(Meteor.users.find({"emails.address": email}, {limit: 1}).fetch());
@@ -71,7 +72,7 @@ class LoginForm extends Component {
           <TextField type="password" ref="password2" placeholder="Herhaal je wachtwoord" name="password2" style={s.textField} />
         </div>
 
-        <RaisedButton type="submit" style={s.button}>Meld me aan</RaisedButton>
+        <Button style={s.button}>Meld me aan</Button>
 
       </form>
     )
