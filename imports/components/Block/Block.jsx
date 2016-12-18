@@ -25,14 +25,14 @@ class Block extends Component {
     return (
       <article style={Object.assign({}, s.base, ! this.props.isEditable && {cursor: 'pointer'})} onClick={this.props.onClick} ref="base">
 
-        <div style={s.avatar} onClick={this.props.newAvatar.bind(this)}>
+        <div style={s.avatar} onClick={this.props.newAvatar}>
           <img src={this.props.item.imageUrl ? this.props.item.imageUrl : '/files/Block/bike.png'} alt="Bike" title="Le bike." />
         </div>
 
         <div style={s.textWrapper}>
 
           { this.props.isEditable
-            ? <ContentEditable style={s.title} html={this.props.item.title} disabled={false} onChange={this.props.handleChange.bind(this)} />
+            ? <ContentEditable style={s.title} html={this.props.item.title} disabled={false} onChange={this.props.handleChange} />
             : <div style={s.title} dangerouslySetInnerHTML={{__html: this.props.item.title}}></div> }
 
           <div style={Object.assign({display: 'none'}, s.price, this.props.showPrice && {display: 'block'})}>
@@ -41,8 +41,8 @@ class Block extends Component {
 
         </div>
 
-        <button style={Object.assign({display: 'none'}, s.deleteButton, this.props.isEditable && {display: 'block'})} onClick={this.props.deleteItem.bind(this)}>delete</button>
-        <button style={Object.assign({display: 'none'}, s.infoButton, this.props.isEditable && {display: 'block'})} onClick={this.props.viewItem.bind(this)}>info</button>
+        <button style={Object.assign({display: 'none'}, s.deleteButton, this.props.isEditable && {display: 'block'})} onClick={this.props.deleteItem}>delete</button>
+        <button style={Object.assign({display: 'none'}, s.infoButton, this.props.isEditable && {display: 'block'})} onClick={this.props.viewItem}>info</button>
 
       </article>
     );
@@ -100,6 +100,7 @@ Block.propTypes = {
   isEditable: PropTypes.any,
   onClick: PropTypes.any,
   handleChange: PropTypes.any,
+  newAvatar: PropTypes.any,
   viewItem: PropTypes.any,
   deleteItem: PropTypes.any,
 };
