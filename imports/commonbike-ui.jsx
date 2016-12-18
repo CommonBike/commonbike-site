@@ -1,8 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 
 // Import components
+import AccountsUIWrapper from '/imports/containers/AccountsUIWrapper/AccountsUIWrapper.jsx';
 import Block from '/imports/components/Block/Block.jsx';
+import Button from '/imports/components/Button/Button.jsx';
 import Hr from '/imports/components/Hr/Hr.jsx';
+import Avatar from '/imports/components/Avatar/Avatar.jsx';
+import CheckInCode from '/imports/components/CheckInCode/CheckInCode.jsx';
+import LoginForm from '/imports/components/LoginForm/LoginForm.jsx';
 
 class CommonBikeUI extends Component {
 
@@ -10,17 +15,31 @@ class CommonBikeUI extends Component {
     return (
       <div style={s.base}>
 
-        <tt>
-          <b>Hr</b> :: void
-        </tt>
+        <h1>Basic UI component</h1>
+
+        <AccountsUIWrapper />
 
         <Hr />
 
-        <tt>
-          <b>Block</b> :: Object [ title: String, isEditable: Boolean ]
-        </tt>
+        <h1>Button</h1>
 
-        <Block item={{title: 'This is an item block'}} isEditable={true} deleteItem={() => alert('delete')} viewItem={() => alert('info')} />
+        <Button>Klik hier!</Button>
+
+        <Hr />
+
+        <h1>Avatar</h1>
+
+        <Avatar />
+
+        <Hr />
+
+        <h1>CheckInCode</h1>
+
+        <CheckInCode />
+
+        <h1>LoginForm</h1>
+
+        <LoginForm />
 
       </div>
     );
@@ -30,7 +49,7 @@ class CommonBikeUI extends Component {
 s = {
   base: {
     padding: '40px 20px 0 20px',
-    background: '#fbae17',
+    background: '#eee',
     minHeight: '100%',
   }
 }
