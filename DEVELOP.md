@@ -24,7 +24,7 @@
 
 ## Configuring login services like Facebook and Twitter
 
-Configuring the login services is easy. Just go to [localhost:3000/commonbike-ui](/commonbike-ui). On this page you'll a bunch of UI components on one page. The first one, **Basic UI component**, shows a basic login/register module. Use this one to configure all the login services you prefer.
+Configuring the login services is easy. Just go to [/commonbike-ui](http://localhost:3000/commonbike-ui). On this page you'll a bunch of UI components on one page. The first one, **Basic UI component**, shows a basic login/register module. Use this one to configure all the login services you prefer.
 
 See [guide.meteor.com/accounts](https://guide.meteor.com/accounts.html#accounts-ui) for more information about this topic.
 
