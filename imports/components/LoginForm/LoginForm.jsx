@@ -72,7 +72,7 @@ class LoginForm extends Component {
           <TextField type="password" ref="password2" placeholder="Herhaal je wachtwoord" name="password2" style={s.textField} />
         </div>
 
-        <Button style={s.button}>Meld me aan</Button>
+        <Button style={s.button} type='submit'>Meld me aan</Button>
 
       </form>
     )

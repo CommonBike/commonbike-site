@@ -20,7 +20,7 @@ class CommonBikeUI extends Component {
           <b>Block</b> :: Object [ title: String, isEditable: Boolean ]
         </tt>
 
-        <Block item={{title: 'This is an item block'}} isEditable={true} />
+        <Block item={{title: 'This is an item block'}} isEditable={true} deleteItem={() => alert('delete')} viewItem={() => alert('info')} />
 
       </div>
     );
