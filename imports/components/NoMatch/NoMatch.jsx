@@ -6,3 +6,5 @@ const NoMatch = ({ location }) => (
     <p>Sorry but {location.pathname} didn’t match any pages</p>
   </div>
 )
+
+export default NoMatch
