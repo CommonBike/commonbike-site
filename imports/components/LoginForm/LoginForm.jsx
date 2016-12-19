@@ -11,9 +11,6 @@ import TextField from '../TextField/TextField.jsx';
 import RaisedButton from '../RaisedButton/RaisedButton.jsx';
 import Button from '../Button/Button';
 
-// getUserBasedOnEmail :: String -> Future
-const getUserBasedOnEmail = email => Future.of(Meteor.users.find({"emails.address": email}, {limit: 1}).fetch());
-
 class LoginForm extends Component {
 
   constructor(props) {
@@ -22,12 +19,17 @@ class LoginForm extends Component {
     this.state = { user: false }
   }
 
-  // setUser :: Object -> StateChange
-  setUser(user) { this.setState({ user: user[0] }) }
+  setUser(error, users) { 
+    if(!error && (users.length >0)) {
+      this.setState({ user: users[0]});
+    }
+  }
 
-  // handleChange :: Event -> void
   handleChange(e) {
-    getUserBasedOnEmail($(e.target).val()).fork(console.error, this.setUser.bind(this));
+    var email = $(e.target).val();
+    if(email.includes('@')) {
+      Meteor.call('login.finduser', $(e.target).val(), this.setUser.bind(this));
+    }
   };
 
   // submitForm :: Event -> void
@@ -108,6 +110,5 @@ LoginForm.propTypes = {
 };
 
 export default createContainer((props) => {
-  Meteor.subscribe("userList");
   return {}
 }, LoginForm);
