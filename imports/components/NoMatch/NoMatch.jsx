@@ -5,6 +5,10 @@ const NoMatch = ({ location }) => (
     <h2>Whoops</h2>
     <p>Sorry but {location.pathname} didn’t match any pages</p>
   </div>
+<<<<<<< HEAD
 )
 
 export default NoMatch
+=======
+)
+>>>>>>> define some basic routes
