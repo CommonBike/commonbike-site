@@ -116,7 +116,6 @@ var s = {
 }
 
 export default createContainer((props) => {
-  Meteor.subscribe("userList");
   return {
     currentUser: Meteor.user()
   };
