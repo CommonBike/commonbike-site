@@ -5,6 +5,7 @@ import R from 'ramda';
 // Import components
 import RaisedButton from '../RaisedButton/RaisedButton.jsx'
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
+import ManageUserlist from '../ManageUserlist/ManageUserlist';
 
 class LocationDetails extends Component {
 
@@ -23,6 +24,11 @@ class LocationDetails extends Component {
         <p style={s.intro}>
           Haal je fiets bij <i><span dangerouslySetInnerHTML={{__html: this.props.location.title}} /></i>. Kies hieronder je gewenste fiets
         </p>
+
+        { this.props.isEditable? 
+          <ManageUserlist methodsBaseName='locationadmin'
+                          parentId={this.props.locationId} />
+          :null }
 
         <RaisedButton style={Object.assign({display: 'none'}, this.props.isEditable && {display: 'block'})} onClick={this.newObject.bind(this)}>
           Nieuwe fiets
@@ -62,10 +68,19 @@ var s = {
 LocationDetails.propTypes = {
   location: PropTypes.object,
   objects: PropTypes.array,
+
+  methodsBaseName: PropTypes.string,
+  locationId: PropTypes.string,
+  isEditable: PropTypes.any
 };
 
 LocationDetails.defaultProps = {
-  location: {}
+  location: {},
+  objects: {},
+
+  methodsBaseName: "",
+  locationId: null,
+  isEditable: false
 }
 
 export default LocationDetails;

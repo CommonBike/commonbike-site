@@ -38,7 +38,7 @@ var testLocations = [
   },
   {title:"Lockers Zeist",
    imageUrl:'/files/Testdata/lockers.png',
-   admins:["zeist@commonbike.com"],
+   admins:["zeist@commonbike.com", "user1@commonbike.com"],
    bikeimage: '/files/Testdata/locker.png',
    bikes: [ { title: 'Bikelocker A', description: 'Linkerkluis'}, 
             { title: 'Bikelocker B', description: '1e kluis van links'}, 
@@ -113,34 +113,34 @@ var checkTestLocations = function() {
   console.log('checking default locations');
 
   _.each(testLocations, function (locationData) {
-    var id;
+    var locationId;
     
     var hereitis=Locations.findOne({title: locationData.title});
     if(hereitis) {
-        id = hereitis._id;
+        locationId = hereitis._id;
 //        console.log('check existing location:' + locationData.title);
     } else {
-        id = Locations.insert({ 
+        locationId = Locations.insert({ 
           title: locationData.title,
           imageUrl: locationData.imageUrl,
         });
-//        console.log('add new location:' + locationData.title + ' id: ' + id);
+//        console.log('add new location:' + locationData.title + ' id: ' + locationId);
     }
 
     _.each(locationData.admins, function (admin) {
       var hithere=Accounts.findUserByEmail(admin);
       if (hithere) {
-        // console.log('adding admin ' + admin + ' to  ' + locationData.title);
-        Locations.update({_id: id}, {$addToSet: {admins: hithere._id}} 
+        console.log('adding admin ' + admin + ' to ' + locationData.title);
+        Meteor.users.update({_id: hithere._id}, {$addToSet: {admin_locations: locationId}} 
         );
       }
     });
 
     _.each(locationData.bikes, function (bike) {
-      var gimmebike=Objects.findOne({locationId: id, title: bike.title});
+      var gimmebike=Objects.findOne({locationId: locationId, title: bike.title});
       if (!gimmebike) {
         var bikeid = Objects.insert({ 
-          locationId : id,
+          locationId : locationId,
           title: bike.title,
           description : bike.description,
           imageUrl: locationData.bikeimage
@@ -154,7 +154,6 @@ var checkTestLocations = function() {
 
 /* Uncomment the code below if you want to generate / check testdata when 
    the application starts 
-
 Meteor.startup(() => {
 
   if(!Meteor.isProduction) {

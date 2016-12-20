@@ -35,6 +35,8 @@ class LocationDetails extends Component {
   render() {
     return (
       <LocationDetailsComponent
+        locationId={this.props.locationId}
+
         location={this.props.location}
         objects={this.props.objects}
         clickItemHandler={this.props.clickItemHandler}
@@ -69,6 +71,7 @@ export default createContainer((props) => {
   Meteor.subscribe('objects');
   return {
     currentUser: Meteor.user(),
+    locationId: props.locationId,
     location: Locations.find({_id: props.locationId}).fetch()[0],
     objects: Objects.find({locationId: props.locationId}, {sort: {title: 1}}).fetch()
   };
