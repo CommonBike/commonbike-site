@@ -26,7 +26,7 @@ class LocationDetails extends Component {
         </p>
 
         { this.props.isEditable? 
-          <ManageUserlist methodsBaseName='locationadmin'
+          <ManageUserlist methodsBaseName='locationprovider'
                           parentId={this.props.locationId} />
           :null }
 

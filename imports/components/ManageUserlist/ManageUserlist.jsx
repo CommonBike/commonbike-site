@@ -76,7 +76,7 @@ class ManageUserlist extends Component {
   // handleChange(e) {
   //   var email = ReactDOM.findDOMNode(this.refs.email);
   //   if(email.value.includes('@')) {
-  //     Meteor.call('locationadmin.emailvalid', email.value, this.setEmailValid.bind(this));
+  //     Meteor.call(this.props.methodsBaseName + '.emailvalid', email.value, this.setEmailValid.bind(this));
   //   }
   // };
 
@@ -194,7 +194,7 @@ var s = {
 
 ManageUserlist.propTypes = {
   methodsBaseName: PropTypes.string,  // basename for server calls
-  parentId: PropTypes.string,         // id of document that contains the admin field  
+  parentId: PropTypes.string,         // id of document that stores the user list
 };
 
 ManageUserlist.defaultProps = {
