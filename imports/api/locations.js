@@ -97,7 +97,9 @@ if(Meteor.isServer) {
       if(daUsers) {
         var result = [];
         daUsers.forEach(function(user) {
-          result.push({_id:user._id, email: user.emails[0].address});
+          if(user.emails) {
+            result.push({_id: user._id, email: user.emails[0].address});
+          }
         });
         return result;
       } else {
@@ -111,7 +113,7 @@ if(Meteor.isServer) {
         if(daUser) {
           Meteor.users.update({_id: daUser._id}, {$addToSet: {provider_locations: locationId}});
         } else {
-          console.log('locationprovider.addUser: no user exists with ' + emailaddress);
+          throw new Meteor.Error('No user exists with email: ' + emailaddress, 'locationprovider.addUser: No user exists with email: ' + emailaddress);
         }
       }
     },

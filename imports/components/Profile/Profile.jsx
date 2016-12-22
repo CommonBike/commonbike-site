@@ -15,7 +15,8 @@ class Profile extends Component {
   }
 
   reservations() {
-     // FlowRouter.go('/'); 
+    alert('Coming soon to an app installed on your phone.');
+    // FlowRouter.go('/'); 
   }
 
   locations() { 
@@ -28,10 +29,10 @@ class Profile extends Component {
   }
 
   getUserPersonalia() {
-    if(this.props.currentUser) {
+    if(this.props.currentUser && this.props.currentUser.emails) {
       return this.props.currentUser.emails[0].address;
     } else {
-      return 'LOADING...';
+      return '';
     }
   }
 

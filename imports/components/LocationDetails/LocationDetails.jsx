@@ -55,7 +55,9 @@ var s = {
     minHeight: 'calc(100vh - 66px)',
   },
   intro: {
-    paddingLeft: '70px',
+    padding: '0 70px',
+    margin: '0 auto',
+    maxWidth: '400px',
     textAlign: 'left',
     minHeight: '80px',
     fontSize: '1.2em',

@@ -18,7 +18,9 @@ class Block extends Component {
   }
     
   componentDidMount() {
+    // Hack around a bug in Radium:
     ReactDOM.findDOMNode(this.refs.base).style.display = 'flex';
+    ReactDOM.findDOMNode(this.refs.textWrapper).style.display = 'flex';
   }
 
   render() {
@@ -29,7 +31,7 @@ class Block extends Component {
           <img src={this.props.item.imageUrl ? this.props.item.imageUrl : '/files/Block/bike.png'} alt="Bike" title="Le bike." />
         </div>
 
-        <div style={s.textWrapper}>
+        <div style={s.textWrapper} ref="textWrapper">
 
           { this.props.isEditable
             ? <ContentEditable style={s.title} html={this.props.item.title} disabled={false} onChange={this.props.handleChange} />

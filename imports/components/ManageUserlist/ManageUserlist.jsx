@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
+
+// Import components
 import TextField from '../TextField/TextField.jsx';
 
 class ManageUserlist extends Component {
@@ -9,59 +10,38 @@ class ManageUserlist extends Component {
     super(props);
 
     this.state = { showDetails: false, userList: [], emailvalid: false }
-
-    this.toggleShowDetails = this.toggleShowDetails.bind(this);
-
-    this.addUser = this.addUser.bind(this);
-    this.removeUser = this.removeUser.bind(this);
-    // this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
     if(this.props.methodsBaseName && this.props.parentId) {
       Meteor.call(this.props.methodsBaseName + '.getuserlist', this.props.parentId , this.updateUserList.bind(this));
     }
-
-    var textfield = ReactDOM.findDOMNode(this.refs.email);
-    textfield.addEventListener("keydown", this.handleKey.bind(this));
-//    textfield.addEventListener("change", this.handleChange.bind(this));
-
-    var addbutton = ReactDOM.findDOMNode(this.refs.adduser);
-    addbutton.addEventListener("click", this.addUser.bind(this));
-  }
-
-  componentWillUnmount() {
-    var textfield = ReactDOM.findDOMNode(this.refs.email);
-    textfield.removeEventListener("keydown", this.handleKey);
-//    textfield.removeEventListener("change", this.handleChange);
-
-    var addbutton = ReactDOM.findDOMNode(this.refs.adduser);
-    addbutton.removeEventListener("click", this.addUser);
   }
 
   updateUserList(error, result) {
-    if(!error) {
-      this.setState(prevState => ({userList : result }));
-    }
+    if(error) return alert(error.error);
+
+    // Reset input field
+    ReactDOM.findDOMNode(this.refs.email).value = '';
+
+    // Set new data
+    this.setState(prevState => ({userList : result }));
   }
 
   reloadUserList(error, result) {
+    if(error) return alert(error.error);
+
     Meteor.call(this.props.methodsBaseName + '.getuserlist', this.props.parentId , this.updateUserList.bind(this));
   }
 
-  toggleShowDetails() {
-    this.setState(prevState => ({ showDetails: !prevState.showDetails}));
-  }
-
-  addUser() {
-    var email = ReactDOM.findDOMNode(this.refs.email);
-    if(email) {
-      Meteor.call(this.props.methodsBaseName + '.adduser', this.props.parentId, email.value, this.reloadUserList.bind(this));
-    }
+  addUser(e) {
+    if(e) e.preventDefault();
+    emailAddress = ReactDOM.findDOMNode(this.refs.email).value;
+    Meteor.call(this.props.methodsBaseName + '.adduser', this.props.parentId, emailAddress, this.reloadUserList.bind(this));
   }
 
   removeUser(userId) {
-    Meteor.call(this.props.methodsBaseName + '.removeuser', this.props.parentId, userId, this.reloadUserList.bind(this));
+    confirm('Sure?') && Meteor.call(this.props.methodsBaseName + '.removeuser', this.props.parentId, userId, this.reloadUserList.bind(this));
   }
 
   // NICE TO HAVE: enable these event handlers + corresponding code above to enable the add button when a valid email address has been 
@@ -80,12 +60,6 @@ class ManageUserlist extends Component {
   //   }
   // };
 
-  handleKey(e) {
-     if (e.key=='Enter') { 
-      this.addUser();
-    }
-  }
-
   render() {
     self = this;
 
@@ -93,7 +67,7 @@ class ManageUserlist extends Component {
       <div style={s.box}>
         <div style={s.titel}>
           Beheerders
-          <img src={ s.images.details } style={s.icon} alt="toggle" onClick={this.toggleShowDetails} />
+          <img src={ s.images.details } style={s.icon} alt="toggle" onClick={() => this.setState(prevState => ({ showDetails: ! prevState.showDetails}))} />
         </div>
 
         { this.createList() }
@@ -104,19 +78,22 @@ class ManageUserlist extends Component {
 
   createList() {
     return (
-      <div style={Object.assign({},s.lijst, !this.state.showDetails && {display: 'none'})}>
-        <div style={s.lijstitem}> 
+      <div style={Object.assign({}, s.lijst, ! this.state.showDetails && {display: 'none'})}>
+
+        <form style={Object.assign({display: 'flex'}, s.lijstitem)} onSubmit={this.addUser.bind(this)}> 
           <TextField type="email" ref="email" placeholder="nieuw e-mailadres" 
                      name="email" style={s.textField}
             />
-          <img style={s.addicon} ref="adduser" src={s.images.add} alt="add user" />
-        </div>        
+          <button type="submit" style={s.addicon} ref="adduser" title="add user" />
+        </form>        
+
         {R.map((user) =>  <div style={s.lijstitem} key={user._id}>
                               <span>{user.email}</span>
                               {this.state.userList.length > 1 &&
                               <img style={s.icon}  src={s.images.trashcan} onClick={() => this.removeUser(user._id) } />
                               }
                           </div>, this.state.userList)}
+
       </div>
     ); 
   }
@@ -166,12 +143,14 @@ var s = {
     fontWeight: 'bold',
     fontSize: '20px',
     padding: '10px',
-    margin: '2px'
+    margin: '2px',
   },
 
   addicon: {
     height:'48px',
-    width:' auto'
+    width:' 48px',
+    background: 'url("https://cdn1.iconfinder.com/data/icons/general-9/500/add-48.png") center center / contain no-repeat',
+    border: 'none'
   },
 
   icon: {
@@ -180,7 +159,6 @@ var s = {
   },
 
   images: {
-    add: 'https://cdn1.iconfinder.com/data/icons/general-9/500/add-48.png',
     details: 'https://cdn1.iconfinder.com/data/icons/general-9/500/more-48.png',
     trashcan: 'https://cdn4.iconfinder.com/data/icons/miu/24/editor-trash-delete-recycle-bin-glyph-48.png'
   },
@@ -203,4 +181,3 @@ ManageUserlist.defaultProps = {
 }
 
 export default ManageUserlist;
-

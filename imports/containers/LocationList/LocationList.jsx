@@ -25,11 +25,11 @@ class LocationList extends Component {
   /**
    *  newLocationHandler
    * 
-   * Adds a new location to the database having the title "Locatie-naam"
+   * Adds a new location to the database having the title "_Een nieuwe locatie"
    */
   newLocationHandler() {
     Meteor.call('locations.insert', {
-      title: "Nieuwe locatie",
+      title: "_ Mijn nieuwe locatie",
       imageUrl: 'https://cdn2.iconfinder.com/data/icons/location-3/128/Location-26-512.png'
     }, this.newLocationAdded.bind(this));
   }

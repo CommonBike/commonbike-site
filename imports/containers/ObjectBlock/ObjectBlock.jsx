@@ -57,7 +57,7 @@ class ObjectBlock extends Component {
         handleChange={this.handleChange.bind(this)}
         deleteItem={this.deleteItem.bind(this)}
         viewItem={this.viewItem.bind(this)}
-        onClick={this.viewItem.bind(this)} />
+        onClick={ ! this.props.isEditable ? this.viewItem.bind(this) : null} />
     );
   }
 
