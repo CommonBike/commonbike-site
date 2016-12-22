@@ -58,11 +58,11 @@ var cleanupTestdata = function() {
       var id = hithere._id;
 
       _.each(userData.roles, function (role) {
-          if (Roles.userIsInRole(id, [role])) {
-            console.log('removing user ' + userData.name + ' from role ' +role);
-              Roles.removeUsersFromRoles(id, [role]);
-            }
-        });
+        if (Roles.userIsInRole(id, [role])) {
+          console.log('removing user ' + userData.name + ' from role ' +role);
+          Roles.removeUsersFromRoles(id, [role]);
+        }
+      });
 
       Meteor.users.remove({_id: id});
       console.log('removed test user ' + userData.name);
@@ -72,21 +72,20 @@ var cleanupTestdata = function() {
   _.each(testLocations, function (locationData) {
     var hereitis=Locations.findOne({title: locationData.title});
     if(hereitis) {
-        var id = hereitis._id;
-        Locations.remove({_id: id});
-        console.log('removing location:' + locationData.title + ' id: ' + id);
+      var id = hereitis._id;
+      Locations.remove({_id: id});
+      console.log('removing location:' + locationData.title + ' id: ' + id);
     }
   });
 }
 
 var checkTestUsers = function() {
-    console.log('checking default users');
+  console.log('checking default users');
 
-    _.each(testUsers, function (userData) {
-      var id;
-      
-      var hithere=Accounts.findUserByEmail(userData.email);
-      if(hithere) {
+  _.each(testUsers, function (userData) {
+    var id;
+    var hithere=Accounts.findUserByEmail(userData.email);
+    if(hithere) {
       id = hithere._id;
     } else {
       id = Accounts.createUser({
@@ -101,53 +100,49 @@ var checkTestUsers = function() {
     }
 
     _.each(userData.roles, function (role) {
-        if (!Roles.userIsInRole(id, [role])) {
-          console.log('adding user ' + userData.name + ' to role ' +role);
-            Roles.addUsersToRoles(id, [role]);
-          }
-      });
-    });    
+      if ( ! Roles.userIsInRole(id, [role]) ) {
+        console.log('adding user ' + userData.name + ' to role ' +role);
+        Roles.addUsersToRoles(id, [role]);
+      }
+    });
+  });    
 }
 
 var checkTestLocations = function() {
   console.log('checking default locations');
 
   _.each(testLocations, function (locationData) {
-    var id;
-    
-    var hereitis=Locations.findOne({title: locationData.title});
+    var id, hereitis=Locations.findOne({title: locationData.title});
     if(hereitis) {
-        id = hereitis._id;
-//        console.log('check existing location:' + locationData.title);
+      id = hereitis._id;
+      //  console.log('check existing location:' + locationData.title);
     } else {
-        id = Locations.insert({ 
-          title: locationData.title,
-          imageUrl: locationData.imageUrl,
-        });
-//        console.log('add new location:' + locationData.title + ' id: ' + id);
+      id = Locations.insert({ 
+        title: locationData.title,
+        imageUrl: locationData.imageUrl,
+      });
+      // console.log('add new location:' + locationData.title + ' id: ' + id);
     }
 
     _.each(locationData.admins, function (admin) {
       var hithere=Accounts.findUserByEmail(admin);
       if (hithere) {
         // console.log('adding admin ' + admin + ' to  ' + locationData.title);
-        Locations.update({_id: id}, {$addToSet: {admins: hithere._id}} 
-        );
+        Locations.update({_id: id}, {$addToSet: {admins: hithere._id}});
       }
     });
 
     _.each(locationData.bikes, function (bike) {
       var gimmebike=Objects.findOne({locationId: id, title: bike.title});
-      if (!gimmebike) {
+      if ( ! gimmebike ) {
         var bikeid = Objects.insert({ 
           locationId : id,
           title: bike.title,
           description : bike.description,
           imageUrl: locationData.bikeimage
         });
-
-//        console.log('add new bike:' + bike.title + ' to location ' + locationData.title);
-    }
+        //  console.log('add new bike:' + bike.title + ' to location ' + locationData.title);
+      }
     });
   });
 };    

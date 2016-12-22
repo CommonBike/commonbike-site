@@ -6,12 +6,12 @@ Meteor.startup(() => {
 });
 
 Meteor.methods( {
-	'login.finduser'(email) {
-		var daUser = Accounts.findUserByEmail(email);
-		if(daUser) {
-			return [daUser];
-		} else {
-			return [];
-		}
-	}
+  'login.finduser'(email) {
+    var daUser = Accounts.findUserByEmail(email);
+    if(daUser) {
+      return [daUser];
+    } else {
+      return [];
+    }
+  }
 });

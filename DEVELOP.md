@@ -9,22 +9,25 @@
 
 **Install git flow for easy branching**
 
-* Install [git flow](https://github.com/nvie/gitflow)
-  `sudo apt-get install git-flow`
-  Or try: [Install guide](https://github.com/nvie/gitflow/wiki/Installation)
-* Initialize git flow
-  `cd commonbike-site`
-  [`git flow init`](https://github.com/nvie/gitflow/wiki/Command-Line-Arguments#git-flow-init--fd)
+1. Install [git flow](https://github.com/nvie/gitflow) ([install guide](https://github.com/nvie/gitflow/wiki/Installation))
+
+    `sudo apt-get install git-flow`
+
+2. Initialize git flow
+
+    `cd commonbike-site && git flow init`
+
+3. Use git flow ([cheatsheet](http://danielkummer.github.io/git-flow-cheatsheet/))
 
 ## Running the app
 
 1. `cd folderOfYourProject`
 2. `meteor`
-3. Go to localhost:3000 to see the app running
+3. Go to [localhost:3000](http://localhost:3000) to see the app running
 
 ## Configuring login services like Facebook and Twitter
 
-Configuring the login services is easy. Just go to [/commonbike-ui](http://localhost:3000/commonbike-ui). On this page you'll a bunch of UI components on one page. The first one, **Basic UI component**, shows a basic login/register module. Use this one to configure all the login services you prefer.
+Configuring the login services is easy. Just go to [/commonbike-ui](http://localhost:3000/commonbike-ui). On this page you'll a bunch of UI components on one page. The first one, **Basic UI component**, shows a basic login/register module. Use this module to configure all the login services you prefer.
 
 See [guide.meteor.com/accounts](https://guide.meteor.com/accounts.html#accounts-ui) for more information about this topic.
 
