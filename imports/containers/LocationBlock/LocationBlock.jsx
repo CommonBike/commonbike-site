@@ -3,6 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import ReactDOM from 'react-dom';
 import Radium from 'radium';
 import R from 'ramda';
+import {propTypes} from 'react-router';
 
 // Import models
 import { Locations } from '../../api/locations.js'; 
@@ -39,9 +40,11 @@ class LocationBlock extends Component {
   }
 
   viewItem() {
-    this.context.history.push(this.props.isEditable ? '/admin/location' : '/location', {
-      locationId: this.props.item._id
-    })
+    console.log('viewItem',this.props.item._id)
+    this.context.history.push(this.props.isEditable
+      ? '/admin/location'
+      : ('/location/' + this.props.item._id)
+      )
   }
 
   deleteItem() {
