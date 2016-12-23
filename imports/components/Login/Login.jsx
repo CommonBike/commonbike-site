@@ -86,8 +86,8 @@ class Login extends Component {
   render() {
     return (
       <div style={s.base}>
-
-        {this.props.currentUser ? this.renderTeaser() : this.renderIntro()}
+        {this.props.currentUser ? (Meteor.isProduction ? this.renderTeaser(): FlowRouter.go('locations'))
+                                : this.renderIntro()}
 
       </div>
     );

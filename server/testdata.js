@@ -20,7 +20,7 @@ var testUsers = [
 var testLocations = [
   {title:"J156A",
    imageUrl:'https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/bike-256.png',
-   admins:["j156a@commonbike.com", "user1@commonbike.com"],
+   providers:["j156a@commonbike.com", "user1@commonbike.com"],
    bikeimage: '/files/Block/bike.png',
    bikes: [ { title: 'Batavus 1', description: 'Fietsnr. 1122'}, 
             { title: 'Batavus 2', description: 'Fietsnr. 1134'}, 
@@ -29,7 +29,7 @@ var testLocations = [
   },
   {title:"S2M",
    imageUrl:'https://cdn1.iconfinder.com/data/icons/UrbanStories-png-Artdesigner-lv/256/Bicycle_by_Artdesigner.lv.png',
-   admins:["s2m@commonbike.com", "user2@commonbike.com"],
+   providers:["s2m@commonbike.com", "user2@commonbike.com"],
    bikeimage: '/files/Block/bike.png',
    bikes: [ { title: 'Giant 1', description: 'Damesfiets 33879'}, 
             { title: 'Giant 2', description: 'Damesfiets 33277 (met kinderzit)'}, 
@@ -38,7 +38,7 @@ var testLocations = [
   },
   {title:"Lockers Zeist",
    imageUrl:'/files/Testdata/lockers.png',
-   admins:["zeist@commonbike.com"],
+   providers:["zeist@commonbike.com", "user1@commonbike.com"],
    bikeimage: '/files/Testdata/locker.png',
    bikes: [ { title: 'Bikelocker A', description: 'Linkerkluis'}, 
             { title: 'Bikelocker B', description: '1e kluis van links'}, 
@@ -48,6 +48,14 @@ var testLocations = [
             { title: 'Bikelocker F', description: '2e kluis van rechts'}, 
             { title: 'Bikelocker G', description: '1e kluis van rechts'},
             { title: 'Bikelocker H', description: 'rechterkluis'} ]
+  },
+  {title:"Zonder provider",
+   imageUrl:'/files/Testdata/lockers.png',
+   providers:[],
+   bikeimage: '/files/Testdata/locker.png',
+   bikes: [ { title: 'Fiets 1', description: 'Blauwe fiets'}, 
+            { title: 'Fiets 2', description: 'Witte fiets'}, 
+            { title: 'Fiets 3', description: 'Rode fiets'} ]
   }
 ];
 
@@ -59,13 +67,11 @@ var cleanupTestdata = function() {
 
       _.each(userData.roles, function (role) {
           if (Roles.userIsInRole(id, [role])) {
-            console.log('removing user ' + userData.name + ' from role ' +role);
               Roles.removeUsersFromRoles(id, [role]);
             }
         });
 
       Meteor.users.remove({_id: id});
-      console.log('removed test user ' + userData.name);
     } 
   });
 
@@ -74,7 +80,6 @@ var cleanupTestdata = function() {
     if(hereitis) {
         var id = hereitis._id;
         Locations.remove({_id: id});
-        console.log('removing location:' + locationData.title + ' id: ' + id);
     }
   });
 }
@@ -102,7 +107,7 @@ var checkTestUsers = function() {
 
     _.each(userData.roles, function (role) {
         if (!Roles.userIsInRole(id, [role])) {
-          console.log('adding user ' + userData.name + ' to role ' +role);
+          console.log('adding user ' + userData.name + ' to role ' + role);
             Roles.addUsersToRoles(id, [role]);
           }
       });
@@ -113,34 +118,34 @@ var checkTestLocations = function() {
   console.log('checking default locations');
 
   _.each(testLocations, function (locationData) {
-    var id;
+    var locationId;
     
     var hereitis=Locations.findOne({title: locationData.title});
     if(hereitis) {
-        id = hereitis._id;
+        locationId = hereitis._id;
 //        console.log('check existing location:' + locationData.title);
     } else {
-        id = Locations.insert({ 
+        locationId = Locations.insert({ 
           title: locationData.title,
           imageUrl: locationData.imageUrl,
         });
-//        console.log('add new location:' + locationData.title + ' id: ' + id);
+//        console.log('add new location:' + locationData.title + ' id: ' + locationId);
     }
 
-    _.each(locationData.admins, function (admin) {
-      var hithere=Accounts.findUserByEmail(admin);
+    _.each(locationData.providers, function (provider) {
+      var hithere=Accounts.findUserByEmail(provider);
       if (hithere) {
-        // console.log('adding admin ' + admin + ' to  ' + locationData.title);
-        Locations.update({_id: id}, {$addToSet: {admins: hithere._id}} 
+        console.log('adding provider ' + provider + ' to ' + locationData.title);
+        Meteor.users.update({_id: hithere._id}, {$addToSet: {provider_locations: locationId}} 
         );
       }
     });
 
     _.each(locationData.bikes, function (bike) {
-      var gimmebike=Objects.findOne({locationId: id, title: bike.title});
+      var gimmebike=Objects.findOne({locationId: locationId, title: bike.title});
       if (!gimmebike) {
         var bikeid = Objects.insert({ 
-          locationId : id,
+          locationId : locationId,
           title: bike.title,
           description : bike.description,
           imageUrl: locationData.bikeimage
@@ -154,7 +159,7 @@ var checkTestLocations = function() {
 
 /* Uncomment the code below if you want to generate / check testdata when 
    the application starts 
-
+*/
 Meteor.startup(() => {
 
   if(!Meteor.isProduction) {
@@ -165,4 +170,4 @@ Meteor.startup(() => {
     checkTestLocations();
   }
 });
-*/
+

@@ -28,9 +28,11 @@ class LocationList extends Component {
    * 
    * Adds a new location to the database having the title "Locatie-naam"
    */
-  newLocation() {
-    Meteor.call('locations.insert', {title: "Nieuwe locatie"});
-  }
+   newLocation() {
+      if(this.props.newLocationHandler) {
+          this.props.newLocationHandler();
+      }
+   }
 
   render() {
     self = this;
@@ -74,15 +76,11 @@ LocationList.propTypes = {
   locations: PropTypes.array,
   isEditable: PropTypes.any,
   clickItemHandler: PropTypes.any,
+  newLocationHandler: PropTypes.any,
 };
 
 LocationList.defaultProps = {
   isEditable: false
 }
 
-export default createContainer((props) => {
-  return {
-    currentUser: Meteor.user(),
-    locations: Locations.find({}, { sort: {title: 1} }).fetch()
-  };
-}, LocationList);
+export default LocationList;
