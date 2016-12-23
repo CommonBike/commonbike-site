@@ -9,6 +9,7 @@ import R from 'ramda';
 import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
 import RaisedButton from '../RaisedButton/RaisedButton.jsx'
 import Avatar from '../Avatar/Avatar.jsx'
+import {propTypes} from 'react-router';
 
 class PageHeader extends Component {
 
@@ -17,7 +18,7 @@ class PageHeader extends Component {
   }
 
   gotoProfile() {
-    FlowRouter.go('profile');
+    this.context.history.push('/profile');
   }
 
   render() {
@@ -60,6 +61,10 @@ var s = {
     height: '28px',
     alignSelf: 'center'
   },
+}
+
+PageHeader.contextTypes = {
+  history: propTypes.historyContext
 }
 
 PageHeader.propTypes = {

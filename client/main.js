@@ -6,19 +6,29 @@ import Miss from 'react-router/Miss'
 
 import UserApp from '/imports/components/UserApp/UserApp.jsx'
 import Landing from '/imports/components/Landing/Landing.jsx'
-import CommonBikeUI from '/imports/commonbike-ui.jsx'
-import ContentPage from '/imports/components/ContentPage/ContentPage.jsx'
 import Join from '/imports/components/Join/Join.jsx'
+import ContentPage from '/imports/components/ContentPage/ContentPage.jsx'
+import Login from '/imports/components/Login/Login.jsx'
+import CustomPage from '/imports/components/CustomPage/CustomPage.jsx'
+import Profile from '/imports/components/Profile/Profile.jsx'
+import CommonBikeUI from '/imports/commonbike-ui.jsx'
 import NoMatch from '/imports/components/NoMatch/NoMatch.jsx'
 
 Meteor.subscribe('locations')
 
+const UserAppLanding = () => (<UserApp showPageHeader={false} content={<Landing/>} />)
+const UserAppJoin = () => (<UserApp content={<ContentPage><Join /></ContentPage>} />) 
+const UserAppLogin = () => (<UserApp content={<CustomPage><Login /></CustomPage>} />) // Login redirectTo={params.redirectTo}
+const UserAppProfile = () => (<UserApp content={<div><Profile isEditable="true" /></div>} />)
+
 const App = () => (
   <Router>
     <div>
-      <Match exactly pattern='/' component={Landing}/>
-      <Match pattern='/commonbike-ui' component={CommonBikeUI}/>
-      {/* <Match pattern='/join' component={<ContentPage><Join /></ContentPage>} /> */}
+      <Match exactly pattern='/' component={UserAppLanding}/>
+      <Match pattern='/join' component={UserAppJoin}/>
+      <Match pattern='/login' component={UserAppLogin}/> 
+      <Match pattern='/profile' component={UserAppProfile}/> 
+      <Match pattern='/commonbike-ui' component={CommonBikeUI}/> 
       <Miss component={NoMatch}/>
     </div>
   </Router>

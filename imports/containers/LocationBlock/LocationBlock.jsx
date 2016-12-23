@@ -39,7 +39,7 @@ class LocationBlock extends Component {
   }
 
   viewItem() {
-    FlowRouter.go( this.props.isEditable ? 'adminLocation' : 'location', {
+    this.context.history.push(this.props.isEditable ? '/admin/location' : '/location', {
       locationId: this.props.item._id
     })
   }
@@ -100,6 +100,10 @@ var s = {
     cursor: 'pointer',
     fontWeight: 'bold',
   }
+}
+
+LocationBlock.contextTypes = {
+  history: propTypes.historyContext
 }
 
 LocationBlock.propTypes = {
