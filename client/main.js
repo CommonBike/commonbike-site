@@ -11,6 +11,8 @@ import ContentPage from '/imports/components/ContentPage/ContentPage.jsx'
 import Login from '/imports/components/Login/Login.jsx'
 import CustomPage from '/imports/components/CustomPage/CustomPage.jsx'
 import Profile from '/imports/components/Profile/Profile.jsx'
+import LocationList from '/imports/containers/LocationList/LocationList.jsx'
+import LocationDetails from '/imports/containers/LocationDetails/LocationDetails.jsx'
 import CommonBikeUI from '/imports/commonbike-ui.jsx'
 import NoMatch from '/imports/components/NoMatch/NoMatch.jsx'
 
@@ -20,6 +22,12 @@ const UserAppLanding = () => (<UserApp showPageHeader={false} content={<Landing/
 const UserAppJoin = () => (<UserApp content={<ContentPage><Join /></ContentPage>} />) 
 const UserAppLogin = () => (<UserApp content={<CustomPage><Login /></CustomPage>} />) // Login redirectTo={params.redirectTo}
 const UserAppProfile = () => (<UserApp content={<div><Profile isEditable="true" /></div>} />)
+const UserAppLocationList = () => (<UserApp content={<LocationList />} />)
+const UserAppLocationDetails = ({params}) => {
+  return (
+    <UserApp content={<LocationDetails locationId={params.locationId}/>} />
+  )
+}
 
 const App = () => (
   <Router>
@@ -28,6 +36,8 @@ const App = () => (
       <Match pattern='/join' component={UserAppJoin}/>
       <Match pattern='/login' component={UserAppLogin}/> 
       <Match pattern='/profile' component={UserAppProfile}/> 
+      <Match pattern='/locations' component={UserAppLocationList}/> 
+      <Match pattern='/location/:locationId' component={UserAppLocationDetails}/> 
       <Match pattern='/commonbike-ui' component={CommonBikeUI}/> 
       <Miss component={NoMatch}/>
     </div>
