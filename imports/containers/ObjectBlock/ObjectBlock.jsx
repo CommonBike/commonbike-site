@@ -38,7 +38,7 @@ class ObjectBlock extends Component {
     }
   }
 
-  viewItem() { FlowRouter.go('object', {objectId: this.props.item._id}) }
+  viewItem() { this.context.history.push('object', {objectId: this.props.item._id}) }
 
   deleteItem() {
     if( ! confirm('Weet je zeker dat je de fiets "'+this.props.item.title+'" wilt verwijderen?') || ! confirm('Sure? If not sure: don\'t') )

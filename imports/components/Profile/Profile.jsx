@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
+import {propTypes} from 'react-router';
 
 // Import components
 import RaisedButton from '../RaisedButton/RaisedButton';
@@ -11,21 +12,21 @@ class Profile extends Component {
   }
 
   newreservation() {
-     FlowRouter.go('locations'); 
+     this.context.history.push('/locations') 
   }
 
   reservations() {
     alert('Coming soon to an app installed on your phone.');
-    // FlowRouter.go('/'); 
+    // this.context.history.push('/') 
   }
 
   locations() { 
-    FlowRouter.go('adminLocations') 
+    this.context.history.push('/admin/locations') 
   }
 
   logout() { 
     Meteor.logout(); 
-    FlowRouter.go('landing');
+    this.context.history.push('/')
   }
 
   getUserPersonalia() {
@@ -49,13 +50,13 @@ class Profile extends Component {
             { this.getUserPersonalia() }
           </p>
 
-          <RaisedButton onClick={this.newreservation}>NIEUWE RESERVERING</RaisedButton>
+          <RaisedButton onClick={this.newreservation.bind(this)}>NIEUWE RESERVERING</RaisedButton>
 
-          <RaisedButton onClick={this.reservations}>MIJN RESERVERINGEN</RaisedButton>
+          <RaisedButton onClick={this.reservations.bind(this)}>MIJN RESERVERINGEN</RaisedButton>
 
-          <RaisedButton onClick={this.locations}>MIJN LOCATIES</RaisedButton>
+          <RaisedButton onClick={this.locations.bind(this)}>MIJN LOCATIES</RaisedButton>
 
-          <RaisedButton onClick={this.logout}>LOG UIT</RaisedButton>
+          <RaisedButton onClick={this.logout.bind(this)}>LOG UIT</RaisedButton>
         </div>
 
 {/*}        {R.map((location) =>  <LocationBlock
@@ -84,6 +85,10 @@ var s = {
   avatar: {
     display: 'inline-block'
   }
+}
+
+Profile.contextTypes = {
+  history: propTypes.historyContext
 }
 
 Profile.propTypes = {

@@ -1,23 +1,28 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import Radium from 'radium';
+import {propTypes} from 'react-router';
 
 // Import components
 import RaisedButton from '../RaisedButton/RaisedButton.jsx'
 
 class SignUpButton extends Component {
 
-  login() { FlowRouter.go('login') }
+  login() { this.context.history.push('/login') }
 
   render() {
     return (
-      <RaisedButton onClick={this.login}>
+      <RaisedButton onClick={this.login.bind(this)}>
         {this.props.buttonText}
       </RaisedButton>
     )
   }
 
 };
+
+SignUpButton.contextTypes = {
+  history: propTypes.historyContext
+}
 
 SignUpButton.propTypes = {
   /**
