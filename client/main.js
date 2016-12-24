@@ -13,6 +13,7 @@ import CustomPage from '/imports/components/CustomPage/CustomPage.jsx'
 import Profile from '/imports/components/Profile/Profile.jsx'
 import LocationList from '/imports/containers/LocationList/LocationList.jsx'
 import LocationDetails from '/imports/containers/LocationDetails/LocationDetails.jsx'
+import ObjectDetails from '/imports/containers/ObjectDetails/ObjectDetails.jsx'
 import CommonBikeUI from '/imports/commonbike-ui.jsx'
 import NoMatch from '/imports/components/NoMatch/NoMatch.jsx'
 
@@ -28,6 +29,16 @@ const UserAppLocationDetails = ({params}) => {
     <UserApp content={<LocationDetails locationId={params.locationId}/>} />
   )
 }
+const UserAppCustomPageObjectDetails = ({params}) => {
+  return (
+    <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails objectId={params.objectId}/></CustomPage>} />
+  )
+}
+const UserAppCustomPageObjectDetailsCheckin = ({params}) => {
+  return (
+    <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails objectId={params.objectId} checkedIn={true}/></CustomPage>} />
+  )
+}
 
 const App = () => (
   <Router>
@@ -38,6 +49,8 @@ const App = () => (
       <Match pattern='/profile' component={UserAppProfile}/> 
       <Match pattern='/locations' component={UserAppLocationList}/> 
       <Match pattern='/location/:locationId' component={UserAppLocationDetails}/> 
+      <Match pattern='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
+      <Match pattern='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 
       <Match pattern='/commonbike-ui' component={CommonBikeUI}/> 
       <Miss component={NoMatch}/>
     </div>
