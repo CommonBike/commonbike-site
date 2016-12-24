@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
+import {propTypes} from 'react-router';
 
 // Import components
 import RaisedButton from '../RaisedButton/RaisedButton.jsx'
@@ -31,7 +32,7 @@ class ObjectDetails extends Component {
 
         {this.props.checkedIn
           ? <CheckInCode />
-          : <Button onClick={() => this.context.history.push('objectCheckIn', {objectId: this.props.object._id })} buttonStyle="huge">Reserveer!</Button>}
+          : <Button onClick={() => this.context.history.push('/bike/checkin/' + this.props.object._id )} buttonStyle="huge">Reserveer!</Button>}
 
       </div>
     );
