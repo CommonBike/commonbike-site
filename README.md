@@ -1,31 +1,28 @@
-# CommonBike App 1.0.0
+# CommonBike App
 
-We are on a mission to create open source locks and bike sharing.
+This repository exists of the Meteor-app for CommonBike.
 
-This is the (web) app of CommonBike. With this app you can open locks that are connected to the free and open CommonBike lock system.
+# Prerequisites
 
-- [Project website](https://common.bike)
-- [Documentation](https://github.com/CommonBike/commonbike-documentation/wiki)
+For this app we use the Meteor framework. Please install Meteor first. See [meteor.com](https://www.meteor.com/).
 
-## Contents
+# How do I run run the app?
 
-- [Demo](#1-demo)
-- [Development](#2-development)
-- [Deployment](#3-deployment)
-- [Future plans](#4-future-plans)
+- `cd path-of-this-git-repository/app`
+- `meteor --settings settings.json`
 
-## 1. Demo
+Server is now running at [localhost:3000](http://localhost:3000)
 
-Go to [common.bike](https://common.bike) for a live demo.
+# How do I run run the Docker file
 
-## 2. Development
+`cd app/ && meteor build ../mrt_build`
+`docker build -t commonbike .` (notice the dot)
 
-See [DEVELOP.md](DEVELOP.md) for setting up your development environment.
+# What code libraries and techniques are used?
 
-## 3. Deployment
-
-See [DEPLOY.md](DEPLOY.md) for information about deployment on the server.
-
-## 4. Future plans
-
-To be continued.
+- [Meteor](https://www.meteor.com/): main application framework
+- [React](https://facebook.github.io/react/): *one way data binding* library
+- 
+#- [CoffeeScript](http://coffeescript.org/): write code in less time
+- [Ramda](http://ramdajs.com/): functional programming in JavaScript
+- [Fluture](https://github.com/Avaq/Fluture): Futures in JavaScript
