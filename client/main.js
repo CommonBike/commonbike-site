@@ -23,12 +23,14 @@ const UserAppLanding = () => (<UserApp showPageHeader={false} content={<Landing/
 const UserAppJoin = () => (<UserApp content={<ContentPage><Join /></ContentPage>} />) 
 const UserAppLogin = () => (<UserApp content={<CustomPage><Login /></CustomPage>} />) // Login redirectTo={params.redirectTo}
 const UserAppProfile = () => (<UserApp content={<div><Profile isEditable="true" /></div>} />)
+
 const UserAppLocationList = () => (<UserApp content={<LocationList />} />)
 const UserAppLocationDetails = ({params}) => {
   return (
     <UserApp content={<LocationDetails locationId={params.locationId}/>} />
   )
 }
+
 const UserAppCustomPageObjectDetails = ({params}) => {
   return (
     <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails objectId={params.objectId}/></CustomPage>} />
@@ -40,18 +42,33 @@ const UserAppCustomPageObjectDetailsCheckin = ({params}) => {
   )
 }
 
+const UserAppAdminLocationList = () => (<UserApp content={<LocationList isEditable="true" />} />)
+const UserAppAdminLocationDetails = ({params}) => {
+  return (
+    <UserApp content={<LocationDetails locationId={params.locationId} isEditable="true"/>} />
+  )
+}
+
 const App = () => (
   <Router>
     <div>
       <Match exactly pattern='/' component={UserAppLanding}/>
       <Match pattern='/join' component={UserAppJoin}/>
       <Match pattern='/login' component={UserAppLogin}/> 
+      
+      {/* XXX these routes should only be visible when logged in */}
       <Match pattern='/profile' component={UserAppProfile}/> 
       <Match pattern='/locations' component={UserAppLocationList}/> 
       <Match pattern='/location/:locationId' component={UserAppLocationDetails}/> 
       <Match pattern='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
       <Match pattern='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 
       <Match pattern='/commonbike-ui' component={CommonBikeUI}/> 
+      
+      {/* XXX these routes should only be visible with the correct (admin?) Role */}
+      <Match pattern='/admin/locations' component={UserAppAdminLocationList}/> 
+      <Match pattern='/admin/location/:locationId' component={UserAppAdminLocationDetails}/> 
+
+      {/* emergency exit */}
       <Miss component={NoMatch}/>
     </div>
   </Router>
