@@ -22,7 +22,5 @@ Server is now running at [localhost:3000](http://localhost:3000)
 
 - [Meteor](https://www.meteor.com/): main application framework
 - [React](https://facebook.github.io/react/): *one way data binding* library
-- 
-#- [CoffeeScript](http://coffeescript.org/): write code in less time
 - [Ramda](http://ramdajs.com/): functional programming in JavaScript
 - [Fluture](https://github.com/Avaq/Fluture): Futures in JavaScript
