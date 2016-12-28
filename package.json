@@ -2,7 +2,7 @@
   "name": "commonbike-app",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run --settings settings.json"
   },
   "dependencies": {
     "bcrypt": "^0.8.7",
@@ -11,6 +11,7 @@
     "fluture": "^4.0.3",
     "google-map-react": "^0.21.0",
     "google-maps-react": "^1.0.19",
+    "leaflet": "^1.0.2",
     "meteor-node-stubs": "~0.2.0",
     "radium": "^0.18.1",
     "ramda": "^0.22.1",
@@ -19,6 +20,7 @@
     "react-contenteditable": "^2.0.1",
     "react-dom": "^15.4.0",
     "react-leaflet": "^1.0.0-rc.3",
+    "react-mapbox-gl": "^0.22.0",
     "react-mounter": "^1.2.0",
     "react-swipe": "^5.0.5",
     "react-tap-event-plugin": "^1.0.0",
