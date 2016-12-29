@@ -3,41 +3,35 @@ import React, { Component, PropTypes } from 'react'
 import L from 'leaflet'
 import {Map as LeafletMap, TileLayer, Marker, Popup} from 'react-leaflet'
 import ReactMapboxGl, { Layer as ReactMapboxLayer, Feature as ReactMapboxFeature, Marker as ReactMapboxMarker} from 'react-mapbox-gl'
-import Geosearch from './Geosearch'
+// import Geosearch from './Geosearch'
 
-// mapType providers
 const mapTypes = ['leaflet', 'react-leaflet', 'react-mapbox-gl'] // , 'mapbox', 'mapboxgl', 'google maps']
 
 class Map extends Component {
   constructor(props) {
     super(props)
 
-    // const london = [51.505, -0.09]
-    // const utrecht = [52.0893191, 5.110169099999999]
     this.state = {
       mapType: mapTypes[0],
-      position: undefined
+      // position: undefined
     }
 
-    Geosearch(this.props.address).then(json => {
-      const location = json.results[0].geometry.location
-      const position = [location.lat, location.lng]
-      // console.log(position)
-      this.setState({'position': position})
-    })
+    // Geosearch(this.props.address).then(json => {
+    //   const location = json.results[0].geometry.location
+    //   // const position = [location.lat, location.lng]
+    //   const position = [28.572184,34.5348787] // Blue Hole, Dahab
+    //   // console.log(position)
+    //   this.setState({'position': position})
+    // })
 
-    // console.log(this.state)
+    // console.log(this.props)
   }
 
-  _renderLeaflet() {
-    // console.log('_renderLeaflet')
-
+  componentDidMount() {
+    const {location} = this.props
     const {style, accessToken} = Meteor.settings.public.mapbox
-    // console.log(style)
-    // console.log(accessToken)
 
-    // console.log(this.state.position)
-    var mymap = L.map('mapid').setView(this.state.position, 17);
+    const mymap = L.map('mapid').setView(location.lat_lng, 17)
   
     // const url = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
     const url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
@@ -47,31 +41,43 @@ class Map extends Component {
       maxZoom: 20,
       id: style,
       accessToken: accessToken
-    }).addTo(mymap);
+    }).addTo(mymap)
+
+    const myIcon = L.icon({
+        iconUrl: '/files/LocationDetails/marker.svg',
+        iconSize: [32, 32],
+        iconAnchor: [15, 25],
+        popupAnchor: [8, -16],
+        // iconUrl: 'my-icon.png',
+        // iconRetinaUrl: 'my-icon@2x.png',
+        // iconSize: [38, 95],
+        // iconAnchor: [22, 94],
+        // popupAnchor: [-3, -76],
+        // shadowUrl: 'my-icon-shadow.png',
+        // shadowRetinaUrl: 'my-icon-shadow@2x.png',
+        // shadowSize: [68, 95],
+        // shadowAnchor: [22, 94]
+    })
+
+    const marker = L.marker(location.lat_lng, {icon: myIcon}).addTo(mymap)
+    marker.bindPopup(`<b>${location.title}</b><br>${location.address}`).openPopup()
   }
 
   renderLeaflet() {
-    // console.log('renderLeaflet')
-
-    // const address = this.props.address
-    // console.log('mapType', this.state.mapType, 'for', address)
-
     return (
-      <div>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
-        <div id='mapid' style={{height: 512}}></div>
-        {this.state.position && $('#mapid').length && this._renderLeaflet()}
-      </div>
+      <div id='mapid' style={{height: 512}}></div>
     )
   }
 
   renderReactLeaflet() {
+    const {location} = this.props
+
     return (
-      <LeafletMap center={this.state.position} zoom={13}>
+      <LeafletMap center={location.lat_lng} zoom={13}>
         <TileLayer
           url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'/>
-        <Marker position={this.state.position}>
+        <Marker position={location.lat_lng}>
           <Popup>
             <span>A pretty CSS3 popup.<br/>Easily customizable.</span>
           </Popup>
@@ -81,6 +87,7 @@ class Map extends Component {
   }
 
   renderReactMapboxGL() {
+    const {location} = this.props
     const {style, accessToken} = Meteor.settings.public.mapbox
     // console.log(style)
     // console.log(accessToken)
@@ -89,14 +96,12 @@ class Map extends Component {
       <ReactMapboxGl
         style={style}
         accessToken={accessToken}
-        position={this.state.position}
+        position={location.lat_lng}
       />
       )
   }
 
   render() {
-    // console.log(this.state.mapType)
-
     switch (this.state.mapType) {
       case 'leaflet':
         return this.renderLeaflet()
@@ -109,7 +114,6 @@ class Map extends Component {
     }
 
     console.error('Unknown mapType', this.state.mapType)
-
     return (
       <div>Unknown mapType {this.state.mapType}</div>
     )
@@ -117,11 +121,16 @@ class Map extends Component {
 }
 
 Map.propTypes = {
-  address: PropTypes.string.isRequired
+  location: PropTypes.object.isRequired
 }
 
 Map.defaultProps = {
-  address: 'Utrecht, Netherlands'
+  location: {
+    address: 'Moreelsepark 65, Utrecht, Netherlands',
+    title: 'Seats2meet',
+    description: 'Utrecht CS',
+    lat_lng: [52.08906, 5.11343]
+  }
 }
 
 export default Map
