@@ -16,6 +16,16 @@ LocationsSchema = new SimpleSchema({
     optional: true,
     max: 1000
   },
+  address: {
+    type: String,
+    label: "Address",
+    max: 200
+  },
+  lat_lng: {
+    type: [Number],
+    label: "GPS location",
+    max: 2
+  },
   imageUrl: {
     type: String,
     label: "Image URL",

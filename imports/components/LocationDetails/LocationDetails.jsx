@@ -6,6 +6,7 @@ import R from 'ramda';
 import RaisedButton from '../RaisedButton/RaisedButton.jsx'
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
 import ManageUserlist from '../ManageUserlist/ManageUserlist';
+// import Map from '../../client/Map'
 
 class LocationDetails extends Component {
 
@@ -20,6 +21,8 @@ class LocationDetails extends Component {
   render() {
     return (
       <div style={s.base}>
+
+        {/* <Map address={this.props.location.address}/> */}
 
         <p style={s.intro}>
           Haal je fiets bij <i><span dangerouslySetInnerHTML={{__html: this.props.location.title}} /></i>. Kies hieronder je gewenste fiets

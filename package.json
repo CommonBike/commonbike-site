@@ -2,14 +2,14 @@
   "name": "commonbike-app",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run --settings settings.json"
   },
   "dependencies": {
     "bcrypt": "^0.8.7",
     "bufferutil": "^1.2.1",
     "draft-js": "^0.9.1",
     "fluture": "^4.0.3",
-    "google-map-react": "^0.21.0",
+    "leaflet": "^1.0.2",
     "meteor-node-stubs": "~0.2.0",
     "radium": "^0.18.1",
     "ramda": "^0.22.1",

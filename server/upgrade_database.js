@@ -29,8 +29,8 @@ function fixLocationsWithoutProviders() {
 		var adminsforlocId = Meteor.users.find(filter, {fields: {_id:1}}).fetch();
 		if(adminsforlocId.length==0) {
 			_.each(admins, function (admin) {
-				console.log('added provider ' +  admin.emails[0].address + ' to location ' + location.title);
-          		Meteor.users.update({_id: admin._id}, {$addToSet: {admin_locations: location._id}});
+				console.log('added admin ' +  admin.emails[0].address + ' to location ' + location.title);
+        Meteor.users.update({_id: admin._id}, {$addToSet: {admin_locations: location._id}});
 			})
 		}
 	});

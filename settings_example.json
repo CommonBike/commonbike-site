@@ -1,0 +1,15 @@
+{
+    "mapbox": {
+      "style": "mapbox.streets",    
+      "accessToken": "pk.eyJ1IjoiZXJpY3ZycCIsImEiOiJjaWhraHE5ajIwNmRqdGpqN2h2ZXhqMnRsIn0.1FBWllDyQ_nSlHFE2jMLDA"
+    }
+  },
+  "private": {
+    "testdata": {
+      "cleanup": true,
+      "insert": true,
+      "log": true
+    }
+  }
+}
+
