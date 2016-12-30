@@ -8,7 +8,8 @@
   "private": {
     "testdata": {
       "cleanup": true,
-      "insert": true
+      "insert": true,
+      "log": true
     }
   }
 }
