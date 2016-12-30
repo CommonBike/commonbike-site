@@ -64,8 +64,15 @@ class Map extends Component {
   }
 
   renderLeaflet() {
+    const address = encodeURIComponent(this.props.location.address)
+    // const mapsUri = `geo:0,0?q=${address}`
+    const mapsUri = `https://maps.google.com/maps?q=${address}`
+
     return (
-      <div id='mapid' style={{height: 512}}></div>
+      <div>
+        <div id='mapid' style={{height: window.innerHeight-100}}></div>
+        <a href={mapsUri} target='_blank'>Map</a>
+      </div>
     )
   }
 
