@@ -1,2 +1,15 @@
 {
+    "mapbox": {
+      "mapbox-style": "mapbox://styles/mapbox/streets-v9",
+      "style": "streets-v9",
+      "accessToken": "<insert token from your mapbox.com account here>"
+    }
+  },
+  "private": {
+    "testdata": {
+      "cleanup": true,
+      "insert": true
+    }
+  }
 }
+
