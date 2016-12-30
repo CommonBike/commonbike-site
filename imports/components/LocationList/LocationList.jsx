@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
+import {propTypes} from 'react-router';
 
 // Import models
 import { Locations } from '/imports/api/locations.js'; 
@@ -20,7 +21,7 @@ class LocationList extends Component {
   constructor(props) {
     super(props);
 
-    if( ! Meteor.userId() ) FlowRouter.go('/login', {redirectTo: '/admin'});
+    if( ! Meteor.userId() ) this.context.history.push('/login', {redirectTo:'/admin'});
   }
 
   /**
@@ -70,6 +71,10 @@ var s = {
   paragraph: {
     padding: '0 20px'
   }
+}
+
+LocationList.contextTypes = {
+  history: propTypes.historyContext
 }
 
 LocationList.propTypes = {

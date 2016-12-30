@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
+import {propTypes} from 'react-router';
 
 // Import components
 import RaisedButton from '../RaisedButton/RaisedButton.jsx'
@@ -34,7 +35,7 @@ class ObjectDetails extends Component {
 
         {this.props.checkedIn
           ? <CheckInCode />
-          : <Button onClick={() => FlowRouter.go('objectCheckIn', {objectId: this.props.object._id })} buttonStyle="huge">Reserveer!</Button>}
+          : <Button onClick={() => this.context.history.push('/bike/checkin/' + this.props.object._id )} buttonStyle="huge">Reserveer!</Button>}
 
       </div>
     );
@@ -63,6 +64,10 @@ var s = {
     maxWidth: '300px',
     background: 'url("/files/ObjectDetails/marker.svg") 0 0 / auto 60px no-repeat',
   },
+}
+
+ObjectDetails.contextTypes = {
+  history: propTypes.historyContext
 }
 
 ObjectDetails.propTypes = {

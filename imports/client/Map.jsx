@@ -1,37 +1,21 @@
 import React, { Component, PropTypes } from 'react'
-
 import L from 'leaflet'
-import {Map as LeafletMap, TileLayer, Marker, Popup} from 'react-leaflet'
-import ReactMapboxGl, { Layer as ReactMapboxLayer, Feature as ReactMapboxFeature, Marker as ReactMapboxMarker} from 'react-mapbox-gl'
-// import Geosearch from './Geosearch'
 
-const mapTypes = ['leaflet', 'react-leaflet', 'react-mapbox-gl'] // , 'mapbox', 'mapboxgl', 'google maps']
+// import Geosearch from './Geosearch'
+// Geosearch(this.props.address).then(json => {
+//   const location = json.results[0].geometry.location
+//   // const position = [location.lat, location.lng]
+//   const position = [28.572184,34.5348787] // Blue Hole, Dahab
+//   // console.log(position)
+//   this.setState({'position': position})
+// })
 
 class Map extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      mapType: mapTypes[0],
-      // position: undefined
-    }
-
-    // Geosearch(this.props.address).then(json => {
-    //   const location = json.results[0].geometry.location
-    //   // const position = [location.lat, location.lng]
-    //   const position = [28.572184,34.5348787] // Blue Hole, Dahab
-    //   // console.log(position)
-    //   this.setState({'position': position})
-    // })
-
-    // console.log(this.props)
-  }
-
   componentDidMount() {
-    const {location} = this.props
+    const {item} = this.props
     const {style, accessToken} = Meteor.settings.public.mapbox
 
-    const mymap = L.map('mapid').setView(location.lat_lng, 17)
+    const mymap = L.map('mapid').setView(item.lat_lng, 17)
   
     // const url = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
     const url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
@@ -59,14 +43,14 @@ class Map extends Component {
         // shadowAnchor: [22, 94]
     })
 
-    const marker = L.marker(location.lat_lng, {icon: myIcon}).addTo(mymap)
-    marker.bindPopup(`<b>${location.title}</b><br>${location.address}`).openPopup()
+    const marker = L.marker(item.lat_lng, {icon: myIcon}).addTo(mymap)
+    marker.bindPopup(`<b>${item.title}</b><br>${item.address}`).openPopup()
   }
 
-  renderLeaflet() {
-    const address = encodeURIComponent(this.props.location.address)
-    // const mapsUri = `geo:0,0?q=${address}`
+  render() {
+    const address = encodeURIComponent(this.props.item.address)
     const mapsUri = `https://maps.google.com/maps?q=${address}`
+    // const mapsUri = `geo:0,0?q=${address}`
 
     return (
       <div>
@@ -75,64 +59,14 @@ class Map extends Component {
       </div>
     )
   }
-
-  renderReactLeaflet() {
-    const {location} = this.props
-
-    return (
-      <LeafletMap center={location.lat_lng} zoom={13}>
-        <TileLayer
-          url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'/>
-        <Marker position={location.lat_lng}>
-          <Popup>
-            <span>A pretty CSS3 popup.<br/>Easily customizable.</span>
-          </Popup>
-        </Marker>
-      </LeafletMap>
-    )
-  }
-
-  renderReactMapboxGL() {
-    const {location} = this.props
-    const {style, accessToken} = Meteor.settings.public.mapbox
-    // console.log(style)
-    // console.log(accessToken)
-
-    return (
-      <ReactMapboxGl
-        style={style}
-        accessToken={accessToken}
-        position={location.lat_lng}
-      />
-      )
-  }
-
-  render() {
-    switch (this.state.mapType) {
-      case 'leaflet':
-        return this.renderLeaflet()
-
-      case 'react-leaflet':
-        return this.renderReactLeaflet()
-
-      case 'react-mapbox-gl':
-        return this.renderReactMapboxGL()
-    }
-
-    console.error('Unknown mapType', this.state.mapType)
-    return (
-      <div>Unknown mapType {this.state.mapType}</div>
-    )
-  }
 }
 
 Map.propTypes = {
-  location: PropTypes.object.isRequired
+  item: PropTypes.object.isRequired
 }
 
 Map.defaultProps = {
-  location: {
+  item: {
     address: 'Moreelsepark 65, Utrecht, Netherlands',
     title: 'Seats2meet',
     description: 'Utrecht CS',

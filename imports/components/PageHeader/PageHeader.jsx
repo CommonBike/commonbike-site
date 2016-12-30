@@ -9,6 +9,7 @@ import R from 'ramda';
 import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
 import RaisedButton from '../RaisedButton/RaisedButton.jsx'
 import Avatar from '../Avatar/Avatar.jsx'
+import {propTypes} from 'react-router';
 
 class PageHeader extends Component {
 
@@ -17,7 +18,7 @@ class PageHeader extends Component {
   }
 
   gotoProfile() {
-    FlowRouter.go('profile');
+    this.context.history.push('/profile');
   }
 
   render() {
@@ -26,7 +27,7 @@ class PageHeader extends Component {
         <div style={s.flex}>
           <a style={s.arrowBack} onClick={() => history.back()}>Back</a>
           <a href="/" style={{display: 'flex'}}><CommonBikeLogo type="common" style={s.logo} /></a>
-          { Meteor.userId() ? <a onClick={this.gotoProfile}><Avatar /></a> : <div /> }
+          { Meteor.userId() ? <a onClick={this.gotoProfile.bind(this)}><Avatar /></a> : <div /> }
         </div>
         {this.props.children}
       </div>
@@ -60,6 +61,10 @@ var s = {
     height: '28px',
     alignSelf: 'center'
   },
+}
+
+PageHeader.contextTypes = {
+  history: propTypes.historyContext
 }
 
 PageHeader.propTypes = {
