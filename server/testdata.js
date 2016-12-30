@@ -126,6 +126,18 @@ var checkTestUsers = function() {
     });    
 }
 
+const Address2LatLng = (address) => {
+  if (!address) {
+    return ''
+  }
+
+  const url = 'http://maps.google.com/maps/api/geocode/json?address=' + encodeURI(address)
+  const response = HTTP.get(url)
+  const obj = JSON.parse(response.content)
+  const location = obj.results[0].geometry.location
+  return [location.lat, location.lng]
+}
+
 var checkTestLocations = function() {
   log('checking default locations');
 
@@ -136,12 +148,15 @@ var checkTestLocations = function() {
     if(hereitis) {
       locationId = hereitis._id;
       //  log('check existing location:' + locationData.title);
-    } else {
+    } else { 
       locationId = Locations.insert({ 
         title: locationData.title,
+        description: locationData.description || '',
+        address: locationData.address || '',
+        lat_lng: Address2LatLng(locationData.address),
         imageUrl: locationData.imageUrl,
       });
-      // console.log('add new location:' + locationData.title + ' id: ' + locationId);
+      // log('add new location:' + locationData.title + ' id: ' + locationId);
     }
 
     _.each(locationData.providers, function (provider) {
@@ -156,9 +171,9 @@ var checkTestLocations = function() {
       var gimmebike=Objects.findOne({locationId: locationId, title: bike.title});
       if (!gimmebike) {
         var bikeid = Objects.insert({ 
-          locationId : locationId,
+          locationId: locationId,
           title: bike.title,
-          description : bike.description,
+          description: bike.description,
           imageUrl: locationData.bikeimage
         });
 

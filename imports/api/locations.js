@@ -22,9 +22,9 @@ LocationsSchema = new SimpleSchema({
     max: 200
   },
   lat_lng: {
-    type: String,
+    type: [Number],
     label: "GPS location",
-    max: 100
+    max: 2
   },
   imageUrl: {
     type: String,
