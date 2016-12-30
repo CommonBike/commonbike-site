@@ -1,15 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import L from 'leaflet'
 
-// import Geosearch from './Geosearch'
-// Geosearch(this.props.address).then(json => {
-//   const location = json.results[0].geometry.location
-//   // const position = [location.lat, location.lng]
-//   const position = [28.572184,34.5348787] // Blue Hole, Dahab
-//   // console.log(position)
-//   this.setState({'position': position})
-// })
-
 class Map extends Component {
   componentDidMount() {
     const {item} = this.props
@@ -64,7 +55,7 @@ class Map extends Component {
 
     return (
       <div>
-        <div id='mapid' style={{height: window.innerHeight-100}}></div>
+        <div id='mapid' style={{width: this.props.width, height: this.props.height}}></div>
         <a href={mapsUri} target='_blank'>Directions</a>
       </div>
     )
@@ -72,10 +63,14 @@ class Map extends Component {
 }
 
 Map.propTypes = {
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
   item: PropTypes.object.isRequired
 }
 
 Map.defaultProps = {
+  width: window.innerWidth,
+  height: window.innerHeight-32,
   item: {
     address: 'Moreelsepark 65, Utrecht, Netherlands',
     title: 'Seats2meet',
