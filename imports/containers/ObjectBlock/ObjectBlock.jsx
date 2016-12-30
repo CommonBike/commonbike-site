@@ -3,6 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import ReactDOM from 'react-dom';
 import Radium from 'radium';
 import R from 'ramda';
+import {propTypes} from 'react-router';
 
 // Import models
 import { Objects } from '../../api/objects.js'; 
@@ -38,7 +39,7 @@ class ObjectBlock extends Component {
     }
   }
 
-  viewItem() { FlowRouter.go('object', {objectId: this.props.item._id}) }
+  viewItem() { this.context.history.push('/bike/details/' + this.props.item._id) }
 
   deleteItem() {
     if( ! confirm('Weet je zeker dat je de fiets "'+this.props.item.title+'" wilt verwijderen?') || ! confirm('Sure? If not sure: don\'t') )
@@ -57,7 +58,7 @@ class ObjectBlock extends Component {
         handleChange={this.handleChange.bind(this)}
         deleteItem={this.deleteItem.bind(this)}
         viewItem={this.viewItem.bind(this)}
-        onClick={this.viewItem.bind(this)} />
+        onClick={ ! this.props.isEditable ? this.viewItem.bind(this) : null} />
     );
   }
 
@@ -97,6 +98,10 @@ var s = {
     cursor: 'pointer',
     fontWeight: 'bold',
   }
+}
+
+ObjectBlock.contextTypes = {
+  history: propTypes.historyContext
 }
 
 ObjectBlock.propTypes = {

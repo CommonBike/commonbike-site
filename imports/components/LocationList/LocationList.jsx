@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
+import {propTypes} from 'react-router';
 
 // Import models
 import { Locations } from '/imports/api/locations.js'; 
@@ -20,7 +21,7 @@ class LocationList extends Component {
   constructor(props) {
     super(props);
 
-    if( ! Meteor.userId() ) FlowRouter.go('/login', {redirectTo: '/admin'});
+    if( ! Meteor.userId() ) this.context.history.push('/login', {redirectTo:'/admin'});
   }
 
   /**
@@ -28,9 +29,11 @@ class LocationList extends Component {
    * 
    * Adds a new location to the database having the title "Locatie-naam"
    */
-  newLocation() {
-    Meteor.call('locations.insert', {title: "Nieuwe locatie"});
-  }
+   newLocation() {
+      if(this.props.newLocationHandler) {
+          this.props.newLocationHandler();
+      }
+   }
 
   render() {
     self = this;
@@ -70,19 +73,19 @@ var s = {
   }
 }
 
+LocationList.contextTypes = {
+  history: propTypes.historyContext
+}
+
 LocationList.propTypes = {
   locations: PropTypes.array,
   isEditable: PropTypes.any,
   clickItemHandler: PropTypes.any,
+  newLocationHandler: PropTypes.any,
 };
 
 LocationList.defaultProps = {
   isEditable: false
 }
 
-export default createContainer((props) => {
-  return {
-    currentUser: Meteor.user(),
-    locations: Locations.find({}, { sort: {title: 1} }).fetch()
-  };
-}, LocationList);
+export default LocationList;
