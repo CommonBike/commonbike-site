@@ -19,8 +19,6 @@ class LocationList extends Component {
 
   constructor(props) {
     super(props);
-
-    if( ! Meteor.userId() ) this.context.history.push('/login', {redirectTo: '/admin'});
   }
 
   /**

@@ -1,3 +1,6 @@
+/**
+ *  App Routing
+ */
 import React from 'react'
 import {render} from 'react-dom'
 import Router from 'react-router/BrowserRouter'
@@ -7,7 +10,7 @@ import Miss from 'react-router/Miss'
 import UserApp from '/imports/components/UserApp/UserApp.jsx'
 import Landing from '/imports/components/Landing/Landing.jsx'
 import Join from '/imports/components/Join/Join.jsx'
-import Map from '/imports/client/Map'
+import Map from '/imports/client/Map.jsx'
 import ContentPage from '/imports/components/ContentPage/ContentPage.jsx'
 import Login from '/imports/components/Login/Login.jsx'
 import CustomPage from '/imports/components/CustomPage/CustomPage.jsx'

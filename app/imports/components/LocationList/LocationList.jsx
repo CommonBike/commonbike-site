@@ -20,8 +20,6 @@ class LocationList extends Component {
 
   constructor(props) {
     super(props);
-
-    if( ! Meteor.userId() ) this.context.history.push('/login', {redirectTo:'/admin'});
   }
 
   /**
@@ -30,9 +28,9 @@ class LocationList extends Component {
    * Adds a new location to the database having the title "Locatie-naam"
    */
    newLocation() {
-      if(this.props.newLocationHandler) {
-          this.props.newLocationHandler();
-      }
+     if(this.props.newLocationHandler) {
+       this.props.newLocationHandler();
+     }
    }
 
   render() {

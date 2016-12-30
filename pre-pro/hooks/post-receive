@@ -1,0 +1,53 @@
+#!/bin/bash
+deployDir="../deploy"
+buildConfig="--rm=true"
+runConfig="-p 49153:3000"
+deployingBranch="develop"
+
+while read oldrev newrev refname
+do
+  branch=$(git rev-parse --symbolic --abbrev-ref $refname)
+  if [ "$deployingBranch" == "$branch" ]; then
+    #docker img name
+    imageName='commonbike'
+
+    #docker container name
+    containerName="$imageName"
+
+    #get last commit for img tag
+    lastCommit=`git log --pretty=format:'%h' -n 1`
+    echo "Hook : deploy to dir $deployDir"
+    mkdir -p $deployDir
+    git --work-tree="$deployDir" --git-dir="$(pwd)" checkout -f "$deployingBranch"
+    cd $deployDir
+    docker tag $imageName:latest $imageName:pendingDeletion
+    echo "Building Meteor app"
+    cd app && npm install --production && meteor build --allow-superuser --directory ../mrt_build && cd ..
+    echo "Docker : Building $imageName:$lastCommit"
+    # This build and tag the image with "latest" tag
+    buildID=`docker build $buildConfig -t $imageName .`
+
+    # Add the commit tag
+    docker tag $imageName:latest $imageName:$lastCommit
+
+    if [ $? -ne 0 ]; then
+        echo "Docker : Build failed, aborting"
+    fi
+
+    echo "Docker : stop and rm $containerName"
+    docker-compose down
+
+    echo "Docker : removing old image"
+    docker rmi -f $imageName:pendingDeletion
+
+    if [ $? -ne 0 ]; then
+        echo "Docker : Stop failed, aborting"
+    fi
+
+    docker-compose up -d
+    if [ $? -ne 0 ]; then
+        echo "Docker : Run failed, aborting"
+    fi
+
+fi
+done

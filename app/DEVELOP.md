@@ -38,3 +38,7 @@ See [guide.meteor.com/accounts](https://guide.meteor.com/accounts.html#accounts-
 - [meteor-simple-schema](https://github.com/aldeed/meteor-simple-schema) - A simple, reactive schema validation package for Meteor
 - [react-contenteditable](https://github.com/lovasoa/react-contenteditable) - React component for a div with editable contents
 - [draft.js](http://facebook.github.io/draft-js/) - Rich text editor framework for react
+
+## Used techniques
+
+- Semantic versioning ([semver](https://docs.npmjs.com/getting-started/semantic-versioning))
