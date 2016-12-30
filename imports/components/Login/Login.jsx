@@ -5,6 +5,7 @@ import { Accounts } from 'meteor/accounts-base';
 import AccountsUIWrapper from '/imports/containers/AccountsUIWrapper/AccountsUIWrapper.jsx';
 import ReactSwipe from 'react-swipe';
 import R from 'ramda';
+import {propTypes} from 'react-router';
 
 // Import templates
 import SquareButton from '../SquareButton/SquareButton.jsx';
@@ -86,7 +87,7 @@ class Login extends Component {
   render() {
     return (
       <div style={s.base}>
-        {this.props.currentUser ? (Meteor.isProduction ? this.renderTeaser(): FlowRouter.go('locations'))
+        {this.props.currentUser ? (Meteor.isProduction ? this.renderTeaser(): this.context.history.push('/locations'))
                                 : this.renderIntro()}
 
       </div>
@@ -113,6 +114,10 @@ var s = {
     justifyContent: 'space-around',
     background: '#fff'
   }
+}
+
+Login.contextTypes = {
+  history: propTypes.historyContext
 }
 
 export default createContainer((props) => {
