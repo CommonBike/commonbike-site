@@ -24,17 +24,19 @@ class LocationDetails extends Component {
   /**
    *  newObject
    * 
-   * Adds a new object to the database having the title "Nieuwe fiets"
+   * Adds a new object to the database having the title "_Een nieuwe fiets"
    */
   newObject(locationId) { Meteor.call('objects.insert', {
     locationId: locationId,
-    title: "Nieuwe fiets",
+    title: "_ Mijn nieuwe fiets",
     imageUrl: '/files/Block/bike.png'
   })}
 
   render() {
     return (
       <LocationDetailsComponent
+        locationId={this.props.locationId}
+
         location={this.props.location}
         objects={this.props.objects}
         clickItemHandler={this.props.clickItemHandler}
@@ -69,6 +71,7 @@ export default createContainer((props) => {
   Meteor.subscribe('objects');
   return {
     currentUser: Meteor.user(),
+    locationId: props.locationId,
     location: Locations.find({_id: props.locationId}).fetch()[0],
     objects: Objects.find({locationId: props.locationId}, {sort: {title: 1}}).fetch()
   };

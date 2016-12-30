@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import Radium, { StyleRoot } from 'radium';
 import R from 'ramda';
+import {propTypes} from 'react-router';
 
 // Import components
 import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
@@ -20,7 +21,9 @@ class Landing extends Component {
     ReactDOM.findDOMNode(this.refs.base).style.display = 'flex';
   }
 
-  login() { FlowRouter.go('login') }
+  login() { 
+    this.context.history.push('/login')
+  }
 
   render() {
     return (
@@ -39,7 +42,7 @@ class Landing extends Component {
             <a style={s.smallText} href="/join">euhm, maar hoe werkt dat dan?</a>
           </p>
 
-          <RaisedButton onClick={this.login}>
+          <RaisedButton onClick={this.login.bind(this)}>
             Meld je aan voor de pilot
           </RaisedButton>
         </div>
@@ -84,6 +87,10 @@ var s = {
     fontSize: '0.8em',
     fontWeight: '500',
   }
+}
+
+Landing.contextTypes = {
+  history: propTypes.historyContext
 }
 
 export default createContainer((props) => {

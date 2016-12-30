@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo';
+import { Accounts } from 'meteor/accounts-base'
 
 export const Locations = new Mongo.Collection('locations');
 
@@ -15,6 +16,16 @@ LocationsSchema = new SimpleSchema({
     optional: true,
     max: 1000
   },
+  address: {
+    type: String,
+    label: "Address",
+    max: 200
+  },
+  lat_lng: {
+    type: [Number],
+    label: "GPS location",
+    max: 2
+  },
   imageUrl: {
     type: String,
     label: "Image URL",
@@ -23,38 +34,113 @@ LocationsSchema = new SimpleSchema({
   },
 });
 
-
 if (Meteor.isServer) {
-  Meteor.publish('locations', function tasksPublication() {
-    return Locations.find();
+  Meteor.publish('locations', function tasksPublication(providerMode=false) {
+    if (!this.userId) {
+        return this.ready();
+    }
+
+    if(!providerMode) {
+      return Locations.find();
+    } else {
+      if(Roles.userIsInRole(this.userId, ['admin'])) {
+        return Locations.find();
+      } else {
+        var daUser = Meteor.users.findOne({_id:this.userId});
+        if (daUser&&daUser.provider_locations) {
+          return Locations.find({_id: {$in: daUser.provider_locations}});  
+        } else {
+          return this.ready();      
+        }
+      }
+    }
   });
 }
 
-Meteor.methods({
-  'locations.insert'(data) {
+// The methods below operate on Meteor.users and use Accounts, so they should not be 
+// performed on the client (done transparently by Meteor when moved outside of this block)
+if(Meteor.isServer) {
+  Meteor.methods({
+    'locations.insert'(data) {
 
-    // Make sure the user is logged in
-    if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
+      // Make sure the user is logged in
+      if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
 
-    // check(data, LocationsSchema);
+      // check(data, LocationsSchema);
 
-    Locations.insert({
-      title: data.title
-    });
-  },
-  'locations.update'(_id, data) {
+      var locationId = Locations.insert({
+      });
 
-    // Make sure the user is logged in
-    if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
+      // current user is always assigned as first provider for a new location
+      Meteor.users.update({_id: Meteor.userId()}, {$addToSet: {provider_locations: locationId}});
 
-    // check(data, LocationsSchema);
+      Locations.update(locationId, {
+        title: data.title
+      });  
 
-    Locations.update(_id, {
-      title: data.title,
-      imageUrl: data.imageUrl
-    });
-  },
-  'locations.remove'(_id){
-    Locations.remove(_id);
-  }
-});
+      return locationId
+    },
+    'locations.update'(_id, data) {
+
+      // Make sure the user is logged in
+      if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
+
+      // check(data, LocationsSchema);
+
+      Locations.update(_id, {
+        title: data.title,
+        imageUrl: data.imageUrl
+      });
+    },
+    'locations.remove'(_id){
+      // remove this location from the provider_locations list for all users 
+      Meteor.users.update({}, {$pull: {provider_locations: _id}});
+
+      Locations.remove(_id);
+    },
+    'locationprovider.getuserlist'(locationId) {
+      // return a list of users that are providers for the given location 
+      // - providers are maintained as a location id list (provider_locations) 
+      // in the user document
+      var daUsers = Meteor.users.find({provider_locations: {$in: [locationId]}}, 
+                                    {fields: {_id:1, emails:1}}).fetch();
+      if(daUsers) {
+        var result = [];
+        daUsers.forEach(function(user) {
+          if(user.emails) {
+            result.push({_id: user._id, email: user.emails[0].address});
+          }
+        });
+        return result;
+      } else {
+        return [];
+      }
+    },
+    'locationprovider.adduser'(locationId, emailaddress) {
+      // given user is added as provider for the given location
+      if(locationId&&emailaddress) {
+        var daUser = Accounts.findUserByEmail(emailaddress);
+        if(daUser) {
+          Meteor.users.update({_id: daUser._id}, {$addToSet: {provider_locations: locationId}});
+        } else {
+          throw new Meteor.Error('No user exists with email: ' + emailaddress, 'locationprovider.addUser: No user exists with email: ' + emailaddress);
+        }
+      }
+    },
+    'locationprovider.removeuser'(locationId, userId) {
+      // given user is removed as provider for the given location
+      if(locationId&&userId) {
+        Meteor.users.update({_id: userId}, {$pull: {provider_locations: locationId}});
+      }
+    },
+    // NICE TO HAVE: this function is used in the change event in the ManageUserlist component
+    // 'locationprovider.emailvalid'(email) {
+    //   var daUser = Accounts.findUserByEmail(email);
+    //   if(daUser) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // }
+  });
+}

@@ -1,12 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
+import {propTypes} from 'react-router';
 
 // Import components
 import RaisedButton from '../RaisedButton/RaisedButton.jsx'
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
 import Button from '../Button/Button';
 import CheckInCode from '../CheckInCode/CheckInCode';
+// import Map from '../../client/Map'
 
 class ObjectDetails extends Component {
 
@@ -22,16 +24,18 @@ class ObjectDetails extends Component {
     return (
       <div style={s.base}>
 
+        {/* <Map address={this.props.location.address}/> */}
+
         <p style={s.intro}>
           Reserveer bij <i><span dangerouslySetInnerHTML={{__html: this.props.location.title}} /></i>
         </p>
-
+        
         <ObjectBlock
           item={this.props.object} />
 
         {this.props.checkedIn
           ? <CheckInCode />
-          : <Button onClick={() => FlowRouter.go('objectCheckIn', {objectId: this.props.object._id })} buttonStyle="huge">Reserveer!</Button>}
+          : <Button onClick={() => this.context.history.push('/bike/checkin/' + this.props.object._id )} buttonStyle="huge">Reserveer!</Button>}
 
       </div>
     );
@@ -50,7 +54,9 @@ var s = {
     flexDirection: 'column'
   },
   intro: {
-    paddingLeft: '70px',
+    padding: '0 70px',
+    margin: '0 auto',
+    maxWidth: '400px',
     textAlign: 'left',
     minHeight: '80px',
     fontSize: '1.2em',
@@ -58,6 +64,10 @@ var s = {
     maxWidth: '300px',
     background: 'url("/files/ObjectDetails/marker.svg") 0 0 / auto 60px no-repeat',
   },
+}
+
+ObjectDetails.contextTypes = {
+  history: propTypes.historyContext
 }
 
 ObjectDetails.propTypes = {
