@@ -4,6 +4,10 @@ import L from 'leaflet'
 class Map extends Component {
   componentDidMount() {
     const {item} = this.props
+    if (!item || !item.lat_lng) {
+      return
+    }
+
     const defaultStyle = "mapbox.streets" // mapbox.streets, mapbox.mapbox-streets-v7, mapbox.mapbox-terrain-v2, mapbox.satellite, mapbox.dark
     const defaultAccessToken = "pk.eyJ1IjoiZXJpY3ZycCIsImEiOiJjaWhraHE5ajIwNmRqdGpqN2h2ZXhqMnRsIn0.1FBWllDyQ_nSlHFE2jMLDA" // ericvrp Mapbox
     const {style = defaultStyle, accessToken = defaultAccessToken} = Meteor.settings.public.mapbox || {}
@@ -49,14 +53,18 @@ class Map extends Component {
   }
 
   render() {
+    if (!this.props.item || !this.props.item.lat_lng) {
+      return null
+    }
+
     const from = ''
     const to = encodeURIComponent(this.props.item.address)
-    const mapsUri = `https://maps.google.com/maps/dir/${from}/${to}`
+    const directionsUrl = `https://maps.google.com/maps/dir/${from}/${to}`
 
     return (
       <div>
         <div id='mapid' style={{width: this.props.width, height: this.props.height}}></div>
-        <a href={mapsUri} target='_blank'>Directions</a>
+        <a href={directionsUrl} target='_blank'>Directions</a>
       </div>
     )
   }

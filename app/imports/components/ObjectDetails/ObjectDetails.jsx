@@ -8,7 +8,7 @@ import RaisedButton from '../RaisedButton/RaisedButton.jsx'
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
 import Button from '../Button/Button';
 import CheckInCode from '../CheckInCode/CheckInCode';
-// import Map from '../../client/Map'
+import Map from '../../client/Map'
 
 class ObjectDetails extends Component {
 
@@ -24,11 +24,13 @@ class ObjectDetails extends Component {
     return (
       <div style={s.base}>
 
-        {/* <Map address={this.props.location.address}/> */}
-
         <p style={s.intro}>
           Reserveer bij <i><span dangerouslySetInnerHTML={{__html: this.props.location.title}} /></i>
         </p>
+
+        <center>
+          <Map item={this.props.location} width={400} height={300}/>
+        </center>
         
         <ObjectBlock
           item={this.props.object} />
