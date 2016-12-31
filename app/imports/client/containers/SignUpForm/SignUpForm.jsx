@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Accounts } from 'meteor/accounts-base';
 
 // Import templates
-import SignUpFormComponent from '/imports/components/SignUpForm/SignUpForm.jsx';
+import SignUpFormComponent from '/imports/client/components/SignUpForm/SignUpForm.jsx';
 
 class SignUpForm extends Component {
 

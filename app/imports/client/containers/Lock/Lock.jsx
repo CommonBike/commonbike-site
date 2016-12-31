@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
 // Import templates
-import LockComponent from '/imports/components/Lock/Lock.jsx';
+import LockComponent from '/imports/client/components/Lock/Lock.jsx';
 
 class Lock extends Component {
   

@@ -6,7 +6,7 @@ import R from 'ramda';
 import {propTypes} from 'react-router';
 
 // Import models
-import { Objects } from '../../api/objects.js'; 
+import { Objects } from '/imports/api/objects.js'; 
 
 // Import components
 import Block from '../../components/Block/Block';
