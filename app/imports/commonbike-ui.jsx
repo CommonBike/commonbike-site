@@ -8,6 +8,7 @@ import Hr from '/imports/components/Hr/Hr.jsx';
 import Avatar from '/imports/components/Avatar/Avatar.jsx';
 import CheckInCode from '/imports/components/CheckInCode/CheckInCode.jsx';
 import LoginForm from '/imports/components/LoginForm/LoginForm.jsx';
+import Map from '/imports/client/Map.jsx'
 
 class CommonBikeUI extends Component {
 
@@ -40,6 +41,10 @@ class CommonBikeUI extends Component {
         <h1>LoginForm</h1>
 
         <LoginForm />
+
+        <h1>Map</h1>
+
+        <Map width={600} height={400} />
 
       </div>
     );

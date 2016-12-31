@@ -10,7 +10,6 @@ import Miss from 'react-router/Miss'
 import UserApp from '/imports/components/UserApp/UserApp.jsx'
 import Landing from '/imports/components/Landing/Landing.jsx'
 import Join from '/imports/components/Join/Join.jsx'
-import Map from '/imports/client/Map.jsx'
 import ContentPage from '/imports/components/ContentPage/ContentPage.jsx'
 import Login from '/imports/components/Login/Login.jsx'
 import CustomPage from '/imports/components/CustomPage/CustomPage.jsx'
@@ -59,7 +58,6 @@ const App = () => (
       <Match exactly pattern='/' component={UserAppLanding}/>
       <Match pattern='/join' component={UserAppJoin}/>
       <Match pattern='/login' component={UserAppLogin}/> 
-      <Match pattern='/map' component={Map}/> 
       
       {/* XXX these routes should only be visible when logged in */}
       <Match pattern='/profile' component={UserAppProfile}/> 
