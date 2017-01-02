@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import {propTypes, Link} from 'react-router';
 
 // Import models
 import { Locations } from '/imports/api/locations.js'; 
@@ -33,10 +33,23 @@ class LocationList extends Component {
      }
    }
 
+  renderAdminLinks() {
+    if (location.pathname.startsWith('/admin/')) {
+      return (
+        <Link to='/locations'>Locations</Link>
+      )
+    } else {
+      return (
+        <Link to='/admin/locations'>Admin Locations</Link>
+      )
+    }
+  }
+
   render() {
     self = this;
     return (
       <div style={s.base}>
+        {Roles.userIsInRole(Meteor.userId(), 'admin') && this.renderAdminLinks()}
 
         <div style={Object.assign({display: 'none'}, this.props.isEditable && {display: 'block'})}>
 
