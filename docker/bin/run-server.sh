@@ -1,2 +1,2 @@
 #!/bin/sh
-node /var/app/commonbike/bundle/main.js
+node /var/www/app/commonbike/bundle/main.js
