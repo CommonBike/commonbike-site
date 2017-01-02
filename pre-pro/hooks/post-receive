@@ -24,7 +24,7 @@ do
     echo "Building Meteor app"
     cd app
     export METEOR_SETTINGS="cat settings_demo.json"
-    npm install --production && meteor build --allow-superuser --settings settings_demo.json --directory ../mrt_build && cd ..
+    npm install --production && meteor build --allow-superuser --directory ../mrt_build && cd ..
     echo "Docker : Building $imageName:$lastCommit"
     # This build and tag the image with "latest" tag
     buildID=`docker build $buildConfig -t $imageName .`
