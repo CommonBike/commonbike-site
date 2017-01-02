@@ -4,8 +4,6 @@
     "accessToken": "pk.eyJ1IjoiZXJpY3ZycCIsImEiOiJjaWhraHE5ajIwNmRqdGpqN2h2ZXhqMnRsIn0.1FBWllDyQ_nSlHFE2jMLDA"
   },
   "private": {
-    // Set values below to true if you want to use test data.
-    // WARNING: This will reset your database collections.
     "testdata": {
       "cleanup": false,
       "insert": false,
