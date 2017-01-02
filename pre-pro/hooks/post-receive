@@ -22,7 +22,7 @@ do
     cd $deployDir
     docker tag $imageName:latest $imageName:pendingDeletion
     echo "Building Meteor app"
-    cd app && npm install --production && meteor build --allow-superuser --directory ../mrt_build && cd ..
+    cd app && npm install --production && meteor build --allow-superuser --settings settings_demo.json --directory ../mrt_build && cd ..
     echo "Docker : Building $imageName:$lastCommit"
     # This build and tag the image with "latest" tag
     buildID=`docker build $buildConfig -t $imageName .`
