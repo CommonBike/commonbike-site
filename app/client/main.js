@@ -89,15 +89,15 @@ const App = () => (
       <Match pattern='/join' component={UserAppJoin}/>
       <Match pattern='/login' component={UserAppLogin}/> 
       
-      <MatchWhenLoggedIn pattern='/profile' component={UserAppProfile}/> 
-      <MatchWhenLoggedIn pattern='/locations' component={UserAppLocationList}/> 
-      <MatchWhenLoggedIn pattern='/location/:locationId' component={UserAppLocationDetails}/> 
-      <MatchWhenLoggedIn pattern='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
-      <MatchWhenLoggedIn pattern='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 
-      <MatchWhenLoggedIn pattern='/commonbike-ui' component={CommonBikeUI}/> 
+      <Match pattern='/profile' component={UserAppProfile}/> 
+      <Match pattern='/locations' component={UserAppLocationList}/> 
+      <Match pattern='/location/:locationId' component={UserAppLocationDetails}/> 
+      <Match pattern='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
+      <Match pattern='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 
+      <Match pattern='/commonbike-ui' component={CommonBikeUI}/> 
       
-      <MatchWhenAdmin pattern='/admin/locations' component={UserAppAdminLocationList}/> 
-      <MatchWhenAdmin pattern='/admin/location/:locationId' component={UserAppAdminLocationDetails}/> 
+      <Match pattern='/admin/locations' component={UserAppAdminLocationList}/> 
+      <Match pattern='/admin/location/:locationId' component={UserAppAdminLocationDetails}/> 
 
       <Miss component={NoMatch}/>
     </div>
