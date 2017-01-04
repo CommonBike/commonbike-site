@@ -1,18 +1,18 @@
-# CommonBike App 1.0.0
+# CommonBike App
 
-We are on a mission to create open source locks and bike sharing.
+We are on a mission to create open source bike sharing.
 
-This is the (web) app of CommonBike. With this app you can open locks that are connected to the free and open CommonBike lock system.
+This is the Meteor app for CommonBike. With this app you can find bikes that are connected to the free and open CommonBike index.
 
 - [Project website](https://common.bike)
-- [Documentation](https://github.com/CommonBike/commonbike-documentation/wiki)
+- [Documentation](https://github.com/CommonBike/wiki/wiki)
 
 ## Contents
 
 - [Demo](#1-demo)
 - [Development](#2-development)
 - [Deployment](#3-deployment)
-- [Future plans](#4-future-plans)
+- [Future plans](#4-future-plans--participate)
 
 ## 1. Demo
 
@@ -26,6 +26,6 @@ See [DEVELOP.md](DEVELOP.md) for setting up your development environment.
 
 See [DEPLOY.md](DEPLOY.md) for information about deployment on the server.
 
-## 4. Future plans
+## 4. Future plans / Participate!
 
-To be continued.
+Join us on [Slack](http://slack.common.bike) and other communication channels. (&raquo; [How to participate](https://github.com/CommonBike/wiki/wiki/How-to-participate)).
