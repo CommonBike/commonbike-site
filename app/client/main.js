@@ -6,6 +6,7 @@ import {render} from 'react-dom'
 import Router from 'react-router/BrowserRouter'
 import Match from 'react-router/Match'
 import Miss from 'react-router/Miss'
+import Redirect from 'react-router/Redirect'
 
 import UserApp from '/imports/client/components/UserApp/UserApp.jsx'
 import Landing from '/imports/client/components/Landing/Landing.jsx'
@@ -19,8 +20,6 @@ import LocationDetails from '/imports/client/containers/LocationDetails/Location
 import ObjectDetails from '/imports/client/containers/ObjectDetails/ObjectDetails.jsx'
 import CommonBikeUI from '/imports/client/commonbike-ui.jsx'
 import NoMatch from '/imports/client/components/NoMatch/NoMatch.jsx'
-
-Meteor.subscribe('locations')
 
 const UserAppLanding = () => (<UserApp showPageHeader={false} content={<Landing/>} />)
 const UserAppJoin = () => (<UserApp content={<ContentPage><Join /></ContentPage>} />) 
@@ -52,6 +51,35 @@ const UserAppAdminLocationDetails = ({params}) => {
   )
 }
 
+// see: https://react-router.now.sh/auth-workflow
+const MatchWhenLoggedIn = ({ component: Component, ...rest }) => (
+  <Match {...rest} render={props => (
+    Meteor.userId() ? (
+      <Component {...props}/>
+    ) : (
+      <Redirect to={{
+        pathname: '/login',
+        state: { from: props.location }
+      }}/>
+    )
+  )}/>
+)
+
+// see: https://react-router.now.sh/auth-workflow
+const MatchWhenAdmin = ({ component: Component, ...rest }) => (
+  <Match {...rest} render={props => (
+    Roles.userIsInRole(Meteor.userId(), 'admin') ? (
+      <Component {...props}/>
+    ) : (
+      <Redirect to={{
+        pathname: '/login',
+        state: { from: props.location }
+      }}/>
+    )
+  )}/>
+)
+
+//
 const App = () => (
   <Router>
     <div>
@@ -59,7 +87,6 @@ const App = () => (
       <Match pattern='/join' component={UserAppJoin}/>
       <Match pattern='/login' component={UserAppLogin}/> 
       
-      {/* XXX these routes should only be visible when logged in */}
       <Match pattern='/profile' component={UserAppProfile}/> 
       <Match pattern='/locations' component={UserAppLocationList}/> 
       <Match pattern='/location/:locationId' component={UserAppLocationDetails}/> 
@@ -67,11 +94,9 @@ const App = () => (
       <Match pattern='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 
       <Match pattern='/commonbike-ui' component={CommonBikeUI}/> 
       
-      {/* XXX these routes should only be visible with the correct (admin?) Role */}
       <Match pattern='/admin/locations' component={UserAppAdminLocationList}/> 
       <Match pattern='/admin/location/:locationId' component={UserAppAdminLocationDetails}/> 
 
-      {/* emergency exit */}
       <Miss component={NoMatch}/>
     </div>
   </Router>

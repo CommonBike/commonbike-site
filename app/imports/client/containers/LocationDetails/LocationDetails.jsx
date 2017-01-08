@@ -67,8 +67,9 @@ LocationDetails.defaultProps = {
 }
 
 export default createContainer((props) => {
-  Meteor.subscribe('locations');
+  Meteor.subscribe('locations', props.isEditable)
   Meteor.subscribe('objects');
+
   return {
     currentUser: Meteor.user(),
     locationId: props.locationId,

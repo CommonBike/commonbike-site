@@ -5,9 +5,9 @@
   },
   "private": {
     "testdata": {
-      "cleanup": true,
-      "insert": true,
-      "log": true
+      "cleanup": false,
+      "insert": false,
+      "log": false
     }
   }
 }

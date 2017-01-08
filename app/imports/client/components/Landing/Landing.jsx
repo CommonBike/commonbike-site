@@ -11,12 +11,6 @@ import RaisedButton from '../RaisedButton/RaisedButton.jsx';
 
 class Landing extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = { activeSlide: 0 }
-  }
-
   componentDidMount() {
     ReactDOM.findDOMNode(this.refs.base).style.display = 'flex';
   }

@@ -21,12 +21,6 @@ class Login extends Component {
    * GitHub: https://github.com/settings/applications/437650
    */
 
-  constructor(props) {
-    super(props);
-
-    this.state = { activeSlide: 0 }
-  }
-
   onError(err) {
     if(err) {
       console.log(err);

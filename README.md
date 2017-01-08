@@ -1,26 +1,23 @@
 # CommonBike App
 
-This repository exists of the Meteor-app for CommonBike.
+We are on a mission to create open source bike sharing.
 
-# Prerequisites
+This repository exists of the Meteor app for CommonBike.
 
-For this app we use the Meteor framework. Please install Meteor first. See [meteor.com](https://www.meteor.com/).
-
-# How do I run run the app?
+## How to use?
 
 - `cd path-of-this-git-repository/app`
 - `meteor --settings settings.json`
 
 Server is now running at [localhost:3000](http://localhost:3000)
 
-# How do I run run the Docker file
+> Do you use the CommonBike app for the first time? See [app/DEVELOP.md](app/DEVELOP.md) for useful information.
 
-`cd app/ && meteor build ../mrt_build`
-`docker build -t commonbike .` (notice the dot)
+## Participate!
 
-# What code libraries and techniques are used?
+Join us on [Slack](http://slack.common.bike) and other communication channels. (&raquo; [How to participate](https://github.com/CommonBike/wiki/wiki/How-to-participate)).
 
-- [Meteor](https://www.meteor.com/): main application framework
-- [React](https://facebook.github.io/react/): *one way data binding* library
-- [Ramda](http://ramdajs.com/): functional programming in JavaScript
-- [Fluture](https://github.com/Avaq/Fluture): Futures in JavaScript
+## Demo & Documentation
+
+- [Demo](https://common.bike)
+- [Documentation](https://github.com/CommonBike/commonbike-documentation/wiki)
