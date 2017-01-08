@@ -25,7 +25,8 @@ class ObjectDetails extends Component {
       <ObjectDetailsComponent
         location={this.props.location}
         object={this.props.object}
-        checkedIn={this.props.checkedIn} />
+        checkedIn={this.props.checkedIn}
+        isEditable={this.props.isEditable} />
     );
   }
 
@@ -33,18 +34,16 @@ class ObjectDetails extends Component {
 
 // Define what propTypes are allowed
 ObjectDetails.propTypes = {
-  locations: PropTypes.array,
   isEditable: PropTypes.any,
-  onClickHandler: PropTypes.any,
-  checkedIn: PropTypes.any
+  locations: PropTypes.array,
+  onClickHandler: PropTypes.any
 };
 
 // Set default prop values
 ObjectDetails.defaultProps = {
   isEditable: false,
   object: {},
-  location: {},
-  checkedIn: false
+  location: {}
 }
 
 export default createContainer((props) => {

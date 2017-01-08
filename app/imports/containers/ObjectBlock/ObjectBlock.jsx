@@ -39,7 +39,8 @@ class ObjectBlock extends Component {
     }
   }
 
-  viewItem() { this.context.history.push('/bike/details/' + this.props.item._id) }
+  // this.context.history.push('/bike/details/' + this.props.item._id) }
+  viewItem() { this.context.history.push((this.props.isEditable ? '/admin/bike/details/' : '/bike/details/') + this.props.item._id) }
 
   deleteItem() {
     if( ! confirm('Weet je zeker dat je de fiets "'+this.props.item.title+'" wilt verwijderen?') || ! confirm('Sure? If not sure: don\'t') )
