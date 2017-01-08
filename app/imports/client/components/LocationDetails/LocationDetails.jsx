@@ -6,7 +6,7 @@ import R from 'ramda';
 import RaisedButton from '../RaisedButton/RaisedButton.jsx'
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
 import ManageUserlist from '../ManageUserlist/ManageUserlist';
-import Map from '../../client/Map'
+import Map from '../../Map'
 
 class LocationDetails extends Component {
 

@@ -6,7 +6,7 @@ import R from 'ramda';
 import {propTypes} from 'react-router';
 
 // Import models
-import { Locations } from '../../api/locations.js'; 
+import { Locations } from '/imports/api/locations.js'; 
 
 // Import components
 import Block from '../../components/Block/Block';

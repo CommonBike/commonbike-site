@@ -8,7 +8,7 @@ import RaisedButton from '../RaisedButton/RaisedButton.jsx'
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
 import Button from '../Button/Button';
 import CheckInCode from '../CheckInCode/CheckInCode';
-import Map from '../../client/Map'
+import Map from '../../Map'
 
 class ObjectDetails extends Component {
 

@@ -6,7 +6,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import { Locks } from '/imports/api/locks.js';
 
 // Import templates
-import Lock from '/imports/containers/Lock/Lock.jsx';
+import Lock from '/imports/client/containers/Lock/Lock.jsx';
 
 class LockOverview extends Component {
 
