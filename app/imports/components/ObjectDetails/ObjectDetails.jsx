@@ -9,6 +9,10 @@ import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
 import Button from '../Button/Button';
 import CheckInCode from '../CheckInCode/CheckInCode';
 import Map from '../../client/Map'
+import CheckInOutProcessPlainKey from '../CheckInOutProcess/CheckInOutProcessPlainKey';
+import CheckInOutProcessAxaELock from '../CheckInOutProcess/CheckInOutProcessAxaELock';
+import CheckInOutProcessOpenKeylocker from '../CheckInOutProcess/CheckInOutProcessOpenKeylocker';
+import CheckInOutProcessOpenBikelocker from '../CheckInOutProcess/CheckInOutProcessOpenBikelocker';
 
 class ObjectDetails extends Component {
 
@@ -16,65 +20,29 @@ class ObjectDetails extends Component {
     super(props);
   }
 
-  setObjectReserved() {
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), 'reserved');
-  }
-
-  setObjectInUse() {
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), 'inuse');
-  }
-
-  setObjectAvailable() {
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), 'available');
-  }
-
-  setObjectOutOfOrder() {
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), 'outoforder');
-  }
-
-  renderButtons() {
-    if (this.props.isEditable) {
-        return this.renderButtonsForAdmin();
-    } else {
-        return this.renderButtonsForUser();      
-    }
-  }
-
-  renderButtonsForAdmin() {
-      if(this.props.object.state.state=='reserved') {
-        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Annuleer reservering!</Button>);
-      } else if(this.props.object.state.state=='inuse') {
-        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Annuleer verhuur!</Button>);
-      } else if(this.props.object.state.state=='outoforder') {
-        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Maak beschikbaar!</Button>);
-      } 
-
-      return (<Button onClick={() => this.setObjectOutOfOrder() } buttonStyle="huge">Maak niet beschikbaar!</Button>);
-  }
-
-  renderButtonsForUser() {
-        return (
-          <div>
-          {this.props.object.state.state=='available' ?
-            <Button onClick={() => this.setObjectReserved() } buttonStyle="huge">Reserveer!</Button> : <div /> }
-          {this.props.object.state.state=='reserved' ? 
-            <article>
-              <Button onClick={() => this.setObjectInUse() } buttonStyle="huge">Neem mee!</Button>
-              <CheckInCode />
-              <Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Toch maar niet!</Button>
-            </article>
-            : <div /> }
-          {this.props.object.state.state=='inuse' ? 
-            <article>
-              <CheckInCode code="C28" title="Retourcode" />
-              <Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Breng terug!</Button> 
-            </article>
-            : <div /> }
-          {this.props.object.state.state=='outoforder' ? 
-              <Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Maak beschikbaar!</Button> 
-            : <div /> }
-          </div>
+  renderCheckInOutProcess() {
+    var lockType = this.props.object.lock.type;
+    if(lockType=='open-bikelocker') {
+      return (
+        <CheckInOutProcessOpenBikelocker
+          object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
+          );
+    } else if(lockType=='open-keylocker') {
+      return (
+        <CheckInOutProcessOpenKeylocker 
+          object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
+          );
+    } else if(lockType=='axa-elock') {
+      return (
+        <CheckInOutProcessAxaELock 
+          object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
         );
+    } else {
+      return (
+        <CheckInOutProcessPlainKey 
+          object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
+        );
+    }
   }
 
   render() {
@@ -92,7 +60,7 @@ class ObjectDetails extends Component {
         <ObjectBlock
           item={this.props.object} />
 
-        { this.renderButtons() }
+        { this.renderCheckInOutProcess() }
         
       </div>
     );

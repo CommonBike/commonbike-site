@@ -27,12 +27,12 @@ var testUsers = [
 
 var testLocations = [
   {title:"J156A",
-   address: "Amsterdam, Netherlands",
+   address: "Jutfaseweg 156A, Utrecht, Netherlands",
    imageUrl:'https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/bike-256.png',
    providers:["j156a@commonbike.com", "user1@commonbike.com"],
    bikeimage: '/files/Block/bike.png',
-   bikes: [ { title: 'Batavus 1', description: 'Fietsnr. 1122', state: 'available'}, 
-            { title: 'Batavus 2', description: 'Fietsnr. 1134', state: 'available'}, 
+   bikes: [ { title: 'Batavus 1 (AXA)', description: 'Fietsnr. 1122 (AXA lock)', state: 'available', locktype: 'axa-elock'}, 
+            { title: 'Batavus 2 (KeyLocker)', description: 'Fietsnr. 1134 (keylocker)', state: 'available', locktype: 'open-keylocker'}, 
             { title: 'Batavus 3', description: 'Fietsnr. 1145', state: 'available'},
             { title: 'Batavus 4', description: 'Fietsnr. 1166', state: 'outoforder'} ]
   },
@@ -52,14 +52,14 @@ var testLocations = [
    imageUrl:'/files/Testdata/lockers.png',
    providers:["zeist@commonbike.com", "user1@commonbike.com"],
    bikeimage: '/files/Testdata/locker.png',
-   bikes: [ { title: 'Bikelocker A', description: 'Linkerkluis', state: 'available'}, 
-            { title: 'Bikelocker B', description: '1e kluis van links', state: 'available'}, 
-            { title: 'Bikelocker C', description: '2e kluis van links', state: 'available'},
-            { title: 'Bikelocker D', description: '3e kluis van links', state: 'available'},
-            { title: 'Bikelocker E', description: '3e kluis van rechts', state: 'outoforder'}, 
-            { title: 'Bikelocker F', description: '2e kluis van rechts', state: 'outoforder'}, 
-            { title: 'Bikelocker G', description: '1e kluis van rechts', state: 'outoforder'},
-            { title: 'Bikelocker H', description: 'rechterkluis', state: 'available'} ]
+   bikes: [ { title: 'Bikelocker A', description: 'Linkerkluis', state: 'available', locktype: 'open-bikelocker'}, 
+            { title: 'Bikelocker B', description: '1e kluis van links', state: 'available', locktype: 'open-bikelocker'}, 
+            { title: 'Bikelocker C', description: '2e kluis van links', state: 'available', locktype: 'open-bikelocker'},
+            { title: 'Bikelocker D', description: '3e kluis van links', state: 'available', locktype: 'open-bikelocker'},
+            { title: 'Bikelocker E', description: '3e kluis van rechts', state: 'outoforder', locktype: 'open-bikelocker'}, 
+            { title: 'Bikelocker F', description: '2e kluis van rechts', state: 'outoforder', locktype: 'open-bikelocker'}, 
+            { title: 'Bikelocker G', description: '1e kluis van rechts', state: 'outoforder', locktype: 'open-bikelocker'},
+            { title: 'Bikelocker H', description: 'rechterkluis', state: 'available', locktype: 'open-bikelocker'} ]
   },
   {title:"Zonder provider",
    imageUrl:'/files/Testdata/lockers.png',
@@ -91,7 +91,16 @@ var cleanupTestdata = function() {
     var hereitis=Locations.findOne({title: locationData.title});
     if(hereitis) {
         var id = hereitis._id;
+
+        // remove all objects for this location
+        var myObjects = Objects.find({locationId: id}).fetch();
+        _.each(myObjects, function (objectData) {
+           console.log('remove object' + objectData._id);
+           Objects.remove({_id: objectData._id});
+        });
+
         Locations.remove({_id: id});
+
     }
   });
 }
@@ -138,6 +147,49 @@ const Address2LatLng = (address) => {
   return [location.lat, location.lng]
 }
 
+// supported locktypes 
+// 'plainkey' - ask for key at the attendant
+// 'axa-elock' - open lock using bluetooth function on phone
+// 'open-bikelocker' - open lock using keycode on bike locker
+// 'open-keylocker' - open keylocker with given code to get the key
+var createLockCode = function(length) {
+  var base = Math.pow(10, length+1);
+  var code = Math.floor(base + Math.random() * base)
+  // console.log('code: ' + code);
+  return code.toString().substring(1, length+1);
+}
+
+var createLock = function(lockType) {
+  var lockInfo = {};
+
+  if(lockType!='axa-elock'&&lockType!='open-bikelocker'&&
+     lockType!='open-keylocker'&&lockType!='plainkey') {
+      // assume plainkey for unknown keytypes
+      lockType='plainkey';
+  }
+
+  lockInfo = {
+    type: lockType,
+    settings: {} // add settings for axa e-lock here
+  }
+
+  if(lockType=='plainkey') {
+    lockInfo.settings.pickupcode=createLockCode(4);
+    lockInfo.settings.returncode=createLockCode(4);
+  } else if(lockType=='open-bikelocker') {
+    lockInfo.settings.pickupcode=createLockCode(4);
+    lockInfo.settings.returncode=createLockCode(4);
+  } else if(lockType=='open-keylocker') {
+    lockInfo.settings.pickupcode=createLockCode(4);
+    lockInfo.settings.returncode=createLockCode(4);
+  } else if(lockType=='axa-elock') {
+
+  }
+
+
+  return lockInfo;
+}
+
 var checkTestLocations = function() {
   log('checking default locations');
 
@@ -176,6 +228,14 @@ var checkTestLocations = function() {
     _.each(locationData.bikes, function (bike) {
       var gimmebike=Objects.findOne({locationId: locationId, title: bike.title});
       if (!gimmebike) {
+
+        var lockinfo = null;
+        if(!bike.locktype) {
+          lockinfo = createLock('plainkey');
+        } else {
+          lockinfo = createLock(bike.locktype);
+        }
+
         var bikeid = Objects.insert({ 
           locationId: locationId,
           title: bike.title,
@@ -183,8 +243,10 @@ var checkTestLocations = function() {
           imageUrl: locationData.bikeimage,
           state: { state: bike.state,
                    userId: firstproviderid,
-                   timestamp: timestamp }
+                   timestamp: timestamp },
+          lock: lockinfo
         });
+
         // console.log('add new bike:' + bike.title + ' to location ' + locationData.title);
       }
     });
