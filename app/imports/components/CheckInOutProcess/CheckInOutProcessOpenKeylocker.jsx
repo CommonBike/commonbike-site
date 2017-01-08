@@ -11,36 +11,52 @@ class CheckInOutProcessOpenKeylocker extends CheckInOutProcessBase {
     super(props);
   }
 
-  render() {
-    if (this.props.isProvider) {
-        return this.renderButtonsForProvider();
-    } else {
-        return this.renderButtonsForUser();      
-    }
-  }
-
   renderButtonsForUser() {
-        return (
-          <div style={s.base}>
-          {this.props.object.state.state=='available' ?
-            <Button onClick={() => this.setObjectReserved() } buttonStyle="huge">Reserveer!</Button> : <div /> }
-          {this.props.object.state.state=='reserved' ? 
-            <div style={s.base}>
-              <Button style={s.button} onClick={() => this.setObjectInUse() } buttonStyle="huge">Sleutel pakken</Button>
-              <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="huge">Annuleer Reservering!</Button>
-            </div>
-            : <div /> }
-          {this.props.object.state.state=='inuse' ? 
-            <div>
-              <Button style={s.button} onClick={() => this.setObjectInUse() } buttonStyle="huge">Slot openen!</Button>
-              <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="huge">Fiets inleveren!</Button> 
-            </div>
-            : <div /> }
-          {this.props.object.state.state=='outoforder' ? 
-              <Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Maak beschikbaar!</Button> 
-            : <div /> }
-          </div>
-        );
+    return (
+      <div style={s.base}>
+      {this.props.object.state.state=='available' ?
+        <Button onClick={() => this.setObjectReserved() } buttonStyle="huge">Reserveer!</Button> : <div /> }
+      {this.props.object.state.state=='reserved' ? 
+        <div style={s.base}>
+          <ul style={s.list}>
+            <li style={s.listitem}>Uw fiets ophalen?</li>
+            <li style={s.listitem}>De sleutel van uw huurfiets bevindt zich in </li>
+            <li style={s.listitem}><b>sleutelkluis {this.props.object.lock.settings.keylocker}</b></li>
+            <li style={s.listitem}><img style={s.image} src="/files/Testdata/keylocker_02.jpg" /></li>
+            <li style={s.listitem}>U kunt de sleutelkluis als volgt openen:</li>
+            <li style={s.listitem}>Druk op Clear</li>
+            <li style={s.listitem}>Type <b>{this.props.object.lock.settings.pincode}</b></li>
+            <li style={s.listitem}>Gebruik de knop <b>OPEN</b> om de kluis te openen</li>
+            <li style={s.listitem}>Pak de fietssleutel</li>
+            <li style={s.listitem}>Sluit svp de kluis weer goed af</li>
+            <li style={s.listitem}>U kunt nu {this.props.object.description} meenemen</li>
+          </ul>
+          <Button style={s.button} onClick={() => this.setObjectInUse() } buttonStyle="huge">Sleutel gepakt!</Button>
+          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="huge">Reservering afbreken!</Button>
+        </div>
+        : <div /> }
+      {this.props.object.state.state=='inuse' ? 
+        <div>
+          <ul style={s.list}>
+            <li style={s.listitem}>Uw huurfiets weer inleveren?</li>
+            <li style={s.listitem}>U kunt uw fietssleutel terugplaatsen in</li>
+            <li style={s.listitem}><b>sleutelkluis {this.props.object.lock.settings.keylocker}</b></li>
+            <li style={s.listitem}><img style={s.image} src="/files/Testdata/keylocker_02.jpg" /></li>
+            <li style={s.listitem}>U kunt de sleutelkluis als volgt openen:</li>
+            <li style={s.listitem}>Druk op Clear</li>
+            <li style={s.listitem}>Type <b>{this.props.object.lock.settings.pincode}</b></li>
+            <li style={s.listitem}>Gebruik de knop <b>OPEN</b> om de kluis te openen</li>
+            <li style={s.listitem}>Leg de fietssleutel in de kluis</li>
+            <li style={s.listitem}>Sluit svp de kluis weer goed af</li>
+          </ul>
+          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="huge">Gedaan!</Button> 
+        </div>
+        : <div /> }
+      {this.props.object.state.state=='outoforder' ? 
+          <Button style={s.button}  onClick={() => this.setObjectAvailable() } buttonStyle="huge">Maak beschikbaar!</Button> 
+        : <div /> }
+      </div>
+    );
   }
 }
 
@@ -55,6 +71,28 @@ var s = {
 
   button: {
     display: 'block'
+  },
+
+  list: {
+    margin: '0 auto',
+    textAlign: 'center',
+    listStyle: 'none',
+  },
+
+  listitem: {
+    padding: '0 10px 0 0',
+    margin: '0 auto',
+    textAlign: 'center',
+    minHeight: '40px',
+    fontSize: '1.2em',
+    fontWeight: '500',
+    listStyle: 'none',
+  },
+
+  image: {
+    padding: '20px 20px 0 20px',
+    textAlign: 'center',
+    maxHeight: '250px',
   }
 }
 

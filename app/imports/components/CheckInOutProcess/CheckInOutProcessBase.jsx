@@ -38,8 +38,16 @@ class CheckInOutProcessBase extends Component {
       return (<Button onClick={() => this.setObjectOutOfOrder() } buttonStyle="huge">Maak niet beschikbaar!</Button>);
   }
 
+  renderButtonsForUser() {
+      return (<div />);
+  }
+
   render() {
-    return (<div />);
+    if(this.props.isProvider) {
+      return this.renderButtonsForProvider();
+    } else {
+      return this.renderButtonsForUser();
+    }
   }
 }
 
