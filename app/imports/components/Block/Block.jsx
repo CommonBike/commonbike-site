@@ -23,6 +23,22 @@ class Block extends Component {
     ReactDOM.findDOMNode(this.refs.textWrapper).style.display = 'flex';
   }
 
+  state2Text(state) {
+    if (state=='available') {
+      text = 'BESCHIKBAAR'; 
+    } else if (state=='reserved') {
+      text = 'GERESERVEERD';
+    } else if (state=='inuse') {
+      text = 'VERHUURD'; 
+    } else if (state=='outoforder') {
+      text = 'BUITEN GEBRUIK'; 
+    } else {
+      text = 'ONBEKEND';
+    }
+
+    return text;
+  }
+
   render() {
     return (
       <article style={Object.assign({}, s.base, ! this.props.isEditable && {cursor: 'pointer'})} onClick={this.props.onClick} ref="base">
@@ -41,6 +57,9 @@ class Block extends Component {
             &euro;3,00 per dag
           </div>
 
+          <div style={Object.assign({display: 'none'}, s.state, this.props.showState && {display: 'block'})}>
+             { this.props.showState? this.state2Text(this.props.item.state.state):null }
+           </div>
         </div>
 
         <button style={Object.assign({display: 'none'}, s.deleteButton, this.props.isEditable && {display: 'block'})} onClick={this.props.deleteItem}>delete</button>
@@ -81,6 +100,9 @@ var s = {
   title: {
     margin: '0 10px',
   },
+  state: {
+    margin: '0 10px',
+  },
   price: {
     margin: '0 10px',
   },
@@ -110,6 +132,7 @@ Block.propTypes = {
 Block.defaultProps = {
   isEditable: false,
   showPrice: false,
+  showState: false,
 }
 
 export default Radium(Block);

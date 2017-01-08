@@ -4,11 +4,11 @@ CheckInCode = (props) =>
   <div style={Object.assign({}, s.base, props.style)}>
 
     <div style={s.title}>
-      Je reservering
+      {props.title}
     </div>
 
     <div style={s.code}>
-      4571
+      {props.code}
     </div>
 
   </div>
@@ -35,6 +35,13 @@ var s = {
 CheckInCode.propTypes = {
   // Override the inline-styles of the root element
   style: PropTypes.object,
+  title: PropTypes.string,
+  code: PropTypes.string
+}
+
+CheckInCode.defaultProps = {
+  title: "Je reservering",
+  code: "4571"
 }
 
 export default CheckInCode;

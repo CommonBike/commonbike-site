@@ -31,10 +31,10 @@ var testLocations = [
    imageUrl:'https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/bike-256.png',
    providers:["j156a@commonbike.com", "user1@commonbike.com"],
    bikeimage: '/files/Block/bike.png',
-   bikes: [ { title: 'Batavus 1', description: 'Fietsnr. 1122'}, 
-            { title: 'Batavus 2', description: 'Fietsnr. 1134'}, 
-            { title: 'Batavus 3', description: 'Fietsnr. 1145'},
-            { title: 'Batavus 4', description: 'Fietsnr. 1166'} ]
+   bikes: [ { title: 'Batavus 1', description: 'Fietsnr. 1122', state: 'available'}, 
+            { title: 'Batavus 2', description: 'Fietsnr. 1134', state: 'available'}, 
+            { title: 'Batavus 3', description: 'Fietsnr. 1145', state: 'available'},
+            { title: 'Batavus 4', description: 'Fietsnr. 1166', state: 'outoforder'} ]
   },
   {title:"S2M",
    description: "The heart and mind",
@@ -42,32 +42,32 @@ var testLocations = [
    imageUrl:'https://cdn1.iconfinder.com/data/icons/UrbanStories-png-Artdesigner-lv/256/Bicycle_by_Artdesigner.lv.png',
    providers:["s2m@commonbike.com", "user2@commonbike.com"],
    bikeimage: '/files/Block/bike.png',
-   bikes: [ { title: 'Giant 1', description: 'Damesfiets 33879'}, 
-            { title: 'Giant 2', description: 'Damesfiets 33277 (met kinderzit)'}, 
-            { title: 'Giant 3', description: 'Herenfiets 31119'},
-            { title: 'Bakfiets', description: 'Bakfiets'} ]
+   bikes: [ { title: 'Giant 1', description: 'Damesfiets 33879', state: 'available'}, 
+            { title: 'Giant 2', description: 'Damesfiets 33277 (met kinderzit)', state: 'available'}, 
+            { title: 'Giant 3', description: 'Herenfiets 31119', state: 'available'},
+            { title: 'Bakfiets', description: 'Bakfiets', state: 'available'} ]
   },
   {title:"Lockers Zeist",
    address:"Zeist, Netherlands",
    imageUrl:'/files/Testdata/lockers.png',
    providers:["zeist@commonbike.com", "user1@commonbike.com"],
    bikeimage: '/files/Testdata/locker.png',
-   bikes: [ { title: 'Bikelocker A', description: 'Linkerkluis'}, 
-            { title: 'Bikelocker B', description: '1e kluis van links'}, 
-            { title: 'Bikelocker C', description: '2e kluis van links'},
-            { title: 'Bikelocker D', description: '3e kluis van links'},
-            { title: 'Bikelocker E', description: '3e kluis van rechts'}, 
-            { title: 'Bikelocker F', description: '2e kluis van rechts'}, 
-            { title: 'Bikelocker G', description: '1e kluis van rechts'},
-            { title: 'Bikelocker H', description: 'rechterkluis'} ]
+   bikes: [ { title: 'Bikelocker A', description: 'Linkerkluis', state: 'available'}, 
+            { title: 'Bikelocker B', description: '1e kluis van links', state: 'available'}, 
+            { title: 'Bikelocker C', description: '2e kluis van links', state: 'available'},
+            { title: 'Bikelocker D', description: '3e kluis van links', state: 'available'},
+            { title: 'Bikelocker E', description: '3e kluis van rechts', state: 'outoforder'}, 
+            { title: 'Bikelocker F', description: '2e kluis van rechts', state: 'outoforder'}, 
+            { title: 'Bikelocker G', description: '1e kluis van rechts', state: 'outoforder'},
+            { title: 'Bikelocker H', description: 'rechterkluis', state: 'available'} ]
   },
   {title:"Zonder provider",
    imageUrl:'/files/Testdata/lockers.png',
    providers:[],
    bikeimage: '/files/Testdata/locker.png',
-   bikes: [ { title: 'Fiets 1', description: 'Blauwe fiets'}, 
-            { title: 'Fiets 2', description: 'Witte fiets'}, 
-            { title: 'Fiets 3', description: 'Rode fiets'} ]
+   bikes: [ { title: 'Fiets 1', description: 'Blauwe fiets', state: 'available'}, 
+            { title: 'Fiets 2', description: 'Witte fiets', state: 'available'}, 
+            { title: 'Fiets 3', description: 'Rode fiets', state: 'available'} ]
   }
 ];
 
@@ -159,14 +159,20 @@ var checkTestLocations = function() {
       // log('add new location:' + locationData.title + ' id: ' + locationId);
     }
 
+    var firstproviderid = null;
     _.each(locationData.providers, function (provider) {
       var hithere=Accounts.findUserByEmail(provider);
       if (hithere) {
+        if(firstproviderid==null) { 
+          firstproviderid = hithere._id;
+        }
+
         log('adding provider ' + provider + ' to ' + locationData.title);
         Meteor.users.update({_id: hithere._id}, {$addToSet: {provider_locations: locationId}} );
       }
     });
 
+    var timestamp =  new Date().valueOf();
     _.each(locationData.bikes, function (bike) {
       var gimmebike=Objects.findOne({locationId: locationId, title: bike.title});
       if (!gimmebike) {
@@ -174,11 +180,13 @@ var checkTestLocations = function() {
           locationId: locationId,
           title: bike.title,
           description: bike.description,
-          imageUrl: locationData.bikeimage
+          imageUrl: locationData.bikeimage,
+          state: { state: bike.state,
+                   userId: firstproviderid,
+                   timestamp: timestamp }
         });
-
         // console.log('add new bike:' + bike.title + ' to location ' + locationData.title);
-    }
+      }
     });
   });
 };    

@@ -52,6 +52,7 @@ class ObjectBlock extends Component {
     return (
       <Block
         item={this.props.item}
+        showState="true"
         showPrice="true"
         isEditable={this.props.isEditable}
         newAvatar={this.newAvatar.bind(this)}

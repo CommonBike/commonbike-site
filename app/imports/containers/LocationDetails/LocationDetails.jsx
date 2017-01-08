@@ -69,10 +69,18 @@ LocationDetails.defaultProps = {
 export default createContainer((props) => {
   Meteor.subscribe('locations');
   Meteor.subscribe('objects');
+
+  var filter = null;
+  if(props.isEditable) {
+      filter = {locationId: props.locationId}
+  } else {
+      filter = {locationId: props.locationId, 'state.state':'available'}
+  }
+
   return {
     currentUser: Meteor.user(),
     locationId: props.locationId,
     location: Locations.find({_id: props.locationId}).fetch()[0],
-    objects: Objects.find({locationId: props.locationId}, {sort: {title: 1}}).fetch()
+    objects: Objects.find(filter, {sort: {title: 1}}).fetch()
   };
 }, LocationDetails);
