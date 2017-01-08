@@ -21,8 +21,6 @@ import ObjectDetails from '/imports/containers/ObjectDetails/ObjectDetails.jsx'
 import CommonBikeUI from '/imports/commonbike-ui.jsx'
 import NoMatch from '/imports/components/NoMatch/NoMatch.jsx'
 
-Meteor.subscribe('locations')
-
 const UserAppLanding = () => (<UserApp showPageHeader={false} content={<Landing/>} />)
 const UserAppJoin = () => (<UserApp content={<ContentPage><Join /></ContentPage>} />) 
 const UserAppLogin = () => (<UserApp content={<CustomPage><Login /></CustomPage>} />) // Login redirectTo={params.redirectTo}

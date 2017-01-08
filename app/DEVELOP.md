@@ -11,16 +11,16 @@
 
 ## 1. How to start
 
-**Install Meteor**
+**1.1 Install Meteor**
 
 For this app we use the Meteor framework. Please install Meteor first. See [meteor.com](https://www.meteor.com/).
 
-**Install npm modules**
+**1.2 Install npm modules**
 
 1. `cd folderOfYourProject`
 2. `meteor npm install`
 
-**Install git flow for easy branching**
+**1.3 Install git flow for easy branching**
 
 1. Install [git flow](https://github.com/nvie/gitflow) ([install guide](https://github.com/nvie/gitflow/wiki/Installation))
 
