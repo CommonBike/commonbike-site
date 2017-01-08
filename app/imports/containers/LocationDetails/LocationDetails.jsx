@@ -74,7 +74,7 @@ export default createContainer((props) => {
   if(props.isEditable) {
       filter = {locationId: props.locationId}
   } else {
-      filter = {locationId: props.locationId, 'state.state':'available'}
+      filter = {locationId: props.locationId, $or: [{'state.state':'available'}, {'state.userId': Meteor.userId()}]}
   }
 
   return {

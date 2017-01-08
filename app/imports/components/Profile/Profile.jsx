@@ -16,8 +16,7 @@ class Profile extends Component {
   }
 
   reservations() {
-    alert('Coming soon to an app installed on your phone.');
-    // this.context.history.push('/') 
+    this.context.history.push('/objects') 
   }
 
   locations() { 

@@ -18,6 +18,7 @@ import Profile from '/imports/components/Profile/Profile.jsx'
 import LocationList from '/imports/containers/LocationList/LocationList.jsx'
 import LocationDetails from '/imports/containers/LocationDetails/LocationDetails.jsx'
 import ObjectDetails from '/imports/containers/ObjectDetails/ObjectDetails.jsx'
+import ObjectList from '/imports/containers/ObjectList/ObjectList.jsx'
 import CommonBikeUI from '/imports/commonbike-ui.jsx'
 import NoMatch from '/imports/components/NoMatch/NoMatch.jsx'
 
@@ -32,6 +33,8 @@ const UserAppLocationDetails = ({params}) => {
     <UserApp content={<LocationDetails locationId={params.locationId}/>} />
   )
 }
+
+const UserAppObjectList = () => (<UserApp content={<ObjectList />} />)
 
 const UserAppCustomPageObjectDetails = ({params}) => {
   return (
@@ -89,6 +92,7 @@ const App = () => (
       
       <Match pattern='/profile' component={UserAppProfile}/> 
       <Match pattern='/locations' component={UserAppLocationList}/> 
+      <Match pattern='/objects' component={UserAppObjectList}/> 
       <Match pattern='/location/:locationId' component={UserAppLocationDetails}/> 
       <Match pattern='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
       <Match pattern='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 
