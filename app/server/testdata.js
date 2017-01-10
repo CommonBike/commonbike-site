@@ -25,6 +25,10 @@ var testUsers = [
      password:"common!!",roles:[]},
     {name:"easyfiets",email:"easyfiets@commonbike.com",
      password:"easyfiets!!", roles:[]},
+    {name:"tourist1",email:"tourist1@commonbike.com",
+     password:"common!!", roles:[]},
+     {name:"tourist2",email:"tourist2@commonbike.com",
+     password:"common!!", roles:[]},
   ];
 
 var testLocations = [
@@ -90,8 +94,10 @@ var testLocations = [
    imageUrl:'/files/Testdata/easyfiets-logo.jpg',
    providers:["easyfiets@commonbike.com"],
    bikeimage: '/files/Testdata/easyfiets-bike.jpg',
-   bikes: [ { title: 'Easyfiets 1001', description: 'in het easyfiets rek', state: 'available'}, 
-            { title: 'Easyfiets 2361', description: 'in het easyfiets rek', state: 'available'} ] 
+   bikes: [ { title: 'Easyfiets 1', description: 'Herenfiets', state: 'available', 
+              locktype: 'plainkey', locksettings: { keyid: '1001' }}, 
+            { title: 'Easyfiets 5', description: 'Damesfiets', state: 'available', 
+              locktype: 'plainkey', locksettings: { keyid: '2361' }} ] 
   },
   {title:"Easyfiets - Bij Leiden Lammenschans",
    address: "Kamerlingh Onnesplein 4, 2313 VL Leiden, the Netherlands",
@@ -99,11 +105,33 @@ var testLocations = [
    imageUrl:'/files/Testdata/easyfiets-logo.jpg',
    providers:["easyfiets@commonbike.com"],
    bikeimage: '/files/Testdata/easyfiets-bike.jpg',
-   bikes: [ { title: 'Easyfiets 2334', description: 'in het easyfiets rek', state: 'available'}, 
-            { title: 'Easyfiets 1789', description: 'in het easyfiets rek', state: 'available'}, 
-            { title: 'Easyfiets 13', description: 'in het easyfiets rek', state: 'available'} , 
-            { title: 'Easyfiets 1', description: 'in het easyfiets rek', state: 'available'} , 
-            { title: 'Easyfiets 12', description: 'in het easyfiets rek', state: 'available'}  ]
+   bikes: [ { title: 'Easyfiets 2', description: 'Herenfiets', state: 'available', 
+              locktype: 'plainkey', locksettings: { keyid: '2334' }}, 
+            { title: 'Easyfiets 3', description: 'in het easyfiets rek', state: 'available', 
+              locktype: 'plainkey', locksettings: { keyid: '1789' }}, 
+            { title: 'Easyfiets 4', description: 'in het easyfiets rek', state: 'available', 
+              locktype: 'plainkey', locksettings: { keyid: '2662' }} , 
+            { title: 'Easyfiets 8', description: 'in het easyfiets rek', state: 'available', 
+              locktype: 'plainkey', locksettings: { keyid: '9366' }} , 
+            { title: 'Easyfiets 11', description: 'in het easyfiets rek', state: 'outoforder', 
+              locktype: 'plainkey', locksettings: { keyid: '4425' }}  ]
+  },
+  {title:"Easyfiets - Haagweg",
+   address: "Haagweg 8, Leiden, the Netherlands",
+   lat_lng: [52.158957, 4.478508],
+   imageUrl:'/files/Testdata/easyfiets-logo.jpg',
+   providers:["easyfiets@commonbike.com"],
+   bikeimage: '/files/Testdata/easyfiets-bike.jpg',
+   bikes: [ { title: 'Easyfiets 6115', description: 'in het easyfiets rek', state: 'available', 
+              locktype: 'plainkey', locksettings: { keyid: '6115' }}, 
+            { title: 'Easyfiets 123', description: 'in het easyfiets rek', state: 'available', 
+              locktype: 'plainkey', locksettings: { keyid: '123' }}, 
+            { title: 'Easyfiets 17', description: 'in het easyfiets rek', state: 'available', 
+              locktype: 'plainkey', locksettings: { keyid: '17' }} , 
+            { title: 'Easyfiets 21', description: 'in het easyfiets rek', state: 'available', 
+              locktype: 'plainkey', locksettings: { keyid: '21' }} , 
+            { title: 'Easyfiets 33', description: 'in het easyfiets rek', state: 'available', 
+              locktype: 'plainkey', locksettings: { keyid: '33' }}  ]
   }
 ];
 
@@ -196,7 +224,7 @@ var createLockCode = function(length) {
   return code.toString().substring(1, length+1);
 }
 
-var createLock = function(locktype, locksettings) {
+var createLock = function(locktype, locksettings,object) {
   var lockInfo = {};
 
   if(locktype!='axa-elock'&&locktype!='open-bikelocker'&&
@@ -211,7 +239,7 @@ var createLock = function(locktype, locksettings) {
   }
 
   if(locktype=='plainkey'||locktype=='open-bikelocker') {
-    lockInfo.settings = Object.assign({pickupcode: createLockCode(4), returncode: createLockCode(4) }, locksettings);  
+    lockInfo.settings = Object.assign({keyid: '0000' }, locksettings);  
   } else if(locktype=='open-keylocker') {
     lockInfo.settings = Object.assign({keylocker: 1, pincode: '1234'}, locksettings);  
   } else if(locktype=='axa-elock') {
@@ -271,7 +299,7 @@ var checkTestLocations = function() {
           lockinfo = createLock(bike.locktype, bike.locksettings);
         }
 
-        var bikeid = Objects.insert({ 
+        var keyid = Objects.insert({ 
           locationId: locationId,
           title: bike.title,
           description: bike.description,

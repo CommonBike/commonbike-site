@@ -45,19 +45,29 @@ var s = {
 ObjectList.propTypes = {
   objects: PropTypes.array,
   isEditable: PropTypes.any,
+  isRentalMode: PropTypes.any
 };
 
 ObjectList.defaultProps = {
-  isEditable: false
+  isEditable: false,
+  isRentalMode: false
 }
 
 export default createContainer((props) => {
   Meteor.subscribe('objects');
 
-  var filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}], 'state.userId':Meteor.userId()};
+  var filter=null;
+  var title="";
+  if(!props.isRentalMode) {
+    title = 'Bekijk hier jouw reserveringen';
+    filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}], 'state.userId':Meteor.userId()};
+  } else {
+    title = 'Verhuurstatus';
+    filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}]};
+  }
 
   return {
-  	title: "Bekijk hier jouw reserveringen",
+  	title: title,
     objects: Objects.find(filter, {sort: {title: 1}}).fetch()
   };
 }, ObjectList);

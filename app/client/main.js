@@ -36,6 +36,8 @@ const UserAppLocationDetails = ({params}) => {
 
 const UserAppObjectList = () => (<UserApp content={<ObjectList />} />)
 
+const UserAppRentalList = () => (<UserApp content={<ObjectList isRentalMode="true"/>} />)
+
 const UserAppCustomPageObjectDetails = ({params}) => {
   return (
     <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails objectId={params.objectId}/></CustomPage>} />
@@ -105,6 +107,7 @@ const App = () => (
       <Match pattern='/commonbike-ui' component={CommonBikeUI}/> 
       
       <Match pattern='/admin/locations' component={UserAppAdminLocationList}/> 
+      <Match pattern='/admin/rentals' component={UserAppRentalList}/> 
       <Match pattern='/admin/location/:locationId' component={UserAppAdminLocationDetails}/> 
       <Match pattern='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/> 
 
