@@ -23,6 +23,8 @@ var testUsers = [
      password:"common!!",roles:[]},
     {name:"provider @ Zeist",email:"zeist@commonbike.com",
      password:"common!!",roles:[]},
+    {name:"easyfiets",email:"easyfiets@commonbike.com",
+     password:"easyfiets!!", roles:[]},
   ];
 
 var testLocations = [
@@ -52,7 +54,8 @@ var testLocations = [
             { title: 'Bakfiets', description: 'Bakfiets', state: 'available'} ]
   },
   {title:"Lockers Zeist",
-   address:"Zeist, Netherlands",
+   address:"Utrechtseweg 2, 3732 HB De Bilt, Netherlands",
+   lat_lng: [52.098325, 5.212101],
    imageUrl:'/files/Testdata/lockers.png',
    providers:["zeist@commonbike.com", "user1@commonbike.com"],
    bikeimage: '/files/Testdata/locker.png',
@@ -76,14 +79,35 @@ var testLocations = [
   {title:"Zonder provider",
    imageUrl:'/files/Testdata/lockers.png',
    providers:[],
-   bikeimage: '/files/Testdata/locker.png',
+   bikeimage: '/files/Testdata/easyfiets.png',
    bikes: [ { title: 'Fiets 1', description: 'Blauwe fiets', state: 'available'}, 
             { title: 'Fiets 2', description: 'Witte fiets', state: 'available'}, 
             { title: 'Fiets 3', description: 'Rode fiets', state: 'available'} ]
+  },
+  {title:"Easyfiets - Bij Leiden CS",
+   address: "Bargelaan 68, 2333 CV Leiden",
+   lat_lng: [ 52.166636, 4.481510],
+   imageUrl:'/files/Testdata/easyfiets-logo.jpg',
+   providers:["easyfiets@commonbike.com"],
+   bikeimage: '/files/Testdata/easyfiets-bike.jpg',
+   bikes: [ { title: 'Easyfiets 1001', description: 'in het easyfiets rek', state: 'available'}, 
+            { title: 'Easyfiets 2361', description: 'in het easyfiets rek', state: 'available'} ] 
+  },
+  {title:"Easyfiets - Bij Leiden Lammenschans",
+   address: "Kamerlingh Onnesplein 4, 2313 VL Leiden, the Netherlands",
+   lat_lng: [52.146937, 4.492933],
+   imageUrl:'/files/Testdata/easyfiets-logo.jpg',
+   providers:["easyfiets@commonbike.com"],
+   bikeimage: '/files/Testdata/easyfiets-bike.jpg',
+   bikes: [ { title: 'Easyfiets 2334', description: 'in het easyfiets rek', state: 'available'}, 
+            { title: 'Easyfiets 1789', description: 'in het easyfiets rek', state: 'available'}, 
+            { title: 'Easyfiets 13', description: 'in het easyfiets rek', state: 'available'} , 
+            { title: 'Easyfiets 1', description: 'in het easyfiets rek', state: 'available'} , 
+            { title: 'Easyfiets 12', description: 'in het easyfiets rek', state: 'available'}  ]
   }
 ];
 
-var cleanupTestdata = function() {
+var cleanupTestUsers = function() {
   _.each(testUsers, function (userData) {
     var hithere=Accounts.findUserByEmail(userData.email);
     if(hithere) {
@@ -98,7 +122,9 @@ var cleanupTestdata = function() {
       Meteor.users.remove({_id: id});
     } 
   });
+}
 
+var cleanupTestData = function() {
   _.each(testLocations, function (locationData) {
     var hereitis=Locations.findOne({title: locationData.title});
     if(hereitis) {
@@ -112,7 +138,6 @@ var cleanupTestdata = function() {
         });
 
         Locations.remove({_id: id});
-
     }
   });
 }
@@ -207,11 +232,15 @@ var checkTestLocations = function() {
       locationId = hereitis._id;
       //  log('check existing location:' + locationData.title);
     } else { 
+      if(!locationData.lat_lng) {
+        locationData.lat_lng=Address2LatLng(locationData.address);
+      }
+
       locationId = Locations.insert({ 
         title: locationData.title,
         description: locationData.description || '',
         address: locationData.address || '',
-        lat_lng: Address2LatLng(locationData.address),
+        lat_lng: locationData.lat_lng,
         imageUrl: locationData.imageUrl,
       });
       // log('add new location:' + locationData.title + ' id: ' + locationId);
@@ -261,13 +290,17 @@ var checkTestLocations = function() {
 
 /* Use settings.json if you want to generate / check testdata when 
    the application starts 
+
+   testdata.cleanupusers -> remove all testusers
+   testdata.cleanupother -> remove all other testdata
+   testdata.insert -> inserts / updates testdata
+
+
 */
 Meteor.startup(() => {
   if(!Meteor.isProduction) {
-    if (testdata.cleanup) {
-      cleanupTestdata()  // to reset the testdata before each run 
-    }
-
+    if (testdata.cleanupusers) { cleanupTestUsers(); }
+    if (testdata.cleanupother) { cleanupTestData(); }
     if (testdata.insert) {
       checkTestUsers()
       checkTestLocations()
