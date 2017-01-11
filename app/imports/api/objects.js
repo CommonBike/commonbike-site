@@ -45,6 +45,14 @@ if (Meteor.isServer) {
   Meteor.publish('objects', function objectsPublication() {
     return Objects.find();
   });
+
+  Meteor.publish('objects_provider', function objectsPublication() {
+    console.log("my locations", Meteor.user().providerlocations);
+    var mylocations = Meteor.user().providerlocations||[];
+    // var mylocations = [];
+    // return Objects.find({locationId: { $in: mylocations }});
+    return Objects.find();
+  });
 }
 
 Meteor.methods({
@@ -93,25 +101,4 @@ Meteor.methods({
 
     return;
   },
-  // 'objects.setStateInUse'(_id, userId){
-  //   // Make sure the user is logged in
-  //   if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
-
-  //   var timestamp = new Date().valueOf();
-  //   Objects.update(_id, {
-  //     'state.userId': userId,
-  //     'state.state': 'inuse',
-  //     'state.timestamp': timestamp
-  //   });
-  // }
-  // 'objects.setStateAvailable'(_id, userId){
-  //   Objects.update(_id, {
-  //     'state.userId': userId,
-  //     'state.state': 'inuse',
-  //     description: data.description,
-  //     imageUrl: data.imageUrl
-  //   });
-  // },
-  // 'objects.setStateOutOfOrder'(_id, userId){
-  // }
 });

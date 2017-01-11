@@ -36,7 +36,7 @@ const UserAppLocationDetails = ({params}) => {
 
 const UserAppObjectList = () => (<UserApp content={<ObjectList />} />)
 
-const UserAppRentalList = () => (<UserApp content={<ObjectList isRentalMode="true"/>} />)
+const UserAppRentalList = () => (<UserApp content={<ObjectList isEditable="true"/>} />)
 
 const UserAppCustomPageObjectDetails = ({params}) => {
   return (
@@ -98,18 +98,18 @@ const App = () => (
       <Match pattern='/join' component={UserAppJoin}/>
       <Match pattern='/login' component={UserAppLogin}/> 
       
-      <Match pattern='/profile' component={UserAppProfile}/> 
-      <Match pattern='/locations' component={UserAppLocationList}/> 
-      <Match pattern='/objects' component={UserAppObjectList}/> 
-      <Match pattern='/location/:locationId' component={UserAppLocationDetails}/> 
-      <Match pattern='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
-      <Match pattern='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 
-      <Match pattern='/commonbike-ui' component={CommonBikeUI}/> 
+      <MatchWhenLoggedIn pattern='/profile' component={UserAppProfile}/> 
+      <MatchWhenLoggedIn pattern='/locations' component={UserAppLocationList}/> 
+      <MatchWhenLoggedIn pattern='/objects' component={UserAppObjectList}/> 
+      <MatchWhenLoggedIn pattern='/location/:locationId' component={UserAppLocationDetails}/> 
+      <MatchWhenLoggedIn pattern='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
+      <MatchWhenLoggedIn pattern='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 
+      <MatchWhenLoggedIn pattern='/commonbike-ui' component={CommonBikeUI}/> 
       
-      <Match pattern='/admin/locations' component={UserAppAdminLocationList}/> 
-      <Match pattern='/admin/rentals' component={UserAppRentalList}/> 
-      <Match pattern='/admin/location/:locationId' component={UserAppAdminLocationDetails}/> 
-      <Match pattern='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/> 
+      <MatchWhenLoggedIn pattern='/admin/locations' component={UserAppAdminLocationList}/> 
+      <MatchWhenLoggedIn pattern='/admin/rentals' component={UserAppRentalList}/> 
+      <MatchWhenLoggedIn pattern='/admin/location/:locationId' component={UserAppAdminLocationDetails}/> 
+      <MatchWhenLoggedIn pattern='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/> 
 
       <Miss component={NoMatch}/>
     </div>

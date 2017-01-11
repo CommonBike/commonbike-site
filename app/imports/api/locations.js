@@ -47,8 +47,8 @@ if (Meteor.isServer) {
         return Locations.find();
       } else {
         var daUser = Meteor.users.findOne({_id:this.userId});
-        if (daUser&&daUser.provider_locations) {
-          return Locations.find({_id: {$in: daUser.provider_locations}});  
+        if (daUser&&daUser.profile.provider_locations) {
+          return Locations.find({_id: {$in: daUser.profile.provider_locations}});  
         } else {
           return this.ready();      
         }
@@ -72,7 +72,7 @@ if(Meteor.isServer) {
       });
 
       // current user is always assigned as first provider for a new location
-      Meteor.users.update({_id: Meteor.userId()}, {$addToSet: {provider_locations: locationId}});
+      Meteor.users.update({_id: Meteor.userId()}, {$addToSet: {'profile.provider_locations': locationId}});
 
       Locations.update(locationId, {
         title: data.title
@@ -93,16 +93,16 @@ if(Meteor.isServer) {
       });
     },
     'locations.remove'(_id){
-      // remove this location from the provider_locations list for all users 
-      Meteor.users.update({}, {$pull: {provider_locations: _id}});
+      // remove this location from the 'profile.provider_locations' list for all users 
+      Meteor.users.update({}, {$pull: {'profile.provider_locations': _id}});
 
       Locations.remove(_id);
     },
     'locationprovider.getuserlist'(locationId) {
       // return a list of users that are providers for the given location 
-      // - providers are maintained as a location id list (provider_locations) 
+      // - providers are maintained as a location id list ('profile.provider_locations') 
       // in the user document
-      var daUsers = Meteor.users.find({provider_locations: {$in: [locationId]}}, 
+      var daUsers = Meteor.users.find({'profile.provider_locations': {$in: [locationId]}}, 
                                     {fields: {_id:1, emails:1}}).fetch();
       if(daUsers) {
         var result = [];
@@ -121,7 +121,7 @@ if(Meteor.isServer) {
       if(locationId&&emailaddress) {
         var daUser = Accounts.findUserByEmail(emailaddress);
         if(daUser) {
-          Meteor.users.update({_id: daUser._id}, {$addToSet: {provider_locations: locationId}});
+          Meteor.users.update({_id: daUser._id}, {$addToSet: {'profile.provider_locations': locationId}});
         } else {
           throw new Meteor.Error('No user exists with email: ' + emailaddress, 'locationprovider.addUser: No user exists with email: ' + emailaddress);
         }
@@ -130,9 +130,14 @@ if(Meteor.isServer) {
     'locationprovider.removeuser'(locationId, userId) {
       // given user is removed as provider for the given location
       if(locationId&&userId) {
-        Meteor.users.update({_id: userId}, {$pull: {provider_locations: locationId}});
+        Meteor.users.update({_id: userId}, {$pull: {'profile.provider_locations': locationId}});
       }
     },
+    'currentuser.update_avatar'(new_avatar_url) {
+      if(this.userId) {
+        Meteor.users.update(this.userId, {$set : { 'profile.avatar' : new_avatar_url }});
+      }
+    }
     // NICE TO HAVE: this function is used in the change event in the ManageUserlist component
     // 'locationprovider.emailvalid'(email) {
     //   var daUser = Accounts.findUserByEmail(email);
