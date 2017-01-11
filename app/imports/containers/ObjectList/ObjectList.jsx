@@ -44,26 +44,37 @@ var s = {
 
 ObjectList.propTypes = {
   objects: PropTypes.array,
-  isEditable: PropTypes.any,
-  isRentalMode: PropTypes.any
+  isEditable: PropTypes.any
 };
 
 ObjectList.defaultProps = {
-  isEditable: false,
-  isRentalMode: false
+  isEditable: false
 }
 
 export default createContainer((props) => {
   Meteor.subscribe('objects');
+  Meteor.subscribe('users');
 
+  
   var filter=null;
   var title="";
-  if(!props.isRentalMode) {
+  if(!props.isEditable) {
     title = 'Bekijk hier jouw reserveringen';
     filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}], 'state.userId':Meteor.userId()};
   } else {
-    title = 'Verhuurstatus';
-    filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}]};
+    title = 'Jouw verhuurde fietsen';
+
+    // only show objects for which the current loggedin user is one of the providers
+    console.log(Meteor.user());
+
+    var mylocations = [];
+    if(Meteor.user()) {
+      mylocations = Meteor.user().profile.provider_locations||[];
+    }
+
+    console.log(mylocations)
+
+    filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}], locationId: { $in: mylocations }};
   }
 
   return {

@@ -5,6 +5,8 @@ import {propTypes} from 'react-router';
 
 // Import components
 import RaisedButton from '../RaisedButton/RaisedButton';
+import '../../api/users.js'; 
+
 
 class Profile extends Component {
   constructor(props) {
@@ -40,6 +42,18 @@ class Profile extends Component {
     }
   }
 
+  // newAvatar :: Event -> NO PURE FUNCTION
+  newAvatar(e) {
+    if( ! this.props.isEditable) return;
+
+    var imageUrl =
+      prompt('Wat is de URL van de nieuwe avatar? Wil je geen nieuwe avatar toevoegen, klik dan op Annuleren/Cancel')
+
+    if(imageUrl) {
+      Meteor.call('currentuser.update_avatar', imageUrl);
+    }
+  }
+
   render() {
     self = this;
     return (
@@ -47,7 +61,7 @@ class Profile extends Component {
 
         <div style={s.centerbox}>
 
-          <Avatar style={s.avatar} />
+          <Avatar style={s.avatar} newAvatar={this.newAvatar.bind(this)} />
 
           <p style={s.personalia}>
             { this.getUserPersonalia() }
@@ -88,7 +102,9 @@ var s = {
     fontSize: '20px',
   },
   avatar: {
-    display: 'inline-block'
+    display: 'inline-block',
+    width: '200px',
+    height: '200px'
   }
 }
 

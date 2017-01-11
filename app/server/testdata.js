@@ -22,11 +22,13 @@ var testUsers = [
     {name:"provider @ s2m",email:"s2m@commonbike.com",
      password:"common!!",roles:[]},
     {name:"provider @ Zeist",email:"zeist@commonbike.com",
-     password:"common!!",roles:[]},
+     password:"common!!",roles:[],
+     avatar:"/files/Testdata/lockers.png"},
     {name:"easyfiets",email:"easyfiets@commonbike.com",
-     password:"easyfiets!!", roles:[]},
+     password:"easyfiets!!", roles:[],
+     avatar:"/files/Testdata/easyfiets-logo.jpg"},
     {name:"tourist1",email:"tourist1@commonbike.com",
-     password:"common!!", roles:[]},
+     password:"common!!", roles:[] },
      {name:"tourist2",email:"tourist2@commonbike.com",
      password:"common!!", roles:[]},
   ];
@@ -139,6 +141,9 @@ var cleanupTestUsers = function() {
   _.each(testUsers, function (userData) {
     var hithere=Accounts.findUserByEmail(userData.email);
     if(hithere) {
+      // logout user prior to deleting
+      Meteor.users.update({_id:hithere}, {$set: { "services.resume.loginTokens" : [] }});
+
       var id = hithere._id;
 
       _.each(userData.roles, function (role) {
@@ -152,7 +157,7 @@ var cleanupTestUsers = function() {
   });
 }
 
-var cleanupTestData = function() {
+var cleanupTestData = function() { 
   _.each(testLocations, function (locationData) {
     var hereitis=Locations.findOne({title: locationData.title});
     if(hereitis) {
@@ -161,13 +166,21 @@ var cleanupTestData = function() {
         // remove all objects for this location
         var myObjects = Objects.find({locationId: id}).fetch();
         _.each(myObjects, function (objectData) {
-           console.log('remove object' + objectData._id);
            Objects.remove({_id: objectData._id});
         });
 
         Locations.remove({_id: id});
     }
   });
+}
+
+const GetRandomAvatar = () => {
+  const url = 'https://randomuser.me/api/' 
+  const response = HTTP.get(url)
+  const obj = JSON.parse(response.content)
+  const avatar_url = obj.results[0].picture.large
+
+  return avatar_url
 }
 
 var checkTestUsers = function() {
@@ -183,8 +196,13 @@ var checkTestUsers = function() {
       id = Accounts.createUser({
         email: userData.email,
         password: userData.password,
-        profile: { name: userData.name }
+        profile: { name: userData.name, 
+                   avatar: userData.avatar || GetRandomAvatar() }
       });
+
+      // // email verification
+      // var anavatar = GetRandomAvatar();
+      // Meteor.users.update({_id: id}, {$set:{'avatar': anavatar}});
 
       // email verification
       Meteor.users.update({_id: id}, {$set:{'emails.0.verified': true}});
@@ -211,6 +229,7 @@ const Address2LatLng = (address) => {
   const location = obj.results[0].geometry.location
   return [location.lat, location.lng]
 }
+
 
 // supported locktypes 
 // 'plainkey' - ask for key at the attendant
@@ -283,7 +302,7 @@ var checkTestLocations = function() {
         }
 
         log('adding provider ' + provider + ' to ' + locationData.title);
-        Meteor.users.update({_id: hithere._id}, {$addToSet: {provider_locations: locationId}} );
+        Meteor.users.update({_id: hithere._id}, {$addToSet: {'profile.provider_locations': locationId}} );
       }
     });
 
