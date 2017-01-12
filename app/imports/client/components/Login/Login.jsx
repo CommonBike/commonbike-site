@@ -79,9 +79,12 @@ class Login extends Component {
   }
 
   render() {
+    const {currentUser} = this.props
+    // console.log(currentUser)
+    const active = currentUser && currentUser.profile && currentUser.profile.active
     return (
       <div style={s.base}>
-        {this.props.currentUser ? (Meteor.isProduction ? this.renderTeaser(): this.context.history.push('/locations'))
+        {currentUser ? (active ? this.context.history.push('/locations') : this.renderTeaser())
                                 : this.renderIntro()}
 
       </div>
