@@ -44,7 +44,7 @@ var s = {
 
 ObjectList.propTypes = {
   objects: PropTypes.array,
-  isEditable: PropTypes.any,
+  isEditable: PropTypes.any
 };
 
 ObjectList.defaultProps = {
@@ -53,11 +53,32 @@ ObjectList.defaultProps = {
 
 export default createContainer((props) => {
   Meteor.subscribe('objects');
+  Meteor.subscribe('users');
 
-  var filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}], 'state.userId':Meteor.userId()};
+  
+  var filter=null;
+  var title="";
+  if(!props.isEditable) {
+    title = 'Bekijk hier jouw reserveringen';
+    filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}], 'state.userId':Meteor.userId()};
+  } else {
+    title = 'Jouw verhuurde fietsen';
+
+    // only show objects for which the current loggedin user is one of the providers
+    console.log(Meteor.user());
+
+    var mylocations = [];
+    if(Meteor.user()) {
+      mylocations = Meteor.user().profile.provider_locations||[];
+    }
+
+    console.log(mylocations)
+
+    filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}], locationId: { $in: mylocations }};
+  }
 
   return {
-  	title: "Bekijk hier jouw reserveringen",
+  	title: title,
     objects: Objects.find(filter, {sort: {title: 1}}).fetch()
   };
 }, ObjectList);
