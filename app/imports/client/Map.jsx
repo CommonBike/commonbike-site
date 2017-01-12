@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import L from 'leaflet'
 
 class Map extends Component {
+
   componentDidMount() {
     const {item} = this.props
     if (!item || !item.lat_lng) {
@@ -13,7 +14,7 @@ class Map extends Component {
     const {style = defaultStyle, accessToken = defaultAccessToken} = Meteor.settings.public.mapbox || {}
 
     const mymap = L.map('mapid').setView(item.lat_lng, 17)
-  
+
     // https://www.mapbox.com/api-documentation/#retrieve-a-static-map-image
     const url = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
     // const url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
@@ -64,7 +65,6 @@ class Map extends Component {
     return (
       <div>
         <div id='mapid' style={{width: this.props.width, height: this.props.height}}></div>
-        <a href={directionsUrl} target='_blank'>Directions</a>
       </div>
     )
   }
