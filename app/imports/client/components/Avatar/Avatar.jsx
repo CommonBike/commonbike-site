@@ -6,14 +6,14 @@ Avatar = (props) => {
 			<div style={Object.assign({}, s.base, props.style)} />
 		);
 	} else if(!Meteor.user().profile.avatar) {
-    return (
-      <div style={Object.assign({}, s.base, props.style)} onClick={props.newAvatar} />
-    );
+      return (
+        <div style={Object.assign({}, s.base, props.style)} onClick={props.newAvatar} />
+      );
   } else {
 		return(
 			<img style={Object.assign({}, s.base, props.style)} src={Meteor.user().profile.avatar} onClick={props.newAvatar} />
-  	);
-	}
+	  	);
+  	}
 }
 
 var s = {
