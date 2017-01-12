@@ -62,7 +62,7 @@ class Map extends Component {
   }
 
   toggleMap() {
-    console.log(this)
+    // console.log(this)
     // console.log('toggleHidden')
     this.setState({
       mapVisible: !this.state.mapVisible
