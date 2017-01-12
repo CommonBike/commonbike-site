@@ -56,6 +56,11 @@ class Profile extends Component {
 
   render() {
     self = this;
+
+    // <RaisedButton onClick={this.locations.bind(this)}>MIJN LOCATIES</RaisedButton>
+
+    // <RaisedButton onClick={this.rentals.bind(this)}>MIJN VERHUUR</RaisedButton>
+
     return (
       <div style={s.base}>
 
@@ -71,20 +76,9 @@ class Profile extends Component {
 
           <RaisedButton onClick={this.reservations.bind(this)}>MIJN RESERVERINGEN</RaisedButton>
 
-          <RaisedButton onClick={this.locations.bind(this)}>MIJN LOCATIES</RaisedButton>
-
-          <RaisedButton onClick={this.rentals.bind(this)}>MIJN VERHUUR</RaisedButton>
-
           <RaisedButton onClick={this.logout.bind(this)}>LOG UIT</RaisedButton>
         </div>
 
-{/*}        {R.map((location) =>  <LocationBlock
-                                key={location._id}
-                                item={location}
-                                isEditable={self.props.isEditable}
-                                onClick={self.props.clickItemHandler} />
-                              , this.props.locations)}
-*/}
       </div>
     );
   }
