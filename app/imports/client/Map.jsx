@@ -64,7 +64,7 @@ class Map extends Component {
 
     return (
       <div>
-        <div id='mapid' style={{width: this.props.width, height: this.props.height}}></div>
+        <div id='mapid' style={{width: this.props.width, height: this.props.height, maxWidth: '100%'}}></div>
       </div>
     )
   }

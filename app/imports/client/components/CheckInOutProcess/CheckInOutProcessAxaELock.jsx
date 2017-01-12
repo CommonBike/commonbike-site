@@ -69,7 +69,6 @@ var s = {
     lineHeight: 'default',
     padding: '20px 20px 0 20px',
     textAlign: 'center',
-    minHeight: 'calc(100vh - 66px)',
   },
 
   button: {
@@ -78,6 +77,7 @@ var s = {
 
   list: {
     margin: '0 auto',
+    padding: 0,
     textAlign: 'center',
     listStyle: 'none',
   },

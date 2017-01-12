@@ -30,6 +30,6 @@ img {
   max-width: 100%;
 }
 
-#react-root {
+#root, #root > * {
   height: 100%;
 }

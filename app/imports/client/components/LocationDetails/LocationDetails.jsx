@@ -57,10 +57,9 @@ var s = {
     lineHeight: 'default',
     padding: '20px 20px 0 20px',
     textAlign: 'center',
-    minHeight: 'calc(100vh - 66px)',
   },
   intro: {
-    padding: '0 70px',
+    padding: '0 5px 0 70px',
     margin: '0 auto',
     maxWidth: '400px',
     textAlign: 'left',

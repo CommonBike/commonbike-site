@@ -16,12 +16,6 @@ class Block extends Component {
   constructor(props) {
     super(props);
   }
-    
-  componentDidMount() {
-    // Hack around a bug in Radium:
-    ReactDOM.findDOMNode(this.refs.base).style.display = 'flex';
-    ReactDOM.findDOMNode(this.refs.textWrapper).style.display = 'flex';
-  }
 
   state2Text(state) {
     if (state=='available') {
@@ -58,7 +52,7 @@ class Block extends Component {
           </div>
 
           <div style={Object.assign({display: 'none'}, s.state, this.props.showState && {display: 'block'})}>
-             { this.props.showState? this.state2Text(this.props.item.state.state):null }
+             { this.props.showState && this.props.item.state ? this.state2Text(this.props.item.state.state) : null }
            </div>
         </div>
 

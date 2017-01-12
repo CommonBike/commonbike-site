@@ -10,7 +10,7 @@ class TextField extends Component {
 
   render() {
     return (
-      <input style={Object.assign({}, s, this.props.style)} type={this.props.type} name={this.props.name} placeholder={this.props.placeholder} onChange={this.props.onChange} onBlur={this.props.onChange} />
+      <input required={this.props.required} style={Object.assign({}, s, this.props.style)} type={this.props.type} name={this.props.name} placeholder={this.props.placeholder} onChange={this.props.onChange} onBlur={this.props.onChange} />
     )
   }
 
@@ -44,6 +44,9 @@ TextField.propTypes = {
    * Disables the text field if set to true.
    */
   disabled: PropTypes.bool,
+
+  required: PropTypes.any,
+
   /**
    * The style object to use to override error styles.
    */

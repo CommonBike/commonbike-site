@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
-import Radium, { StyleRoot } from 'radium';
-import R from 'ramda';
 
 // Import components
 import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
@@ -30,11 +28,11 @@ var s = {
     lineHeight: 'default',
     margin: '0 auto',
     width: '100%',
-    minHeight: 'calc(100% - 66px)',
     display: 'flex',
     textAlign: 'center',
     flexDirection: 'column',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    minHeight: 'calc(100% - 74px)',
   },
   logo: {
     height: '36px'
@@ -54,4 +52,4 @@ export default createContainer((props) => {
   return {
     currentUser: Meteor.user()
   };
-}, Radium(CustomPage));
+}, CustomPage);

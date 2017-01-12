@@ -39,15 +39,17 @@ class Login extends Component {
     return (
       <div style={s.base}>
 
-        <br />
+        <div style={s.intro}>
 
-        <p>
-          Wil je als eerste<br />de CommonBike app uitproberen?
-        </p>
+          <p>
+            Wil je als eerste<br />de CommonBike app uitproberen?
+          </p>
 
-        <p>
-          <b>Log in met je favoriete account</b>
-        </p>
+          <p>
+            Log in met je favoriete account
+          </p>
+
+        </div>
 
         <div style={s.socialButtonsWrapper}>
           <SquareButton src="google" size="64" title="Login with Google" onClick={this.loginWithGoogle.bind(this)} style={s.google} />
@@ -57,7 +59,7 @@ class Login extends Component {
         </div>
 
         <p>
-          <b>Of meld je aan met je mailadres</b>
+          Of meld je aan met je mailadres
         </p>
 
         <div style={{textAlign: 'center'}}>
@@ -93,12 +95,18 @@ var s = {
   base: {
     width: '480px',
     maxWidth: '100%',
+    minHeight: 'calc(100% - 74px)',
+    height: 'calc(100% - 74px)',
     margin: '0 auto',
     lineHeight: 'default',
     color: '#000',
-    fontSize: '1.2em',
+    paddingTop: '20px',
+    fontSize: '1.05em',
     textAlign: 'center',
     fontWeight: '500',
+  },
+  intro: {
+    padding: '0 5px'
   },
   signUpButton: {
     margin: '10px 0',

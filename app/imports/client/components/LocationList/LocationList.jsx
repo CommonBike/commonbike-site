@@ -50,7 +50,6 @@ class LocationList extends Component {
     return (
       <div style={s.base}>
         {Roles.userIsInRole(Meteor.userId(), 'admin') && this.renderAdminLinks()}
-
         <div style={Object.assign({display: 'none'}, this.props.isEditable && {display: 'block'})}>
 
           <p style={s.paragraph}>
