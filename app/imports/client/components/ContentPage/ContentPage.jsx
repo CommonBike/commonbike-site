@@ -36,7 +36,7 @@ var s = {
     padding: '20px 20px 0 20px',
     margin: '0 auto',
     width: '100%',
-    minHeight: '100%',
+    height: '100%',
     display: 'flex',
     textAlign: 'center',
     flexDirection: 'column',

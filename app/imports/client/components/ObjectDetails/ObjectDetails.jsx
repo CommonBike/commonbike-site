@@ -8,7 +8,7 @@ import RaisedButton from '../RaisedButton/RaisedButton.jsx'
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
 import Button from '../Button/Button';
 import CheckInCode from '../CheckInCode/CheckInCode';
-import Map from '../../Map';
+import MapSummary from '../../MapSummary';
 import CheckInOutProcessPlainKey from '../CheckInOutProcess/CheckInOutProcessPlainKey';
 import CheckInOutProcessAxaELock from '../CheckInOutProcess/CheckInOutProcessAxaELock';
 import CheckInOutProcessOpenKeylocker from '../CheckInOutProcess/CheckInOutProcessOpenKeylocker';
@@ -21,6 +21,8 @@ class ObjectDetails extends Component {
   }
 
   renderCheckInOutProcess() {
+    if( ! this.props.object.lock ) return <div />;
+
     var lockType = this.props.object.lock.type;
     if(lockType=='open-bikelocker') {
       return (
@@ -54,7 +56,7 @@ class ObjectDetails extends Component {
         </p>
 
         <center>
-          <Map item={this.props.location} width={400} height={300}/>
+          <MapSummary item={this.props.location} width={400} height={300}/>
         </center>
 
         <ObjectBlock
@@ -73,13 +75,13 @@ var s = {
     lineHeight: 'default',
     padding: '20px 20px 0 20px',
     textAlign: 'center',
-    minHeight: 'calc(100vh - 66px)',
+    minHeight: 'calc(100vh - 74px)',
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'column'
   },
   intro: {
-    padding: '0 70px',
+    padding: '0px 5px 0px 70px',
     margin: '0 auto',
     maxWidth: '400px',
     textAlign: 'left',
