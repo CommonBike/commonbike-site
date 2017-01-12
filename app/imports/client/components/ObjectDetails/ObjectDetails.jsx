@@ -8,7 +8,7 @@ import RaisedButton from '../RaisedButton/RaisedButton.jsx'
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
 import Button from '../Button/Button';
 import CheckInCode from '../CheckInCode/CheckInCode';
-import Map from '../../Map';
+import MapSummary from '../../MapSummary';
 import CheckInOutProcessPlainKey from '../CheckInOutProcess/CheckInOutProcessPlainKey';
 import CheckInOutProcessAxaELock from '../CheckInOutProcess/CheckInOutProcessAxaELock';
 import CheckInOutProcessOpenKeylocker from '../CheckInOutProcess/CheckInOutProcessOpenKeylocker';
@@ -54,7 +54,7 @@ class ObjectDetails extends Component {
         </p>
 
         <center>
-          <Map item={this.props.location} width={400} height={300}/>
+          <MapSummary item={this.props.location} width={400} height={300}/>
         </center>
 
         <ObjectBlock

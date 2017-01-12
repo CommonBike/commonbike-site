@@ -6,7 +6,7 @@ import R from 'ramda';
 import RaisedButton from '../RaisedButton/RaisedButton.jsx'
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
 import ManageUserlist from '../ManageUserlist/ManageUserlist';
-import Map from '../../Map'
+import MapSummary from '../../MapSummary'
 
 class LocationDetails extends Component {
 
@@ -27,7 +27,7 @@ class LocationDetails extends Component {
         </p>
 
         <center>
-          <Map item={this.props.location} width={400} height={300}/>
+          <MapSummary item={this.props.location} width={400} height={300}/>
         </center>
 
         { this.props.isEditable? 
