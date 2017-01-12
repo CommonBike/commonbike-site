@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 
 // Import templates
-import LoginFormComponent from '/imports/components/LoginForm/LoginForm.jsx';
+import LoginFormComponent from '/imports/client/components/LoginForm/LoginForm.jsx';
 
 class LoginForm extends Component {
 

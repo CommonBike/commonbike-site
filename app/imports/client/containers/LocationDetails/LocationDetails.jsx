@@ -67,14 +67,14 @@ LocationDetails.defaultProps = {
 }
 
 export default createContainer((props) => {
-  Meteor.subscribe('locations');
+  Meteor.subscribe('locations', props.isEditable)
   Meteor.subscribe('objects');
 
   var filter = null;
   if(props.isEditable) {
-      filter = {locationId: props.locationId}
+    filter = {locationId: props.locationId}
   } else {
-      filter = {locationId: props.locationId, $or: [{'state.state':'available'}, {'state.userId': Meteor.userId()}]}
+    filter = {locationId: props.locationId, $or: [{'state.state':'available'}, {'state.userId': Meteor.userId()}]}
   }
 
   return {

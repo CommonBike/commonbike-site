@@ -13,6 +13,10 @@ Server is now running at [localhost:3000](http://localhost:3000)
 
 > Do you use the CommonBike app for the first time? See [app/DEVELOP.md](app/DEVELOP.md) for useful information.
 
+## Participate!
+
+Join us on [Slack](http://slack.common.bike) and other communication channels. (&raquo; [How to participate](https://github.com/CommonBike/wiki/wiki/How-to-participate)).
+
 ## Demo & Documentation
 
 - [Demo](https://common.bike)

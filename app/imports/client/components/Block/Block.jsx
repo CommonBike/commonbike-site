@@ -5,7 +5,7 @@ import Radium from 'radium';
 import R from 'ramda';
 
 // Import models
-import { Locations } from '../../api/locations.js'; 
+import { Locations } from '/imports/api/locations.js'; 
 
 // Import components
 import RaisedButton from '../RaisedButton/RaisedButton.jsx';

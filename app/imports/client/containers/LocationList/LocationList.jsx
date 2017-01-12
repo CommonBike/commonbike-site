@@ -27,18 +27,24 @@ class LocationList extends Component {
    * Adds a new location to the database having the title "_Een nieuwe locatie"
    */
   newLocationHandler() {
-    Meteor.call('locations.insert', {
-      title: "_ Mijn nieuwe locatie",
-      imageUrl: 'https://cdn2.iconfinder.com/data/icons/location-3/128/Location-26-512.png'
-    }, this.newLocationAdded.bind(this));
+    var locationName = prompt('Wat is de naam van de nieuwe locatie?');
+
+    if(locationName){
+      Meteor.call('locations.insert', {
+        title: locationName,
+        imageUrl: 'https://cdn2.iconfinder.com/data/icons/location-3/128/Location-26-512.png'
+      }, this.newLocationAdded.bind(this));
+    }
   }
 
   newLocationAdded(error, result) {
-    // re-subscribe is necessary: otherwise the location does not show up
+    // Re-subscribe is necessary: otherwise the location does not show up
     // in the provider's location list without a full page reload (there is no 
     // subscription relation with the user table that maintains the list
     // of managed locations per user)
     Meteor.subscribe('locations', this.props.isEditable);
+
+    alert('De locatie is toegevoegd aan de lijst.');
   }
 
   render() {

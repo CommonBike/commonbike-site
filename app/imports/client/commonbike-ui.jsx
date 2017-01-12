@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 
 // Import components
-import AccountsUIWrapper from '/imports/containers/AccountsUIWrapper/AccountsUIWrapper.jsx';
-import Block from '/imports/components/Block/Block.jsx';
-import Button from '/imports/components/Button/Button.jsx';
-import Hr from '/imports/components/Hr/Hr.jsx';
-import Avatar from '/imports/components/Avatar/Avatar.jsx';
-import CheckInCode from '/imports/components/CheckInCode/CheckInCode.jsx';
-import LoginForm from '/imports/components/LoginForm/LoginForm.jsx';
+import AccountsUIWrapper from '/imports/client/containers/AccountsUIWrapper/AccountsUIWrapper.jsx';
+import Block from '/imports/client/components/Block/Block.jsx';
+import Button from '/imports/client/components/Button/Button.jsx';
+import Hr from '/imports/client/components/Hr/Hr.jsx';
+import Avatar from '/imports/client/components/Avatar/Avatar.jsx';
+import CheckInCode from '/imports/client/components/CheckInCode/CheckInCode.jsx';
+import LoginForm from '/imports/client/components/LoginForm/LoginForm.jsx';
 import Map from '/imports/client/Map.jsx'
 
 class CommonBikeUI extends Component {

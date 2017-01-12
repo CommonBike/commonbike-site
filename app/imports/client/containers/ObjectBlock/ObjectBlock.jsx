@@ -6,24 +6,24 @@ import R from 'ramda';
 import {propTypes} from 'react-router';
 
 // Import models
-import { Locations } from '../../api/locations.js'; 
+import { Objects } from '/imports/api/objects.js'; 
 
 // Import components
 import Block from '../../components/Block/Block';
 
-class LocationBlock extends Component {
+class ObjectBlock extends Component {
 
   constructor(props) {
     super(props);
     
-    this.state = { title: props.item.title, imageUrl: props.item.imageUrl }
+    this.state = props.item
   }
     
   //+handleChange :: Event -> StateChange
   handleChange(e) {
     this.state.title = e.target.value;
     
-    Meteor.call('locations.update', this.props.item._id, this.state);
+    Meteor.call('objects.update', this.props.item._id, this.state);
   }
 
   // newAvatar :: Event -> NO PURE FUNCTION
@@ -35,25 +35,26 @@ class LocationBlock extends Component {
 
     if(imageUrl) {
       this.state.imageUrl = imageUrl;
-      Meteor.call('locations.update', this.props.item._id, this.state);
+      Meteor.call('objects.update', this.props.item._id, this.state);
     }
   }
 
-  viewItem() {
-    this.context.history.push((this.props.isEditable ? '/admin/location/' : '/location/') + this.props.item._id)
-  }
+  // this.context.history.push('/bike/details/' + this.props.item._id) }
+  viewItem() { this.context.history.push((this.props.isEditable ? '/admin/bike/details/' : '/bike/details/') + this.props.item._id) }
 
   deleteItem() {
-    if( ! confirm('Weet je zeker dat je locatie '+this.props.item.title+' wilt verwijderen?') || ! confirm('Sure? If not sure: don\'t') )
+    if( ! confirm('Weet je zeker dat je de fiets "'+this.props.item.title+'" wilt verwijderen?') || ! confirm('Sure? If not sure: don\'t') )
       return;
 
-    Meteor.call('locations.remove', this.props.item._id);
+    Meteor.call('objects.remove', this.props.item._id);
   }
 
   render() {
     return (
       <Block
         item={this.props.item}
+        showState="true"
+        showPrice="true"
         isEditable={this.props.isEditable}
         newAvatar={this.newAvatar.bind(this)}
         handleChange={this.handleChange.bind(this)}
@@ -101,19 +102,19 @@ var s = {
   }
 }
 
-LocationBlock.contextTypes = {
+ObjectBlock.contextTypes = {
   history: propTypes.historyContext
 }
 
-LocationBlock.propTypes = {
+ObjectBlock.propTypes = {
   item: PropTypes.object.isRequired,
   isEditable: PropTypes.any,
   onClick: PropTypes.any,
 };
 
-LocationBlock.defaultProps = {
+ObjectBlock.defaultProps = {
   item: {},
   isEditable: false
 }
 
-export default Radium(LocationBlock);
+export default Radium(ObjectBlock);
