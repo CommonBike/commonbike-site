@@ -16,8 +16,65 @@ class ObjectDetails extends Component {
     super(props);
   }
 
-  newObject() {
-    this.props.newObject(this.props.locationId);
+  setObjectReserved() {
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), 'reserved');
+  }
+
+  setObjectInUse() {
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), 'inuse');
+  }
+
+  setObjectAvailable() {
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), 'available');
+  }
+
+  setObjectOutOfOrder() {
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), 'outoforder');
+  }
+
+  renderButtons() {
+    if (this.props.isEditable) {
+        return this.renderButtonsForAdmin();
+    } else {
+        return this.renderButtonsForUser();      
+    }
+  }
+
+  renderButtonsForAdmin() {
+      if(this.props.object.state.state=='reserved') {
+        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Annuleer reservering!</Button>);
+      } else if(this.props.object.state.state=='inuse') {
+        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Annuleer verhuur!</Button>);
+      } else if(this.props.object.state.state=='outoforder') {
+        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Maak beschikbaar!</Button>);
+      } 
+
+      return (<Button onClick={() => this.setObjectOutOfOrder() } buttonStyle="huge">Maak niet beschikbaar!</Button>);
+  }
+
+  renderButtonsForUser() {
+        return (
+          <div>
+          {this.props.object.state.state=='available' ?
+            <Button onClick={() => this.setObjectReserved() } buttonStyle="huge">Reserveer!</Button> : <div /> }
+          {this.props.object.state.state=='reserved' ? 
+            <article>
+              <Button onClick={() => this.setObjectInUse() } buttonStyle="huge">Neem mee!</Button>
+              <CheckInCode />
+              <Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Toch maar niet!</Button>
+            </article>
+            : <div /> }
+          {this.props.object.state.state=='inuse' ? 
+            <article>
+              <CheckInCode code="C28" title="Retourcode" />
+              <Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Breng terug!</Button> 
+            </article>
+            : <div /> }
+          {this.props.object.state.state=='outoforder' ? 
+              <Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Maak beschikbaar!</Button> 
+            : <div /> }
+          </div>
+        );
   }
 
   render() {
@@ -31,14 +88,12 @@ class ObjectDetails extends Component {
         <center>
           <Map item={this.props.location} width={400} height={300}/>
         </center>
-        
+
         <ObjectBlock
           item={this.props.object} />
 
-        {this.props.checkedIn
-          ? <CheckInCode />
-          : <Button onClick={() => this.context.history.push('/bike/checkin/' + this.props.object._id )} buttonStyle="huge">Reserveer!</Button>}
-
+        { this.renderButtons() }
+        
       </div>
     );
   }
@@ -75,13 +130,13 @@ ObjectDetails.contextTypes = {
 ObjectDetails.propTypes = {
   object: PropTypes.object,
   location: PropTypes.object,
-  checkedIn: PropTypes.any,
+  isEditable: PropTypes.any,
 };
 
 ObjectDetails.defaultProps = {
   object: {},
   location: {},
-  checkedIn: false
+  isEditable: false
 }
 
 export default ObjectDetails;

@@ -33,11 +33,19 @@ const UserAppLocationDetails = ({params}) => {
   )
 }
 
+const UserAppObjectList = () => (<UserApp content={<ObjectList />} />)
+
 const UserAppCustomPageObjectDetails = ({params}) => {
   return (
     <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails objectId={params.objectId}/></CustomPage>} />
   )
 }
+const UserAppCustomAdminPageObjectDetails = ({params}) => {
+  return (
+    <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails isEditable="true" objectId={params.objectId}/></CustomPage>} />
+  )
+}
+
 const UserAppCustomPageObjectDetailsCheckin = ({params}) => {
   return (
     <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails objectId={params.objectId} checkedIn={true}/></CustomPage>} />
@@ -89,6 +97,7 @@ const App = () => (
       
       <Match pattern='/profile' component={UserAppProfile}/> 
       <Match pattern='/locations' component={UserAppLocationList}/> 
+      <Match pattern='/objects' component={UserAppObjectList}/> 
       <Match pattern='/location/:locationId' component={UserAppLocationDetails}/> 
       <Match pattern='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
       <Match pattern='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 
@@ -96,6 +105,7 @@ const App = () => (
       
       <Match pattern='/admin/locations' component={UserAppAdminLocationList}/> 
       <Match pattern='/admin/location/:locationId' component={UserAppAdminLocationDetails}/> 
+      <Match pattern='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/> 
 
       <Miss component={NoMatch}/>
     </div>
