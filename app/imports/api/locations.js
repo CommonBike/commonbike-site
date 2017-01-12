@@ -133,11 +133,11 @@ if(Meteor.isServer) {
         Meteor.users.update({_id: userId}, {$pull: {'profile.provider_locations': locationId}});
       }
     },
-    'currentuser.update_avatar'(new_avatar_url) {
-      if(this.userId) {
-        Meteor.users.update(this.userId, {$set : { 'profile.avatar' : new_avatar_url }});
-      }
-    }
+    // 'currentuser.update_avatar'(new_avatar_url) {
+    //   if(this.userId) {
+    //     Meteor.users.update(this.userId, {$set : { 'profile.avatar' : new_avatar_url }});
+    //   }
+    // }
     // NICE TO HAVE: this function is used in the change event in the ManageUserlist component
     // 'locationprovider.emailvalid'(email) {
     //   var daUser = Accounts.findUserByEmail(email);

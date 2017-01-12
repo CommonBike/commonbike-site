@@ -7,7 +7,7 @@ Avatar = (props) => {
 		);
 	} else if(!Meteor.user().profile.avatar) {
       return (
-        <div style={Object.assign({}, s.base, props.style)} onClick={this.props.newAvatar} />
+        <div style={Object.assign({}, s.base, props.style)} onClick={props.newAvatar} />
       );
   } else {
 		return(
