@@ -17,6 +17,12 @@ class Block extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    // Hack around a bug in Radium:
+    ReactDOM.findDOMNode(this.refs.base).style.display = 'flex';
+    ReactDOM.findDOMNode(this.refs.textWrapper).style.display = 'flex';
+  }
+
   state2Text(state) {
     if (state=='available') {
       text = 'BESCHIKBAAR'; 
