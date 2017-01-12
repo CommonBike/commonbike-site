@@ -20,9 +20,6 @@ class Landing extends Component {
   }
 
   render() {
-	  
-	  console.log(this.props)
-	  
     return (
       <div style={s.base} ref="base">
 
