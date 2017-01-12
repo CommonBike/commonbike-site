@@ -69,7 +69,7 @@ export default createContainer((props) => {
   // }
 
   return {
-  	title: 'Mijn geschiedenins',
+  	title: 'Mijn geschiedenis',
     transactions: Transactions.find({userId: Meteor.userId()}, {sort: {timestamp: -1}}).fetch()
   };
 }, TransactionList);
