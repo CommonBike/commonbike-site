@@ -29,6 +29,10 @@ class Profile extends Component {
     this.context.history.push('/admin/rentals') 
   }
 
+  transactions() { 
+    this.context.history.push('/transactions') 
+  }
+
   logout() { 
     Meteor.logout(); 
     this.context.history.push('/')
@@ -70,6 +74,8 @@ class Profile extends Component {
           <RaisedButton onClick={this.newreservation.bind(this)}>NIEUWE RESERVERING</RaisedButton>
 
           <RaisedButton onClick={this.reservations.bind(this)}>MIJN RESERVERINGEN</RaisedButton>
+
+          <RaisedButton onClick={this.transactions.bind(this)}>MIJN GESCHIEDENIS</RaisedButton>
 
           <RaisedButton onClick={this.locations.bind(this)}>MIJN LOCATIES</RaisedButton>
 

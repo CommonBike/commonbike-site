@@ -15,9 +15,9 @@ class CheckInOutProcessBase extends Component {
       if(newState=='reserved') {
         description = this.props.object.title + " gereserveerd"
       } else if(newState=='inuse') {
-        description = this.props.object.title  + " gehuurd"
+        description = this.props.object.title + " gehuurd"
       } else if(newState=='available') {
-        description ="teruggebracht " + this.props.object.title 
+        description = this.props.object.title + " teruggebracht"
       } else if(newState=='outoforder') {
         description = this.props.object.title + " buiten bedrijf gesteld" 
       } else {

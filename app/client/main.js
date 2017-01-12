@@ -17,6 +17,7 @@ import CustomPage from '/imports/client/components/CustomPage/CustomPage.jsx'
 import Profile from '/imports/client/components/Profile/Profile.jsx'
 import LocationList from '/imports/client/containers/LocationList/LocationList.jsx'
 import LocationDetails from '/imports/client/containers/LocationDetails/LocationDetails.jsx'
+import TransactionList from '/imports/client/containers/TransactionList/TransactionList.jsx'
 import ObjectList from '/imports/client/containers/ObjectList/ObjectList.jsx'
 import ObjectDetails from '/imports/client/containers/ObjectDetails/ObjectDetails.jsx'
 import CommonBikeUI from '/imports/client/commonbike-ui.jsx'
@@ -35,6 +36,8 @@ const UserAppLocationDetails = ({params}) => {
 }
 
 const UserAppObjectList = () => (<UserApp content={<ObjectList />} />)
+
+const UserAppTransactionList = () => (<UserApp content={<TransactionList />} />)
 
 const UserAppRentalList = () => (<UserApp content={<ObjectList isEditable="true"/>} />)
 
@@ -101,6 +104,7 @@ const App = () => (
       <MatchWhenLoggedIn pattern='/profile' component={UserAppProfile}/> 
       <MatchWhenLoggedIn pattern='/locations' component={UserAppLocationList}/> 
       <MatchWhenLoggedIn pattern='/objects' component={UserAppObjectList}/> 
+      <MatchWhenLoggedIn pattern='/transactions' component={UserAppTransactionList}/> 
       <MatchWhenLoggedIn pattern='/location/:locationId' component={UserAppLocationDetails}/> 
       <MatchWhenLoggedIn pattern='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
       <MatchWhenLoggedIn pattern='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 

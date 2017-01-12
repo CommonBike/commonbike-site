@@ -51,23 +51,23 @@ if (Meteor.isServer) {
 	Meteor.methods({
 	'transactions.addTransaction'(type, description, userid, locationid, objectid) {
 		  var timestamp = new Date();
+
 		  var id = Transactions.insert({timestamp: timestamp.valueOf(), transactionType: type, 
 		                                userId: userid, locationId: locationid, objectId: objectid, 
-		                                description: description + ' at ' + timestamp}); 
+		                                description: description + ' [' + timestamp.toGMTString() + ']'}); 
 
 		  return id;
 		},
 	'transactions.registerUser'(userid) {
 	    var userData = Meteor.users.findOne({_id:userid});
-		var description ="new user " + userData.emails[0].address + " registered";
+		var description ="nieuwe gebruiker " + userData.emails[0].address + " geregistreerd";
 		Meteor.call('transactions.addTransaction', 'NEWUSER', description, userid, null, null, null)
 		},
 	'transactions.changeStateForObject'(newstate, actiondescription, objectid, locationid) {
 		var userid = Meteor.userId();
 	    var userdata = Meteor.users.findOne({_id:userid});
 	    var locationdata = Locations.findOne({_id: locationid});
-		var description = "user \'" + userdata.emails[0].address + '\' \'' + actiondescription + '\''
-		description += ' at location \'' + locationdata.title + '\'';
+		var description = "gebruiker \'" + userdata.emails[0].address + '\' heeft ' + actiondescription + ' op locatie \'' + locationdata.title + '\'';
 
 		Meteor.call('transactions.addTransaction', 'SET_STATE_' + newstate.toUpperCase(), description, userid, locationid, objectid, null)
 		},
