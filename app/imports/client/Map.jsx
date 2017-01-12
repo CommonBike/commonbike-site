@@ -2,6 +2,15 @@ import React, { Component, PropTypes } from 'react'
 import L from 'leaflet'
 
 class Map extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+     mapVisible: false
+    }
+  }
+
   componentDidMount() {
     const {item} = this.props
     if (!item || !item.lat_lng) {
@@ -52,6 +61,26 @@ class Map extends Component {
     marker.bindPopup(`<b>${item.title}</b><br>${item.address}`).openPopup()
   }
 
+  toggleMap() {
+    console.log(this)
+    // console.log('toggleHidden')
+    this.setState({
+      mapVisible: !this.state.mapVisible
+    })
+  }
+
+  renderMap() {
+    return (
+      <div >
+        <div id='mapid' style={{width: this.props.width, height: this.props.height}}></div>
+      </div>
+    )
+  }
+
+  renderNonMap() {
+    return null
+  }
+
   render() {
     if (!this.props.item || !this.props.item.lat_lng) {
       return null
@@ -63,8 +92,13 @@ class Map extends Component {
 
     return (
       <div>
-        <div id='mapid' style={{width: this.props.width, height: this.props.height}}></div>
-        <a href={directionsUrl} target='_blank'>Directions</a>
+        <div>
+          {this.props.item.address}
+          <a href="#" onClick={this.toggleMap.bind(this)}>(map)</a>
+          <a href={directionsUrl} target='_blank'>(directions)</a>
+        </div>
+
+        {this.state.mapVisible ? this.renderMap() : this.renderNonMap()}        
       </div>
     )
   }
