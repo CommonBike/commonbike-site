@@ -66,7 +66,8 @@ Meteor.methods({
     Objects.insert({
       locationId: data.locationId,
       title: data.title,
-      imageUrl: data.imageUrl
+      imageUrl: data.imageUrl,
+      state: data.state
     });
   },
   'objects.update'(_id, data) {
@@ -89,8 +90,6 @@ Meteor.methods({
   'objects.setState'(objectId, userId, newState){
     // Make sure the user is logged in
     if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
-
-    console.log('setState(' + objectId + ", " + userId + ", " + newState + ")" );
 
     var timestamp = new Date().valueOf();
     Objects.update({_id: objectId}, { $set: {
