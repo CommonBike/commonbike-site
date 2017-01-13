@@ -63,11 +63,12 @@ Meteor.methods({
 
     // check(data, ObjectsSchema);
 
-    Objects.insert({
+    var objectid = Objects.insert({
       locationId: data.locationId,
       title: data.title,
       imageUrl: data.imageUrl,
-      state: data.state
+      state: data.state,
+      lock: data.lock
     });
   },
   'objects.update'(_id, data) {
@@ -77,12 +78,12 @@ Meteor.methods({
 
     // check(data, ObjectsSchema);
 
-    Objects.update(_id, {
+    Objects.update(_id, {$set:{
       locationId: data.locationId,
       title: data.title,
       description: data.description,
       imageUrl: data.imageUrl
-    });
+    }});
   },
   'objects.remove'(_id){
     Objects.remove(_id);
