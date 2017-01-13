@@ -51,7 +51,8 @@ class LocationList extends Component {
     return (
       <LocationListComponent locations={this.props.locations} 
                              isEditable={this.props.isEditable} 
-                             newLocationHandler={this.newLocationHandler.bind(this)} />
+                             newLocationHandler={this.newLocationHandler.bind(this)}
+                             canCreateLocations={this.props.canCreateLocations} />
     );
   }
 
@@ -82,8 +83,15 @@ LocationList.defaultProps = {
 export default createContainer((props) => {
   Meteor.subscribe('locations', props.isEditable)
 
+  var user=Meteor.user();
+  var canCreateLocations = false;
+  if(user&&user.profile&&user.profile.cancreatelocations) {
+    canCreateLocations = user.profile.cancreatelocations
+  }
+
   return {
     currentUser: Meteor.user(),
     locations: Locations.find({}, { sort: {title: 1} }).fetch(),
+    canCreateLocations: canCreateLocations
   };
 }, LocationList);

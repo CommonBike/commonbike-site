@@ -27,7 +27,8 @@ class ObjectList extends Component {
       	title={this.props.title}
         objects={this.props.objects}
         clickItemHandler=""
-        isEditable={this.props.isEditable} />
+        isEditable={this.props.isEditable} 
+        emptyListMessage={this.props.emptyListMessage}/>
     );
   }
 
@@ -44,7 +45,8 @@ var s = {
 
 ObjectList.propTypes = {
   objects: PropTypes.array,
-  isEditable: PropTypes.any
+  isEditable: PropTypes.any,
+  emptyListMessage: PropTypes.string
 };
 
 ObjectList.defaultProps = {
@@ -54,13 +56,13 @@ ObjectList.defaultProps = {
 export default createContainer((props) => {
   Meteor.subscribe('objects');
   Meteor.subscribe('users');
-
   
   var filter=null;
   var title="";
   if(!props.isEditable) {
     title = 'Bekijk hier jouw reserveringen';
     filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}], 'state.userId':Meteor.userId()};
+    emptyListMessage = 'GEEN RESERVERINGEN'
   } else {
     title = 'Jouw verhuurde fietsen';
 
@@ -75,10 +77,12 @@ export default createContainer((props) => {
     console.log(mylocations)
 
     filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}], locationId: { $in: mylocations }};
+    emptyListMessage = 'ER ZIJN GEEN FIETSEN VERHUURD'
   }
 
   return {
   	title: title,
-    objects: Objects.find(filter, {sort: {title: 1}}).fetch()
+    objects: Objects.find(filter, {sort: {title: 1}}).fetch(),
+    emptyListMessage: emptyListMessage
   };
 }, ObjectList);

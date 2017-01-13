@@ -210,7 +210,7 @@ var checkTestUsers = function() {
       // Meteor.users.update({_id: id}, {$set:{'avatar': anavatar}});
 
       // email verification
-      Meteor.users.update({_id: id}, {$set:{'emails.0.verified': true}});
+      Meteor.users.update({_id: id}, {$set:{'emails.0.verified': true, 'profile.active':true}});
       log('added test user ' + userData.name);
       Meteor.call('transactions.registerUser', id);
     }

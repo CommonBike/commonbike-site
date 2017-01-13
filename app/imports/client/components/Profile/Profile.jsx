@@ -33,6 +33,10 @@ class Profile extends Component {
     this.context.history.push('/transactions') 
   }
 
+  manageusers() {
+    this.context.history.push('/admin/users') 
+  }
+
   logout() { 
     Meteor.logout(); 
     this.context.history.push('/')
@@ -55,6 +59,47 @@ class Profile extends Component {
 
     if(imageUrl) {
       Meteor.call('currentuser.update_avatar', imageUrl);
+    }
+  }
+
+  getMyLocationsButton() {
+    // bestaande providers en gebruikers met rechten kunnen locaties beheren
+    var show = this.props.currentUser && this.props.currentUser.profile && 
+                        (this.props.currentUser.profile.provider_locations ||
+                         this.props.currentUser.profile.cancreatelocations)
+
+    if(Roles.userIsInRole( Meteor.userId(), 'admin')) {
+      show = true; // administrators can always manage locations
+    }
+
+    if(show) {
+      return ( <RaisedButton onClick={this.locations.bind(this)}>MIJN LOCATIES</RaisedButton> )
+    } else {
+      return ( <div /> )
+    }
+  }
+
+  getMyRentalsButton() {
+    var show = this.props.currentUser && this.props.currentUser.profile && 
+               (this.props.currentUser.profile.provider_locations ||
+                this.props.currentUser.profile.cancreatelocations)
+
+    if(Roles.userIsInRole( Meteor.userId(), 'admin')) {
+      show = true; // administrators can always manage locations
+    }
+
+    if(show) {
+      return ( <RaisedButton onClick={this.rentals.bind(this)}>MIJN VERHUUR</RaisedButton> )
+    } else {
+      return ( <div /> )
+    }
+  }
+
+  getManageUsersButton() {
+    if(Roles.userIsInRole( Meteor.userId(), 'admin' )) {
+      return ( <RaisedButton onClick={this.manageusers.bind(this)}>GEBRUIKERSBEHEER</RaisedButton> )
+    } else {
+      return ( <div /> )
     }
   }
 
@@ -82,9 +127,11 @@ class Profile extends Component {
 
           <RaisedButton onClick={this.transactions.bind(this)}>MIJN GESCHIEDENIS</RaisedButton>
 
-          <RaisedButton onClick={this.locations.bind(this)}>MIJN LOCATIES</RaisedButton>
+          { this.getMyLocationsButton() }
 
-          <RaisedButton onClick={this.rentals.bind(this)}>MIJN VERHUUR</RaisedButton>
+          { this.getMyRentalsButton() }
+
+          { this.getManageUsersButton() }
 
           <RaisedButton onClick={this.logout.bind(this)}>LOG UIT</RaisedButton>
         </div>
@@ -92,7 +139,6 @@ class Profile extends Component {
       </div>
     );
   }
-
 }
 
 var s = {

@@ -23,12 +23,16 @@ class ObjectList extends Component {
           {this.props.title}<br/>
         </p>
 
-        {R.map((object) =>  <ObjectBlock
+        { this.props.objects.length != 0 ?
+           R.map((object) =>  <ObjectBlock
                               key={object._id}
                               item={object}
                               isEditable={this.props.isEditable}
                               onClick={this.props.clickItemHandler} />
-                            , this.props.objects)}
+                            , this.props.objects)
+          :
+          <p style={s.intro}><i><b>{this.props.emptyListMessage}</b></i></p> 
+        }
 
       </div>
     );
@@ -58,6 +62,7 @@ var s = {
 
 ObjectList.propTypes = {
   title: PropTypes.string,
+  emptyListMessage: PropTypes.string,
   objects: PropTypes.array,
   clickItemHandler: PropTypes.any,
 
@@ -66,6 +71,7 @@ ObjectList.propTypes = {
 
 ObjectList.defaultProps = {
   title: "Bekijk hier jouw reserveringen",
+  emptyListMessage: "",
   objects: {},
   clickItemHandler: '',
 
