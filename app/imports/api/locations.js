@@ -87,10 +87,10 @@ if(Meteor.isServer) {
 
       // check(data, LocationsSchema);
 
-      Locations.update(_id, {
+      Locations.update(_id, {$set :{
         title: data.title,
         imageUrl: data.imageUrl
-      });
+      }});
     },
     'locations.remove'(_id){
       // remove this location from the 'profile.provider_locations' list for all users 

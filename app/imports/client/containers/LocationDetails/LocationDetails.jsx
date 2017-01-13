@@ -26,15 +26,26 @@ class LocationDetails extends Component {
    * 
    * Adds a new object to the database having the title "_Een nieuwe fiets"
    */
+
   newObject(locationId) { 
     var timestamp =  new Date().valueOf();
+
+    var length = 5;
+    var base = Math.pow(10, length+1);
+    var code = Math.floor(base + Math.random() * base)
+    // console.log('code: ' + code);
+    keycode = code.toString().substring(1, length+1);
+
     Meteor.call('objects.insert', {
       locationId: locationId,
       title: "_ Mijn nieuwe fiets",
       imageUrl: '/files/Block/bike.png',
       state: {state: 'available',
               userId: null,
-              timestamp: timestamp}
+              timestamp: timestamp},
+      lock: {type: 'plainkey',
+             settings: {keyid: keycode }
+            }
     })
   }
 
