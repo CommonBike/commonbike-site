@@ -10,20 +10,53 @@ class CheckInOutProcessBase extends Component {
     super(props);
   }
 
+  getStateChangeNeatDescription(newState) {
+      var description = ""
+      if(newState=='reserved') {
+        description = this.props.object.title + " gereserveerd"
+      } else if(newState=='inuse') {
+        description = this.props.object.title + " gehuurd"
+      } else if(newState=='available') {
+        description = this.props.object.title + " teruggebracht"
+      } else if(newState=='outoforder') {
+        description = this.props.object.title + " buiten bedrijf gesteld" 
+      } else {
+        description = this.props.object.title + " in toestand '" + newState + "' gezet"
+      }
+
+      return description;
+  }
+
   setObjectReserved() {
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), 'reserved');
+    var newState = 'reserved';
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), newState, description);
+
+    var description = this.getStateChangeNeatDescription(newState);
+    Meteor.call('transactions.changeStateForObject', newState, description, this.props.object._id, this.props.object.locationId);    
   }
 
   setObjectInUse() {
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), 'inuse');
+    var newState = 'inuse'
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), newState);
+
+    var description = this.getStateChangeNeatDescription(newState);
+    Meteor.call('transactions.changeStateForObject', newState, description, this.props.object._id, this.props.object.locationId);    
   }
 
   setObjectAvailable() {
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), 'available');
+    var newState = 'available'
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), newState);
+
+    var description = this.getStateChangeNeatDescription(newState);
+    Meteor.call('transactions.changeStateForObject', newState, description, this.props.object._id, this.props.object.locationId);    
   }
 
   setObjectOutOfOrder() {
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), 'outoforder');
+    var newState = 'outoforder'
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), newState);
+
+    var description = this.getStateChangeNeatDescription(newState);
+    Meteor.call('transactions.changeStateForObject', newState, description, this.props.object._id, this.props.object.locationId);    
   }
 
   renderButtonsForProvider() {

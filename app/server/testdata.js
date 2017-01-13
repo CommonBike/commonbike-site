@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Locations } from '/imports/api/locations.js'; 
 import { Objects } from '/imports/api/objects.js'; 
+import { Transactions } from '/imports/api/transactions.js'; 
+import '/imports/api/users.js'; 
 
 const {testdata = {}} = Meteor.settings.private
 
@@ -152,6 +154,7 @@ var cleanupTestUsers = function() {
             }
         });
 
+      Transactions.remove({userId: id});
       Meteor.users.remove({_id: id});
     } 
   });
@@ -166,9 +169,11 @@ var cleanupTestData = function() {
         // remove all objects for this location
         var myObjects = Objects.find({locationId: id}).fetch();
         _.each(myObjects, function (objectData) {
-           Objects.remove({_id: objectData._id});
+           Transactions.remove({objectId: id});
+           Objects.remove({id: objectData._id});
         });
 
+        Transactions.remove({locationId: id});
         Locations.remove({_id: id});
     }
   });
@@ -205,8 +210,9 @@ var checkTestUsers = function() {
       // Meteor.users.update({_id: id}, {$set:{'avatar': anavatar}});
 
       // email verification
-      Meteor.users.update({_id: id}, {$set:{'emails.0.verified': true}});
+      Meteor.users.update({_id: id}, {$set:{'emails.0.verified': true, 'profile.active':true}});
       log('added test user ' + userData.name);
+      Meteor.call('transactions.registerUser', id);
     }
 
     _.each(userData.roles, function (role) {
@@ -333,7 +339,7 @@ var checkTestLocations = function() {
       }
     });
   });
-};    
+};  
 
 /* Use settings.json if you want to generate / check testdata when 
    the application starts 

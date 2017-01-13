@@ -17,6 +17,9 @@ import CustomPage from '/imports/client/components/CustomPage/CustomPage.jsx'
 import Profile from '/imports/client/components/Profile/Profile.jsx'
 import LocationList from '/imports/client/containers/LocationList/LocationList.jsx'
 import LocationDetails from '/imports/client/containers/LocationDetails/LocationDetails.jsx'
+import TransactionList from '/imports/client/containers/TransactionList/TransactionList.jsx'
+import AdminUsersList from '/imports/client/containers/AdminUsersList/AdminUsersList.jsx'
+import ObjectList from '/imports/client/containers/ObjectList/ObjectList.jsx'
 import ObjectDetails from '/imports/client/containers/ObjectDetails/ObjectDetails.jsx'
 import CommonBikeUI from '/imports/client/commonbike-ui.jsx'
 import NoMatch from '/imports/client/components/NoMatch/NoMatch.jsx'
@@ -34,6 +37,8 @@ const UserAppLocationDetails = ({params}) => {
 }
 
 const UserAppObjectList = () => (<UserApp content={<ObjectList />} />)
+
+const UserAppTransactionList = () => (<UserApp content={<TransactionList />} />)
 
 const UserAppRentalList = () => (<UserApp content={<ObjectList isEditable="true"/>} />)
 
@@ -60,6 +65,8 @@ const UserAppAdminLocationDetails = ({params}) => {
     <UserApp content={<LocationDetails locationId={params.locationId} isEditable="true"/>} />
   )
 }
+
+const UserAppAdminAdminUsersList = () => (<UserApp content={<AdminUsersList />} />)
 
 // see: https://react-router.now.sh/auth-workflow
 const MatchWhenLoggedIn = ({ component: Component, ...rest }) => (
@@ -100,6 +107,7 @@ const App = () => (
       <MatchWhenLoggedIn pattern='/profile' component={UserAppProfile}/> 
       <MatchWhenLoggedIn pattern='/locations' component={UserAppLocationList}/> 
       <MatchWhenLoggedIn pattern='/objects' component={UserAppObjectList}/> 
+      <MatchWhenLoggedIn pattern='/transactions' component={UserAppTransactionList}/> 
       <MatchWhenLoggedIn pattern='/location/:locationId' component={UserAppLocationDetails}/> 
       <MatchWhenLoggedIn pattern='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
       <MatchWhenLoggedIn pattern='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 
@@ -109,6 +117,7 @@ const App = () => (
       <MatchWhenLoggedIn pattern='/admin/rentals' component={UserAppRentalList}/> 
       <MatchWhenLoggedIn pattern='/admin/location/:locationId' component={UserAppAdminLocationDetails}/> 
       <MatchWhenLoggedIn pattern='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/> 
+      <MatchWhenLoggedIn pattern='/admin/users' component={UserAppAdminAdminUsersList}/> 
 
       <Miss component={NoMatch}/>
     </div>

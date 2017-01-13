@@ -26,11 +26,17 @@ class LocationDetails extends Component {
    * 
    * Adds a new object to the database having the title "_Een nieuwe fiets"
    */
-  newObject(locationId) { Meteor.call('objects.insert', {
-    locationId: locationId,
-    title: "_ Mijn nieuwe fiets",
-    imageUrl: '/files/Block/bike.png'
-  })}
+  newObject(locationId) { 
+    var timestamp =  new Date().valueOf();
+    Meteor.call('objects.insert', {
+      locationId: locationId,
+      title: "_ Mijn nieuwe fiets",
+      imageUrl: '/files/Block/bike.png',
+      state: {state: 'available',
+              userId: null,
+              timestamp: timestamp}
+    })
+  }
 
   render() {
     return (

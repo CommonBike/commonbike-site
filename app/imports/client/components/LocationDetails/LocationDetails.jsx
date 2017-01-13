@@ -39,12 +39,17 @@ class LocationDetails extends Component {
           Nieuwe fiets
         </RaisedButton>
 
-        {R.map((object) =>  <ObjectBlock
+        { this.props.objects.length != 0 ?
+          R.map((object) =>  <ObjectBlock
                               key={object._id}
                               item={object}
                               isEditable={this.props.isEditable}
                               onClick={this.props.clickItemHandler} />
-                            , this.props.objects)}
+                            , this.props.objects)
+          :
+          <p style={s.paragraph}>GEEN FIETSEN BESCHIKBAAR</p> 
+        }
+
 
       </div>
     );
