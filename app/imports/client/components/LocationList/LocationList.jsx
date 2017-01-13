@@ -105,7 +105,7 @@ LocationList.propTypes = {
 };
 
 LocationList.defaultProps = {
-  canCreateLocations: false
+  canCreateLocations: false,
   isEditable: false
 }
 
