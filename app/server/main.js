@@ -8,7 +8,7 @@ Meteor.startup(() => {
 	// code to run on server at startup
 
 	// fix all 'old' objects in the production database
-	if(false) {
+	if(true) {
 		var myObjects = Objects.find().fetch();
 		_.each(myObjects, function (objectData) {
 		    
