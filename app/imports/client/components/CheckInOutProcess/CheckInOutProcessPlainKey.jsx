@@ -36,12 +36,12 @@ class CheckInOutProcessPlainKey extends CheckInOutProcessBase {
         <Button style={s.button} onClick={() => this.setObjectReserved() } buttonStyle="huge">Reserveer!</Button> : <div /> }
       {this.props.object.state.state=='reserved' ? 
         <div style={s.base}>
-          <p style={s.explanationText}>
-            Uw fiets ophalen? Druk op de knop <b>HUUR</b> voor een huurcode.
+          <p style={s.explanationText} hidden>
+            Uw fiets ophalen? Druk op de knop <b>Stap op</b> voor een huurcode.
             Let op: uw huurperiode start op het moment dat de huurcode is afgegeven!
           </p>
-          <Button style={s.button} onClick={() => this.setObjectInUse() } buttonStyle="huge">HUUR</Button>
-          <Button style={s.button} onClick={() => this.setObjectAvailable() }>annuleren</Button>
+          <Button style={s.button} onClick={() => this.setObjectInUse() } buttonStyle="huge">stap op</Button>
+          <Button style={s.button} onClick={() => this.setObjectAvailable() }>annuleer bestelling</Button>
         </div>
         : <div /> }
       {this.props.object.state.state=='inuse' ? 
