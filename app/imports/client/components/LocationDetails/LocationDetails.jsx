@@ -23,7 +23,7 @@ class LocationDetails extends Component {
       <div style={s.base}>
 
         <p style={s.intro}>
-          Haal je fiets bij <i><span dangerouslySetInnerHTML={{__html: this.props.location.title}} /></i>. Kies hieronder je gewenste fiets<br/>
+          <span dangerouslySetInnerHTML={{__html: this.props.location.title}} /><br />
         </p>
 
         <center>

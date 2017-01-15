@@ -37,14 +37,14 @@ Meteor.startup(() => {
 
 		var myUsers = Meteor.users.find().fetch();
 		_.each(myUsers, function (user) {
-			if(!user.profile.active) {
+			if(!user.profile || !user.profile.active) {
 				console.log('update active for' + user._id)
 				Meteor.users.update(user._id, {$set : { 'profile.active' : false }});
 			}
-			if(!user.profile.name) {
+			if(!user.profile || !user.profile.name) {
 				Meteor.users.update(user._id, {$set : { 'profile.name' : 'anonymous' }});
 			}
-			if(!user.profile.avatar) {
+			if(!user.profile || !user.profile.avatar) {
 				Meteor.users.update(user._id, {$set : { 'profile.avatar' : '' }});
 			}
 		});	

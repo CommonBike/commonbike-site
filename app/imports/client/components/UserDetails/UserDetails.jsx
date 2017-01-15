@@ -43,7 +43,6 @@ class UserDetails extends Component {
   render() {
     var user = this.props.user;
 
-    var email = user.emails[0].address
     var name = '';
     var isActive = false;
     var picture = '';
@@ -54,6 +53,7 @@ class UserDetails extends Component {
         picture = user.profile.avatar|| ''
         canCreateLocations = user.profile.cancreatelocations|| false
     }
+    var email = user.emails ? user.emails[0].address : name + ' (no email)'
     var isAdmin = Roles.userIsInRole(user._id, 'admin');
     var readonly = (this.props.currentuser == user._id);
 
