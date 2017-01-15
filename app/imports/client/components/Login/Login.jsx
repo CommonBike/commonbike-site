@@ -73,9 +73,11 @@ class Login extends Component {
   renderTeaser() {
     return (
       <div style={Object.assign({padding: '20px'}, s.base)}>
-        <p>Leuk dat je meedoet! We sturen je als eerste een bericht als de app gebruikt kan worden.</p>
-        <p>In december starten we een pilot bij een intercity treinstation. Daarna breiden we uit.</p>
-        <p><button onClick={this.logout}>Log out</button></p>
+        <p>Leuk dat je mee wilt doen!</p>
+        <p>We zijn gestart met een besloten gebruikersgroep in Leiden. <a href="mailto:info@commonbike.com">Mail ons</a> als je nu al mee wilt fietsen en testen in Leiden.</p>
+        <p>We sturen je als eerste een bericht als we uitbreiden.</p>
+        <p><a href="http://commonbike.com/" target="_blank"><i>Hoe werkt CommonBike?</i></a></p>
+        <p><button onClick={this.logout}>Uitloggen</button></p>
       </div>
     )
   }
