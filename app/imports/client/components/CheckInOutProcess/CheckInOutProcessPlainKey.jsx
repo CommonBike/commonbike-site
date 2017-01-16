@@ -24,6 +24,8 @@ class CheckInOutProcessPlainKey extends CheckInOutProcessBase {
     if(ReactDOM.findDOMNode(this.refs.code).value != '25')
       return alert('Dat is niet de juiste code. Probeer het opnieuw.');
 
+    this.setState({showCodeEntry:false});
+
     this.setObjectAvailable();
   }
 
@@ -52,6 +54,7 @@ class CheckInOutProcessPlainKey extends CheckInOutProcessBase {
                   <li style={s.listitem}>Vraag om de <b>locatiecode</b> en vul deze hieronder in om de huurperiode te beëindigen.<br /><br /></li>
                   <li style={s.listitem}><TextField required="required" type="code" ref="code" placeholder="locatiecode" name="code" style={s.textfield}/></li>
                   <li style={s.listitem}><Button style={s.button} onClick={() => this.checkCode() }>CODE INVOEREN</Button></li>
+                  <Button style={s.button} onClick={() => this.setState({ showCodeEntry: false}) }>annuleer</Button>
                 </ul>
               </div>
             : 
@@ -61,7 +64,7 @@ class CheckInOutProcessPlainKey extends CheckInOutProcessBase {
                   <CheckInCode title="HUURCODE" code={this.props.object.lock.settings.keyid} />
                   <li style={s.listitem}>Hiermee kunt u <b>{this.props.object.title}</b> openen.</li>
                 </ul>
-                <Button style={s.button} onClick={() => this.setState(prevState => ({ showCodeEntry: ! prevState.showCodeEntry})) }>TERUGBRENGEN</Button> 
+                <Button style={s.button} onClick={() => this.setState({ showCodeEntry: true}) }>TERUGBRENGEN</Button> 
               </div>
           
           : <div /> }
