@@ -61,7 +61,16 @@ export default createContainer((props) => {
   var title="";
   if(!props.isEditable) {
     title = 'Bekijk hier jouw reserveringen';
-    filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}], 'state.userId':Meteor.userId()};
+
+    if(Roles.userIsInRole(Meteor.userId(), ['admin'])) {
+      console.log('admin reserveringen!')
+      // admin can see all reserved/rented bikes across all locations
+      filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}]};
+    } else {
+      // user can see his/her own reserved/rented bikes
+      filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}], 'state.userId':Meteor.userId()};
+    }
+
     emptyListMessage = 'GEEN RESERVERINGEN'
   } else {
     title = 'Jouw verhuurde fietsen';

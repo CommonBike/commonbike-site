@@ -352,9 +352,20 @@ var checkTestLocations = function() {
 */
 Meteor.startup(() => {
   if(!Meteor.isProduction) {
-    if (testdata.cleanupusers) { cleanupTestUsers(); }
-    if (testdata.cleanupother) { cleanupTestData(); }
-    if (testdata.insert) {
+    var defaults = {
+          "cleanupusers": true,    
+          "cleanupother": true,    
+          "insert": true,     
+          "log": false
+      };
+
+      console.log("Settings:",Meteor.settings);
+
+    var settings = Object.assign(defaults, Meteor.settings);
+
+    if (settings.cleanupusers) { cleanupTestUsers(); }
+    if (settings.cleanupother) { cleanupTestData(); }
+    if (settings.insert) {
       checkTestUsers()
       checkTestLocations()
     }
