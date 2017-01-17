@@ -61,22 +61,27 @@ export default createContainer((props) => {
   var title="";
   if(!props.isEditable) {
     title = 'Bekijk hier jouw reserveringen';
+
+    // user can see his/her own reserved/rented bikes
     filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}], 'state.userId':Meteor.userId()};
+
     emptyListMessage = 'GEEN RESERVERINGEN'
   } else {
     title = 'Jouw verhuurde fietsen';
 
-    // only show objects for which the current loggedin user is one of the providers
-    console.log(Meteor.user());
-
+    // Only show objects for which the current loggedin user is one of the providers
     var mylocations = [];
     if(Meteor.user()) {
       mylocations = Meteor.user().profile.provider_locations||[];
     }
 
-    console.log(mylocations)
+    filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}]};
 
-    filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}], locationId: { $in: mylocations }};
+    if( ! Roles.userIsInRole(Meteor.userId(), ['admin']) )
+      filter.locationId = { $in: mylocations }
+
+    console.log(filter);
+
     emptyListMessage = 'ER ZIJN GEEN FIETSEN VERHUURD'
   }
 

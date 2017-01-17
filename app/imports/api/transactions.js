@@ -65,8 +65,12 @@ if (Meteor.isServer) {
 		},
 	'transactions.changeStateForObject'(newstate, actiondescription, objectid, locationid) {
 		var userid = Meteor.userId();
-	    var userdata = Meteor.users.findOne({_id:userid});
-	    var locationdata = Locations.findOne({_id: locationid});
+	  var userdata = Meteor.users.findOne({_id:userid}, {emails:1});
+	  var locationdata = Locations.findOne({_id: locationid}, {title: 1});
+
+    console.log('userData:', userdata.emails[0].address);
+    console.log('locData:', locationdata.title);
+
 		var description = "gebruiker \'" + userdata.emails[0].address + '\' heeft ' + actiondescription + ' op locatie \'' + locationdata.title + '\'';
 
 		Meteor.call('transactions.addTransaction', 'SET_STATE_' + newstate.toUpperCase(), description, userid, locationid, objectid, null)

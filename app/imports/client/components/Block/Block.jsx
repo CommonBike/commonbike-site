@@ -42,7 +42,6 @@ class Block extends Component {
   render() {
     return (
       <article style={Object.assign({}, s.base, ! this.props.isEditable && {cursor: 'pointer'})} onClick={this.props.onClick} ref="base">
-
         <div style={s.avatar} onClick={this.props.newAvatar}>
           <img src={this.props.item.imageUrl ? this.props.item.imageUrl : '/files/Block/bike.png'} alt="Bike" title="Le bike." />
         </div>
@@ -64,7 +63,6 @@ class Block extends Component {
 
         <button style={Object.assign({display: 'none'}, s.deleteButton, this.props.isEditable && {display: 'block'})} onClick={this.props.deleteItem}>delete</button>
         <button style={Object.assign({display: 'none'}, s.infoButton, this.props.isEditable && {display: 'block'})} onClick={this.props.viewItem}>info</button>
-
       </article>
     );
   }
