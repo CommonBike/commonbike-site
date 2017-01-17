@@ -50,6 +50,10 @@ if(Meteor.isServer) {
       }
 
       Meteor.users.update(userId, {$set : { 'profile.active' : isActive }});
+
+      if(isActive) {
+          Meteor.call('slack.sendnotification_commonbike', 'Er is een nieuwe deelnemer geactiveerd!');
+      }
     },
     'currentuser.setAdmin'(userId, isActive) {
       if(!this.userId) {
