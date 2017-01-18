@@ -28,6 +28,10 @@ class ObjectList extends Component {
                               key={object._id}
                               item={object}
                               isEditable={this.props.isEditable}
+                              showPrice={this.props.showPrice}
+                              showState={this.props.showState}
+                              showRentalDetails={this.props.showRentalDetails}
+                              showLockDetails={this.props.showLockDetails}
                               onClick={this.props.clickItemHandler} />
                             , this.props.objects)
           :
@@ -66,6 +70,10 @@ ObjectList.propTypes = {
   objects: PropTypes.array,
   clickItemHandler: PropTypes.any,
 
+  showPrice : PropTypes.any,
+  showState : PropTypes.any,
+  showRentalDetails: PropTypes.any,
+  showLockDetails: PropTypes.any,
   isEditable: PropTypes.any
 };
 
@@ -76,6 +84,10 @@ ObjectList.defaultProps = {
   clickItemHandler: '',
 
   methodsBaseName: "",
+  showPrice : false,
+  showState : false,
+  showRentalDetails: false,
+  showLockDetails: false,
   isEditable: false
 }
 

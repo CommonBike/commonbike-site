@@ -38,7 +38,6 @@ if(Meteor.isServer) {
       }
 
       Meteor.users.update(user.id, {$set : { 'profile.active' : user.active }});
-      // console.log(user.id, 'status set to', user.active)
     },
     'currentuser.setActive'(userId, isActive) {
       if(!this.userId) {

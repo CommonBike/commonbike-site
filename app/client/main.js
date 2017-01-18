@@ -36,11 +36,11 @@ const UserAppLocationDetails = ({params}) => {
   )
 }
 
-const UserAppObjectList = () => (<UserApp content={<ObjectList />} />)
+const UserAppObjectList = () => (<UserApp content={<ObjectList showPrice={true} showState={true} />} />)
 
 const UserAppTransactionList = () => (<UserApp content={<TransactionList />} />)
 
-const UserAppRentalList = () => (<UserApp content={<ObjectList isEditable="true"/>} />)
+const UserAppRentalList = () => (<UserApp content={<ObjectList rentalsMode={true} showState={true} showRentalDetails={true} />} />)
 
 const UserAppCustomPageObjectDetails = ({params}) => {
   return (

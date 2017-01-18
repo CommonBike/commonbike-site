@@ -21,12 +21,16 @@ class CheckInOutProcessPlainKey extends CheckInOutProcessBase {
   }
 
   checkCode() {
-    if(ReactDOM.findDOMNode(this.refs.code).value != '25')
-      return alert('Dat is niet de juiste code. Probeer het opnieuw.');
+    // if(ReactDOM.findDOMNode(this.refs.code).value != '25')
+    //   return alert('Dat is niet de juiste code. Probeer het opnieuw.');
 
     this.setState({showCodeEntry:false});
 
     this.setObjectAvailable();
+
+    var user = this.getUserDescription();
+    var description='bicycle return code ' + ReactDOM.findDOMNode(this.refs.code).value + ' entered by user ' + user;
+    Meteor.call('transactions.addTransaction', 'ENTER_LOCATIONCODE', description, Meteor.userId(), this.props.object.locationId, this.props.object._id);
   }
 
   renderButtonsForUser() {
@@ -39,8 +43,7 @@ class CheckInOutProcessPlainKey extends CheckInOutProcessBase {
       {this.props.object.state.state=='reserved' ? 
         <div style={s.base}>
           <p style={s.explanationText} hidden>
-            Uw fiets ophalen? Druk op de knop <b>Stap op</b> voor een huurcode.
-            Let op: uw huurperiode start op het moment dat de huurcode is afgegeven!
+            Uw fiets ophalen? Druk op de knop <b>Stap op</b>
           </p>
           <Button style={s.button} onClick={() => this.setObjectInUse() } buttonStyle="huge">stap op</Button>
           <Button style={s.button} onClick={() => this.setObjectAvailable() }>annuleer bestelling</Button>
@@ -51,7 +54,7 @@ class CheckInOutProcessPlainKey extends CheckInOutProcessBase {
               <div style={s.base}>
                 <ul style={s.list}>
                   <li style={s.listitem}>Zet s.v.p. <b>{this.props.object.title}</b> afgesloten weg en lever de sleutel in bij de medewerker.<br /><br /></li>
-                  <li style={s.listitem}>Vraag om de <b>locatiecode</b> en vul deze hieronder in om de huurperiode te beëindigen.<br /><br /></li>
+                  <li style={s.listitem}>Vraag om de <b>locatiecode</b> en vul deze hieronder in.<br /><br /></li>
                   <li style={s.listitem}><TextField required="required" type="code" ref="code" placeholder="locatiecode" name="code" style={s.textfield}/></li>
                   <li style={s.listitem}><Button style={s.button} onClick={() => this.checkCode() }>CODE INVOEREN</Button></li>
                   <Button style={s.button} onClick={() => this.setState({ showCodeEntry: false}) }>annuleer</Button>
@@ -60,9 +63,8 @@ class CheckInOutProcessPlainKey extends CheckInOutProcessBase {
             : 
               <div style={s.base}>
                 <ul style={s.list}>
-                  <li style={s.listitem}>Toon onderstaande huurcode aan de medewerker en vraag om de sleutel.</li>
-                  <CheckInCode title="HUURCODE" code={this.props.object.lock.settings.keyid} />
-                  <li style={s.listitem}>Hiermee kunt u <b>{this.props.object.title}</b> openen.</li>
+                  <li style={s.listitem}>Toon dit scherm aan de medewerker en vraag om de sleutel.</li>
+                  <li style={s.listitemLarge}><b>{this.props.object.title}</b></li>
                 </ul>
                 <Button style={s.button} onClick={() => this.setState({ showCodeEntry: true}) }>TERUGBRENGEN</Button> 
               </div>
@@ -102,6 +104,16 @@ var s = {
     minHeight: '40px',
     fontSize: '1.2em',
     fontWeight: '500',
+    listStyle: 'none',
+  },
+
+  listitemLarge: {
+    padding: '0 10px 0 0',
+    margin: '0 auto',
+    textAlign: 'center',
+    minHeight: '40px',
+    fontSize: '4em',
+    fontWeight: '1000',
     listStyle: 'none',
   },
 

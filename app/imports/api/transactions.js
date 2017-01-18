@@ -70,9 +70,6 @@ if (Meteor.isServer) {
 	  var locationdata = Locations.findOne({_id: locationid}, {title: 1});
     var objectdata = Objects.findOne({_id: objectid}, {title: 1});
 
-    console.log('userData:', userdata.emails[0].address);
-    console.log('locData:', locationdata.title);
-
 		var description = "gebruiker \'" + userdata.emails[0].address + '\' heeft ' + actiondescription + ' op locatie \'' + locationdata.title + '\'';
 
 		Meteor.call('transactions.addTransaction', 'SET_STATE_' + newstate.toUpperCase(), description, userid, locationid, objectid, null)

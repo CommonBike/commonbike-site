@@ -10,6 +10,7 @@ import { Objects } from '/imports/api/objects.js';
 
 // Import components
 import Block from '../../components/Block/Block';
+// import CheckInOutProperties from '../../components/CheckInOutProperties/CheckInOutProperties';
 
 class ObjectBlock extends Component {
 
@@ -53,8 +54,10 @@ class ObjectBlock extends Component {
     return (
       <Block
         item={this.props.item}
-        showState="true"
-        showPrice="true"
+        showState={this.props.showState}
+        showPrice={this.props.showPrice}
+        showRentalDetails={this.props.showRentalDetails}
+        showLockDetails={this.props.showLockDetails}
         isEditable={this.props.isEditable}
         newAvatar={this.newAvatar.bind(this)}
         handleChange={this.handleChange.bind(this)}
@@ -109,11 +112,19 @@ ObjectBlock.contextTypes = {
 ObjectBlock.propTypes = {
   item: PropTypes.object.isRequired,
   isEditable: PropTypes.any,
+  showPrice: PropTypes.any,
+  showState: PropTypes.any,
+  showRentalDetails: PropTypes.any,
+  showLockDetails: PropTypes.any,
   onClick: PropTypes.any,
 };
 
 ObjectBlock.defaultProps = {
   item: {},
+  showPrice: false,
+  showState: false,
+  showRentalDetails: false,
+  showLockDetails: false,
   isEditable: false
 }
 
