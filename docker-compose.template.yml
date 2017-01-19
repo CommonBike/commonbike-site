@@ -12,7 +12,7 @@ services:
     restart: always
     image: commonbike:latest
     environment:
-      - 'METEOR_SETTINGS={}'
+     - METEOR_SETTINGS=##_METEOR_SETTINGS_##
     links:
       - db:db
     ports:

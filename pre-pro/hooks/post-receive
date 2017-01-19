@@ -22,6 +22,12 @@ do
     cd $deployDir
     docker tag $imageName:latest $imageName:pendingDeletion
     echo "Building Meteor app"
+
+    # replace ##_METEOR_SETTINGS_## with contents of settings.json and output to docker-compose.yml
+    # https://stackoverflow.com/questions/36680908/read-json-file-into-environment-variable-with-docker-compose
+    sed -e 's|##_METEOR_SETTINGS_##|'"$(cat ./app/settings.json)"'|' \
+    "./docker-compose.yml.template" > "./docker-compose.yml"
+
     cd app
     export METEOR_SETTINGS="$(cat settings_demo.json)" # Change to settings.json if you want your own settings
     npm install --production && meteor build --verbose --allow-superuser --directory ../mrt_build && cd ..
