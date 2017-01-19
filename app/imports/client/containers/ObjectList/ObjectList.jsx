@@ -28,6 +28,10 @@ class ObjectList extends Component {
         objects={this.props.objects}
         clickItemHandler=""
         isEditable={this.props.isEditable} 
+        showPrice={this.props.showPrice}
+        showState={this.props.showState}
+        showRentalDetails={this.props.showRentalDetails}
+        showLockDetails={this.props.showLockDetails}
         emptyListMessage={this.props.emptyListMessage}/>
     );
   }
@@ -45,12 +49,22 @@ var s = {
 
 ObjectList.propTypes = {
   objects: PropTypes.array,
+  showPrice : PropTypes.any,
+  showState : PropTypes.any,
+  showRentalDetails: PropTypes.any,
+  showLockDetails: PropTypes.any,
   isEditable: PropTypes.any,
   emptyListMessage: PropTypes.string
 };
 
 ObjectList.defaultProps = {
-  isEditable: false
+  showPrice : false,
+  showState : false,
+  showRentalDetails: false,
+  showLockDetails: false,
+  isEditable: false,
+
+  rentalsMode: false
 }
 
 export default createContainer((props) => {
@@ -59,7 +73,7 @@ export default createContainer((props) => {
   
   var filter=null;
   var title="";
-  if(!props.isEditable) {
+  if(!props.rentalsMode) {
     title = 'Bekijk hier jouw reserveringen';
 
     // user can see his/her own reserved/rented bikes
@@ -80,14 +94,16 @@ export default createContainer((props) => {
     if( ! Roles.userIsInRole(Meteor.userId(), ['admin']) )
       filter.locationId = { $in: mylocations }
 
-    console.log(filter);
-
     emptyListMessage = 'ER ZIJN GEEN FIETSEN VERHUURD'
   }
 
   return {
   	title: title,
     objects: Objects.find(filter, {sort: {title: 1}}).fetch(),
+    showPrice: props.showPrice||false,
+    showState : props.showState||false,
+    showRentalDetails: props.showRentalDetails||false,
+    showLockDetails: props.showLockDetails||false,
     emptyListMessage: emptyListMessage
   };
 }, ObjectList);

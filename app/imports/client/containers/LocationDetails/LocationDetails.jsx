@@ -89,9 +89,11 @@ export default createContainer((props) => {
 
   var filter = null;
   if(props.isEditable) {
+    // for providers: show all items on this location
     filter = {locationId: props.locationId}
   } else {
-    filter = {locationId: props.locationId, $or: [{'state.state':'available'}, {'state.userId': Meteor.userId()}]}
+    // for users: show all AVAILABLE items on this location
+    filter = {locationId: props.locationId, 'state.state':'available'}
   }
 
   return {

@@ -4,9 +4,11 @@ import { Objects } from '/imports/api/objects.js';
 import { Transactions } from '/imports/api/transactions.js'; 
 import '/imports/api/users.js'; 
 
-const {testdata = {}} = Meteor.settings.private
-
 const log = (msg) => {
+  if(!Meteor.settings||!Meteor.settings.private||!Meteor.settings.private.testdata) { return }
+
+  var testdata = Meteor.settings.private.testdata
+
   if (testdata.log) {
     console.log(msg)
   }
@@ -168,10 +170,11 @@ var cleanupTestData = function() {
 
         // remove all objects for this location
         var myObjects = Objects.find({locationId: id}).fetch();
-        _.each(myObjects, function (objectData) {
-           Transactions.remove({objectId: id});
-           Objects.remove({id: objectData._id});
+        _.each(myObjects, function (object) {
+          Transactions.remove({objectId: object._id});
         });
+
+        Objects.remove({locationId: id});
 
         Transactions.remove({locationId: id});
         Locations.remove({_id: id});
@@ -245,7 +248,6 @@ const Address2LatLng = (address) => {
 var createLockCode = function(length) {
   var base = Math.pow(10, length+1);
   var code = Math.floor(base + Math.random() * base)
-  // console.log('code: ' + code);
   return code.toString().substring(1, length+1);
 }
 
@@ -305,6 +307,7 @@ var checkTestLocations = function() {
       if (hithere) {
         if(firstproviderid==null) { 
           firstproviderid = hithere._id;
+          firstprovidermail=hithere.emails[0].address;
         }
 
         log('adding provider ' + provider + ' to ' + locationData.title);
@@ -324,6 +327,13 @@ var checkTestLocations = function() {
           lockinfo = createLock(bike.locktype, bike.locksettings);
         }
 
+        var priceinfo = { 
+          value: '0',
+          currency: 'euro',
+          timeunit: 'day',
+          description: 'tijdelijk gratis' 
+        };
+
         var keyid = Objects.insert({ 
           locationId: locationId,
           title: bike.title,
@@ -331,11 +341,11 @@ var checkTestLocations = function() {
           imageUrl: locationData.bikeimage,
           state: { state: bike.state,
                    userId: firstproviderid,
-                   timestamp: timestamp },
-          lock: lockinfo
+                   timestamp: timestamp,
+                   userDescription: '' },
+          lock: lockinfo,
+          price: priceinfo
         });
-
-        // console.log('add new bike:' + bike.title + ' to location ' + locationData.title);
       }
     });
   });
@@ -351,26 +361,16 @@ var checkTestLocations = function() {
 
 */
 Meteor.startup(() => {
-  if(!Meteor.isProduction) {
-    var defaults = {
-          "cleanupusers": true,    
-          "cleanupother": true,    
-          "insert": true,     
-          "log": false
-      };
+  if(Meteor.isProduction) { return }
 
-      console.log("Settings:",Meteor.settings);
+  if(!Meteor.settings||!Meteor.settings.private||!Meteor.settings.private.testdata) { return }
 
-    var settings = Object.assign(defaults, Meteor.settings);
+  var testdata = Meteor.settings.private.testdata
 
-    if (settings.cleanupusers) { cleanupTestUsers(); }
-    if (settings.cleanupother) { cleanupTestData(); }
-    if (settings.insert) {
-      checkTestUsers()
-      checkTestLocations()
-    }
-
-    // log( Locations.find().fetch() )
+  if (testdata.cleanupusers) { cleanupTestUsers(); }
+  if (testdata.cleanupother) { cleanupTestData(); }
+  if (testdata.insert) {
+    checkTestUsers()
+    checkTestLocations()
   }
 })
-

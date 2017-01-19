@@ -27,9 +27,21 @@ class CheckInOutProcessBase extends Component {
       return description;
   }
 
+  getUserDescription() {
+    var description = '';
+    if(Meteor.user().emails && Meteor.user().emails.length>0 && Meteor.user().emails[0].address) {
+      description=Meteor.user().emails[0].address;
+    } else {
+      description = 'id:' + meteor.userId();
+    }
+
+    return description;
+  }
+
   setObjectReserved() {
     var newState = 'reserved';
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), newState, description);
+    var user = this.getUserDescription();
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), newState, user);
 
     var description = this.getStateChangeNeatDescription(newState);
     Meteor.call('transactions.changeStateForObject', newState, description, this.props.object._id, this.props.object.locationId);    
@@ -37,7 +49,8 @@ class CheckInOutProcessBase extends Component {
 
   setObjectInUse() {
     var newState = 'inuse'
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), newState);
+    var user = this.getUserDescription();
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), newState, user);
 
     var description = this.getStateChangeNeatDescription(newState);
     Meteor.call('transactions.changeStateForObject', newState, description, this.props.object._id, this.props.object.locationId);    
@@ -45,7 +58,7 @@ class CheckInOutProcessBase extends Component {
 
   setObjectAvailable() {
     var newState = 'available'
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), newState);
+    Meteor.call('objects.setState', this.props.object._id, null, newState, '');
 
     var description = this.getStateChangeNeatDescription(newState);
     Meteor.call('transactions.changeStateForObject', newState, description, this.props.object._id, this.props.object.locationId);    
@@ -53,7 +66,8 @@ class CheckInOutProcessBase extends Component {
 
   setObjectOutOfOrder() {
     var newState = 'outoforder'
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), newState);
+    var user = this.getUserDescription();
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), newState, user);
 
     var description = this.getStateChangeNeatDescription(newState);
     Meteor.call('transactions.changeStateForObject', newState, description, this.props.object._id, this.props.object.locationId);    
