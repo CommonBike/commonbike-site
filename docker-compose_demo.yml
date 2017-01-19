@@ -12,7 +12,7 @@ services:
     restart: always
     image: commonbike:latest
     environment:
-      - 'METEOR_SETTINGS={"mapbox":{"style":"mapbox.streets","accessToken":"pk.eyJ1IjoiZXJpY3ZycCIsImEiOiJjaWhraHE5ajIwNmRqdGpqN2h2ZXhqMnRsIn0.1FBWllDyQ_nSlHFE2jMLDA"},"private":{"testdata":{"cleanupusers":false,"cleanupother":false,"insert":false,"log":false},"slack":{"notify":true,"address":"https://hooks.slack.com/services/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","channel":"commonbike-bot","name":"commonbike-bot"}}}'
+      - 'METEOR_SETTINGS={}'
     links:
       - db:db
     ports:
