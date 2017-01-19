@@ -11,10 +11,10 @@
       "log": false
     },
     "slack": { 
-        "notify": false,
-        "address": "<fill in Webhook URL here, channel and name below, set notify to true",
-        "channel": "commonbike-activity",
-        "name": "commonbike-bot"
+      "notify": false,
+      "address": "<fill in Webhook URL here, channel and name below, set notify to true",
+      "channel": "commonbike-activity",
+      "name": "commonbike-bot"
     }
   }
 }

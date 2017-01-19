@@ -34,15 +34,15 @@ After that, go back to your project directory and try running meteor add-platfor
 
 ## messages on a slack channel? (mb)
 
-- Create a dedicated channel for the commonbike-bot
+- Create a dedicated slack channel for the commonbike-bot
 - Add an incoming webhook:
 * In the slack backend:
-  - Build from top menu
-  - Incoming webhooks
-  - choose existing channel or create a new one
+  - **Build** from top menu
+  - Search for **Incoming webhooks**
+  - Choose existing channel or create a new one
   - Add incoming webhook integration
   - Copy webhook URL to settings.json in application root (slack section)
-  - fill in other info (channel name without hash, bot name)
+  - Fill in other info (channel name without hash, bot name)
   - enable notifications
   - voila....
   
