@@ -22,8 +22,6 @@ ENV PORT 80
 ADD ./docker/bin/run-server.sh /etc/service/server/run
 ADD ./mrt_build /var/www/app
 
-ENV METEOR_SETTINGS '{"mapbox":{"style":"mapbox.streets","accessToken":"pk.eyJ1IjoiZXJpY3ZycCIsImEiOiJjaWhraHE5ajIwNmRqdGpqN2h2ZXhqMnRsIn0.1FBWllDyQ_nSlHFE2jMLDA"},"private":{"testdata":{"cleanup":false,"insert":false,"log":false}}}'
-
 WORKDIR /var/www/app/bundle/programs/server
 RUN npm install
 
