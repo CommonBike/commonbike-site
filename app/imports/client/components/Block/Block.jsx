@@ -10,6 +10,17 @@ import { Locations } from '/imports/api/locations.js';
 // Import components
 import RaisedButton from '../RaisedButton/RaisedButton.jsx';
 
+// helper functions
+MillisectoHHMM = function (ms) {
+  var sec_num = parseInt(ms/ 1000, 10); // don't forget the second param
+  var hours   = Math.floor(sec_num / 3600);
+  var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+
+  if (hours   < 10) {hours   = "0"+hours;}
+  if (minutes < 10) {minutes = "0"+minutes;}
+  return hours+':'+minutes;
+}
+
 // Block component - Renders an item block
 class Block extends Component {
 
@@ -39,6 +50,21 @@ class Block extends Component {
     return text;
   }
 
+  rentalDetails2Text(item) {
+    var userDescription = item.state.userdescription || 'anonymous';
+    var duur = '';
+    var nu = new Date().valueOf();
+    if(item&&item.state) {
+      duur = MillisectoHHMM(nu - item.state.timestamp);
+    }
+
+    return userDescription + ' (' + duur + ')';
+  }
+
+  lockDetailsToText(item) {
+      return '.. lock details will appear soon! ..'
+  }
+
   render() {
     return (
       <article style={Object.assign({}, s.base, ! this.props.isEditable && {cursor: 'pointer'})} onClick={this.props.onClick} ref="base">
@@ -52,13 +78,12 @@ class Block extends Component {
             ? <ContentEditable style={s.title} html={this.props.item.title} disabled={false} onChange={this.props.handleChange} />
             : <div style={s.title} dangerouslySetInnerHTML={{__html: this.props.item.title}}></div> }
 
-          <div style={Object.assign({display: 'none'}, s.price, this.props.showPrice && {display: 'block'})}>
-            &euro;3,00 per dag
+          <div style={Object.assign({display: 'none'}, s.objectdetails, (this.props.showPrice || this.props.showState || this.props.showRentalDetails || this.props.showLockDetails) && {display: 'block'})}>
+             <div>{ this.props.showState && this.props.item.state ? this.state2Text(this.props.item.state.state) : null }</div>
+             <div>{ this.props.showPrice ? <div dangerouslySetInnerHTML={{__html:this.props.item.price.description}} /> : null }</div>
+             <div>{ this.props.showRentalDetails && this.props.item ? this.rentalDetails2Text(this.props.item) : null }</div>
+             <div>{ this.props.showLockDetails && this.props.item ? this.lockDetails2Text(this.props.item) : null }</div>
           </div>
-
-          <div style={Object.assign({display: 'none'}, s.state, this.props.showState && {display: 'block'})}>
-             { this.props.showState && this.props.item.state ? this.state2Text(this.props.item.state.state) : null }
-           </div>
         </div>
 
         <button style={Object.assign({display: 'none'}, s.deleteButton, this.props.isEditable && {display: 'block'})} onClick={this.props.deleteItem}>delete</button>
@@ -98,11 +123,10 @@ var s = {
   title: {
     margin: '0 10px',
   },
-  state: {
-    margin: '0 10px',
-  },
-  price: {
-    margin: '0 10px',
+  objectdetails: {
+    padding: '5px',
+    margin: '5px 10px',
+    fontSize: '0.7em',
   },
   deleteButton: {
     cursor: 'cross',
@@ -120,6 +144,10 @@ var s = {
 Block.propTypes = {
   item: PropTypes.object.isRequired,
   isEditable: PropTypes.any,
+  showPrice: PropTypes.any,
+  showState: PropTypes.any,
+  showRentalDetails: PropTypes.any,
+  showLockDetails: PropTypes.any,
   onClick: PropTypes.any,
   handleChange: PropTypes.any,
   newAvatar: PropTypes.any,
@@ -131,6 +159,8 @@ Block.defaultProps = {
   isEditable: false,
   showPrice: false,
   showState: false,
+  showRentalDetails: false,
+  showLockDetails: false
 }
 
 export default Radium(Block);

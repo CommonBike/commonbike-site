@@ -44,7 +44,10 @@ class LocationDetails extends Component {
                               key={object._id}
                               item={object}
                               isEditable={this.props.isEditable}
-                              onClick={this.props.clickItemHandler} />
+                              onClick={this.props.clickItemHandler}
+                              showPrice={true}
+                              showState={this.props.isEditable}
+                              showRentalDetails={this.props.isEditable} />
                             , this.props.objects)
           :
           <p style={s.paragraph}>GEEN FIETSEN BESCHIKBAAR</p> 

@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo';
 import { Accounts } from 'meteor/accounts-base'
 import { Locations } from '/imports/api/locations.js'; 
+import { Objects } from '/imports/api/objects.js'; 
 
 export const Transactions = new Mongo.Collection('transactions');
 
@@ -67,14 +68,37 @@ if (Meteor.isServer) {
 		var userid = Meteor.userId();
 	  var userdata = Meteor.users.findOne({_id:userid}, {emails:1});
 	  var locationdata = Locations.findOne({_id: locationid}, {title: 1});
-
-    console.log('userData:', userdata.emails[0].address);
-    console.log('locData:', locationdata.title);
+    var objectdata = Objects.findOne({_id: objectid}, {title: 1});
 
 		var description = "gebruiker \'" + userdata.emails[0].address + '\' heeft ' + actiondescription + ' op locatie \'' + locationdata.title + '\'';
 
 		Meteor.call('transactions.addTransaction', 'SET_STATE_' + newstate.toUpperCase(), description, userid, locationid, objectid, null)
-		},
-	});
-}
 
+    if(newstate=='reserved') {
+      Meteor.call('slack.sendnotification_commonbike', 'Fiets '+ objectdata.title + ' is gereserveerd bij ' + locationdata.title);
+    } else if(newstate=='inuse') {
+      Meteor.call('slack.sendnotification_commonbike', 'Fiets '+ objectdata.title + ' is opgehaald bij ' + locationdata.title);
+    } else if(newstate=='available') {
+      Meteor.call('slack.sendnotification_commonbike', 'Fiets '+ objectdata.title + ' is teruggezet bij ' + locationdata.title);
+    } else if(newstate=='outoforder') {
+      Meteor.call('slack.sendnotification_commonbike', 'Fiets '+ objectdata.title + ' is buiten gebruik bij ' + locationdata.title);
+    }
+	},
+  'slack.sendnotification_commonbike'(notification) {
+    if(!Meteor.settings.private.slack) { return }
+    var slack = Meteor.settings.private.slack;
+    if(!slack.notify) { return }
+
+    HTTP.post(slack.address, {
+      "params": { "payload": JSON.stringify(
+                                    { "channel": "#" + slack.channel,
+                                      "username": slack.name,
+                                      "text": notification,
+                                      "icon_emoji": ":ghost:"
+                                    })
+                }
+        }
+      );
+    }      
+  })
+}

@@ -45,14 +45,6 @@ if (Meteor.isServer) {
   Meteor.publish('objects', function objectsPublication() {
     return Objects.find();
   });
-
-  Meteor.publish('objects_provider', function objectsPublication() {
-    console.log("my locations", Meteor.user().providerlocations);
-    var mylocations = Meteor.user().providerlocations||[];
-    // var mylocations = [];
-    // return Objects.find({locationId: { $in: mylocations }});
-    return Objects.find();
-  });
 }
 
 Meteor.methods({
@@ -88,15 +80,18 @@ Meteor.methods({
   'objects.remove'(_id){
     Objects.remove(_id);
   },
-  'objects.setState'(objectId, userId, newState){
+  'objects.setState'(objectId, userId, newState, userDescription){
     // Make sure the user is logged in
     if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
+
+    console.log('setstate userdescription: ' + userDescription)
 
     var timestamp = new Date().valueOf();
     Objects.update({_id: objectId}, { $set: {
         'state.userId': userId,
         'state.state': newState,
-        'state.timestamp': timestamp }
+        'state.timestamp': timestamp,
+        'state.userdescription': userDescription||'anonymous' }
     });
 
     return;
