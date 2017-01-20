@@ -38,6 +38,11 @@ TransactionsSchema = new SimpleSchema({
     label: "location Id",
     optional: true,
   },
+  data: {
+    type: String,
+    label: "data",
+    optional: true,
+  }
 });
 
 if (Meteor.isServer) {
@@ -50,55 +55,55 @@ if (Meteor.isServer) {
   });
 
 	Meteor.methods({
-	'transactions.addTransaction'(type, description, userid, locationid, objectid) {
-		  var timestamp = new Date();
+  	'transactions.addTransaction'(type, description, userid, locationid, objectid, extraData) {
+  		  var timestamp = new Date();
 
-		  var id = Transactions.insert({timestamp: timestamp.valueOf(), transactionType: type, 
-		                                userId: userid, locationId: locationid, objectId: objectid, 
-		                                description: description + ' [' + timestamp.toGMTString() + ']'}); 
+  		  var id = Transactions.insert({timestamp: timestamp.valueOf(), transactionType: type, 
+  		                                userId: userid, locationId: locationid, objectId: objectid, 
+  		                                description: description + ' [' + timestamp.toGMTString() + ']',
+                                      data: extraData}); 
 
-		  return id;
-		},
-	'transactions.registerUser'(userid) {
-	    var userData = Meteor.users.findOne({_id:userid});
-		var description ="nieuwe gebruiker " + userData.emails[0].address + " geregistreerd";
-		Meteor.call('transactions.addTransaction', 'NEWUSER', description, userid, null, null, null)
-		},
-	'transactions.changeStateForObject'(newstate, actiondescription, objectid, locationid) {
-		var userid = Meteor.userId();
-	  var userdata = Meteor.users.findOne({_id:userid}, {emails:1});
-	  var locationdata = Locations.findOne({_id: locationid}, {title: 1});
-    var objectdata = Objects.findOne({_id: objectid}, {title: 1});
+  		  return id;
+  	},
+  	'transactions.registerUser'(userid) {
+  	  var userData = Meteor.users.findOne({_id:userid});
+  		var description ="nieuwe gebruiker " + userData.emails[0].address + " geregistreerd";
+  		Meteor.call('transactions.addTransaction', 'NEWUSER', description, userid, null, null, null)
+  	},
+  	'transactions.changeStateForObject'(newstate, actiondescription, objectid, locationid) {
+  		var userid = Meteor.userId();
+  	  var userdata = Meteor.users.findOne({_id:userid}, {emails:1});
+  	  var locationdata = Locations.findOne({_id: locationid}, {title: 1});
+      var objectdata = Objects.findOne({_id: objectid}, {title: 1});
 
-		var description = "gebruiker \'" + userdata.emails[0].address + '\' heeft ' + actiondescription + ' op locatie \'' + locationdata.title + '\'';
+  		var description = "gebruiker \'" + userdata.emails[0].address + '\' heeft ' + actiondescription + ' op locatie \'' + locationdata.title + '\'';
 
-		Meteor.call('transactions.addTransaction', 'SET_STATE_' + newstate.toUpperCase(), description, userid, locationid, objectid, null)
+  		Meteor.call('transactions.addTransaction', 'SET_STATE_' + newstate.toUpperCase(), description, userid, locationid, objectid, null)
 
-    if(newstate=='reserved') {
-      Meteor.call('slack.sendnotification_commonbike', 'Fiets '+ objectdata.title + ' is gereserveerd bij ' + locationdata.title);
-    } else if(newstate=='inuse') {
-      Meteor.call('slack.sendnotification_commonbike', 'Fiets '+ objectdata.title + ' is opgehaald bij ' + locationdata.title);
-    } else if(newstate=='available') {
-      Meteor.call('slack.sendnotification_commonbike', 'Fiets '+ objectdata.title + ' is teruggezet bij ' + locationdata.title);
-    } else if(newstate=='outoforder') {
-      Meteor.call('slack.sendnotification_commonbike', 'Fiets '+ objectdata.title + ' is buiten gebruik bij ' + locationdata.title);
-    }
-	},
-  'slack.sendnotification_commonbike'(notification) {
-    if(!Meteor.settings.private.slack) { return }
-    var slack = Meteor.settings.private.slack;
-    if(!slack.notify) { return }
+      if(newstate=='reserved') {
+        Meteor.call('slack.sendnotification_commonbike', 'Fiets '+ objectdata.title + ' is gereserveerd bij ' + locationdata.title);
+      } else if(newstate=='inuse') {
+        Meteor.call('slack.sendnotification_commonbike', 'Fiets '+ objectdata.title + ' is opgehaald bij ' + locationdata.title);
+      } else if(newstate=='available') {
+        Meteor.call('slack.sendnotification_commonbike', 'Fiets '+ objectdata.title + ' is teruggezet bij ' + locationdata.title);
+      } else if(newstate=='outoforder') {
+        Meteor.call('slack.sendnotification_commonbike', 'Fiets '+ objectdata.title + ' is buiten gebruik bij ' + locationdata.title);
+      }
+  	},
+    'slack.sendnotification_commonbike'(notification) {
+      if(!Meteor.settings.private.slack) { return }
+      var slack = Meteor.settings.private.slack;
+      if(!slack.notify) { return }
 
-    HTTP.post(slack.address, {
-      "params": { "payload": JSON.stringify(
-                                    { "channel": "#" + slack.channel,
-                                      "username": slack.name,
-                                      "text": notification,
-                                      "icon_emoji": ":ghost:"
-                                    })
-                }
-        }
-      );
+      HTTP.post(slack.address, {
+        "params": { "payload": JSON.stringify(
+                                      { "channel": "#" + slack.channel,
+                                        "username": slack.name,
+                                        "text": notification,
+                                        "icon_emoji": ":ghost:"
+                                      })
+                  }
+      });
     }      
   })
 }

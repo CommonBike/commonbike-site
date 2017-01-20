@@ -18,6 +18,18 @@ if(Meteor.isServer) {
   });
 }
 
+// general purpose functions 
+export const getUserDescription = (user) => {
+  var description = '';
+  if(user.emails && user.emails.length>0 && user.emails[0].address) {
+    description=user.emails[0].address;
+  } else {
+    description = 'id:' + user._id;
+  }
+
+  return description;
+}
+
 // user profile data serverside  functions
 if(Meteor.isServer) {
   Meteor.methods({

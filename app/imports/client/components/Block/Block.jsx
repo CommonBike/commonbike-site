@@ -51,7 +51,7 @@ class Block extends Component {
   }
 
   rentalDetails2Text(item) {
-    var userDescription = item.state.userdescription || 'anonymous';
+    var userDescription = item.state.userDescription || 'anonymous';
     var duur = '';
     var nu = new Date().valueOf();
     if(item&&item.state) {
@@ -63,6 +63,14 @@ class Block extends Component {
 
   lockDetailsToText(item) {
       return '.. lock details will appear soon! ..'
+  }
+
+  getPriceDescription(item) {
+    if(this.props.item&&this.props.item.price) {
+       return this.props.item.price.description;
+    } else {
+       return '';
+     }
   }
 
   render() {
@@ -80,7 +88,7 @@ class Block extends Component {
 
           <div style={Object.assign({display: 'none'}, s.objectdetails, (this.props.showPrice || this.props.showState || this.props.showRentalDetails || this.props.showLockDetails) && {display: 'block'})}>
              <div>{ this.props.showState && this.props.item.state ? this.state2Text(this.props.item.state.state) : null }</div>
-             <div>{ this.props.showPrice ? <div dangerouslySetInnerHTML={{__html:this.props.item.price.description}} /> : null }</div>
+             <div>{ this.props.showPrice ? <div dangerouslySetInnerHTML={{__html:this.getPriceDescription(this.props.item)}} /> : null }</div>
              <div>{ this.props.showRentalDetails && this.props.item ? this.rentalDetails2Text(this.props.item) : null }</div>
              <div>{ this.props.showLockDetails && this.props.item ? this.lockDetails2Text(this.props.item) : null }</div>
           </div>

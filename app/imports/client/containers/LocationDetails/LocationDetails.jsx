@@ -4,7 +4,7 @@ import R from 'ramda';
 
 // Import models
 import { Locations } from '/imports/api/locations.js'; 
-import { Objects } from '/imports/api/objects.js'; 
+import { Objects, ObjectsSchema, createObject } from '/imports/api/objects.js'; 
 
 // Import components
 import LocationDetailsComponent from '../../components/LocationDetails/LocationDetails';
@@ -21,32 +21,9 @@ class LocationDetails extends Component {
     super(props);
   }
 
-  /**
-   *  newObject
-   * 
-   * Adds a new object to the database having the title "_Een nieuwe fiets"
-   */
-
-  newObject(locationId) { 
-    var timestamp =  new Date().valueOf();
-
-    var length = 5;
-    var base = Math.pow(10, length+1);
-    var code = Math.floor(base + Math.random() * base)
-    // console.log('code: ' + code);
-    keycode = code.toString().substring(1, length+1);
-
-    Meteor.call('objects.insert', {
-      locationId: locationId,
-      title: "_ Mijn nieuwe fiets",
-      imageUrl: '/files/Block/bike.png',
-      state: {state: 'available',
-              userId: null,
-              timestamp: timestamp},
-      lock: {type: 'plainkey',
-             settings: {keyid: keycode }
-            }
-    })
+  newObject(locationId) {
+    data = createObject(locationId, '_ Mijn nieuwe fiets');
+    Meteor.call('objects.insert', data)
   }
 
   render() {
