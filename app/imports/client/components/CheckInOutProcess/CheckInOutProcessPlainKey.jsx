@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 import {propTypes} from 'react-router';
 import CheckInOutProcessBase from '../CheckInOutProcess/CheckInOutProcessBase';
 
+import { getUserDescription } from '/imports/api/users.js'; 
+
 // Import components
 import Button from '../Button/Button';
 import CheckInCode from '../CheckInCode/CheckInCode';
@@ -28,8 +30,8 @@ class CheckInOutProcessPlainKey extends CheckInOutProcessBase {
 
     this.setObjectAvailable();
 
-    var user = this.getUserDescription();
-    var description='bicycle return code ' + ReactDOM.findDOMNode(this.refs.code).value + ' entered by user ' + user;
+    var userDescription = getUserDescription(Meteor.user());
+    var description='Locatiecode ' + ReactDOM.findDOMNode(this.refs.code).value + ' ingevoerd door gebruiker ' + userDescription;
     Meteor.call('transactions.addTransaction', 'ENTER_LOCATIONCODE', description, Meteor.userId(), this.props.object.locationId, this.props.object._id);
   }
 

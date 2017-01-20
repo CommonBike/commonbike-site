@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import {propTypes} from 'react-router';
 
+import { getUserDescription } from '/imports/api/users.js'; 
+
 // Import components
 import Button from '../Button/Button';
 
@@ -10,67 +12,27 @@ class CheckInOutProcessBase extends Component {
     super(props);
   }
 
-  getStateChangeNeatDescription(newState) {
-      var description = ""
-      if(newState=='reserved') {
-        description = this.props.object.title + " gereserveerd"
-      } else if(newState=='inuse') {
-        description = this.props.object.title + " gehuurd"
-      } else if(newState=='available') {
-        description = this.props.object.title + " teruggebracht"
-      } else if(newState=='outoforder') {
-        description = this.props.object.title + " buiten bedrijf gesteld" 
-      } else {
-        description = this.props.object.title + " in toestand '" + newState + "' gezet"
-      }
-
-      return description;
-  }
-
-  getUserDescription() {
-    var description = '';
-    if(Meteor.user().emails && Meteor.user().emails.length>0 && Meteor.user().emails[0].address) {
-      description=Meteor.user().emails[0].address;
-    } else {
-      description = 'id:' + meteor.userId();
-    }
-
-    return description;
-  }
-
   setObjectReserved() {
     var newState = 'reserved';
-    var user = this.getUserDescription();
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), newState, user);
-
-    var description = this.getStateChangeNeatDescription(newState);
-    Meteor.call('transactions.changeStateForObject', newState, description, this.props.object._id, this.props.object.locationId);    
+    var user = getUserDescription(Meteor.user());
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), this.props.object.locationId,newState, user);
   }
 
   setObjectInUse() {
     var newState = 'inuse'
-    var user = this.getUserDescription();
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), newState, user);
-
-    var description = this.getStateChangeNeatDescription(newState);
-    Meteor.call('transactions.changeStateForObject', newState, description, this.props.object._id, this.props.object.locationId);    
+    var user = getUserDescription(Meteor.user());
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), this.props.object.locationId, newState, user);
   }
 
   setObjectAvailable() {
     var newState = 'available'
-    Meteor.call('objects.setState', this.props.object._id, null, newState, '');
-
-    var description = this.getStateChangeNeatDescription(newState);
-    Meteor.call('transactions.changeStateForObject', newState, description, this.props.object._id, this.props.object.locationId);    
+    Meteor.call('objects.setState', this.props.object._id, null, this.props.object.locationId, newState, '');
   }
 
   setObjectOutOfOrder() {
     var newState = 'outoforder'
-    var user = this.getUserDescription();
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), newState, user);
-
-    var description = this.getStateChangeNeatDescription(newState);
-    Meteor.call('transactions.changeStateForObject', newState, description, this.props.object._id, this.props.object.locationId);    
+    var user = getUserDescription(Meteor.user());
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), this.props.object.locationId, newState, user);
   }
 
   renderButtonsForProvider() {

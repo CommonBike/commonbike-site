@@ -60,7 +60,9 @@ Meteor.startup(() => {
 
 		var myObjects = Objects.find().fetch();
 		_.each(myObjects, function (objectData) {
-			if(!objectData.price) {
+			if(!objectData.price||!!objectData.price.value||
+			   !objectData.price.currency||!!objectData.price.timeunit||
+			   !objectData.description ) {
 			    Objects.update(objectData._id, {$set:{ price: newprice }});
 
 			    var desc = 'price set to ' + newprice.description + ' for ' + objectData.title;
