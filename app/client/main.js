@@ -32,13 +32,15 @@ const UserAppProfile = () => (<UserApp content={<div><Profile isEditable="true" 
 const UserAppLocationList = () => (<UserApp content={<LocationList />} />)
 const UserAppLocationDetails = ({params}) => {
   return (
-    <UserApp content={<LocationDetails locationId={params.locationId}/>} />
+    <UserApp content={<LocationDetails locationId={params.locationId} />} />
   )
 }
 
 const UserAppObjectList = () => (<UserApp content={<ObjectList showPrice={true} showState={true} />} />)
 
 const UserAppTransactionList = () => (<UserApp content={<TransactionList />} />)
+
+const AdminAppTransactionList = () => (<UserApp content={<TransactionList admin="true" />} />)
 
 const UserAppRentalList = () => (<UserApp content={<ObjectList rentalsMode={true} showState={true} showRentalDetails={true} />} />)
 
@@ -118,6 +120,7 @@ const App = () => (
       <MatchWhenLoggedIn pattern='/admin/location/:locationId' component={UserAppAdminLocationDetails}/> 
       <MatchWhenLoggedIn pattern='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/> 
       <MatchWhenLoggedIn pattern='/admin/users' component={UserAppAdminAdminUsersList}/> 
+      <MatchWhenLoggedIn pattern='/admin/transactions' component={AdminAppTransactionList}/> 
 
       <Miss component={NoMatch}/>
     </div>

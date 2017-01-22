@@ -70,6 +70,6 @@ export default createContainer((props) => {
 
   return {
   	title: 'Mijn geschiedenis',
-    transactions: Transactions.find({userId: Meteor.userId()}, {sort: {timestamp: -1}}).fetch()
+    transactions: Transactions.find( props.admin ? {} : {userId: Meteor.userId()}, {sort: {timestamp: -1}}).fetch()
   };
 }, TransactionList);
