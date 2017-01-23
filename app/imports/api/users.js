@@ -22,7 +22,7 @@ if(Meteor.isServer) {
 export const getUserDescription = (user) => {
   var description = '';
   if(user.emails && user.emails.length>0 && user.emails[0].address) {
-    description=user.emails[0].address;
+    description = user.emails[0].address;
   } else {
     description = 'id:' + user._id;
   }

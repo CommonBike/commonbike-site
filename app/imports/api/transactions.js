@@ -51,7 +51,11 @@ if (Meteor.isServer) {
         return this.ready();
     }
 
-  	return Transactions.find({userId: this.userId}, {timestamp: -1});
+  	return Transactions.find(
+      Roles.userIsInRole( this.userId, 'admin' )
+        ? {}
+        : {userId: this.userId}
+      , {timestamp: -1});
   });
 
 	Meteor.methods({
