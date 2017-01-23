@@ -39,7 +39,7 @@ LocationsSchema = new SimpleSchema({
 if (Meteor.isServer) {
   Meteor.publish('locations', function tasksPublication(providerMode=false) {
     if (!this.userId) {
-        return this.ready();
+      return this.ready();
     }
 
     if(!providerMode) {
