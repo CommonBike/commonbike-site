@@ -3,6 +3,7 @@ import { Mongo } from 'meteor/mongo';
 import { Accounts } from 'meteor/accounts-base'
 import { Locations } from '/imports/api/locations.js'; 
 import { Objects } from '/imports/api/objects.js'; 
+import { getUserDescription } from '/imports/api/users.js'; 
 
 export const Transactions = new Mongo.Collection('transactions');
 
@@ -59,7 +60,15 @@ if (Meteor.isServer) {
   });
 
 	Meteor.methods({
-  	'transactions.addTransaction'(type, description, userid, locationid, objectid, extraData) {
+    'transactions.clearAll'() {
+        if (!Meteor.userId()||!Roles.userIsInRole( Meteor.userId(), 'admin' )) throw new Meteor.Error('not-authorized');
+
+        Transactions.remove({});
+
+        var description = getUserDescription(Meteor.user()) + ' heeft de transactiehistorie gewist';
+        Meteor.call('transactions.addTransaction', 'CLEAR_TRANSACTIONS', description, Meteor.userId(), null, null, null);    
+    },
+   	'transactions.addTransaction'(type, description, userid, locationid, objectid, extraData) {
   		  var timestamp = new Date();
 
   		  var id = Transactions.insert({timestamp: timestamp.valueOf(), transactionType: type, 

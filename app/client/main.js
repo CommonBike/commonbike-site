@@ -22,6 +22,7 @@ import AdminUsersList from '/imports/client/containers/AdminUsersList/AdminUsers
 import ObjectList from '/imports/client/containers/ObjectList/ObjectList.jsx'
 import ObjectDetails from '/imports/client/containers/ObjectDetails/ObjectDetails.jsx'
 import CommonBikeUI from '/imports/client/commonbike-ui.jsx'
+import AdminTools from '/imports/client/components/AdminTools/AdminTools.jsx'
 import NoMatch from '/imports/client/components/NoMatch/NoMatch.jsx'
 
 const UserAppLanding = () => (<UserApp showPageHeader={false} content={<Landing/>} />)
@@ -69,6 +70,7 @@ const UserAppAdminLocationDetails = ({params}) => {
 }
 
 const UserAppAdminAdminUsersList = () => (<UserApp content={<AdminUsersList />} />)
+const UserAppAdminAdminTools = () => (<UserApp content={<AdminTools />} />)
 
 // see: https://react-router.now.sh/auth-workflow
 const MatchWhenLoggedIn = ({ component: Component, ...rest }) => (
@@ -121,6 +123,9 @@ const App = () => (
       <MatchWhenLoggedIn pattern='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/> 
       <MatchWhenLoggedIn pattern='/admin/users' component={UserAppAdminAdminUsersList}/> 
       <MatchWhenLoggedIn pattern='/admin/transactions' component={AdminAppTransactionList}/> 
+
+      <MatchWhenLoggedIn pattern='/admin/AdminTools' component={UserAppAdminAdminTools}/> 
+
 
       <Miss component={NoMatch}/>
     </div>

@@ -4,12 +4,6 @@
     "accessToken": "pk.eyJ1IjoiZXJpY3ZycCIsImEiOiJjaWhraHE5ajIwNmRqdGpqN2h2ZXhqMnRsIn0.1FBWllDyQ_nSlHFE2jMLDA"
   },
   "private": {
-    "testdata": {
-      "cleanupusers": false,    
-      "cleanupother": false,    
-      "insert": false,     
-      "log": false
-    },
     "slack": { 
       "notify": false,
       "address": "<fill in Webhook URL here, channel and name below, set notify to true",
