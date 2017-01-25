@@ -1,17 +1,18 @@
 import React, { Component, PropTypes } from 'react';
+import { createContainer } from 'meteor/react-meteor-data';
 
-Avatar = (props) => {
-	if(!Meteor.user()||!Meteor.user().profile) {
+AvatarComponent = (props) => {
+	if(!props.currentUser||!props.currentUser.profile) {
 		return (
 			<div style={Object.assign({}, s.base, props.style)} />
 		);
-	} else if(!Meteor.user().profile.avatar) {
+	} else if(!props.currentUser.profile.avatar) {
       return (
         <div style={Object.assign({}, s.base, props.style)} onClick={props.newAvatar} />
       );
   } else {
 		return(
-			<img style={Object.assign({}, s.base, props.style)} src={Meteor.user().profile.avatar} onClick={props.newAvatar} />
+			<img style={Object.assign({}, s.base, props.style)} src={props.currentUser.profile.avatar} onClick={props.newAvatar} />
 	  	);
   	}
 }
@@ -27,12 +28,20 @@ var s = {
   }
 }
 
-Avatar.propTypes = {
+AvatarComponent.propTypes = {
+  currentUser: PropTypes.object,
   newAvatar: PropTypes.any,
 }
 
-Avatar.defaultProps = {
+AvatarComponent.defaultProps = {
+  currentUser: null,
   newAvatar: null
 }
 
-export default Avatar;
+// export  Avatar;
+
+export default Avatar = createContainer((props) => {
+  return {
+    currentUser: Meteor.user()
+  };
+}, AvatarComponent);
