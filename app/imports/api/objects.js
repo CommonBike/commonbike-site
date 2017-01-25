@@ -63,9 +63,12 @@ Meteor.methods({
 
     // check(data, ObjectsSchema);
 
+	//Strip HTML Tags
+	  var strippedTitle = data.title.replace(/<.*?>/g, " ").replace(/\s+/g, " ").trim();
+	
     Objects.insert({
       locationId: data.locationId,
-      title: data.title,
+      title: strippedTitle,
       imageUrl: data.imageUrl
     });
   },
@@ -75,10 +78,12 @@ Meteor.methods({
     if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
 
     // check(data, ObjectsSchema);
+	
+	  var strippedTitle = data.title.replace(/<.*?>/g, " ").replace(/\s+/g, " ").trim();	
 
     Objects.update(_id, {
       locationId: data.locationId,
-      title: data.title,
+      title: strippedTitle,
       description: data.description,
       imageUrl: data.imageUrl
     });

@@ -74,8 +74,11 @@ if(Meteor.isServer) {
       // current user is always assigned as first provider for a new location
       Meteor.users.update({_id: Meteor.userId()}, {$addToSet: {'profile.provider_locations': locationId}});
 
+	  //Strip HTML tags
+	  var strippedTitle = data.title.replace(/<.*?>/g, " ").replace(/\s+/g, " ").trim();
+	  
       Locations.update(locationId, {
-        title: data.title
+        title: strippedTitle
       });  
 
       return locationId
@@ -87,8 +90,11 @@ if(Meteor.isServer) {
 
       // check(data, LocationsSchema);
 
+	  //Strip HTML tags
+	  var strippedTitle = data.title.replace(/<.*?>/g, " ").replace(/\s+/g, " ").trim();
+	  
       Locations.update(_id, {
-        title: data.title,
+        title: strippedTitle,
         imageUrl: data.imageUrl
       });
     },
