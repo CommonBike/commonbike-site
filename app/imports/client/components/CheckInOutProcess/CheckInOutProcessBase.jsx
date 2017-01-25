@@ -24,6 +24,11 @@ class CheckInOutProcessBase extends Component {
     Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), this.props.object.locationId, newState, user);
   }
 
+  openLock() {
+    // var userDescription = getUserDescription(Meteor.user());
+    // console.log('lock opened on bike ' +  this.props.object._id + ' by user ' + userDescription)
+  }
+
   setObjectAvailable() {
     var newState = 'available'
     Meteor.call('objects.setState', this.props.object._id, null, this.props.object.locationId, newState, '');

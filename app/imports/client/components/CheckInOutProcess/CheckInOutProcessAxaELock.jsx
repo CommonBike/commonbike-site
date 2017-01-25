@@ -30,13 +30,13 @@ class CheckInOutProcessAxaELock extends CheckInOutProcessBase {
             <li style={s.listitem}>De verbinding met het slot wordt nu tot stand gebracht</li>
             <li style={s.listitem}>Druk hieronder op de knop <b>OPEN SLOT</b></li>
           </ul>
-          <Button style={s.button} onClick={() => this.setObjectInUse() } buttonStyle="hugeSmallerFont">Open Slot</Button>
+          <Button style={s.button} onClick={() => { this.setObjectInUse();this.openLock() } } buttonStyle="hugeSmallerFont">Open Slot</Button>
           <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Annuleer Reservering</Button>
       </div>
       : <div /> }
       {this.props.object.state.state=='inuse' ? 
         <div>
-          <Button style={s.button} onClick={() => this.setObjectInUse() } buttonStyle="hugeSmallerFont">Open Slot</Button>
+          <Button style={s.button} onClick={() => this.openLock() } buttonStyle="hugeSmallerFont">Open Slot</Button>
           <ul style={s.list}>
             <li style={s.listitem}>Slot openen?</li>
             <li style={s.listitem}>Uw huurfiets is uitgerust met een electronisch slot</li>
