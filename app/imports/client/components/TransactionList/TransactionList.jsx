@@ -17,9 +17,7 @@ class TransactionList extends Component {
   render() {
     return (
       <div style={s.base}>
-        <p style={s.intro}> 
-          {this.props.title}
-        </p>
+        <div style={s.title}>{this.props.title}</div>
 
         {R.map((object) =>  <TransactionBlock key={object._id} item={object} />, this.props.transactions)}
       </div>
@@ -35,16 +33,14 @@ var s = {
     textAlign: 'center',
     minHeight: 'calc(100vh - 66px)',
   },
-  intro: {
-    padding: '0 70px',
-    margin: '0 auto',
-    maxWidth: '400px',
-    textAlign: 'left',
-    minHeight: '80px',
+  title: {
     fontSize: '1.2em',
     fontWeight: '500',
-    background: 'url("/files/ObjectList/marker.svg") 0 0 / auto 60px no-repeat',
-  },
+    maxWidth: '100%',
+    width: '400px',
+    margin: '10px auto',
+    padding: '5px 0',
+  }  
 
 }
 
