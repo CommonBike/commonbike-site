@@ -11,15 +11,15 @@ class TransactionBlock extends Component {
     
   componentDidMount() {
     // Hack around a bug in Radium:
-    ReactDOM.findDOMNode(this.refs.base).style.display = 'flex';
-    ReactDOM.findDOMNode(this.refs.textWrapper).style.display = 'flex';
+    // ReactDOM.findDOMNode(this.refs.base).style.display = 'flex';
+    // ReactDOM.findDOMNode(this.refs.textWrapper).style.display = 'flex';
   }
 
   render() {
     return (
-      <article style={Object.assign({}, s.base, ! this.props.isEditable && {cursor: 'pointer'})} onClick={this.props.onClick} ref="base">
-        <div style={s.textWrapper} ref="textWrapper"><p>{this.props.item.description}</p></div>
-      </article>
+      <div style={Object.assign({}, s.base, ! this.props.isEditable && {cursor: 'pointer'})} onClick={this.props.onClick} ref="base">
+        {this.props.item.description}
+      </div>
     );
   }
 }
@@ -30,21 +30,13 @@ var s = {
     display: 'flex',
     fontWeight: 'normal',
     lineHeight: 'normal',
-    padding: '10px',
     maxWidth: '100%',
     width: '400px',
-    margin: '20px auto',
-    borderBottom: 'solid 5px #bc8311',
+    margin: '10px auto',
     textAlign: 'left',
-  },
-  textWrapper: {
-    flex: 2,
-    fontWeight: 500,
-    fontSize: '1.2em',
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-    padding: '5px',
+    fontSize: '1em',
+    padding: '10px',
+    border: '1px solid black'
   },
 }
 
