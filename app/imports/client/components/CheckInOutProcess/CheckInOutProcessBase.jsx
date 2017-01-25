@@ -37,14 +37,14 @@ class CheckInOutProcessBase extends Component {
 
   renderButtonsForProvider() {
       if(this.props.object.state.state=='reserved') {
-        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Annuleer reservering!</Button>);
+        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Annuleer Reservering</Button>);
       } else if(this.props.object.state.state=='inuse') {
-        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Annuleer verhuur!</Button>);
+        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Annuleer Verhuur</Button>);
       } else if(this.props.object.state.state=='outoforder') {
-        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Maak beschikbaar!</Button>);
+        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Maak Beschikbaar</Button>);
       } 
 
-      return (<Button onClick={() => this.setObjectOutOfOrder() } buttonStyle="huge">Maak niet beschikbaar!</Button>);
+      return (<Button onClick={() => this.setObjectOutOfOrder() } buttonStyle="hugeSmallerFont">Maak Niet Beschikbaar</Button>);
   }
 
   renderButtonsForUser() {

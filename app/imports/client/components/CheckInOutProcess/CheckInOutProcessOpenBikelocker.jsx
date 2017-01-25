@@ -15,7 +15,7 @@ class CheckInOutProcessOpenBikelocker extends CheckInOutProcessBase {
     return (
       <div style={s.base}>
       {this.props.object.state.state=='available' ?
-        <Button style={s.button} onClick={() => this.setObjectReserved() } buttonStyle="huge">Reserveer!</Button> : <div /> }
+        <Button style={s.button} onClick={() => this.setObjectReserved() } buttonStyle="hugeSmallerFont">Reserveer</Button> : <div /> }
       {this.props.object.state.state=='reserved' ? 
         <div style={s.base}>
           <ul style={s.list}>
@@ -31,8 +31,8 @@ class CheckInOutProcessOpenBikelocker extends CheckInOutProcessBase {
             <li style={s.listitem}>Plaats nu uw fiets en zet deze op slot</li>
             <li style={s.listitem}>Vergrendel nu de kluisdeur</li>
           </ul>
-          <Button style={s.button} onClick={() => this.setObjectInUse() } buttonStyle="huge">FIETS IS GESTALD</Button>
-          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="huge">Annuleer Reservering!</Button>
+          <Button style={s.button} onClick={() => this.setObjectInUse() } buttonStyle="hugeSmallerFont">Fiets Gestald</Button>
+          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Annuleer Reservering</Button>
         </div>
         : <div /> }
       {this.props.object.state.state=='inuse' ? 
@@ -50,11 +50,11 @@ class CheckInOutProcessOpenBikelocker extends CheckInOutProcessBase {
             <li style={s.listitem}>Haal nu de fiets uit de kluis</li>
             <li style={s.listitem}>Wilt u alstublieft de kluisdeur weer sluiten?</li>
           </ul>
-          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="huge">FIETS IS VERWIJDERD</Button> 
+          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Fiets Verwijderd</Button> 
         </div>
         : <div /> }
       {this.props.object.state.state=='outoforder' ? 
-          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="huge">Maak beschikbaar!</Button> 
+          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Maak Beschikbaar</Button> 
         : <div /> }
       </div>
     );

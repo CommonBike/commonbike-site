@@ -15,7 +15,7 @@ class CheckInOutProcessAxaELock extends CheckInOutProcessBase {
     return (
       <div style={s.base}>
       {this.props.object.state.state=='available' ?
-        <Button onClick={() => this.setObjectReserved() } buttonStyle="huge">Reserveer!</Button> : <div /> }
+        <Button onClick={() => this.setObjectReserved() } buttonStyle="hugeSmallerFont">Reserveer</Button> : <div /> }
       {this.props.object.state.state=='reserved' ? 
         <div style={s.base}>
           <ul style={s.list}>
@@ -30,13 +30,13 @@ class CheckInOutProcessAxaELock extends CheckInOutProcessBase {
             <li style={s.listitem}>De verbinding met het slot wordt nu tot stand gebracht</li>
             <li style={s.listitem}>Druk hieronder op de knop <b>OPEN SLOT</b></li>
           </ul>
-          <Button style={s.button} onClick={() => this.setObjectInUse() } buttonStyle="huge">OPEN SLOT</Button>
-          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="huge">Annuleer Reservering!</Button>
+          <Button style={s.button} onClick={() => this.setObjectInUse() } buttonStyle="hugeSmallerFont">Open Slot</Button>
+          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Annuleer Reservering</Button>
       </div>
       : <div /> }
       {this.props.object.state.state=='inuse' ? 
         <div>
-          <Button style={s.button} onClick={() => this.setObjectInUse() } buttonStyle="huge">OPEN SLOT</Button>
+          <Button style={s.button} onClick={() => this.setObjectInUse() } buttonStyle="hugeSmallerFont">Open Slot</Button>
           <ul style={s.list}>
             <li style={s.listitem}>Slot openen?</li>
             <li style={s.listitem}>Uw huurfiets is uitgerust met een electronisch slot</li>
@@ -45,18 +45,18 @@ class CheckInOutProcessAxaELock extends CheckInOutProcessBase {
             <li style={s.listitem}>Schakel bluetooth in op uw smartphone</li>
             <li style={s.listitem}>Wacht tot uw smartphone verbonden is met apparaat <b>{this.props.object.lock.settings.connectionname}</b></li>
             <li style={s.listitem}>(Gebruik eventueel pincode <b>{this.props.object.lock.settings.pincode})</b></li>
-            <li style={s.listitem}>Druk hierboven op de knop <b>OPEN SLOT</b></li>
+            <li style={s.listitem}>Druk hierboven op de knop <b>Open Slot</b></li>
           </ul>
-          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="huge">INGELEVERD</Button> 
+          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Ingeleverd</Button> 
           <ul style={s.list}>
             <li style={s.listitem}>Uw fiets inleveren?</li>
             <li style={s.listitem}>Plaats uw fiets in het verhuurrek en zet deze op slot</li>
-            <li style={s.listitem}>Druk hierboven op de knop <b>INGELEVERD</b></li>
+            <li style={s.listitem}>Druk hierboven op de knop <b>Ingeleverd</b></li>
           </ul>
         </div>
         : <div /> }
       {this.props.object.state.state=='outoforder' ? 
-          <Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Maak beschikbaar!</Button> 
+          <Button onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Maak Beschikbaar</Button> 
         : <div /> }
       </div>
     );
