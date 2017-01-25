@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Locations } from '/imports/api/locations.js'; 
+import { Locations, Address2LatLng } from '/imports/api/locations.js'; 
 import { Objects } from '/imports/api/objects.js'; 
 import { Transactions } from '/imports/api/transactions.js'; 
 import '/imports/api/users.js'; 
@@ -213,19 +213,6 @@ export const checkTestUsers = function() {
       });
     });    
 }
-
-const Address2LatLng = (address) => {
-  if (!address) {
-    return ''
-  }
-
-  const url = 'http://maps.google.com/maps/api/geocode/json?address=' + encodeURI(address)
-  const response = HTTP.get(url)
-  const obj = JSON.parse(response.content)
-  const location = obj.results[0].geometry.location
-  return [location.lat, location.lng]
-}
-
 
 // supported locktypes 
 // 'plainkey' - ask for key at the attendant

@@ -20,6 +20,7 @@ import LocationDetails from '/imports/client/containers/LocationDetails/Location
 import TransactionList from '/imports/client/containers/TransactionList/TransactionList.jsx'
 import AdminUsersList from '/imports/client/containers/AdminUsersList/AdminUsersList.jsx'
 import ObjectList from '/imports/client/containers/ObjectList/ObjectList.jsx'
+import LocationsMap from '/imports/client/components/LocationsMap/LocationsMap.jsx'
 import ObjectDetails from '/imports/client/containers/ObjectDetails/ObjectDetails.jsx'
 import CommonBikeUI from '/imports/client/commonbike-ui.jsx'
 import AdminTools from '/imports/client/components/AdminTools/AdminTools.jsx'
@@ -36,6 +37,8 @@ const UserAppLocationDetails = ({params}) => {
     <UserApp content={<LocationDetails locationId={params.locationId} />} />
   )
 }
+
+const UserAppLocationsMap = () => (<UserApp content={<LocationsMap />} />)
 
 const UserAppObjectList = () => (<UserApp content={<ObjectList showPrice={true} showState={true} />} />)
 
@@ -68,6 +71,8 @@ const UserAppAdminLocationDetails = ({params}) => {
     <UserApp content={<LocationDetails locationId={params.locationId} isEditable="true"/>} />
   )
 }
+
+
 
 const UserAppAdminAdminUsersList = () => (<UserApp content={<AdminUsersList />} />)
 const UserAppAdminAdminTools = () => (<UserApp content={<AdminTools />} />)
@@ -110,6 +115,7 @@ const App = () => (
       
       <MatchWhenLoggedIn pattern='/profile' component={UserAppProfile}/> 
       <MatchWhenLoggedIn pattern='/locations' component={UserAppLocationList}/> 
+      <MatchWhenLoggedIn pattern='/map' component={UserAppLocationsMap}/> 
       <MatchWhenLoggedIn pattern='/objects' component={UserAppObjectList}/> 
       <MatchWhenLoggedIn pattern='/transactions' component={UserAppTransactionList}/> 
       <MatchWhenLoggedIn pattern='/location/:locationId' component={UserAppLocationDetails}/> 

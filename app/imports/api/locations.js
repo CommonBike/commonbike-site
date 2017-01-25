@@ -59,6 +59,18 @@ if (Meteor.isServer) {
   });
 }
 
+export const Address2LatLng = (address) => {
+  if (!address) {
+    return ''
+  }
+
+  const url = 'http://maps.google.com/maps/api/geocode/json?address=' + encodeURI(address)
+  const response = HTTP.get(url)
+  const obj = JSON.parse(response.content)
+  const location = obj.results[0].geometry.location
+  return [location.lat, location.lng]
+}
+
 // The methods below operate on Meteor.users and use Accounts, so they should not be 
 // performed on the client (done transparently by Meteor when moved outside of this block)
 if(Meteor.isServer) {
