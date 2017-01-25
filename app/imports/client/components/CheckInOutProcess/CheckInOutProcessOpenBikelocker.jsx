@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import {propTypes} from 'react-router';
 import CheckInOutProcessBase from '../CheckInOutProcess/CheckInOutProcessBase';
+import { StyleProvider } from '../../StyleProvider.js'
+
 
 // Import components
 import Button from '../Button/Button';
@@ -61,40 +63,7 @@ class CheckInOutProcessOpenBikelocker extends CheckInOutProcessBase {
   }
 }
 
-var s = {
-  base: {
-    fontSize: 'default',
-    lineHeight: 'default',
-    padding: '20px 20px 0 20px',
-    textAlign: 'center',
-  },
-
-  button: {
-    display: 'block'
-  },
-
-  list: {
-    margin: '0 auto',
-    textAlign: 'center',
-    listStyle: 'none',
-  },
-
-  listitem: {
-    padding: '0 10px 0 0',
-    margin: '0 auto',
-    textAlign: 'center',
-    minHeight: '40px',
-    fontSize: '1.2em',
-    fontWeight: '500',
-    listStyle: 'none',
-  },
-
-  image: {
-    padding: '20px 20px 0 20px',
-    textAlign: 'center',
-    maxHeight: '250px',
-  }
-}
+var s = StyleProvider.getInstance().checkInOutProcess;
 
 CheckInOutProcessOpenBikelocker.propTypes = {
   locationId: PropTypes.string,

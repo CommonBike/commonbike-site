@@ -3,6 +3,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import ReactDOM from 'react-dom';
 import {propTypes} from 'react-router';
 import CheckInOutProcessBase from '../CheckInOutProcess/CheckInOutProcessBase';
+import { StyleProvider } from '../../StyleProvider.js'
 
 import { getUserDescription } from '/imports/api/users.js'; 
 
@@ -66,7 +67,7 @@ class CheckInOutProcessPlainKey extends CheckInOutProcessBase {
               <div style={s.base}>
                 <ul style={s.list}>
                   <li style={s.listitem}>Toon dit scherm aan de medewerker en vraag om de sleutel.</li>
-                  <li style={s.listitemLarge}><b>{this.props.object.title}</b></li>
+                  <li style={Object.assign({}, s.listitem, s.largerFont)}><b>{this.props.object.title}</b></li>
                 </ul>
                 <Button style={s.button} onClick={() => this.setState({ showCodeEntry: true}) } buttonStyle="hugeSmallerFont">Terugbrengen</Button> 
               </div>
@@ -80,103 +81,7 @@ class CheckInOutProcessPlainKey extends CheckInOutProcessBase {
   }
 }
 
-var s = {
-  base: {
-    fontSize: 'default',
-    lineHeight: 'default',
-    margin: '10px 0',
-    textAlign: 'center',
-  },
-
-  button: {
-    display: 'block'
-  },
-
-  list: {
-    margin: '0 auto',
-    padding: 0,
-    textAlign: 'center',
-    listStyle: 'none',
-  },
-
-  listitem: {
-    padding: '0 10px 0 0',
-    margin: '0 auto',
-    textAlign: 'center',
-    minHeight: '40px',
-    fontSize: '1.2em',
-    fontWeight: '500',
-    listStyle: 'none',
-  },
-
-  listitemLarge: {
-    padding: '0 10px 0 0',
-    margin: '0 auto',
-    textAlign: 'center',
-    minHeight: '40px',
-    fontSize: '4em',
-    fontWeight: '1000',
-    listStyle: 'none',
-  },
-
-  image: {
-    padding: '20px 20px 0 20px',
-    textAlign: 'center',
-    maxHeight: '250px',
-  },
-
-  box: {
-    border: '2px solid black',
-    backgroundColor: '#fff',
-    width: '100%',
-    marginTop: '10px',
-    marginRight: 'auto',
-    marginBottom: '10px',
-    marginLeft: 'auto',
-    maxWidth: '400px',
-    textAlign: 'center',
-    color: '#000',
-    fontWeight: 'bold',
-    fontSize: '20px',
-  },
-
-  icon: {
-    width:'32px',
-    height:' auto'
-  },
-
-  images: {
-    details: 'https://cdn1.iconfinder.com/data/icons/general-9/500/more-48.png',
-  },
-
-  textField: {
-    display: 'inline-block',
-    width: '300px',
-    maxWidth: '100%',
-  },
-
-  codeentry: {
-    backgroundColor: '#fff',
-    maxWidth: '400px',
-    textAlign: 'center',
-    color: '#000',
-    fontWeight: 'bold',
-    fontSize: '20px',
-    padding: '10px',
-    margin: '2px'
-  },
-
-  explanationText: {
-    padding: '0 25px 25px 25px',
-    margin: '0px auto',
-    maxWidth: '400px',
-    textAlign: 'left',
-    minHeight: '80px',
-    fontSize: '1.2em',
-    fontWeight: 500,
-  }
-
-}
+var s = StyleProvider.getInstance().checkInOutProcess;
 
 CheckInOutProcessPlainKey.propTypes = {
   locationId: PropTypes.string,
