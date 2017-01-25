@@ -25,10 +25,18 @@ var s = {
     borderRight: 'none',
     borderBottom: 'solid 5px #bc8311',
     borderLeft: 'none',
+    WebkitAppearance: 'none',
+    BorderRadius: '0'
   },
   huge: {
     padding: '35px 10px',
-    fontSize: '2.5em'
+    fontSize: '2.5em',
+    whiteSpace: 'normal'
+  },
+  hugeSmallerFont: {
+    padding: '35px 10px',
+    fontSize: '2.0em',
+    whiteSpace: 'normal'
   }
 }
 
