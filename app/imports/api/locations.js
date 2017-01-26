@@ -68,21 +68,21 @@ if(Meteor.isServer) {
       // Make sure the user is logged in
       if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
 
-      // check(data, LocationsSchema);
+      // Insert location
+      var locationId = Locations.insert({});
 
-      var locationId = Locations.insert({
-      });
-
-      // current user is always assigned as first provider for a new location
+      // Current user is always assigned as first provider for a new location
       Meteor.users.update({_id: Meteor.userId()}, {$addToSet: {'profile.provider_locations': locationId}});
 
-	  //Strip HTML tags
-	  var strippedTitle = data.title.replace(/<.*?>/g, " ").replace(/\s+/g, " ").trim();
-	  
+  	  // Strip HTML tags from location title
+  	  var strippedTitle = data.title.replace(/<.*?>/g, " ").replace(/\s+/g, " ").trim();
+	   
+      // Save location title
       Locations.update(locationId, {
         title: strippedTitle
       });  
 
+      // Create Slack message
       var description = getUserDescription(Meteor.user()) + ' heeft een nieuwe locatie ' + data.title + ' toegevoegd';
       Meteor.call('transactions.addTransaction', 'ADD_LOCATION', description, Meteor.userId(), locationId, null, data);    
 
@@ -96,10 +96,10 @@ if(Meteor.isServer) {
       // Make sure the user is logged in
       if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
 
-  	  // Strip HTML tags
+  	  // Strip HTML tags from location title
   	  var strippedTitle = data.title.replace(/<.*?>/g, " ").replace(/\s+/g, " ").trim();
 	  
-      Locations.update(_id, {$set :{
+      Locations.update(_id, {$set: {
         title: strippedTitle,
         imageUrl: data.imageUrl
       }});
