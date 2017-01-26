@@ -4,7 +4,7 @@ import R from 'ramda';
 
 // Import models
 import { Locations } from '/imports/api/locations.js'; 
-import { Objects } from '/imports/api/objects.js'; 
+import { Objects, ObjectsSchema, createObject } from '/imports/api/objects.js'; 
 
 // Import components
 import LocationDetailsComponent from '../../components/LocationDetails/LocationDetails';
@@ -21,16 +21,10 @@ class LocationDetails extends Component {
     super(props);
   }
 
-  /**
-   *  newObject
-   * 
-   * Adds a new object to the database having the title "_Een nieuwe fiets"
-   */
-  newObject(locationId) { Meteor.call('objects.insert', {
-    locationId: locationId,
-    title: "_ Mijn nieuwe fiets",
-    imageUrl: '/files/Block/bike.png'
-  })}
+  newObject(locationId) {
+    data = createObject(locationId, '_ Mijn nieuwe fiets');
+    Meteor.call('objects.insert', data)
+  }
 
   render() {
     return (
@@ -72,9 +66,11 @@ export default createContainer((props) => {
 
   var filter = null;
   if(props.isEditable) {
+    // for providers: show all items on this location
     filter = {locationId: props.locationId}
   } else {
-    filter = {locationId: props.locationId, $or: [{'state.state':'available'}, {'state.userId': Meteor.userId()}]}
+    // for users: show all AVAILABLE items on this location
+    filter = {locationId: props.locationId, 'state.state':'available'}
   }
 
   return {

@@ -50,15 +50,23 @@ class LocationList extends Component {
     return (
       <div style={s.base}>
         {Roles.userIsInRole(Meteor.userId(), 'admin') && this.renderAdminLinks()}
-
         <div style={Object.assign({display: 'none'}, this.props.isEditable && {display: 'block'})}>
 
           <p style={s.paragraph}>
-            Op deze pagina kun je de locaties beheren. Klik op <b>Nieuwe locatie</b> of <b><i>pas een titel aan</i></b>.
+            Op deze pagina kun je de locaties beheren. 
           </p>
 
-          <RaisedButton onClick={this.newLocation.bind(this)}>Nieuwe locatie</RaisedButton>
+          { self.props.canCreateLocations ?  
+            <p style={s.paragraph}>Klik op <b>Nieuwe locatie</b> of <b><i>pas een titel aan</i></b>.</p>
+            :
+            <p style={s.paragraph}><b><i>pas een titel aan</i></b>.</p>
+          }
 
+          { self.props.canCreateLocations ?  
+            <RaisedButton onClick={this.newLocation.bind(this)}>Nieuwe locatie</RaisedButton>
+            :
+            <div />
+          }
         </div>
 
         {R.map((location) =>  <LocationBlock
@@ -91,11 +99,13 @@ LocationList.contextTypes = {
 LocationList.propTypes = {
   locations: PropTypes.array,
   isEditable: PropTypes.any,
+  canCreateLocations: PropTypes.any,
   clickItemHandler: PropTypes.any,
   newLocationHandler: PropTypes.any,
 };
 
 LocationList.defaultProps = {
+  canCreateLocations: false,
   isEditable: false
 }
 

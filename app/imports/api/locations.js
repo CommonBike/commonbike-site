@@ -2,6 +2,8 @@ import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo';
 import { Accounts } from 'meteor/accounts-base'
 
+import { getUserDescription } from '/imports/api/users.js'; 
+
 export const Locations = new Mongo.Collection('locations');
 
 LocationsSchema = new SimpleSchema({
@@ -81,6 +83,12 @@ if(Meteor.isServer) {
         title: strippedTitle
       });  
 
+      var description = getUserDescription(Meteor.user()) + ' heeft een nieuwe locatie ' + data.title + ' toegevoegd';
+      Meteor.call('transactions.addTransaction', 'ADD_LOCATION', description, Meteor.userId(), locationId, null, data);    
+
+      var slackmessage = 'Weer een nieuwe locatie toegevoegd: ' + data.title; 
+      Meteor.call('slack.sendnotification_commonbike',  slackmessage);
+
       return locationId
     },
     'locations.update'(_id, data) {
@@ -88,21 +96,27 @@ if(Meteor.isServer) {
       // Make sure the user is logged in
       if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
 
-      // check(data, LocationsSchema);
-
-	  //Strip HTML tags
-	  var strippedTitle = data.title.replace(/<.*?>/g, " ").replace(/\s+/g, " ").trim();
+  	  // Strip HTML tags
+  	  var strippedTitle = data.title.replace(/<.*?>/g, " ").replace(/\s+/g, " ").trim();
 	  
-      Locations.update(_id, {
+      Locations.update(_id, {$set :{
         title: strippedTitle,
         imageUrl: data.imageUrl
-      });
+      }});
     },
     'locations.remove'(_id){
       // remove this location from the 'profile.provider_locations' list for all users 
       Meteor.users.update({}, {$pull: {'profile.provider_locations': _id}});
 
+      var location = Locations.findOne(_id);
+
       Locations.remove(_id);
+
+      var description = getUserDescription(Meteor.user()) + ' heeft locatie ' + location.title + ' verwijderd';
+      Meteor.call('transactions.addTransaction', 'REMOVE_LOCATION', description, Meteor.userId(), _id, null, location);    
+
+      var slackmessage = 'Locatie ' + location.title + ' is verwijderd'; 
+      Meteor.call('slack.sendnotification_commonbike',  slackmessage);
     },
     'locationprovider.getuserlist'(locationId) {
       // return a list of users that are providers for the given location 
@@ -128,6 +142,14 @@ if(Meteor.isServer) {
         var daUser = Accounts.findUserByEmail(emailaddress);
         if(daUser) {
           Meteor.users.update({_id: daUser._id}, {$addToSet: {'profile.provider_locations': locationId}});
+
+          var description = getUserDescription(Meteor.user()) + ' heeft gebruiker ' + emailaddress + ' toegevoegd als beheerder';
+          var location = Locations.findOne(locationId, {title: 1});
+          if(location) {
+            description += ' voor locatie ' + location.title;
+          }
+
+          Meteor.call('transactions.addTransaction', 'ADD_LOCATIONADMIN', description, Meteor.userId(), locationId, null, {'locationId': locationId, 'emailaddress': emailaddress, 'userid': daUser._id});    
         } else {
           throw new Meteor.Error('No user exists with email: ' + emailaddress, 'locationprovider.addUser: No user exists with email: ' + emailaddress);
         }
@@ -137,9 +159,24 @@ if(Meteor.isServer) {
       // given user is removed as provider for the given location
       if(locationId&&userId) {
         Meteor.users.update({_id: userId}, {$pull: {'profile.provider_locations': locationId}});
+
+        var user = Meteor.users.findOne(userId);
+
+        var description = getUserDescription(Meteor.user()) + ' heeft gebruiker ' + getUserDescription(user) + ' verwijderd als beheerder';
+        var location = Locations.findOne(locationId, {title: 1});
+        if(location) {
+          description += ' voor locatie ' + location.title;
+        }
+
+        Meteor.call('transactions.addTransaction', 'REMOVE_LOCATIONADMIN', description, Meteor.userId(), locationId, null,
+                    {'locationId': locationId, 'user': getUserDescription(user), 'userid': userId});    
       }
     },
-
+    // 'currentuser.update_avatar'(new_avatar_url) {
+    //   if(this.userId) {
+    //     Meteor.users.update(this.userId, {$set : { 'profile.avatar' : new_avatar_url }});
+    //   }
+    // }
     // NICE TO HAVE: this function is used in the change event in the ManageUserlist component
     // 'locationprovider.emailvalid'(email) {
     //   var daUser = Accounts.findUserByEmail(email);

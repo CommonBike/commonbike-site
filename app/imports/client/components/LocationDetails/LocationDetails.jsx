@@ -23,7 +23,7 @@ class LocationDetails extends Component {
       <div style={s.base}>
 
         <p style={s.intro}>
-          Haal je fiets bij <i><span dangerouslySetInnerHTML={{__html: this.props.location.title}} /></i>. Kies hieronder je gewenste fiets<br/>
+          <span dangerouslySetInnerHTML={{__html: this.props.location.title}} /><br />
         </p>
 
         <center>
@@ -39,12 +39,20 @@ class LocationDetails extends Component {
           Nieuwe fiets
         </RaisedButton>
 
-        {R.map((object) =>  <ObjectBlock
+        { this.props.objects.length != 0 ?
+          R.map((object) =>  <ObjectBlock
                               key={object._id}
                               item={object}
                               isEditable={this.props.isEditable}
-                              onClick={this.props.clickItemHandler} />
-                            , this.props.objects)}
+                              onClick={this.props.clickItemHandler}
+                              showPrice={true}
+                              showState={this.props.isEditable}
+                              showRentalDetails={this.props.isEditable} />
+                            , this.props.objects)
+          :
+          <p style={s.paragraph}>GEEN FIETSEN BESCHIKBAAR</p> 
+        }
+
 
       </div>
     );
@@ -57,10 +65,9 @@ var s = {
     lineHeight: 'default',
     padding: '20px 20px 0 20px',
     textAlign: 'center',
-    minHeight: 'calc(100vh - 66px)',
   },
   intro: {
-    padding: '0 70px',
+    padding: '0 5px 0 70px',
     margin: '0 auto',
     maxWidth: '400px',
     textAlign: 'left',

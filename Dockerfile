@@ -1,5 +1,5 @@
 FROM phusion/baseimage:0.9.19
-MAINTAINER Peter Willemsen <peter@codebuffet.co>
+MAINTAINER bartwr <mail@bartroorda.nl>
 
 # For nano to work
 ENV TERM xterm
@@ -19,10 +19,10 @@ ENV MONGO_URL mongodb://db:27017/commonbike
 EXPOSE 80
 ENV PORT 80
 
+ENV METEOR_SETTINGS `cat app/settings.json`
+
 ADD ./docker/bin/run-server.sh /etc/service/server/run
 ADD ./mrt_build /var/www/app
-
-ENV METEOR_SETTINGS '{"mapbox":{"style":"mapbox.streets","accessToken":"pk.eyJ1IjoiZXJpY3ZycCIsImEiOiJjaWhraHE5ajIwNmRqdGpqN2h2ZXhqMnRsIn0.1FBWllDyQ_nSlHFE2jMLDA"},"private":{"testdata":{"cleanup":false,"insert":false,"log":false}}}'
 
 WORKDIR /var/www/app/bundle/programs/server
 RUN npm install

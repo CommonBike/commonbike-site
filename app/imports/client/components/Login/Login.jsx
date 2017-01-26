@@ -39,15 +39,17 @@ class Login extends Component {
     return (
       <div style={s.base}>
 
-        <br />
+        <div style={s.intro}>
 
-        <p>
-          Wil je als eerste<br />de CommonBike app uitproberen?
-        </p>
+          <p>
+            Wil je als eerste<br />de CommonBike app uitproberen?
+          </p>
 
-        <p>
-          <b>Log in met je favoriete account</b>
-        </p>
+          <p>
+            Log in met je favoriete account
+          </p>
+
+        </div>
 
         <div style={s.socialButtonsWrapper}>
           <SquareButton src="google" size="64" title="Login with Google" onClick={this.loginWithGoogle.bind(this)} style={s.google} />
@@ -57,7 +59,7 @@ class Login extends Component {
         </div>
 
         <p>
-          <b>Of meld je aan met je mailadres</b>
+          Of meld je aan met je mailadres
         </p>
 
         <div style={{textAlign: 'center'}}>
@@ -71,9 +73,11 @@ class Login extends Component {
   renderTeaser() {
     return (
       <div style={Object.assign({padding: '20px'}, s.base)}>
-        <p>Leuk dat je meedoet! We sturen je als eerste een bericht als de app gebruikt kan worden.</p>
-        <p>In december starten we een pilot bij een intercity treinstation. Daarna breiden we uit.</p>
-        <p><button onClick={this.logout}>Log out</button></p>
+        <p>Leuk dat je mee wilt doen!</p>
+        <p>We zijn gestart met een besloten gebruikersgroep in Leiden. <a href="mailto:info@commonbike.com">Mail ons</a> als je nu al mee wilt fietsen en testen in Leiden.</p>
+        <p>We sturen je als eerste een bericht als we uitbreiden.</p>
+        <p><a href="http://commonbike.com/" target="_blank"><i>Hoe werkt CommonBike?</i></a></p>
+        <p><button onClick={this.logout}>Uitloggen</button></p>
       </div>
     )
   }
@@ -96,12 +100,18 @@ var s = {
   base: {
     width: '480px',
     maxWidth: '100%',
+    minHeight: 'calc(100% - 74px)',
+    height: 'calc(100% - 74px)',
     margin: '0 auto',
     lineHeight: 'default',
     color: '#000',
-    fontSize: '1.2em',
+    paddingTop: '20px',
+    fontSize: '1.05em',
     textAlign: 'center',
     fontWeight: '500',
+  },
+  intro: {
+    padding: '0 5px'
   },
   signUpButton: {
     margin: '10px 0',

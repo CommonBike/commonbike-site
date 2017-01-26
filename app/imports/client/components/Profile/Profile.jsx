@@ -29,6 +29,14 @@ class Profile extends Component {
     this.context.history.push('/admin/rentals') 
   }
 
+  transactions() { 
+    this.context.history.push('/transactions') 
+  }
+
+  manageusers() {
+    this.context.history.push('/admin/users') 
+  }
+
   logout() { 
     Meteor.logout(); 
     this.context.history.push('/')
@@ -54,8 +62,54 @@ class Profile extends Component {
     }
   }
 
+  getMyLocationsButton() {
+    // bestaande providers en gebruikers met rechten kunnen locaties beheren
+    var show = this.props.currentUser && this.props.currentUser.profile && 
+                        (this.props.currentUser.profile.provider_locations ||
+                         this.props.currentUser.profile.cancreatelocations)
+
+    if(Roles.userIsInRole( Meteor.userId(), 'admin')) {
+      show = true; // administrators can always manage locations
+    }
+
+    if(show) {
+      return ( <RaisedButton onClick={this.locations.bind(this)}>MIJN LOCATIES</RaisedButton> )
+    } else {
+      return ( <div /> )
+    }
+  }
+
+  getMyRentalsButton() {
+    var show = this.props.currentUser && this.props.currentUser.profile && 
+               (this.props.currentUser.profile.provider_locations ||
+                this.props.currentUser.profile.cancreatelocations)
+
+    if(Roles.userIsInRole( Meteor.userId(), 'admin')) {
+      show = true; // administrators can always manage locations
+    }
+
+    if(show) {
+      return ( <RaisedButton onClick={this.rentals.bind(this)}>MIJN VERHUUR</RaisedButton> )
+    } else {
+      return ( <div /> )
+    }
+  }
+
+  getManageUsersButton() {
+    if(Roles.userIsInRole( Meteor.userId(), 'admin' )) {
+      return ( <RaisedButton onClick={this.manageusers.bind(this)}>GEBRUIKERSBEHEER</RaisedButton> )
+    } else {
+      return ( <div /> )
+    }
+  }
+
   render() {
     self = this;
+
+    // <RaisedButton onClick={this.locations.bind(this)}>MIJN LOCATIES</RaisedButton>
+
+    // <RaisedButton onClick={this.rentals.bind(this)}>MIJN VERHUUR</RaisedButton>
+
     return (
       <div style={s.base}>
 
@@ -71,24 +125,20 @@ class Profile extends Component {
 
           <RaisedButton onClick={this.reservations.bind(this)}>MIJN RESERVERINGEN</RaisedButton>
 
-          <RaisedButton onClick={this.locations.bind(this)}>MIJN LOCATIES</RaisedButton>
+          <RaisedButton onClick={this.transactions.bind(this)}>MIJN GESCHIEDENIS</RaisedButton>
 
-          <RaisedButton onClick={this.rentals.bind(this)}>MIJN VERHUUR</RaisedButton>
+          { this.getMyLocationsButton() }
+
+          { this.getMyRentalsButton() }
+
+          { this.getManageUsersButton() }
 
           <RaisedButton onClick={this.logout.bind(this)}>LOG UIT</RaisedButton>
         </div>
 
-{/*}        {R.map((location) =>  <LocationBlock
-                                key={location._id}
-                                item={location}
-                                isEditable={self.props.isEditable}
-                                onClick={self.props.clickItemHandler} />
-                              , this.props.locations)}
-*/}
       </div>
     );
   }
-
 }
 
 var s = {

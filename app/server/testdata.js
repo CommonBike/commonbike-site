@@ -1,10 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import { Locations } from '/imports/api/locations.js'; 
 import { Objects } from '/imports/api/objects.js'; 
-
-const {testdata = {}} = Meteor.settings.private
+import { Transactions } from '/imports/api/transactions.js'; 
+import '/imports/api/users.js'; 
 
 const log = (msg) => {
+  if(!Meteor.settings||!Meteor.settings.private||!Meteor.settings.private.testdata) { return }
+
+  var testdata = Meteor.settings.private.testdata
+
   if (testdata.log) {
     console.log(msg)
   }
@@ -152,6 +156,7 @@ var cleanupTestUsers = function() {
             }
         });
 
+      Transactions.remove({userId: id});
       Meteor.users.remove({_id: id});
     } 
   });
@@ -165,10 +170,13 @@ var cleanupTestData = function() {
 
         // remove all objects for this location
         var myObjects = Objects.find({locationId: id}).fetch();
-        _.each(myObjects, function (objectData) {
-           Objects.remove({_id: objectData._id});
+        _.each(myObjects, function (object) {
+          Transactions.remove({objectId: object._id});
         });
 
+        Objects.remove({locationId: id});
+
+        Transactions.remove({locationId: id});
         Locations.remove({_id: id});
     }
   });
@@ -205,8 +213,9 @@ var checkTestUsers = function() {
       // Meteor.users.update({_id: id}, {$set:{'avatar': anavatar}});
 
       // email verification
-      Meteor.users.update({_id: id}, {$set:{'emails.0.verified': true}});
+      Meteor.users.update({_id: id}, {$set:{'emails.0.verified': true, 'profile.active':true}});
       log('added test user ' + userData.name);
+      Meteor.call('transactions.registerUser', id);
     }
 
     _.each(userData.roles, function (role) {
@@ -239,7 +248,6 @@ const Address2LatLng = (address) => {
 var createLockCode = function(length) {
   var base = Math.pow(10, length+1);
   var code = Math.floor(base + Math.random() * base)
-  // console.log('code: ' + code);
   return code.toString().substring(1, length+1);
 }
 
@@ -299,6 +307,7 @@ var checkTestLocations = function() {
       if (hithere) {
         if(firstproviderid==null) { 
           firstproviderid = hithere._id;
+          firstprovidermail=hithere.emails[0].address;
         }
 
         log('adding provider ' + provider + ' to ' + locationData.title);
@@ -318,6 +327,13 @@ var checkTestLocations = function() {
           lockinfo = createLock(bike.locktype, bike.locksettings);
         }
 
+        var priceinfo = { 
+          value: '0',
+          currency: 'euro',
+          timeunit: 'day',
+          description: 'tijdelijk gratis' 
+        };
+
         var keyid = Objects.insert({ 
           locationId: locationId,
           title: bike.title,
@@ -325,15 +341,15 @@ var checkTestLocations = function() {
           imageUrl: locationData.bikeimage,
           state: { state: bike.state,
                    userId: firstproviderid,
-                   timestamp: timestamp },
-          lock: lockinfo
+                   timestamp: timestamp,
+                   userDescription: '' },
+          lock: lockinfo,
+          price: priceinfo
         });
-
-        // console.log('add new bike:' + bike.title + ' to location ' + locationData.title);
       }
     });
   });
-};    
+};  
 
 /* Use settings.json if you want to generate / check testdata when 
    the application starts 
@@ -345,15 +361,16 @@ var checkTestLocations = function() {
 
 */
 Meteor.startup(() => {
-  if(!Meteor.isProduction) {
-    if (testdata.cleanupusers) { cleanupTestUsers(); }
-    if (testdata.cleanupother) { cleanupTestData(); }
-    if (testdata.insert) {
-      checkTestUsers()
-      checkTestLocations()
-    }
+  if(Meteor.isProduction) { return }
 
-    // log( Locations.find().fetch() )
+  if(!Meteor.settings||!Meteor.settings.private||!Meteor.settings.private.testdata) { return }
+
+  var testdata = Meteor.settings.private.testdata
+
+  if (testdata.cleanupusers) { cleanupTestUsers(); }
+  if (testdata.cleanupother) { cleanupTestData(); }
+  if (testdata.insert) {
+    checkTestUsers()
+    checkTestLocations()
   }
 })
-

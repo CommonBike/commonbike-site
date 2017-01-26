@@ -1,7 +1,41 @@
 import React, { Component, PropTypes } from 'react'
 import L from 'leaflet'
 
+// https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/watchPosition
+// https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition
+// navigator.geolocation.getCurrentPosition((geo)=>console.log(geo.coords.latitude, geo.coords.longitude))
+myWatchId = undefined
+myLatLng = [0,0]
+myMap = undefined
+myMarker = undefined
+
+//
 class Map extends Component {
+
+  watchMyLatLng() {
+    if (myWatchId !== undefined) { // already watching
+      return
+    }
+
+    function success(pos) {
+      const {coords} = pos
+      myLatLng = [coords.latitude, coords.longitude]
+      myMarker.setLatLng(myLatLng)
+      // console.log('updated myMarker to', myLatLng)
+    }
+
+    function error(err) {
+      console.warn('ERROR(' + err.code + '): ' + err.message)
+    }
+
+    options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    }
+
+    myWatchId = navigator.geolocation.watchPosition(success, error, options)
+  }
 
   componentDidMount() {
     const {item} = this.props
@@ -9,11 +43,12 @@ class Map extends Component {
       return
     }
 
+    // create the map component
     const defaultStyle = "mapbox.streets" // mapbox.streets, mapbox.mapbox-streets-v7, mapbox.mapbox-terrain-v2, mapbox.satellite, mapbox.dark
     const defaultAccessToken = "pk.eyJ1IjoiZXJpY3ZycCIsImEiOiJjaWhraHE5ajIwNmRqdGpqN2h2ZXhqMnRsIn0.1FBWllDyQ_nSlHFE2jMLDA" // ericvrp Mapbox
     const {style = defaultStyle, accessToken = defaultAccessToken} = Meteor.settings.public.mapbox || {}
 
-    const mymap = L.map('mapid').setView(item.lat_lng, 17)
+    myMap = L.map('mapid').setView(item.lat_lng, 17)
 
     // https://www.mapbox.com/api-documentation/#retrieve-a-static-map-image
     const url = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
@@ -24,7 +59,7 @@ class Map extends Component {
       maxZoom: 22,
       id: style,  // https://www.mapbox.com/studio/tilesets/
       accessToken: accessToken
-    }).addTo(mymap)
+    }).addTo(myMap)
 
     const useCustomMarkerIcon = false
     let   marker
@@ -45,12 +80,17 @@ class Map extends Component {
           // shadowSize: [68, 95],
           // shadowAnchor: [22, 94]
       })
-      marker = L.marker(item.lat_lng, {icon: myIcon}).addTo(mymap)
+      marker = L.marker(item.lat_lng, {icon: myIcon}).addTo(myMap)
     } else { // !useCustomMarkerIcon
-      marker = L.marker(item.lat_lng).addTo(mymap)
+      marker = L.marker(item.lat_lng).addTo(myMap)
     }
     
     marker.bindPopup(`<b>${item.title}</b><br>${item.address}`).openPopup()
+
+    myMarker = L.circleMarker(myLatLng).addTo(myMap)
+    myMarker.bindPopup(`<b>You are here</b>`)
+  
+    this.watchMyLatLng()
   }
 
   render() {
@@ -64,7 +104,7 @@ class Map extends Component {
 
     return (
       <div>
-        <div id='mapid' style={{width: this.props.width, height: this.props.height}}></div>
+        <div id='mapid' style={{width: this.props.width, height: this.props.height, maxWidth: '100%'}}></div>
       </div>
     )
   }

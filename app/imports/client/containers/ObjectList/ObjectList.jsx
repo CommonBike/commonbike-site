@@ -27,7 +27,12 @@ class ObjectList extends Component {
       	title={this.props.title}
         objects={this.props.objects}
         clickItemHandler=""
-        isEditable={this.props.isEditable} />
+        isEditable={this.props.isEditable} 
+        showPrice={this.props.showPrice}
+        showState={this.props.showState}
+        showRentalDetails={this.props.showRentalDetails}
+        showLockDetails={this.props.showLockDetails}
+        emptyListMessage={this.props.emptyListMessage}/>
     );
   }
 
@@ -44,41 +49,61 @@ var s = {
 
 ObjectList.propTypes = {
   objects: PropTypes.array,
-  isEditable: PropTypes.any
+  showPrice : PropTypes.any,
+  showState : PropTypes.any,
+  showRentalDetails: PropTypes.any,
+  showLockDetails: PropTypes.any,
+  isEditable: PropTypes.any,
+  emptyListMessage: PropTypes.string
 };
 
 ObjectList.defaultProps = {
-  isEditable: false
+  showPrice : false,
+  showState : false,
+  showRentalDetails: false,
+  showLockDetails: false,
+  isEditable: false,
+
+  rentalsMode: false
 }
 
 export default createContainer((props) => {
   Meteor.subscribe('objects');
   Meteor.subscribe('users');
-
   
   var filter=null;
   var title="";
-  if(!props.isEditable) {
+  if(!props.rentalsMode) {
     title = 'Bekijk hier jouw reserveringen';
+
+    // user can see his/her own reserved/rented bikes
     filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}], 'state.userId':Meteor.userId()};
+
+    emptyListMessage = 'GEEN RESERVERINGEN'
   } else {
     title = 'Jouw verhuurde fietsen';
 
-    // only show objects for which the current loggedin user is one of the providers
-    console.log(Meteor.user());
-
+    // Only show objects for which the current loggedin user is one of the providers
     var mylocations = [];
     if(Meteor.user()) {
       mylocations = Meteor.user().profile.provider_locations||[];
     }
 
-    console.log(mylocations)
+    filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}]};
 
-    filter = {$or: [{'state.state': 'reserved'}, {'state.state': 'inuse'}], locationId: { $in: mylocations }};
+    if( ! Roles.userIsInRole(Meteor.userId(), ['admin']) )
+      filter.locationId = { $in: mylocations }
+
+    emptyListMessage = 'ER ZIJN GEEN FIETSEN VERHUURD'
   }
 
   return {
   	title: title,
-    objects: Objects.find(filter, {sort: {title: 1}}).fetch()
+    objects: Objects.find(filter, {sort: {title: 1}}).fetch(),
+    showPrice: props.showPrice||false,
+    showState : props.showState||false,
+    showRentalDetails: props.showRentalDetails||false,
+    showLockDetails: props.showLockDetails||false,
+    emptyListMessage: emptyListMessage
   };
 }, ObjectList);

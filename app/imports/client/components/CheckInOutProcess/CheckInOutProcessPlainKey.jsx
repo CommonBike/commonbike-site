@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
+import ReactDOM from 'react-dom';
 import {propTypes} from 'react-router';
 import CheckInOutProcessBase from '../CheckInOutProcess/CheckInOutProcessBase';
+
+import { getUserDescription } from '/imports/api/users.js'; 
 
 // Import components
 import Button from '../Button/Button';
@@ -19,6 +22,19 @@ class CheckInOutProcessPlainKey extends CheckInOutProcessBase {
     this.setObjectAvailable();
   }
 
+  checkCode() {
+    // if(ReactDOM.findDOMNode(this.refs.code).value != '25')
+    //   return alert('Dat is niet de juiste code. Probeer het opnieuw.');
+
+    this.setState({showCodeEntry:false});
+
+    this.setObjectAvailable();
+
+    var userDescription = getUserDescription(Meteor.user());
+    var description='Locatiecode ' + ReactDOM.findDOMNode(this.refs.code).value + ' ingevoerd door gebruiker ' + userDescription;
+    Meteor.call('transactions.addTransaction', 'ENTER_LOCATIONCODE', description, Meteor.userId(), this.props.object.locationId, this.props.object._id);
+  }
+
   renderButtonsForUser() {
     self = this;
 
@@ -28,43 +44,36 @@ class CheckInOutProcessPlainKey extends CheckInOutProcessBase {
         <Button style={s.button} onClick={() => this.setObjectReserved() } buttonStyle="huge">Reserveer!</Button> : <div /> }
       {this.props.object.state.state=='reserved' ? 
         <div style={s.base}>
-          <ul style={s.list}>
-            <li style={s.listitem}>Uw fiets ophalen?</li>
-            <li style={s.listitem}>Druk op de knop <b>HUUR</b></li>
-            <li style={s.listitem}>voor een huurcode</li>
-            <li style={s.listitem}>Let op: uw huurperiode start op het moment</li>
-            <li style={s.listitem}>dat de huurcode is afgegeven!</li>
-          </ul>
-          <Button style={s.button} onClick={() => this.setObjectInUse() } buttonStyle="huge">HUUR</Button>
-          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="huge">ANNULEER!</Button>
+          <p style={s.explanationText} hidden>
+            Uw fiets ophalen? Druk op de knop <b>Stap op</b>
+          </p>
+          <Button style={s.button} onClick={() => this.setObjectInUse() } buttonStyle="huge">stap op</Button>
+          <Button style={s.button} onClick={() => this.setObjectAvailable() }>annuleer bestelling</Button>
         </div>
         : <div /> }
       {this.props.object.state.state=='inuse' ? 
            this.state.showCodeEntry ? 
               <div style={s.base}>
                 <ul style={s.list}>
-                  <li style={s.listitem}>Zet svp <b>{this.props.object.title}</b> afgesloten weg</li>
-                  <li style={s.listitem}>en lever de sleutel in bij de medewerker</li>
-                  <li style={s.listitem}>vraag om de <b>locatiecode</b> en</li>
-                  <li style={s.listitem}>vul deze hieronder in om de huurperiode te beeindigen</li>
-                  <li style={s.listitem}><TextField type="code" ref="code" placeholder="locatiecode" name="code" style={s.textfield}/></li>
-                  <li style={s.listitem}><Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="huge">CODE INVOEREN</Button></li>
+                  <li style={s.listitem}>Zet s.v.p. <b>{this.props.object.title}</b> afgesloten weg en lever de sleutel in bij de medewerker.<br /><br /></li>
+                  <li style={s.listitem}>Vraag om de <b>locatiecode</b> en vul deze hieronder in.<br /><br /></li>
+                  <li style={s.listitem}><TextField required="required" type="code" ref="code" placeholder="locatiecode" name="code" style={s.textfield}/></li>
+                  <li style={s.listitem}><Button style={s.button} onClick={() => this.checkCode() }>CODE INVOEREN</Button></li>
+                  <Button style={s.button} onClick={() => this.setState({ showCodeEntry: false}) }>annuleer</Button>
                 </ul>
               </div>
             : 
               <div style={s.base}>
                 <ul style={s.list}>
-                  <li style={s.listitem}>Toon onderstaande huurcode</li>
-                  <li style={s.listitem}>aan de medewerker en vraag om de sleutel</li>
-                  <CheckInCode title="HUURCODE" code={this.props.object.lock.settings.keyid} />
-                  <li style={s.listitem}>Hiermee kunt u <b>{this.props.object.title}</b> openen</li>
+                  <li style={s.listitem}>Toon dit scherm aan de medewerker en vraag om de sleutel.</li>
+                  <li style={s.listitemLarge}><b>{this.props.object.title}</b></li>
                 </ul>
-                <Button style={s.button} onClick={() => this.setState(prevState => ({ showCodeEntry: ! prevState.showCodeEntry})) } buttonStyle="huge">TERUGBRENGEN</Button> 
+                <Button style={s.button} onClick={() => this.setState({ showCodeEntry: true}) }>TERUGBRENGEN</Button> 
               </div>
           
           : <div /> }
       {this.props.object.state.state=='outoforder' ? 
-          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="huge">Maak beschikbaar!</Button> 
+          <Button style={s.button} onClick={() => this.setObjectAvailable() }>Maak beschikbaar!</Button> 
         : <div /> }
       </div>
     );
@@ -75,9 +84,8 @@ var s = {
   base: {
     fontSize: 'default',
     lineHeight: 'default',
-    padding: '20px 20px 0 20px',
+    margin: '10px 0',
     textAlign: 'center',
-    minHeight: 'calc(100vh - 66px)',
   },
 
   button: {
@@ -86,6 +94,7 @@ var s = {
 
   list: {
     margin: '0 auto',
+    padding: 0,
     textAlign: 'center',
     listStyle: 'none',
   },
@@ -97,6 +106,16 @@ var s = {
     minHeight: '40px',
     fontSize: '1.2em',
     fontWeight: '500',
+    listStyle: 'none',
+  },
+
+  listitemLarge: {
+    padding: '0 10px 0 0',
+    margin: '0 auto',
+    textAlign: 'center',
+    minHeight: '40px',
+    fontSize: '4em',
+    fontWeight: '1000',
     listStyle: 'none',
   },
 
@@ -146,6 +165,16 @@ var s = {
     padding: '10px',
     margin: '2px'
   },
+
+  explanationText: {
+    padding: '0 25px 25px 25px',
+    margin: '0px auto',
+    maxWidth: '400px',
+    textAlign: 'left',
+    minHeight: '80px',
+    fontSize: '1.2em',
+    fontWeight: 500,
+  }
 
 }
 

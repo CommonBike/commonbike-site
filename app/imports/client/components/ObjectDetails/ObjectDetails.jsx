@@ -21,6 +21,8 @@ class ObjectDetails extends Component {
   }
 
   renderCheckInOutProcess() {
+    if( ! this.props.object.lock ) return <div />;
+
     var lockType = this.props.object.lock.type;
     if(lockType=='open-bikelocker') {
       return (
@@ -50,7 +52,7 @@ class ObjectDetails extends Component {
       <div style={s.base}>
 
         <p style={s.intro}>
-          Reserveer bij <i><span dangerouslySetInnerHTML={{__html: this.props.location.title}} /></i>
+          <i><span dangerouslySetInnerHTML={{__html: this.props.location.title}} /></i>
         </p>
 
         <center>
@@ -73,13 +75,13 @@ var s = {
     lineHeight: 'default',
     padding: '20px 20px 0 20px',
     textAlign: 'center',
-    minHeight: 'calc(100vh - 66px)',
+    minHeight: 'calc(100vh - 74px)',
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'column'
   },
   intro: {
-    padding: '0 70px',
+    padding: '0px 5px 0px 70px',
     margin: '0 auto',
     maxWidth: '400px',
     textAlign: 'left',

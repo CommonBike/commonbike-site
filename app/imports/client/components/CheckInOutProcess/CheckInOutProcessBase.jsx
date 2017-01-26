@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import {propTypes} from 'react-router';
 
+import { getUserDescription } from '/imports/api/users.js'; 
+
 // Import components
 import Button from '../Button/Button';
 
@@ -11,19 +13,26 @@ class CheckInOutProcessBase extends Component {
   }
 
   setObjectReserved() {
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), 'reserved');
+    var newState = 'reserved';
+    var user = getUserDescription(Meteor.user());
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), this.props.object.locationId,newState, user);
   }
 
   setObjectInUse() {
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), 'inuse');
+    var newState = 'inuse'
+    var user = getUserDescription(Meteor.user());
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), this.props.object.locationId, newState, user);
   }
 
   setObjectAvailable() {
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), 'available');
+    var newState = 'available'
+    Meteor.call('objects.setState', this.props.object._id, null, this.props.object.locationId, newState, '');
   }
 
   setObjectOutOfOrder() {
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), 'outoforder');
+    var newState = 'outoforder'
+    var user = getUserDescription(Meteor.user());
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), this.props.object.locationId, newState, user);
   }
 
   renderButtonsForProvider() {

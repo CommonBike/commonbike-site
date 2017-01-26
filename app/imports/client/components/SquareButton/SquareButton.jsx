@@ -25,33 +25,30 @@ var s = {
     cursor: 'pointer',
     width: '60px',
     height: '60px',
-    // minHeight: '75px',
     maxHeight: '60px',
     backgroundPosition: 'center center',
     backgroundRepeat: 'no-repeat',
     display: 'block',
     textIndent: '-9999px',
     display: 'flex',
-    backgroundSize: '100%',
+    backgroundSize: '45px',
     textAlign: 'center',
     fontWeight: 'bold',
     margin: '0 auto',
     backgroundColor: 'transparent',
   },
   google: {
-    backgroundSize: '65%',
     backgroundImage: 'url(/files/SquareButton/google.svg)'
   },
   github: {
-    backgroundSize: '65%',
     backgroundImage: 'url(/files/SquareButton/github.svg)'
   },
   twitter: {
-    backgroundPosition: 'center 35%',
+    backgroundSize: 'auto 40px',  
     backgroundImage: 'url(/files/SquareButton/twitter.svg)'
   },
   facebook: {
-    backgroundPosition: 'center 35%',
+    backgroundSize: 'auto 40px',
     backgroundImage: 'url(/files/SquareButton/facebook.svg)'
   },
 
