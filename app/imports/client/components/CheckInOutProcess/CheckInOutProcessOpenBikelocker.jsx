@@ -26,7 +26,7 @@ class CheckInOutProcessOpenBikelocker extends CheckInOutProcessBase {
             <li style={s.listitem}><b>({this.props.object.description})</b></li>
             <li style={s.listitem}><img style={s.image} src="/files/Testdata/locker.png" /></li>
             <li style={s.listitem}>U kunt de fietskluis als volgt openen:</li>
-            <li style={s.listitem}>Type <b>{this.props.object.lock.settings.pickupcode}</b></li>
+            <li style={s.listitem}>Type <b>{this.props.object.lock.settings.keyid}</b></li>
             <li style={s.listitem}>en druk op de groene knop</li>
             <li style={s.listitem}>Zodra de signaallamp groen oplicht</li>
             <li style={s.listitem}>kunt u de kluisdeur ontgrendelen</li>
