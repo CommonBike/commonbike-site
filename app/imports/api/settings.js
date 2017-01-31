@@ -126,7 +126,9 @@ if (Meteor.isServer) {
 	    // for now there is only one settings profile
 		var settings = Settings.findOne({profileName: defaultProfileName});
 	    if(!settings) {
+		    var settingsId = Settings.insert({});
 	    	settings = { 
+	    		_id: settingsId,
 	    		profileName: defaultProfileName,
 	    		version: latestSettingsVersion,
 	    		mapbox: {
@@ -155,7 +157,7 @@ if (Meteor.isServer) {
 		      return;
 		    }
 
-		    Settings.insert(settings);
+			Settings.update(settingsId, settings, {validate: false});    
 
 		    var description = 'Standaard instellingen aangemaakt';
 		    Meteor.call('transactions.addTransaction', 'CREATE_SETTINGS', description, Meteor.userId(), null, null, settings);    
