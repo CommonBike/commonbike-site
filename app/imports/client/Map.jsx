@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react'
+import { createContainer } from 'meteor/react-meteor-data';
 import L from 'leaflet'
+import { Settings } from '/imports/api/settings.js'; 
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/watchPosition
 // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition
@@ -46,7 +48,6 @@ class Map extends Component {
     // create the map component
     const defaultStyle = "mapbox.streets" // mapbox.streets, mapbox.mapbox-streets-v7, mapbox.mapbox-terrain-v2, mapbox.satellite, mapbox.dark
     const defaultAccessToken = "pk.eyJ1IjoiZXJpY3ZycCIsImEiOiJjaWhraHE5ajIwNmRqdGpqN2h2ZXhqMnRsIn0.1FBWllDyQ_nSlHFE2jMLDA" // ericvrp Mapbox
-    const {style = defaultStyle, accessToken = defaultAccessToken} = Meteor.settings.public.mapbox || {}
 
     myMap = L.map('mapid').setView(item.lat_lng, 17)
 
@@ -57,8 +58,8 @@ class Map extends Component {
     L.tileLayer(url, {
       attribution: '<a href="http://mapbox.com">Mapbox</a> | <a href="http://openstreetmap.org">OpenStreetMap</a>',
       maxZoom: 22,
-      id: style,  // https://www.mapbox.com/studio/tilesets/
-      accessToken: accessToken
+      id: this.props.style,  
+      accessToken: this.props.accessToken
     }).addTo(myMap)
 
     const useCustomMarkerIcon = false
@@ -113,7 +114,9 @@ class Map extends Component {
 Map.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  item: PropTypes.object.isRequired
+  item: PropTypes.object.isRequired,
+  style: PropTypes.string.isRequired,
+  accessToken: PropTypes.string.isRequired
 }
 
 Map.defaultProps = {
@@ -124,7 +127,20 @@ Map.defaultProps = {
     title: 'Seats2meet',
     description: 'Utrecht CS',
     lat_lng: [52.08906, 5.11343]
-  }
+  },
+  style: "mapbox.streets" ,
+  accessToken: "pk.eyJ1IjoiZXJpY3ZycCIsImEiOiJjaWhraHE5ajIwNmRqdGpqN2h2ZXhqMnRsIn0.1FBWllDyQ_nSlHFE2jMLDA"
 }
 
-export default Map
+export default Map = createContainer((props) => {
+  Meteor.subscribe('settings');
+
+  var settings = Settings.findOne();
+
+  return {
+      style: settings.mapbox.style,
+      accessToken: settings.mapbox.userId
+  };
+}, Map);
+
+// export default Map

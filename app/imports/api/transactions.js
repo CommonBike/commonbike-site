@@ -4,6 +4,7 @@ import { Accounts } from 'meteor/accounts-base'
 import { Locations } from '/imports/api/locations.js'; 
 import { Objects } from '/imports/api/objects.js'; 
 import { getUserDescription } from '/imports/api/users.js'; 
+import { getSettingsServerSide } from '/imports/api/settings.js'; 
 
 export const Transactions = new Mongo.Collection('transactions');
 
@@ -104,8 +105,8 @@ if (Meteor.isServer) {
       }
   	},
     'slack.sendnotification_commonbike'(notification) {
-      if(!Meteor.settings.private.slack) { return }
-      var slack = Meteor.settings.private.slack;
+      var settings = getSettingsServerSide();
+      var slack = settings.slack;
       if(!slack.notify) { return }
 
       HTTP.post(slack.address, {
@@ -113,7 +114,7 @@ if (Meteor.isServer) {
                                       { "channel": "#" + slack.channel,
                                         "username": slack.name,
                                         "text": notification,
-                                        "icon_emoji": ":ghost:"
+                                        "icon_emoji": slack.icon_emoji
                                       })
                   }
       });

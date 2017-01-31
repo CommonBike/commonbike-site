@@ -8,6 +8,8 @@ import Match from 'react-router/Match'
 import Miss from 'react-router/Miss'
 import Redirect from 'react-router/Redirect'
 
+import Settings from '/imports/api/settings.js'; 
+
 import UserApp from '/imports/client/components/UserApp/UserApp.jsx'
 import Landing from '/imports/client/components/Landing/Landing.jsx'
 import Join from '/imports/client/components/Join/Join.jsx'
@@ -139,5 +141,7 @@ const App = () => (
 )
 
 Meteor.startup(() => {
+  Meteor.subscribe("settings");
+  
   render(<App/>, document.getElementById('root'))
 })

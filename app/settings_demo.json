@@ -1,14 +1,2 @@
 {
-  "mapbox": {
-    "style": "mapbox.streets",    
-    "accessToken": "pk.eyJ1IjoiZXJpY3ZycCIsImEiOiJjaWhraHE5ajIwNmRqdGpqN2h2ZXhqMnRsIn0.1FBWllDyQ_nSlHFE2jMLDA"
-  },
-  "private": {
-    "slack": { 
-      "notify": false,
-      "address": "<fill in Webhook URL here, channel and name below, set notify to true",
-      "channel": "commonbike-activity",
-      "name": "commonbike-bot"
-    }
-  }
 }
