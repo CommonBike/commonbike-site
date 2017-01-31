@@ -13,6 +13,7 @@ import Settings from '/imports/api/settings.js';
 import UserApp from '/imports/client/components/UserApp/UserApp.jsx'
 import Landing from '/imports/client/components/Landing/Landing.jsx'
 import Join from '/imports/client/components/Join/Join.jsx'
+import About from '/imports/client/components/About/About.jsx'
 import ContentPage from '/imports/client/components/ContentPage/ContentPage.jsx'
 import Login from '/imports/client/components/Login/Login.jsx'
 import CustomPage from '/imports/client/components/CustomPage/CustomPage.jsx'
@@ -29,6 +30,7 @@ import AdminTools from '/imports/client/components/AdminTools/AdminTools.jsx'
 import NoMatch from '/imports/client/components/NoMatch/NoMatch.jsx'
 
 const UserAppLanding = () => (<UserApp showPageHeader={false} content={<Landing/>} />)
+const UserAppAbout = () => (<UserApp content={<ContentPage><About /></ContentPage>} />) 
 const UserAppJoin = () => (<UserApp content={<ContentPage><Join /></ContentPage>} />) 
 const UserAppLogin = () => (<UserApp content={<CustomPage><Login /></CustomPage>} />) // Login redirectTo={params.redirectTo}
 const UserAppProfile = () => (<UserApp content={<div><Profile isEditable="true" /></div>} />)
@@ -112,6 +114,7 @@ const App = () => (
   <Router>
     <div>
       <Match exactly pattern='/' component={UserAppLanding}/>
+      <Match pattern='/about' component={UserAppAbout}/>
       <Match pattern='/join' component={UserAppJoin}/>
       <Match pattern='/login' component={UserAppLogin}/> 
       

@@ -28,14 +28,12 @@ class Join extends Component {
         </p>
 
         <p>
-          &raquo; Fiets mee<br />
-          &raquo; Bouw mee<br />
-          &raquo; Beslis mee!
+          ~ Fiets mee<br />
+          ~ Bouw mee<br />
+          ~ Beslis mee!
         </p>
 
         <SignUpButton />
-
-        <Hr />
 
         <h2>Hoe werkt het?</h2>
 
@@ -57,20 +55,20 @@ class Join extends Component {
 
         <div ref="flex" style={{width: '100%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', height: '120px'}}>
           <a style={{display: 'flex', flex: 1}} href="http://slack.common.bike/" target="_blank">
-            <img style={{height: '30px'}} src="https://forger.typo3.org/images/slack.svg" alt="Slack" />
+            <img style={{height: '30px', display: 'block'}} src="https://forger.typo3.org/images/slack.svg" alt="Slack" />
           </a>
           <a style={{display: 'flex', flex: 1}} href="https://github.com/commonbike" target="_blank">
-            <img style={{height: '30px'}} src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Octicons-logo-github.svg" alt="Github" />
+            <img style={{height: '30px', display: 'block'}} src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Octicons-logo-github.svg" alt="Github" />
           </a>
-          <a style={{display: 'flex', flex: 1}} href="http://commonbike.com/about/" target="_blank">
-            <img style={{height: '30px'}} src="https://static.mailchimp.com/web/brand-assets/logo-freddie-fullcolor.svg" alt="newsletter (MailChimp)" />
+          <a style={{display: 'flex', flex: 1, alignItems: 'justifyContent'}} href="http://commonbike.com/about/" target="_blank">
+            <img style={{height: '30px', display: 'block'}} src="https://static.mailchimp.com/web/brand-assets/logo-freddie-fullcolor.svg" alt="newsletter (MailChimp)" />
           </a>
         </div>
 
         <Hr />
 
         <p>
-          <b>Nog veel meer informatie over het concept vind je op de website: <a href="http://commonbike.com/" target="_blank">commonbike.com</a>.</b>
+          <b>Nog veel meer informatie over het concept vind je op de website: <a href="http://commonbike.com/" target="_blank">commonbike.com</a></b>
         </p>
 
       </div>
