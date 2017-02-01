@@ -201,6 +201,19 @@ Meteor.methods({
     // }
     // Meteor.call('transactions.addTransaction', 'CHANGE_OBJECT', description, Meteor.userId(), object.locationId, objectId, data);    
   },
+  'objects.applychanges'(_id, changes) {
+
+    // Make sure the user is logged in
+    if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
+
+    var context =  ObjectsSchema.newContext();
+    if(context.validate({ $set: changes}, {modifier: true} )) {
+      Objects.update(_id, {$set : changes} );
+    } else {
+      console.log('unable to update object with id ' + _id);
+      console.log(context);
+    };
+  },
   'objects.remove'(objectId){
     var object = Objects.findOne(objectId);
 

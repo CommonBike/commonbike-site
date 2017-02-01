@@ -74,7 +74,6 @@ export default createContainer((props) => {
   }
 
   return {
-    currentUser: Meteor.user(),
     locationId: props.locationId,
     location: Locations.find({_id: props.locationId}).fetch()[0],
     objects: Objects.find(filter, {sort: {title: 1}}).fetch()

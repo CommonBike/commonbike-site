@@ -41,7 +41,7 @@ class Map extends Component {
 
   componentDidMount() {
     const {item} = this.props
-    if (!item || !item.lat_lng) {
+    if (!item || !item.lat_lng || !item.length==2) {
       return
     }
 
