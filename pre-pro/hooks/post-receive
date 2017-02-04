@@ -1,5 +1,5 @@
 #!/bin/bash
-deployDir="../deploy"
+deployDir="../deploy-rc"
 buildConfig="--rm=true"
 runConfig="-p 49153:3000"
 deployingBranch="develop"

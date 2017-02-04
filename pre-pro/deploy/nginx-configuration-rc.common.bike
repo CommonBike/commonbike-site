@@ -23,8 +23,8 @@ server {
   listen 443 ssl;
   server_name rc.common.bike;
   add_header Strict-Transport-Security "max-age=31536000";
-  #ssl_certificate /etc/letsencrypt/live/rc.common.bike/fullchain.pem;
-  #ssl_certificate_key /etc/letsencrypt/live/rc.common.bike/privkey.pem;
+  ssl_certificate /etc/letsencrypt/live/rc.common.bike/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/rc.common.bike/privkey.pem;
 
   # pass all requests to Meteor
   location / {
