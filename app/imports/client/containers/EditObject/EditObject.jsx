@@ -25,12 +25,6 @@ class EditObject extends Component {
     return true;
   }
 
-  updatePrice(changes) {
-    Meteor.call('objects.applypricechanges', this.props.object._id, changes);
-
-    return true;
-  }
-
   getLockFields() {
   	var fields = [];
     var lockType = this.props.object.lock.type;
