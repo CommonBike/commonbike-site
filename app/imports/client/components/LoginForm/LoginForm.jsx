@@ -8,7 +8,7 @@ import Future from 'fluture';
 
 // Import components
 import TextField from '../TextField/TextField.jsx';
-import RaisedButton from '../RaisedButton/RaisedButton.jsx';
+import RaisedButton from '../Button/RaisedButton.jsx';
 import Button from '../Button/Button';
 
 class LoginForm extends Component {

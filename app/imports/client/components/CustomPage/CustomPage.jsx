@@ -4,7 +4,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 
 // Import components
 import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
-import RaisedButton from '../RaisedButton/RaisedButton.jsx'
+import RaisedButton from '../Button/RaisedButton.jsx'
 import PageHeader from '../PageHeader/PageHeader.jsx'
 
 class CustomPage extends Component {

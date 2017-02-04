@@ -8,7 +8,7 @@ import { Locations } from '/imports/api/locations.js';
 
 // Import components
 import LocationBlock from '../../containers/LocationBlock/LocationBlock';
-import RaisedButton from '../RaisedButton/RaisedButton';
+import RaisedButton from '../Button/RaisedButton';
 
 /**
  *  LocationList

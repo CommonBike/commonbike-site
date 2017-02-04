@@ -5,7 +5,7 @@ import {propTypes} from 'react-router';
 
 // Import components
 import EditObject from '../../containers/EditObject/EditObject';
-import RaisedButton from '../RaisedButton/RaisedButton.jsx'
+import RaisedButton from '../Button/RaisedButton.jsx'
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
 import Button from '../Button/Button';
 import CheckInCode from '../CheckInCode/CheckInCode';
