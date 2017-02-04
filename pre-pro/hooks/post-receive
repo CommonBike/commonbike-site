@@ -9,7 +9,7 @@ do
   branch=$(git rev-parse --symbolic --abbrev-ref $refname)
   if [ "$deployingBranch" == "$branch" ]; then
     #docker img name
-    imageName='commonbikeReleaseCandidate'
+    imageName='commonbikerc'
 
     #docker container name
     containerName="$imageName"
@@ -24,7 +24,7 @@ do
     echo "Building Meteor app"
     cd app
     npm install --production
-    meteor build --verbose --allow-superuser --directory ../mrt_build --server-only
+    meteor build --verbose --allow-superuser --directory ../mrt_build
     cd ..
     echo "Docker : Building $imageName:$lastCommit"
     # This build and tag the image with "latest" tag

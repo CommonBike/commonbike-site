@@ -6,7 +6,7 @@ services:
     volumes:
       - /usr/share/commonbike_mdb:/data/db
     ports:
-      - localhost:4001:27017
+      - localhost:4011:27017
 
   app:
     restart: always
