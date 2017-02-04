@@ -8,6 +8,8 @@ import Match from 'react-router/Match'
 import Miss from 'react-router/Miss'
 import Redirect from 'react-router/Redirect'
 
+import Settings from '/imports/api/settings.js'; 
+
 import UserApp from '/imports/client/components/UserApp/UserApp.jsx'
 import Landing from '/imports/client/components/Landing/Landing.jsx'
 import Join from '/imports/client/components/Join/Join.jsx'
@@ -21,8 +23,10 @@ import LocationDetails from '/imports/client/containers/LocationDetails/Location
 import TransactionList from '/imports/client/containers/TransactionList/TransactionList.jsx'
 import AdminUsersList from '/imports/client/containers/AdminUsersList/AdminUsersList.jsx'
 import ObjectList from '/imports/client/containers/ObjectList/ObjectList.jsx'
+import LocationsMap from '/imports/client/components/LocationsMap/LocationsMap.jsx'
 import ObjectDetails from '/imports/client/containers/ObjectDetails/ObjectDetails.jsx'
 import CommonBikeUI from '/imports/client/commonbike-ui.jsx'
+import AdminTools from '/imports/client/components/AdminTools/AdminTools.jsx'
 import NoMatch from '/imports/client/components/NoMatch/NoMatch.jsx'
 
 const UserAppLanding = () => (<UserApp showPageHeader={false} content={<Landing/>} />)
@@ -37,6 +41,8 @@ const UserAppLocationDetails = ({params}) => {
     <UserApp content={<LocationDetails locationId={params.locationId} />} />
   )
 }
+
+const UserAppLocationsMap = () => (<UserApp content={<LocationsMap />} />)
 
 const UserAppObjectList = () => (<UserApp content={<ObjectList showPrice={true} showState={true} />} />)
 
@@ -70,7 +76,10 @@ const UserAppAdminLocationDetails = ({params}) => {
   )
 }
 
+
+
 const UserAppAdminAdminUsersList = () => (<UserApp content={<AdminUsersList />} />)
+const UserAppAdminAdminTools = () => (<UserApp content={<AdminTools />} />)
 
 // see: https://react-router.now.sh/auth-workflow
 const MatchWhenLoggedIn = ({ component: Component, ...rest }) => (
@@ -111,6 +120,7 @@ const App = () => (
       
       <MatchWhenLoggedIn pattern='/profile' component={UserAppProfile}/> 
       <MatchWhenLoggedIn pattern='/locations' component={UserAppLocationList}/> 
+      <MatchWhenLoggedIn pattern='/map' component={UserAppLocationsMap}/> 
       <MatchWhenLoggedIn pattern='/objects' component={UserAppObjectList}/> 
       <MatchWhenLoggedIn pattern='/transactions' component={UserAppTransactionList}/> 
       <MatchWhenLoggedIn pattern='/location/:locationId' component={UserAppLocationDetails}/> 
@@ -125,11 +135,16 @@ const App = () => (
       <MatchWhenLoggedIn pattern='/admin/users' component={UserAppAdminAdminUsersList}/> 
       <MatchWhenLoggedIn pattern='/admin/transactions' component={AdminAppTransactionList}/> 
 
+      <MatchWhenLoggedIn pattern='/admin/AdminTools' component={UserAppAdminAdminTools}/> 
+
+
       <Miss component={NoMatch}/>
     </div>
   </Router>
 )
 
 Meteor.startup(() => {
+  Meteor.subscribe("settings");
+  
   render(<App/>, document.getElementById('root'))
 })

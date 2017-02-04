@@ -1,18 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import { Locations } from '/imports/api/locations.js'; 
+import { Locations, Address2LatLng } from '/imports/api/locations.js'; 
 import { Objects } from '/imports/api/objects.js'; 
 import { Transactions } from '/imports/api/transactions.js'; 
 import '/imports/api/users.js'; 
-
-const log = (msg) => {
-  if(!Meteor.settings||!Meteor.settings.private||!Meteor.settings.private.testdata) { return }
-
-  var testdata = Meteor.settings.private.testdata
-
-  if (testdata.log) {
-    console.log(msg)
-  }
-}
+import { getUserDescription } from '/imports/api/users.js'; 
 
 var testUsers = [
     {name:"admin",email:"admin@commonbike.com",
@@ -141,7 +132,7 @@ var testLocations = [
   }
 ];
 
-var cleanupTestUsers = function() {
+export const cleanupTestUsers = function() {
   _.each(testUsers, function (userData) {
     var hithere=Accounts.findUserByEmail(userData.email);
     if(hithere) {
@@ -162,7 +153,7 @@ var cleanupTestUsers = function() {
   });
 }
 
-var cleanupTestData = function() { 
+export const cleanupTestData = function() { 
   _.each(testLocations, function (locationData) {
     var hereitis=Locations.findOne({title: locationData.title});
     if(hereitis) {
@@ -191,9 +182,7 @@ const GetRandomAvatar = () => {
   return avatar_url
 }
 
-var checkTestUsers = function() {
-    log('checking default users');
-
+export const checkTestUsers = function() {
     _.each(testUsers, function (userData) {
       var id;
       
@@ -214,31 +203,16 @@ var checkTestUsers = function() {
 
       // email verification
       Meteor.users.update({_id: id}, {$set:{'emails.0.verified': true, 'profile.active':true}});
-      log('added test user ' + userData.name);
       Meteor.call('transactions.registerUser', id);
     }
 
     _.each(userData.roles, function (role) {
         if (!Roles.userIsInRole(id, [role])) {
-          log('adding user ' + userData.name + ' to role ' + role);
           Roles.addUsersToRoles(id, [role]);
         }
       });
     });    
 }
-
-const Address2LatLng = (address) => {
-  if (!address) {
-    return ''
-  }
-
-  const url = 'http://maps.google.com/maps/api/geocode/json?address=' + encodeURI(address)
-  const response = HTTP.get(url)
-  const obj = JSON.parse(response.content)
-  const location = obj.results[0].geometry.location
-  return [location.lat, location.lng]
-}
-
 
 // supported locktypes 
 // 'plainkey' - ask for key at the attendant
@@ -276,16 +250,13 @@ var createLock = function(locktype, locksettings,object) {
   return lockInfo;
 }
 
-var checkTestLocations = function() {
-  log('checking default locations');
-
+export const checkTestLocations = function() {
   _.each(testLocations, function (locationData) {
     var locationId;
     
     var hereitis=Locations.findOne({title: locationData.title});
     if(hereitis) {
       locationId = hereitis._id;
-      //  log('check existing location:' + locationData.title);
     } else { 
       if(!locationData.lat_lng) {
         locationData.lat_lng=Address2LatLng(locationData.address);
@@ -298,7 +269,6 @@ var checkTestLocations = function() {
         lat_lng: locationData.lat_lng,
         imageUrl: locationData.imageUrl,
       });
-      // log('add new location:' + locationData.title + ' id: ' + locationId);
     }
 
     var firstproviderid = null;
@@ -310,7 +280,6 @@ var checkTestLocations = function() {
           firstprovidermail=hithere.emails[0].address;
         }
 
-        log('adding provider ' + provider + ' to ' + locationData.title);
         Meteor.users.update({_id: hithere._id}, {$addToSet: {'profile.provider_locations': locationId}} );
       }
     });
@@ -349,28 +318,44 @@ var checkTestLocations = function() {
       }
     });
   });
-};  
+};
 
-/* Use settings.json if you want to generate / check testdata when 
-   the application starts 
+Meteor.methods({
+  'testdata.cleanupTestUsers'(data) {
+    // Make sure the user is logged in
+    if (!Meteor.userId||!Roles.userIsInRole( this.userId, 'admin' )) throw new Meteor.Error('not-authorized');
 
-   testdata.cleanupusers -> remove all testusers
-   testdata.cleanupother -> remove all other testdata
-   testdata.insert -> inserts / updates testdata
+    cleanupTestUsers();    
 
+    var description = "Testgebruikers verwijderd door " + getUserDescription(Meteor.user());
+    Meteor.call('transactions.addTransaction', 'ADMIN_CLEANUP_TESTUSERS', description, this.userid, null, null, null);    
 
-*/
-Meteor.startup(() => {
-  if(Meteor.isProduction) { return }
+  },
+  'testdata.cleanupTestData'(data) {
+    // Make sure the user is logged in
+    if (!Meteor.userId||!Roles.userIsInRole( this.userId, 'admin' )) throw new Meteor.Error('not-authorized');
 
-  if(!Meteor.settings||!Meteor.settings.private||!Meteor.settings.private.testdata) { return }
+    cleanupTestData();    
 
-  var testdata = Meteor.settings.private.testdata
+    var description = "Testdata verwijderd door " + getUserDescription(Meteor.user());
+    Meteor.call('transactions.addTransaction', 'ADMIN_CLEANUP_TESTUSERS', description, this.userid, null, null, null);    
+  },
+  'testdata.checkTestUsers'(data) {
+    // Make sure the user is logged in
+    if (!Meteor.userId||!Roles.userIsInRole( this.userId, 'admin' )) throw new Meteor.Error('not-authorized');
 
-  if (testdata.cleanupusers) { cleanupTestUsers(); }
-  if (testdata.cleanupother) { cleanupTestData(); }
-  if (testdata.insert) {
-    checkTestUsers()
-    checkTestLocations()
+    checkTestUsers();
+
+    var description = "Testgebruikers toegevoegd door " + getUserDescription(Meteor.user());
+    Meteor.call('transactions.addTransaction', 'ADMIN_CLEANUP_TESTUSERS', description, this.userid, null, null, null);    
+  },
+  'testdata.checkTestLocations'(data) {
+    // Make sure the user is logged in
+    if (!Meteor.userId||!Roles.userIsInRole( this.userId, 'admin' )) throw new Meteor.Error('not-authorized');
+
+    checkTestLocations();
+
+    var description = "Testdata toegevoegd door " + getUserDescription(Meteor.user());
+    Meteor.call('transactions.addTransaction', 'ADMIN_CLEANUP_TESTUSERS', description, this.userid, null, null, null);    
   }
-})
+});

@@ -6,7 +6,9 @@ import { getUserDescription } from '/imports/api/users.js';
 
 export const Locations = new Mongo.Collection('locations');
 
-LocationsSchema = new SimpleSchema({
+// MB: GPS coordinates are always stored as array. Empty array means not set 
+// (needed for schema validation)
+export const LocationsSchema = new SimpleSchema({
   title: {
     type: String,
     label: "Title",
@@ -24,9 +26,14 @@ LocationsSchema = new SimpleSchema({
     max: 200
   },
   lat_lng: {
-    type: [Number],
+    type:   Array,
     label: "GPS location",
-    max: 2
+    maxCount: 2
+  },
+  'lat_lng.$': {
+    type: Number,
+    decimal: true,
+    optional: true
   },
   imageUrl: {
     type: String,
@@ -57,6 +64,18 @@ if (Meteor.isServer) {
       }
     }
   });
+}
+
+export const Address2LatLng = (address) => {
+  if (!address) {
+    return ''
+  }
+
+  const url = 'http://maps.google.com/maps/api/geocode/json?address=' + encodeURI(address)
+  const response = HTTP.get(url)
+  const obj = JSON.parse(response.content)
+  const location = obj.results[0].geometry.location
+  return [location.lat, location.lng]
 }
 
 // The methods below operate on Meteor.users and use Accounts, so they should not be 
@@ -103,6 +122,16 @@ if(Meteor.isServer) {
         title: strippedTitle,
         imageUrl: data.imageUrl
       }});
+    },
+    'locations.applychanges'(_id, changes) {
+
+      // Make sure the user is logged in
+      if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
+
+      var context =  LocationsSchema.newContext();
+      if(context.validate({ $set: changes}, {modifier: true} )) {
+        Locations.update(_id, {$set : changes} );
+      };
     },
     'locations.remove'(_id){
       // remove this location from the 'profile.provider_locations' list for all users 

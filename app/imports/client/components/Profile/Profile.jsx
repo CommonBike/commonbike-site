@@ -17,6 +17,10 @@ class Profile extends Component {
      this.context.history.push('/locations') 
   }
 
+  newreservationMap() { 
+    this.context.history.push('/map') 
+  }
+
   reservations() {
     this.context.history.push('/objects') 
   }
@@ -122,6 +126,8 @@ class Profile extends Component {
           </p>
 
           <RaisedButton onClick={this.newreservation.bind(this)}>NIEUWE RESERVERING</RaisedButton>
+
+          <RaisedButton onClick={this.newreservationMap.bind(this)}>ZOEK OP KAART</RaisedButton>
 
           <RaisedButton onClick={this.reservations.bind(this)}>MIJN RESERVERINGEN</RaisedButton>
 

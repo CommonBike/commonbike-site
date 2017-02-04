@@ -49,7 +49,7 @@ ObjectDetails.defaultProps = {
 export default createContainer((props) => {
 
   // Subscribe to models
-  Meteor.subscribe('locations');
+  Meteor.subscribe('locations', props.isEditable);
   Meteor.subscribe('objects');
 
   // Get object (bike) information

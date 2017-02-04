@@ -24,6 +24,11 @@ class CheckInOutProcessBase extends Component {
     Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), this.props.object.locationId, newState, user);
   }
 
+  openLock() {
+    // var userDescription = getUserDescription(Meteor.user());
+    // console.log('lock opened on bike ' +  this.props.object._id + ' by user ' + userDescription)
+  }
+
   setObjectAvailable() {
     var newState = 'available'
     Meteor.call('objects.setState', this.props.object._id, null, this.props.object.locationId, newState, '');
@@ -37,14 +42,14 @@ class CheckInOutProcessBase extends Component {
 
   renderButtonsForProvider() {
       if(this.props.object.state.state=='reserved') {
-        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Annuleer reservering!</Button>);
+        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Annuleer Reservering</Button>);
       } else if(this.props.object.state.state=='inuse') {
-        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Annuleer verhuur!</Button>);
+        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Annuleer Verhuur</Button>);
       } else if(this.props.object.state.state=='outoforder') {
-        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="huge">Maak beschikbaar!</Button>);
+        return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Maak Beschikbaar</Button>);
       } 
 
-      return (<Button onClick={() => this.setObjectOutOfOrder() } buttonStyle="huge">Maak niet beschikbaar!</Button>);
+      return (<Button onClick={() => this.setObjectOutOfOrder() } buttonStyle="hugeSmallerFont">Maak Niet Beschikbaar</Button>);
   }
 
   renderButtonsForUser() {

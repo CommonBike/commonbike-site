@@ -4,6 +4,7 @@ import R from 'ramda';
 import {propTypes} from 'react-router';
 
 // Import components
+import EditObject from '../../containers/EditObject/EditObject';
 import RaisedButton from '../RaisedButton/RaisedButton.jsx'
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
 import Button from '../Button/Button';
@@ -56,6 +57,11 @@ class ObjectDetails extends Component {
 
         <ObjectBlock
           item={this.props.object} />
+
+        { this.props.isEditable? 
+          <EditObject objectId={this.props.object._id} />
+          :null }
+
 
         { this.renderCheckInOutProcess() }
         

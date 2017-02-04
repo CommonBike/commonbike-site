@@ -3,6 +3,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
 
 // Import components
+import EditLocation from '../../containers/EditLocation/EditLocation';
 import RaisedButton from '../RaisedButton/RaisedButton.jsx'
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
 import ManageUserlist from '../ManageUserlist/ManageUserlist';
@@ -29,6 +30,11 @@ class LocationDetails extends Component {
         <center>
           <MapSummary item={this.props.location} width={400} height={300}/>
         </center>
+
+
+        { this.props.isEditable? 
+          <EditLocation locationId={this.props.location._id} />
+          :null }
 
         { this.props.isEditable? 
           <ManageUserlist methodsBaseName='locationprovider'
