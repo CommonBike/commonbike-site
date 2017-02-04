@@ -9,7 +9,7 @@ do
   branch=$(git rev-parse --symbolic --abbrev-ref $refname)
   if [ "$deployingBranch" == "$branch" ]; then
     #docker img name
-    imageName='commonbike-rc'
+    imageName='commonbikeReleaseCandidate'
 
     #docker container name
     containerName="$imageName"
