@@ -6,15 +6,15 @@ services:
     volumes:
       - /usr/share/commonbike_mdb:/data/db
     ports:
-      - localhost:4001:27017
+      - localhost:4011:27017
 
   app:
     restart: always
-    image: commonbike:latest
+    image: commonbikerc:latest
     environment:
       - 'ROOT_URL:"https://common.bike"'
       - 'METEOR_SETTINGS:{"mapbox":{"style":"mapbox.streets","accessToken":"pk.PRIVATEKEY"},"private":{"testdata":{"cleanupusers":false,"cleanupother":false,"insert":false,"log":false},"slack":{"notify":true,"address":"https://hooks.slack.com/services/comm/on/non","channel":"commonbike-bot","name":"commonbike-bot"}}}'
     links:
       - db:db
     ports:
-      - localhost:4000:80
+      - localhost:4010:80
