@@ -1,1 +1,4 @@
-node_modules/
+.meteor
+mrt_build
+node_modules
+npm-debug.log

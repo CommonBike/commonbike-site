@@ -1,37 +1,23 @@
 # CommonBike App
 
-We are on a mission to create open source locks and bike sharing.
+We are on a mission to create open source bike sharing.
 
-This is the (web) app of CommonBike. With this app you can open locks that are connected to the free and open CommonBike lock system.
+This repository exists of the Meteor app for CommonBike.
 
-- [Project website](http://common.bike)
+## How to use?
+
+- `cd path-of-this-git-repository/app`
+- `meteor --settings settings.json`
+
+Server is now running at [localhost:3000](http://localhost:3000)
+
+> Do you use the CommonBike app for the first time? See [app/DEVELOP.md](app/DEVELOP.md) for useful information.
+
+## Participate!
+
+Join us on [Slack](http://slack.common.bike) and other communication channels. (&raquo; [How to participate](https://github.com/CommonBike/wiki/wiki/How-to-participate)).
+
+## Demo & Documentation
+
+- [Demo](https://common.bike)
 - [Documentation](https://github.com/CommonBike/commonbike-documentation/wiki)
-
-## Contents
-
-- [Development](#1-development)
-- [Deployment](#2-deployment)
-- [Screenshots](#3-screenshots)
-- [Future plans](#4-future-plans)
-
-## 1. Development
-
-### Running the app
-
-1. `cd folderOfYourProject`
-2. `meteor`
-3. Go to localhost:3000 to see the app running
-
-## 2. Deployment
-
-See [DEPLOY.md](DEPLOY.md) for information about deployment on the server.
-
-## 3. Screenshots
-
-Current state:
-
-![img](http://bartroorda.nl/upimg/201512-jkd897j3/s-20160819-230428.png)
-
-## 4. Future plans
-
-To be continued.
