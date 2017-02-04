@@ -17,4 +17,4 @@ services:
     links:
       - db:db
     ports:
-      - localhost:4000:80
+      - localhost:4010:80
