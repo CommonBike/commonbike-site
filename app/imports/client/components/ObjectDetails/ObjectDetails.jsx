@@ -24,27 +24,22 @@ class ObjectDetails extends Component {
     if( ! this.props.object.lock ) return <div />;
 
     var lockType = this.props.object.lock.type;
-    if(lockType=='open-bikelocker') {
-      return (
-        <CheckInOutProcessOpenBikelocker
+
+    if(lockType=='open-bikelocker')
+      return <CheckInOutProcessOpenBikelocker
           object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
-          );
-    } else if(lockType=='open-keylocker') {
-      return (
-        <CheckInOutProcessOpenKeylocker 
+
+    else if(lockType=='open-keylocker')
+      return <CheckInOutProcessOpenKeylocker 
           object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
-          );
-    } else if(lockType=='axa-elock') {
-      return (
-        <CheckInOutProcessAxaELock 
+    
+    else if(lockType=='axa-elock')
+      return <CheckInOutProcessAxaELock 
           object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
-        );
-    } else {
-      return (
-        <CheckInOutProcessPlainKey 
+    
+    else
+      return <CheckInOutProcessPlainKey 
           object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
-        );
-    }
   }
 
   render() {
