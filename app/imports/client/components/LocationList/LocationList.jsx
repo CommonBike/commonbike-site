@@ -36,11 +36,11 @@ class LocationList extends Component {
   renderAdminLinks() {
     if (location.pathname.startsWith('/admin/')) {
       return (
-        <Link to='/locations'>Locations</Link>
+        <Link to='/locations'>Bekijk de pagina als gebruiker</Link>
       )
     } else {
       return (
-        <Link to='/admin/locations'>Admin Locations</Link>
+        <Link to='/admin/locations'>Bewerk deze pagina</Link>
       )
     }
   }

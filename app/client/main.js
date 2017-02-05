@@ -137,7 +137,6 @@ const App = () => (
 
       <MatchWhenLoggedIn pattern='/admin/AdminTools' component={UserAppAdminAdminTools}/> 
 
-
       <Miss component={NoMatch}/>
     </div>
   </Router>

@@ -36,8 +36,8 @@ class LocationsMapComponent extends Component {
 
     var locationMarkersGroup = L.featureGroup().addTo(map);    
     locationMarkersGroup.on("click", function (event) {
-        var clickedMarker = event.layer;
-        this.context.history.push('/location/' + clickedMarker.locationId);
+      var clickedMarker = event.layer;
+      this.context.history.push('/location/' + clickedMarker.locationId);
     }.bind(this));      
 
     var trackingMarkersGroup = L.featureGroup().addTo(map);   // no tracking marker yet!
@@ -46,21 +46,21 @@ class LocationsMapComponent extends Component {
       states: [
         {
           stateName: 'verborgen',
-          icon: '<img src="'+ s.images.veiligstallengrijs + '" style="width:32px;height:32px" />',
+          icon: '<img src="' + s.images.veiligstallengrijs + '" style="width:32px;height:32px" />',
           title: 'toon stallingen',
           onClick: this.toggleParking.bind(this)
         },
         {
           stateName: 'zichtbaar',
           title: 'verberg stallingen',
-          icon: '<img src="'+ s.images.veiligstallen + '" style="width:32px;height:32px" />',
+          icon: '<img src="' + s.images.veiligstallen + '" style="width:32px;height:32px" />',
           onClick: this.toggleParking.bind(this)
         },         
       ]
     };
 
     // Button is not added to map yet: only when enabled
-    var parkingButton = L.easyButton(parkingstates).state(this.state.showParkingMarkers?'zichtbaar':'verborgen');        
+    var parkingButton = L.easyButton(parkingstates).state(this.state.showParkingMarkers ? 'zichtbaar' : 'verborgen');
 
     var parkingMarkersGroup = L.geoJSON(null , {pointToLayer: this.parkingPointToLayer.bind(this), filter: this.parkingFilterLayers.bind(this)} ).addTo(map);   // no tracking marker yet!
 

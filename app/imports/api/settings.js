@@ -121,11 +121,11 @@ if (Meteor.isServer) {
 	Meteor.methods({
 	  'settings.check'() {
 	    // Make sure this runs serverside only
-	    if (! Meteor.isServer) throw new Meteor.Error('not-authorized');
+	    if ( ! Meteor.isServer) throw new Meteor.Error('not-authorized');
 
 	    // for now there is only one settings profile
-		var settings = Settings.findOne({profileName: defaultProfileName});
-	    if(!settings) {
+		  var settings = Settings.findOne({profileName: defaultProfileName});
+	    if( ! settings) {
 		    var settingsId = Settings.insert({});
 	    	settings = { 
 	    		_id: settingsId,
@@ -136,16 +136,16 @@ if (Meteor.isServer) {
 				  userId: '<fill in mapbox access token here>'
 				},
 	    		slack: {
-				  notify:false,
-				  address: '<fill in Webhook URL here, channel and name below, set notify to true>',
-				  channel: 'commonbike-activity',
-				  name: 'commonbike-bot',
-				  icon_emoji: ':ghost:'
+  				  notify:false,
+  				  address: '<fill in Webhook URL here, channel and name below, set notify to true>',
+  				  channel: 'commonbike-activity',
+  				  name: 'commonbike-bot',
+  				  icon_emoji: ':ghost:'
 	    		},
 	    		veiligstallen: {
-				  visible:false,
-				  kmlURL: '<fill in Webhook URL here, channel and name below, set notify to true>',
-				  kmlLastDownloadTimestamp: 0
+  				  visible:false,
+  				  kmlURL: '<fill in Webhook URL here, channel and name below, set notify to true>',
+  				  kmlLastDownloadTimestamp: 0
 	    		}
 	    	}
 
