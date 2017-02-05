@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import Radium, { StyleRoot } from 'radium';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import {propTypes, Link} from 'react-router';
 
 // Import components
 import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
@@ -33,12 +33,12 @@ class Landing extends Component {
 
         <div style={s.bottomWrapper}>
           <p>
-            <a style={s.smallText} href="/join">euhm, maar hoe werkt dat dan?</a>
+            <Link to="/join" style={s.smallText}>euhm, maar hoe werkt dat dan?</Link>
           </p>
 
-			<RaisedButton onClick={this.login.bind(this)}>
-				{ this.props.currentUser ? "Waar kan ik fietsen?" : "Meld je aan voor de pilot" }
-			</RaisedButton>
+    			<RaisedButton onClick={this.login.bind(this)}>
+    				{ this.props.currentUser ? "Waar kan ik fietsen?" : "Meld je aan voor de pilot" }
+    			</RaisedButton>
         </div>
 
       </div>
