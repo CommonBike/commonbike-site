@@ -15,9 +15,24 @@ class ObjectList extends Component {
     super(props);
   }
 
+  renderAdminLinks() {
+    id = 1;
+    if (location.pathname.startsWith('/admin/')) {
+      return (
+        <Link to={'/location/' + id}>Bekijk de pagina als gebruiker</Link>
+      )
+    } else {
+      return (
+        <Link to={'/admin/location/' + id}>Bewerk deze pagina</Link>
+      )
+    }
+  }
+
   render() {
     return (
       <div style={s.base}>
+
+        {this.renderAdminLinks()}
 
         <p style={s.intro}>
           {this.props.title}<br/>
