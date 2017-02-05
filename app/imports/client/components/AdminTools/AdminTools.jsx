@@ -4,7 +4,7 @@ import R from 'ramda';
 import {propTypes} from 'react-router';
 
 // Import components
-import RaisedButton from '../RaisedButton/RaisedButton';
+import RaisedButton from '../Button/RaisedButton';
 import { getUserDescription } from '/imports/api/users.js'; 
 
 

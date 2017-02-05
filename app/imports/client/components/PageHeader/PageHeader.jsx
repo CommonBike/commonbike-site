@@ -7,7 +7,8 @@ import R from 'ramda';
 
 // Import components
 import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
-import RaisedButton from '../RaisedButton/RaisedButton.jsx'
+import BackButton from '../Button/BackButton.jsx'
+import RaisedButton from '../Button/RaisedButton.jsx'
 import Avatar from '../Avatar/Avatar.jsx'
 import {propTypes} from 'react-router';
 
@@ -25,7 +26,7 @@ class PageHeader extends Component {
     return (
       <div style={s.base}>
         <div style={s.flex}>
-          <a style={s.arrowBack} onClick={() => history.back()}>Back</a>
+          <BackButton />
           <a href="/" style={{display: 'flex'}}><CommonBikeLogo type="common" style={s.logo} /></a>
           { Meteor.userId() ? <a onClick={this.gotoProfile.bind(this)}><Avatar /></a> : <div /> }
         </div>
@@ -44,17 +45,6 @@ var s = {
   flex: {
     display: 'flex',
     justifyContent: 'space-between',
-  },
-  arrowBack: {
-    backgroundImage: 'url("/files/PageHeader/arrow.svg")',
-    height: '36px',
-    width: '36px',
-    backgroundPosition: 'center center',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain',
-    textIndent: '-9999px',
-    cursor: 'pointer',
-    alignSelf: 'center',
   },
   logo: {
     width: '174px',

@@ -164,8 +164,13 @@ Meteor.methods({
       return;
     }
 
+  	// Strip HTML Tags
+    data.title = data.title.replace(/<.*?>/g, " ").replace(/\s+/g, " ").trim();
+
+    // Insert object
     var objectId = Objects.insert(data);
 
+    // Add message to Slack: 'bike added!'
     var object = Objects.findOne(objectId, {title:1, locationId:1});
     var description = getUserDescription(Meteor.user()) + ' heeft een nieuwe fiets ' + object.title + ' toegevoegd';
     var slackmessage = 'Weer een nieuwe fiets toegevoegd'
@@ -176,6 +181,7 @@ Meteor.methods({
     }
     Meteor.call('transactions.addTransaction', 'ADD_OBJECT', description, Meteor.userId(), object.locationId, objectId, data);    
     Meteor.call('slack.sendnotification_commonbike',  slackmessage);
+
   },
   'objects.update'(objectId, data) {
 
@@ -183,10 +189,12 @@ Meteor.methods({
     if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
 
     // check(data, ObjectsSchema);
+	
+	  var strippedTitle = data.title.replace(/<.*?>/g, " ").replace(/\s+/g, " ").trim();	
 
     Objects.update(objectId, {$set:{
       locationId: data.locationId,
-      title: data.title,
+      title: strippedTitle,
       description: data.description,
       imageUrl: data.imageUrl
     }});

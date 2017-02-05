@@ -7,7 +7,7 @@ import {propTypes} from 'react-router';
 
 // Import components
 import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
-import RaisedButton from '../RaisedButton/RaisedButton.jsx';
+import RaisedButton from '../Button/RaisedButton.jsx';
 
 class Landing extends Component {
 

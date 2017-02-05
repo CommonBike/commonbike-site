@@ -1,4 +1,4 @@
-# CommonBike App
+# CommonBike App 1.0.0
 
 We are on a mission to create open source bike sharing.
 

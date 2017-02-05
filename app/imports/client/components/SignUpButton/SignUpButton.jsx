@@ -4,7 +4,7 @@ import Radium from 'radium';
 import {propTypes} from 'react-router';
 
 // Import components
-import RaisedButton from '../RaisedButton/RaisedButton.jsx'
+import RaisedButton from '../Button/RaisedButton.jsx'
 
 class SignUpButton extends Component {
 

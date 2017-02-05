@@ -4,7 +4,7 @@ import R from 'ramda';
 
 // Import components
 import EditLocation from '../../containers/EditLocation/EditLocation';
-import RaisedButton from '../RaisedButton/RaisedButton.jsx'
+import RaisedButton from '../Button/RaisedButton.jsx'
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
 import ManageUserlist from '../ManageUserlist/ManageUserlist';
 import MapSummary from '../../MapSummary'

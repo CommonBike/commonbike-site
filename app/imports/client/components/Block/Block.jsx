@@ -8,7 +8,7 @@ import R from 'ramda';
 import { Locations } from '/imports/api/locations.js'; 
 
 // Import components
-import RaisedButton from '../RaisedButton/RaisedButton.jsx';
+import RaisedButton from '../Button/RaisedButton.jsx';
 
 // helper functions
 MillisectoHHMM = function (ms) {
