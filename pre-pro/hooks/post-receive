@@ -1,5 +1,5 @@
 #!/bin/bash
-deployDir="../deploy"
+deployDir="../deploy-rc"
 buildConfig="--rm=true"
 runConfig="-p 49153:3000"
 deployingBranch="develop"
@@ -9,7 +9,7 @@ do
   branch=$(git rev-parse --symbolic --abbrev-ref $refname)
   if [ "$deployingBranch" == "$branch" ]; then
     #docker img name
-    imageName='commonbike-rc'
+    imageName='commonbikerc'
 
     #docker container name
     containerName="$imageName"

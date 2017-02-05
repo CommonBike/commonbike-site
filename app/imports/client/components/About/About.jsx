@@ -21,6 +21,38 @@ class Join extends Component {
     return (
       <div style={s.base}>
 
+        <h1>About CommonBike</h1>
+
+        <h2>The project and app</h2>
+
+        <p>...</p>
+
+        <h2>The community</h2>
+
+        <p>
+          CommonBike is an open source project made for and by anyone.
+        </p>
+
+        <p>
+          On <a href="http://slack.common.bike" target="_blank">Slack</a>, Trello (ask on Slack) and <a href="https://github.com/CommonBike/commonbike-site" target="_blank">GitHub</a> you can see all people involved. Slack is for a broad community that want to stay up to date. Trello is for people who'd like to be involved in the 'business development' project. Github is for coders, designers and testers.
+        </p>
+
+        <p>
+          <b>Owners of things</b>
+        </p>
+
+        <p>
+          Right now the domain and hosting of common.bike are payed by Bart Roorda and managed by Bart Roorda and Peter Willemsen.
+        </p>
+
+        <p>
+          The hosting and domain of commonbike.com are payed by Ronald Haverman and managed by Ronald Haverman and Bart Roorda.
+        </p>
+
+        <p>
+          In the future we would like to use a namecoin or blockstack domain only, combined with a distributed VPS.
+        </p>
+
         <h2>Give kuddo's</h2>
 
         <p>Do you like this app? Want to support the developers?</p>
