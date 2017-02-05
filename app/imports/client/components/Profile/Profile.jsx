@@ -6,7 +6,7 @@ import {propTypes} from 'react-router';
 // Import components
 import RaisedButton from '../RaisedButton/RaisedButton';
 import '../../../api/users.js'; 
-
+import EditSettings from '/imports/client/containers/EditSettings/EditSettings.jsx'
 
 class Profile extends Component {
   constructor(props) {
@@ -107,6 +107,14 @@ class Profile extends Component {
     }
   }
 
+  getEditSystemSettings() {
+    if(Roles.userIsInRole( Meteor.userId(), 'admin' )) {
+      return (<EditSettings title="SYSTEEMINSTELLINGEN"/> )
+    } else {
+      return ( <div /> )
+    }
+  }
+
   render() {
     self = this;
 
@@ -138,6 +146,8 @@ class Profile extends Component {
           { this.getMyRentalsButton() }
 
           { this.getManageUsersButton() }
+
+          { this.getEditSystemSettings() }
 
           <RaisedButton onClick={this.logout.bind(this)}>LOG UIT</RaisedButton>
         </div>

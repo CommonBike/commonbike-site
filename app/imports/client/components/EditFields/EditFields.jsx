@@ -16,7 +16,25 @@ class EditFields extends Component {
 
   apply() {
     if(this.props.apply&&(Object.keys(this.state.changes).length > 0)) {
-      if(this.props.apply(this.state.changes)) {
+      // for some types (boolean, ...) the control value needs to be converted
+      // to pass the schema check
+      var changes = this.state.changes;
+      Object.keys(changes).forEach((fieldname) => {
+        var itemidx = this.props.fields.findIndex((element)=>{return (element.fieldname==fieldname)});
+        if(itemidx!=-1) {
+          if(this.props.fields[itemidx].controltype=='yesno') {
+            // yesno field: convert back to boolean
+            changes[fieldname] = (changes[fieldname]=='true');
+          } else if(this.props.fields[itemidx].controltype=='number') {
+            // number field: convert back to number
+            changes[fieldname] = Number(changes[fieldname]);
+          }
+        } else {
+          console.log('field not found!');  // should not happen!
+        }
+      });
+
+      if(this.props.apply(changes)) {
         this.setState( {changes: { }});
       }
     }
@@ -39,22 +57,31 @@ class EditFields extends Component {
 
   getOption(option, field) {
     return (
-       <option defaultValue={field.defaultValue} key={option._id} value={option._id}>{option.title}</option>
+       <option key={option._id} value={option._id}>{option.title}</option>
     );
   }
 
-  getField(field) {
+  getField(field, key) {
     switch (field.controltype) {
       case 'header':
         return (
-          <div style={s.header}>{field.label}</div>
+          <div style={s.header} key={key}>{field.label}</div>
         );
 
         break;
       case 'text':
         return (
-          <div style={s.editline} key={'div_'+field.fieldname}>
+          <div style={s.editline} key={key}>
             <input style={s.control} type='INPUT' key={field.fieldname} name={field.fieldname} defaultValue={field.fieldvalue} onChange={this.onFieldChange.bind(this)} />
+            <label style={s.label} key={'label_'+field.fieldname} htmlFor={field.fieldname}>{field.label}</label>
+          </div>
+        );
+
+        break;
+      case 'number':
+        return (
+          <div style={s.editline} key={key}>
+            <input style={s.control} type='INPUT' key={field.fieldname} name={field.fieldname} defaultValue={field.fieldvalue.toString()} onChange={this.onFieldChange.bind(this)} />
             <label style={s.label} key={'label_'+field.fieldname} htmlFor={field.fieldname}>{field.label}</label>
           </div>
         );
@@ -62,9 +89,21 @@ class EditFields extends Component {
         break;
       case 'combo':
         return (
-          <div style={s.editline} key={'div_'+field.fieldname}>
+          <div style={s.editline} key={key}>
             <select style={s.control} key={field.fieldname} name={field.fieldname} defaultValue={field.fieldvalue} onChange={this.onFieldChange.bind(this)} >
                 { R.map((option) => this.getOption(option, field) , field.options) }
+            </select>
+            <label style={s.label} key={'label_'+field.fieldname} htmlFor={field.fieldname}>{field.label}</label>
+          </div>
+        );
+
+        break;
+      case 'yesno':
+        return (
+          <div style={s.editline} key={key}>
+            <select style={s.control} key={field.fieldname} name={field.fieldname} defaultValue={field.fieldvalue.toString()} onChange={this.onFieldChange.bind(this)} >
+                <option key={'key.option.true'} value={true}>Ja</option>
+                <option key={'key.option.false'} value={false}>Nee</option>
             </select>
             <label style={s.label} key={'label_'+field.fieldname} htmlFor={field.fieldname}>{field.label}</label>
           </div>
@@ -87,7 +126,8 @@ class EditFields extends Component {
 
         { this.state.showDetails?
           <form style={ s.editform } ref="theforminquestion">
-            { R.map((field) => this.getField(field) , this.props.fields) }
+            { R.map((field) => this.getField(field, field.label+'.'+field.fieldname||'control') , this.props.fields) // || 'control' -> because label has no fieldname
+            }
             <div style={s.confirmline}>
                 <div />
                 <img src={s.images.yes} style={s.icon} onClick={this.apply.bind(this)} hidden={Object.keys(this.state.changes).length==0}/>          
@@ -197,7 +237,10 @@ EditFields.propTypes = {
   fields: React.PropTypes.arrayOf(
             React.PropTypes.shape({
               fieldname: React.PropTypes.string,
-              fieldvalue: React.PropTypes.string,
+              fieldvalue: React.PropTypes.oneOfType([
+                React.PropTypes.string,   
+                React.PropTypes.number,
+                React.PropTypes.bool]),
               controltype: React.PropTypes.string,
               label: React.PropTypes.string
             })

@@ -208,7 +208,21 @@ Meteor.methods({
 
     var context =  ObjectsSchema.newContext();
     if(context.validate({ $set: changes}, {modifier: true} )) {
+      var object = Objects.findOne(_id);
+
+      var logchanges = {};
+      Object.keys(changes).forEach((fieldname) => { 
+        // convert dot notation to actual value
+        val = new Function('_', 'return _.' + fieldname)(object);
+        logchanges[fieldname] = { new: changes[fieldname], 
+                                  prev: val||'undefined' };
+      });
+
+      // apply changes
       Objects.update(_id, {$set : changes} );
+
+      var description = getUserDescription(Meteor.user()) + ' heeft de instellingen van object ' + object.title + ' gewijzigd';
+      Meteor.call('transactions.addTransaction', 'CHANGESETTINGS_OBJECT', description, Meteor.userId(), null, _id, JSON.stringify(logchanges));    
     } else {
       console.log('unable to update object with id ' + _id);
       console.log(context);

@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo';
+import { getUserDescription } from '/imports/api/users.js'; 
 
 export const Settings = new Mongo.Collection('settings');
 
 const latestSettingsVersion = 1;		// FUTURE: for automatic update of settings later on
-const defaultProfileName = 'default';   // FUTURE: multiple profiles
+export const defaultProfileName = 'default';   // FUTURE: multiple profiles
 
 // set fields/objects that are also visible to the client here
 const publicFieldset = {profileName:1, mapbox:1, veiligstallen:1};
@@ -15,7 +16,11 @@ if (Meteor.isServer) {
 			profileName=defaultProfileName
 		}
 
-		return Settings.find({profileName: profileName}, {fields: publicFieldset});
+		if(Roles.userIsInRole( this.userId, 'admin' )) {
+			return Settings.find({profileName: profileName});
+		} else {
+			return Settings.find({profileName: profileName}, {fields: publicFieldset});
+		}
 	});
 
 	// use this function serverside to get all settings
@@ -124,7 +129,7 @@ if (Meteor.isServer) {
 	    if (! Meteor.isServer) throw new Meteor.Error('not-authorized');
 
 	    // for now there is only one settings profile
-		var settings = Settings.findOne({profileName: defaultProfileName});
+			var settings = Settings.findOne({profileName: defaultProfileName});
 	    if(!settings) {
 		    var settingsId = Settings.insert({});
 	    	settings = { 
@@ -132,20 +137,20 @@ if (Meteor.isServer) {
 	    		profileName: defaultProfileName,
 	    		version: latestSettingsVersion,
 	    		mapbox: {
-				  style: 'mapbox.streets',
-				  userId: '<fill in mapbox access token here>'
-				},
+					  style: 'mapbox.streets',
+					  userId: '<fill in mapbox access token here>'
+					},
 	    		slack: {
-				  notify:false,
-				  address: '<fill in Webhook URL here, channel and name below, set notify to true>',
-				  channel: 'commonbike-activity',
-				  name: 'commonbike-bot',
-				  icon_emoji: ':ghost:'
+					  notify:false,
+					  address: '<fill in Webhook URL here, channel and name below, set notify to true>',
+					  channel: 'commonbike-activity',
+					  name: 'commonbike-bot',
+					  icon_emoji: ':ghost:'
 	    		},
 	    		veiligstallen: {
-				  visible:false,
-				  kmlURL: '<fill in Webhook URL here, channel and name below, set notify to true>',
-				  kmlLastDownloadTimestamp: 0
+					  visible:false,
+					  kmlURL: '<fill in Webhook URL here, channel and name below, set notify to true>',
+					  kmlLastDownloadTimestamp: 0
 	    		}
 	    	}
 
@@ -157,7 +162,7 @@ if (Meteor.isServer) {
 		      return;
 		    }
 
-			Settings.update(settingsId, settings, {validate: false});    
+				Settings.update(settingsId, settings, {validate: false});    
 
 		    var description = 'Standaard instellingen aangemaakt';
 		    Meteor.call('transactions.addTransaction', 'CREATE_SETTINGS', description, Meteor.userId(), null, null, settings);    
@@ -166,7 +171,7 @@ if (Meteor.isServer) {
 		      check(settings, SettingsSchema);
 		    } catch(ex) {
 		      console.log('data for settings does not match schema: ' + ex.message);
-			  throw new Meteor.Error('invalid-settings');
+			  	throw new Meteor.Error('invalid-settings');
 		    }
 	    }
 	  },
@@ -183,11 +188,34 @@ if (Meteor.isServer) {
 	  	  throw new Meteor.Error('schema-error');
 	    }
 
-		Settings.update(settingsId, settings, {validate: false});    
+			Settings.update(settingsId, settings, {validate: false});    
 
 	    var description = getUserDescription(Meteor.user()) + ' heeft de instellingen van profiel ' + settings.profileName + ' gewijzigd';
 	    Meteor.call('transactions.addTransaction', 'CHANGE_SETTINGS', description, Meteor.userId(), null, null, settings);    
-	  }
+	  },
+	  'settings.applychanges'(_id, changes) {
+		  // Make sure the user is logged in
+		  if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
+
+			var context =  SettingsSchema.newContext();
+			if(context.validate({ $set: changes}, {modifier: true} )) {
+        var oldsettings = Settings.findOne(_id);
+
+        // log original values as well
+        var logchanges = {};
+        Object.keys(changes).forEach((fieldname) => { 
+          // convert dot notation to actual value
+          val = new Function('_', 'return _.' + fieldname)(oldsettings);
+          logchanges[fieldname] = { new: changes[fieldname], 
+          	                        prev: val||'undefined' };
+        });
+
+				Settings.update(_id, {$set : changes} );
+
+        var description = getUserDescription(Meteor.user()) + ' heeft de systeeminstellingen gewijzigd';
+        Meteor.call('transactions.addTransaction', 'CHANGESETTINGS_SYSTEMSETTINGS', description, Meteor.userId(), null, null, JSON.stringify(logchanges));    
+			};
+    },
 	});
 
 	Meteor.startup(() => {
