@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { withRouter } from 'react-router';
 
 // Import components
 import RaisedButton from '../Button/RaisedButton';
@@ -61,6 +61,7 @@ class AdminTools extends Component {
   }
 
   render() {
+    console.log('XXX: AdminTools'); console.log(this.props);
     return (
       <div style={s.base}>
         <div style={s.centerbox}>
@@ -115,10 +116,6 @@ var s = {
   }
 }
 
-AdminTools.contextTypes = {
-  history: propTypes.historyContext
-}
-
 AdminTools.propTypes = {
   locations: PropTypes.array,
   isEditable: PropTypes.any,
@@ -129,12 +126,14 @@ AdminTools.defaultProps = {
   isEditable: false
 }
 
+const AdminToolsWithRouter = withRouter(AdminTools)
+
 export default createContainer((props) => {
   Meteor.subscribe('users');
 
   return {
     currentUser: Meteor.users.findOne()
   };
-}, AdminTools);
+}, AdminToolsWithRouter);
 
 //

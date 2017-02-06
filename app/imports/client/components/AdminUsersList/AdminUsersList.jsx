@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import {propTypes, Link} from 'react-router';
+import { withRouter, Link } from 'react-router';
 
 // Import components
 import UserDetails from '../UserDetails/UserDetails.jsx';
@@ -23,6 +23,7 @@ class AdminUsersList extends Component {
   }
 
   render() {
+    console.log('XXX: AdminUsersList'); console.log(this.props);
     currentuser = Meteor.userId();
     return (
       <div style={s.base}>
@@ -50,10 +51,6 @@ var s = {
   }
 }
 
-AdminUsersList.contextTypes = {
-  history: propTypes.historyContext
-}
-
 AdminUsersList.propTypes = {
   users: PropTypes.any,
   isEditable: PropTypes.any
@@ -64,4 +61,4 @@ AdminUsersList.defaultProps = {
   isEditable: false
 }
 
-export default AdminUsersList;
+export default withRouter(AdminUsersList)

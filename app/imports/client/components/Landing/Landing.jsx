@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import Radium, { StyleRoot } from 'radium';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { withRouter } from 'react-router'
 
 // Import components
 import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
@@ -20,6 +20,7 @@ class Landing extends Component {
   }
 
   render() {
+    console.log('XXX: Landing'); console.log(this.props);
     return (
       <div style={s.base} ref="base">
 
@@ -83,12 +84,10 @@ var s = {
   }
 }
 
-Landing.contextTypes = {
-  history: propTypes.historyContext
-}
+const LandingWithRouter = withRouter(Landing)
 
 export default createContainer((props) => {
   return {
     currentUser: Meteor.user()
   };
-}, Radium(Landing));
+}, Radium(LandingWithRouter));

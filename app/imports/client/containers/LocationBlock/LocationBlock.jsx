@@ -3,7 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import ReactDOM from 'react-dom';
 import Radium from 'radium';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { withRouter } from 'react-router'
 
 // Import models
 import { Locations } from '/imports/api/locations.js'; 
@@ -51,6 +51,7 @@ class LocationBlock extends Component {
   }
 
   render() {
+    console.log('XXX: LocationBlock'); console.log(this.props);
     return (
       <Block
         item={this.props.item}
@@ -101,10 +102,6 @@ var s = {
   }
 }
 
-LocationBlock.contextTypes = {
-  history: propTypes.historyContext
-}
-
 LocationBlock.propTypes = {
   item: PropTypes.object.isRequired,
   isEditable: PropTypes.any,
@@ -116,4 +113,5 @@ LocationBlock.defaultProps = {
   isEditable: false
 }
 
-export default Radium(LocationBlock);
+const LocationBlockWithRouter = withRouter(LocationBlock)
+export default Radium(LocationBlockWithRouter);

@@ -3,7 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import ReactDOM from 'react-dom';
 import Radium from 'radium';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { withRouter } from 'react-router'
 
 // Import models
 import { Objects } from '/imports/api/objects.js'; 
@@ -51,6 +51,7 @@ class ObjectBlock extends Component {
   }
 
   render() {
+    console.log('XXX: ObjectBlock'); console.log(this.props);
     return (
       <Block
         item={this.props.item}
@@ -105,10 +106,6 @@ var s = {
   }
 }
 
-ObjectBlock.contextTypes = {
-  history: propTypes.historyContext
-}
-
 ObjectBlock.propTypes = {
   item: PropTypes.object.isRequired,
   isEditable: PropTypes.any,
@@ -128,4 +125,5 @@ ObjectBlock.defaultProps = {
   isEditable: false
 }
 
-export default Radium(ObjectBlock);
+const ObjectBlockWithRouter = withRouter(ObjectBlock)
+export default Radium(ObjectBlockWithRouter);

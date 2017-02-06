@@ -5,7 +5,7 @@ import { Accounts } from 'meteor/accounts-base';
 import AccountsUIWrapper from '/imports/client/containers/AccountsUIWrapper/AccountsUIWrapper.jsx';
 import ReactSwipe from 'react-swipe';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { withRouter } from 'react-router'
 
 // Import templates
 import SquareButton from '../SquareButton/SquareButton.jsx';
@@ -83,6 +83,7 @@ class Login extends Component {
   }
 
   render() {
+    console.log('XXX: Login'); console.log(this.props);
     const {currentUser} = this.props
     // console.log(currentUser)
     const active = currentUser && currentUser.profile && currentUser.profile.active
@@ -123,12 +124,10 @@ var s = {
   }
 }
 
-Login.contextTypes = {
-  history: propTypes.historyContext
-}
+const LoginWithRouter = withRouter(Login)
 
 export default createContainer((props) => {
   return {
     currentUser: Meteor.user()
   };
-}, Login);
+}, LoginWithRouter);

@@ -4,7 +4,7 @@ import ContentEditable from 'react-contenteditable';
 import ReactDOM from 'react-dom';
 import Radium from 'radium';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { withRouter } from 'react-router';
 
 // Import components
 import EditFields from '../../components/EditFields/EditFields';
@@ -81,6 +81,7 @@ class EditObject extends Component {
   }
 
   render() {
+    console.log('XXX: EditObject'); console.log(this.props);
   	if(!this.props.object) {
     	return ( <div />);
   	}
@@ -190,10 +191,6 @@ var s = {
   },
 }
 
-EditObject.contextTypes = {
-  history: propTypes.historyContext
-}
-
 EditObject.propTypes = {
   objectId: PropTypes.string.isRequired
 };
@@ -201,6 +198,8 @@ EditObject.propTypes = {
 EditObject.defaultProps = {
   objectId: ''
 }
+
+const EditObjectWithRouter = withRouter(EditObject)
 
 export default createContainer((props) => {
   // Subscribe to models
@@ -214,4 +213,4 @@ export default createContainer((props) => {
     object: Objects.find({_id: props.objectId}).fetch()[0],
   };
 
-}, EditObject);
+}, EditObjectWithRouter);

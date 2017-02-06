@@ -3,7 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { withRouter } from 'react-router'
 
 // Import components
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
@@ -41,6 +41,7 @@ class UserDetails extends Component {
   }
 
   render() {
+    console.log('XXX: UserDetails'); console.log(this.props);
     var user = this.props.user;
 
     var name = '';
@@ -147,10 +148,6 @@ var s = {
   },
 }
 
-UserDetails.contextTypes = {
-  history: propTypes.historyContext
-}
-
 UserDetails.propTypes = {
   user: PropTypes.object
 };
@@ -159,4 +156,4 @@ UserDetails.defaultProps = {
   user: {}
 }
 
-export default UserDetails;
+export default withRouter(UserDetails)

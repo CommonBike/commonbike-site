@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { withRouter } from 'react-router'
 
 // Import components
 import RaisedButton from '../Button/RaisedButton';
@@ -108,6 +108,7 @@ class Profile extends Component {
   }
 
   render() {
+    console.log('XXX: Profile'); console.log(this.props);
     self = this;
 
     // <RaisedButton onClick={this.locations.bind(this)}>MIJN LOCATIES</RaisedButton>
@@ -164,10 +165,6 @@ var s = {
   }
 }
 
-Profile.contextTypes = {
-  history: propTypes.historyContext
-}
-
 Profile.propTypes = {
   locations: PropTypes.array,
   isEditable: PropTypes.any,
@@ -178,12 +175,14 @@ Profile.defaultProps = {
   isEditable: false
 }
 
+const ProfileWithRouter = withRouter(Profile)
+
 export default createContainer((props) => {
   Meteor.subscribe('users');
 
   return {
     currentUser: Meteor.users.findOne()
   };
-}, Profile);
+}, ProfileWithRouter);
 
 //

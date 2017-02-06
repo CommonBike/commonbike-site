@@ -3,9 +3,7 @@
  */
 import React from 'react'
 import {render} from 'react-dom'
-import Router from 'react-router/BrowserRouter'
-import Match from 'react-router/Match'
-import Miss from 'react-router/Miss'
+import {Match, Miss, BrowserRouter as Router} from 'react-router-dom'
 import Redirect from 'react-router/Redirect'
 
 import Settings from '/imports/api/settings.js'; 
