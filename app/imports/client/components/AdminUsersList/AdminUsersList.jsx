@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import { withRouter, Link } from 'react-router';
+import { Link } from 'react-router';
+import { RedirectTo } from '/client/main'
 
 // Import components
 import UserDetails from '../UserDetails/UserDetails.jsx';
@@ -61,4 +62,4 @@ AdminUsersList.defaultProps = {
   isEditable: false
 }
 
-export default withRouter(AdminUsersList)
+export default AdminUsersList

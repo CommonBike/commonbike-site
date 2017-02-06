@@ -4,7 +4,7 @@ import ContentEditable from 'react-contenteditable';
 import ReactDOM from 'react-dom';
 import Radium from 'radium';
 import R from 'ramda';
-import { withRouter } from 'react-router';
+import { RedirectTo } from '/client/main'
 
 // Import components
 import EditFields from '../../components/EditFields/EditFields';
@@ -199,8 +199,6 @@ EditObject.defaultProps = {
   objectId: ''
 }
 
-const EditObjectWithRouter = withRouter(EditObject)
-
 export default createContainer((props) => {
   // Subscribe to models
   Meteor.subscribe('objects');
@@ -213,4 +211,4 @@ export default createContainer((props) => {
     object: Objects.find({_id: props.objectId}).fetch()[0],
   };
 
-}, EditObjectWithRouter);
+}, EditObject);

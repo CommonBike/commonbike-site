@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import Radium, { StyleRoot } from 'radium';
 import R from 'ramda';
-import { withRouter } from 'react-router'
+import { RedirectTo } from '/client/main'
 
 // Import components
 import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
@@ -84,10 +84,8 @@ var s = {
   }
 }
 
-const LandingWithRouter = withRouter(Landing)
-
 export default createContainer((props) => {
   return {
     currentUser: Meteor.user()
   };
-}, Radium(LandingWithRouter));
+}, Radium(Landing));

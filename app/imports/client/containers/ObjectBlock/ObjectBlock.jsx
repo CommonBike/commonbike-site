@@ -3,7 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import ReactDOM from 'react-dom';
 import Radium from 'radium';
 import R from 'ramda';
-import { withRouter } from 'react-router'
+import { RedirectTo } from '/client/main'
 
 // Import models
 import { Objects } from '/imports/api/objects.js'; 
@@ -125,5 +125,4 @@ ObjectBlock.defaultProps = {
   isEditable: false
 }
 
-const ObjectBlockWithRouter = withRouter(ObjectBlock)
-export default Radium(ObjectBlockWithRouter);
+export default Radium(ObjectBlock);

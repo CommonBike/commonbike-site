@@ -3,7 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import { withRouter } from 'react-router'
+import { RedirectTo } from '/client/main'
 
 // Import components
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
@@ -156,4 +156,4 @@ UserDetails.defaultProps = {
   user: {}
 }
 
-export default withRouter(UserDetails)
+export default UserDetails

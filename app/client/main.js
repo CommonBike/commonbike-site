@@ -108,6 +108,11 @@ const MatchWhenAdmin = ({ component: Component, ...rest }) => (
 )
 
 //
+export const RedirectTo = (path) => {
+  console.log('RedirectTo', path)
+}
+
+//
 const App = () => (
   <Router>
     <div>

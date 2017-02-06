@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import { withRouter } from 'react-router';
+import { RedirectTo } from '/client/main'
 import { Settings } from '/imports/api/settings.js'; 
 
 import './Leaflet.EasyButton.js';
@@ -284,8 +284,6 @@ LocationsMapComponent.defaultProps = {
   startZoom: 13
 }
 
-const LocationsMapComponentWithRouter = withRouter(LocationsMapComponent)
-
 export default LocationsMap = createContainer((props) => {
   Meteor.subscribe('locations', false);
   Meteor.subscribe('settings', false);
@@ -297,4 +295,4 @@ export default LocationsMap = createContainer((props) => {
     locations: locations,
     settings: settings
   };
-}, LocationsMapComponentWithRouter);
+}, LocationsMapComponent);

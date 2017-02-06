@@ -10,7 +10,7 @@ import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
 import BackButton from '../Button/BackButton.jsx'
 import RaisedButton from '../Button/RaisedButton.jsx'
 import Avatar from '../Avatar/Avatar.jsx'
-import { withRouter } from 'react-router'
+import { RedirectTo } from '/client/main'
 
 class PageHeader extends Component {
 
@@ -58,4 +58,4 @@ PageHeader.propTypes = {
   children: PropTypes.any,
 };
 
-export default withRouter(PageHeader)
+export default PageHeader

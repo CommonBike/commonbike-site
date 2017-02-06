@@ -3,7 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import ReactDOM from 'react-dom';
 import Radium from 'radium';
 import R from 'ramda';
-import { withRouter } from 'react-router'
+import { RedirectTo } from '/client/main'
 
 // Import models
 import { Locations } from '/imports/api/locations.js'; 
@@ -113,5 +113,4 @@ LocationBlock.defaultProps = {
   isEditable: false
 }
 
-const LocationBlockWithRouter = withRouter(LocationBlock)
-export default Radium(LocationBlockWithRouter);
+export default Radium(LocationBlock);

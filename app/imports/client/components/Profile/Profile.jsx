@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import { withRouter } from 'react-router'
+import { RedirectTo } from '/client/main'
 
 // Import components
 import RaisedButton from '../Button/RaisedButton';
@@ -175,14 +175,12 @@ Profile.defaultProps = {
   isEditable: false
 }
 
-const ProfileWithRouter = withRouter(Profile)
-
 export default createContainer((props) => {
   Meteor.subscribe('users');
 
   return {
     currentUser: Meteor.users.findOne()
   };
-}, ProfileWithRouter);
+}, Profile);
 
 //

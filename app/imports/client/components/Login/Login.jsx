@@ -5,7 +5,7 @@ import { Accounts } from 'meteor/accounts-base';
 import AccountsUIWrapper from '/imports/client/containers/AccountsUIWrapper/AccountsUIWrapper.jsx';
 import ReactSwipe from 'react-swipe';
 import R from 'ramda';
-import { withRouter } from 'react-router'
+import { RedirectTo } from '/client/main'
 
 // Import templates
 import SquareButton from '../SquareButton/SquareButton.jsx';
@@ -124,10 +124,8 @@ var s = {
   }
 }
 
-const LoginWithRouter = withRouter(Login)
-
 export default createContainer((props) => {
   return {
     currentUser: Meteor.user()
   };
-}, LoginWithRouter);
+}, Login);

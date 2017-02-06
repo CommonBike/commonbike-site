@@ -3,7 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import { withRouter } from 'react-router'
+import { RedirectTo } from '/client/main'
 
 class EditFields extends Component {
 
@@ -207,4 +207,4 @@ EditFields.defaultProps = {
   fields: [] 
 }
 
-export default withRouter(EditFields)
+export default EditFields

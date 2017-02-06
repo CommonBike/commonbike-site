@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import { withRouter } from 'react-router';
+import { RedirectTo } from '/client/main'
 
 // Import components
 import EditObject from '../../containers/EditObject/EditObject';
@@ -107,4 +107,4 @@ ObjectDetails.defaultProps = {
   isEditable: false
 }
 
-export default withRouter(ObjectDetails)
+export default ObjectDetails

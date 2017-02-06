@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import Radium from 'radium';
-import { withRouter } from 'react-router'
+import { RedirectTo } from '/client/main'
 
 // Import components
 import RaisedButton from '../Button/RaisedButton.jsx'
@@ -32,5 +32,4 @@ SignUpButton.defaultProps = {
   buttonText: 'Gaaf, meld me aan!'
 };
 
-const SignUpButtonWithRouter = withRouter(SignUpButton)
-export default Radium(SignUpButtonWithRouter);
+export default Radium(SignUpButton);

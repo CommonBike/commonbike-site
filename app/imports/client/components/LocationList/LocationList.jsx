@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
 import { Link } from 'react-router';
-import { withRouter } from 'react-router'
+import { RedirectTo } from '/client/main'
 
 // Import models
 import { Locations } from '/imports/api/locations.js'; 
@@ -107,4 +107,4 @@ LocationList.defaultProps = {
   isEditable: false
 }
 
-export default withRouter(LocationList)
+export default LocationList
