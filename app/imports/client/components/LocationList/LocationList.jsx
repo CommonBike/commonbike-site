@@ -47,7 +47,6 @@ class LocationList extends Component {
   }
 
   render() {
-    console.log('XXX: LocationList'); console.log(this.props);
     self = this;
     return (
       <div style={s.base}>

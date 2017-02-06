@@ -78,7 +78,6 @@ class EditFields extends Component {
   }
 
   render() {
-    console.log('XXX: EditFields'); console.log(this.props);
     return (
       <div style={s.box}>
         <div style={s.titelbox}>

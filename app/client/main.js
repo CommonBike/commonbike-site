@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import {render} from 'react-dom'
-import {Match, Miss, BrowserRouter as Router} from 'react-router-dom'
+import {BrowserRouter as Router, Switch, Route, withRouter} from 'react-router-dom'
 import Redirect from 'react-router/Redirect'
 
 import Settings from '/imports/api/settings.js'; 
@@ -80,8 +80,8 @@ const UserAppAdminAdminUsersList = () => (<UserApp content={<AdminUsersList />} 
 const UserAppAdminAdminTools = () => (<UserApp content={<AdminTools />} />)
 
 // see: https://react-router.now.sh/auth-workflow
-const MatchWhenLoggedIn = ({ component: Component, ...rest }) => (
-  <Match {...rest} render={props => (
+const RouteWhenLoggedIn = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={props => (
     Meteor.userId() ? (
       <Component {...props}/>
     ) : (
@@ -94,8 +94,8 @@ const MatchWhenLoggedIn = ({ component: Component, ...rest }) => (
 )
 
 // see: https://react-router.now.sh/auth-workflow
-const MatchWhenAdmin = ({ component: Component, ...rest }) => (
-  <Match {...rest} render={props => (
+const RouteWhenAdmin = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={props => (
     Roles.userIsInRole(Meteor.userId(), 'admin') ? (
       <Component {...props}/>
     ) : (
@@ -108,44 +108,78 @@ const MatchWhenAdmin = ({ component: Component, ...rest }) => (
 )
 
 //
+const EVENT_REDIRECTTO = 'EVENT_REDIRECTTO'
+
 export const RedirectTo = (path) => {
-  console.log('RedirectTo', path)
+  const event = new CustomEvent(EVENT_REDIRECTTO, {
+    detail: {
+      path: path
+    }
+  })
+  window.dispatchEvent(event)
 }
 
 //
-const App = () => (
-  <Router>
-    <div>
-      <Match exactly pattern='/' component={UserAppLanding}/>
-      <Match pattern='/about' component={UserAppAbout}/>
-      <Match pattern='/join' component={UserAppJoin}/>
-      <Match pattern='/login' component={UserAppLogin}/> 
+class AppRoutes extends React.Component {
+  onRedirectToEventHandler(event) {
+    this.props.push(event.detail.path)
+  }
+
+  componentDidMount() {
+    window.addEventListener(EVENT_REDIRECTTO, this.onRedirectToEventHandler.bind(this))
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener(EVENT_REDIRECTTO, this.onRedirectToEventHandler.bind(this))
+  }
+
+  //
+  render() {
+    return (
+     <Switch>
+      <Route exact path='/' component={UserAppLanding}/>
+      <Route path='/about' component={UserAppAbout}/>
+      <Route path='/join' component={UserAppJoin}/>
+      <Route path='/login' component={UserAppLogin}/> 
+
+      <RouteWhenLoggedIn path='/profile' component={UserAppProfile}/> 
+      <RouteWhenLoggedIn path='/locations' component={UserAppLocationList}/> 
+      <RouteWhenLoggedIn path='/map' component={UserAppLocationsMap}/> 
+      <RouteWhenLoggedIn path='/objects' component={UserAppObjectList}/> 
+      <RouteWhenLoggedIn path='/transactions' component={UserAppTransactionList}/> 
+      <RouteWhenLoggedIn path='/location/:locationId' component={UserAppLocationDetails}/> 
+      <RouteWhenLoggedIn path='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
+      <RouteWhenLoggedIn path='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 
+      <RouteWhenLoggedIn path='/commonbike-ui' component={CommonBikeUI}/> 
       
-      <MatchWhenLoggedIn pattern='/profile' component={UserAppProfile}/> 
-      <MatchWhenLoggedIn pattern='/locations' component={UserAppLocationList}/> 
-      <MatchWhenLoggedIn pattern='/map' component={UserAppLocationsMap}/> 
-      <MatchWhenLoggedIn pattern='/objects' component={UserAppObjectList}/> 
-      <MatchWhenLoggedIn pattern='/transactions' component={UserAppTransactionList}/> 
-      <MatchWhenLoggedIn pattern='/location/:locationId' component={UserAppLocationDetails}/> 
-      <MatchWhenLoggedIn pattern='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
-      <MatchWhenLoggedIn pattern='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 
-      <MatchWhenLoggedIn pattern='/commonbike-ui' component={CommonBikeUI}/> 
-      
-      <MatchWhenLoggedIn pattern='/admin/locations' component={UserAppAdminLocationList}/> 
-      <MatchWhenLoggedIn pattern='/admin/rentals' component={UserAppRentalList}/> 
-      <MatchWhenLoggedIn pattern='/admin/location/:locationId' component={UserAppAdminLocationDetails}/> 
-      <MatchWhenLoggedIn pattern='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/> 
-      <MatchWhenLoggedIn pattern='/admin/users' component={UserAppAdminAdminUsersList}/> 
-      <MatchWhenLoggedIn pattern='/admin/transactions' component={AdminAppTransactionList}/> 
+      <RouteWhenLoggedIn path='/admin/locations' component={UserAppAdminLocationList}/> 
+      <RouteWhenLoggedIn path='/admin/rentals' component={UserAppRentalList}/> 
+      <RouteWhenLoggedIn path='/admin/location/:locationId' component={UserAppAdminLocationDetails}/> 
+      <RouteWhenLoggedIn path='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/> 
+      <RouteWhenLoggedIn path='/admin/users' component={UserAppAdminAdminUsersList}/> 
+      <RouteWhenLoggedIn path='/admin/transactions' component={AdminAppTransactionList}/> 
 
-      <MatchWhenLoggedIn pattern='/admin/AdminTools' component={UserAppAdminAdminTools}/> 
+      <RouteWhenLoggedIn path='/admin/AdminTools' component={UserAppAdminAdminTools}/> 
 
+      <Route component={NoMatch}/>
+     </Switch>
+  )}
+}
 
-      <Miss component={NoMatch}/>
-    </div>
-  </Router>
-)
+const AppRoutesWithRouterContext = withRouter(AppRoutes)
 
+//
+class App extends React.Component {
+  render() {
+    return (
+      <Router>
+        <AppRoutesWithRouterContext/>
+      </Router>
+    )
+  }
+}
+
+//
 Meteor.startup(() => {
   Meteor.subscribe("settings");
   

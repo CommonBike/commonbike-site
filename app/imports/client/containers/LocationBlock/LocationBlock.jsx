@@ -40,7 +40,7 @@ class LocationBlock extends Component {
   }
 
   viewItem() {
-    this.context.history.push((this.props.isEditable ? '/admin/location/' : '/location/') + this.props.item._id)
+    RedirectTo((this.props.isEditable ? '/admin/location/' : '/location/') + this.props.item._id)
   }
 
   deleteItem() {
@@ -51,7 +51,6 @@ class LocationBlock extends Component {
   }
 
   render() {
-    console.log('XXX: LocationBlock'); console.log(this.props);
     return (
       <Block
         item={this.props.item}

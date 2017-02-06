@@ -24,7 +24,6 @@ class AdminUsersList extends Component {
   }
 
   render() {
-    console.log('XXX: AdminUsersList'); console.log(this.props);
     currentuser = Meteor.userId();
     return (
       <div style={s.base}>

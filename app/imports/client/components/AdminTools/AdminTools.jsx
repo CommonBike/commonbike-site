@@ -14,7 +14,7 @@ class AdminTools extends Component {
   }
 
   showAllTransactions() {
-    this.context.history.push('/admin/transactions');
+    RedirectTo('/admin/transactions');
   }
 
   clearTransactions() { 
@@ -61,7 +61,6 @@ class AdminTools extends Component {
   }
 
   render() {
-    console.log('XXX: AdminTools'); console.log(this.props);
     return (
       <div style={s.base}>
         <div style={s.centerbox}>

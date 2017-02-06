@@ -16,11 +16,10 @@ class Landing extends Component {
   }
 
   login() { 
-    this.context.history.push('/login')
+    RedirectTo('/login')
   }
 
   render() {
-    console.log('XXX: Landing'); console.log(this.props);
     return (
       <div style={s.base} ref="base">
 

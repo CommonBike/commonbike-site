@@ -40,8 +40,8 @@ class ObjectBlock extends Component {
     }
   }
 
-  // this.context.history.push('/bike/details/' + this.props.item._id) }
-  viewItem() { this.context.history.push((this.props.isEditable ? '/admin/bike/details/' : '/bike/details/') + this.props.item._id) }
+  // RedirectTo('/bike/details/' + this.props.item._id) }
+  viewItem() { RedirectTo((this.props.isEditable ? '/admin/bike/details/' : '/bike/details/') + this.props.item._id) }
 
   deleteItem() {
     if( ! confirm('Weet je zeker dat je de fiets "'+this.props.item.title+'" wilt verwijderen?') || ! confirm('Sure? If not sure: don\'t') )
@@ -51,7 +51,6 @@ class ObjectBlock extends Component {
   }
 
   render() {
-    console.log('XXX: ObjectBlock'); console.log(this.props);
     return (
       <Block
         item={this.props.item}

@@ -37,7 +37,7 @@ class LocationsMapComponent extends Component {
     var locationMarkersGroup = L.featureGroup().addTo(map);    
     locationMarkersGroup.on("click", function (event) {
         var clickedMarker = event.layer;
-        this.context.history.push('/location/' + clickedMarker.locationId);
+        RedirectTo('/location/' + clickedMarker.locationId);
     }.bind(this));      
 
     var trackingMarkersGroup = L.featureGroup().addTo(map);   // no tracking marker yet!
@@ -117,7 +117,7 @@ class LocationsMapComponent extends Component {
     // var locationMarkersGroup = L.featureGroup(markers);    
     // locationMarkersGroup.on("click", function (event) {
     //     var clickedMarker = event.layer;
-    //     this.context.history.push('/location/' + clickedMarker.locationId);
+    //     RedirectTo('/location/' + clickedMarker.locationId);
     // }.bind(this));      
 
     // return locationMarkersGroup;
@@ -239,7 +239,6 @@ class LocationsMapComponent extends Component {
   // rendering
   // ----------------------------------------------------------------------------
   render() {
-    console.log('XXX: LocationsMap'); console.log(this.props);
     if(this.state.map) {
       this.initializeMap();
       this.initializeLocationsMarkers();

@@ -81,7 +81,6 @@ class EditObject extends Component {
   }
 
   render() {
-    console.log('XXX: EditObject'); console.log(this.props);
   	if(!this.props.object) {
     	return ( <div />);
   	}

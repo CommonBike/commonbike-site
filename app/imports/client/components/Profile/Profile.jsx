@@ -14,36 +14,36 @@ class Profile extends Component {
   }
 
   newreservation() {
-     this.context.history.push('/locations') 
+     RedirectTo('/locations') 
   }
 
   newreservationMap() { 
-    this.context.history.push('/map') 
+    RedirectTo('/map') 
   }
 
   reservations() {
-    this.context.history.push('/objects') 
+    RedirectTo('/objects') 
   }
 
   locations() { 
-    this.context.history.push('/admin/locations') 
+    RedirectTo('/admin/locations') 
   }
 
   rentals() { 
-    this.context.history.push('/admin/rentals') 
+    RedirectTo('/admin/rentals') 
   }
 
   transactions() { 
-    this.context.history.push('/transactions') 
+    RedirectTo('/transactions') 
   }
 
   manageusers() {
-    this.context.history.push('/admin/users') 
+    RedirectTo('/admin/users') 
   }
 
   logout() { 
     Meteor.logout(); 
-    this.context.history.push('/')
+    RedirectTo('/')
   }
 
   getUserPersonalia() {
@@ -108,7 +108,6 @@ class Profile extends Component {
   }
 
   render() {
-    console.log('XXX: Profile'); console.log(this.props);
     self = this;
 
     // <RaisedButton onClick={this.locations.bind(this)}>MIJN LOCATIES</RaisedButton>

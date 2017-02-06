@@ -8,10 +8,9 @@ import RaisedButton from '../Button/RaisedButton.jsx'
 
 class SignUpButton extends Component {
 
-  login() { this.context.history.push('/login') }
+  login() { RedirectTo('/login') }
 
   render() {
-    console.log('XXX: SignUpButton'); console.log(this.props);
     return (
       <RaisedButton onClick={this.login.bind(this)}>
         {this.props.buttonText}

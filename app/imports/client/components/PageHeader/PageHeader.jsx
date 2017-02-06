@@ -19,11 +19,10 @@ class PageHeader extends Component {
   }
 
   gotoProfile() {
-    this.context.history.push('/profile');
+    RedirectTo('/profile');
   }
 
   render() {
-    console.log('XXX: PageHeader'); console.log(this.props);
     return (
       <div style={s.base}>
         <div style={s.flex}>

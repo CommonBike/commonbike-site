@@ -41,7 +41,6 @@ class UserDetails extends Component {
   }
 
   render() {
-    console.log('XXX: UserDetails'); console.log(this.props);
     var user = this.props.user;
 
     var name = '';

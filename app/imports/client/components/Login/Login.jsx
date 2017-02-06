@@ -83,13 +83,12 @@ class Login extends Component {
   }
 
   render() {
-    console.log('XXX: Login'); console.log(this.props);
     const {currentUser} = this.props
     // console.log(currentUser)
     const active = currentUser && currentUser.profile && currentUser.profile.active
     return (
       <div style={s.base}>
-        {currentUser ? (active ? this.context.history.push('/locations') : this.renderTeaser())
+        {currentUser ? (active ? RedirectTo('/locations') : this.renderTeaser())
                                 : this.renderIntro()}
 
       </div>

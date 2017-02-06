@@ -44,7 +44,6 @@ class ObjectDetails extends Component {
   }
 
   render() {
-    console.log('XXX: ObjectDetails'); console.log(this.props);
     return (
       <div style={s.base}>
 
