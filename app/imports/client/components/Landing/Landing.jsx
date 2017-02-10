@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import Radium, { StyleRoot } from 'radium';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { RedirectTo } from '/client/main'
 
 // Import components
 import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
@@ -16,7 +16,7 @@ class Landing extends Component {
   }
 
   login() { 
-    this.context.history.push('/login')
+    RedirectTo('/login')
   }
 
   render() {
@@ -81,10 +81,6 @@ var s = {
     fontSize: '0.8em',
     fontWeight: '500',
   }
-}
-
-Landing.contextTypes = {
-  history: propTypes.historyContext
 }
 
 export default createContainer((props) => {

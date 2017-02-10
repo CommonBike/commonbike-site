@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { RedirectTo } from '/client/main'
 
 // Import components
 import RaisedButton from '../Button/RaisedButton';
@@ -14,36 +14,36 @@ class Profile extends Component {
   }
 
   newreservation() {
-     this.context.history.push('/locations') 
+     RedirectTo('/locations') 
   }
 
   newreservationMap() { 
-    this.context.history.push('/map') 
+    RedirectTo('/map') 
   }
 
   reservations() {
-    this.context.history.push('/objects') 
+    RedirectTo('/objects') 
   }
 
   locations() { 
-    this.context.history.push('/admin/locations') 
+    RedirectTo('/admin/locations') 
   }
 
   rentals() { 
-    this.context.history.push('/admin/rentals') 
+    RedirectTo('/admin/rentals') 
   }
 
   transactions() { 
-    this.context.history.push('/transactions') 
+    RedirectTo('/transactions') 
   }
 
   manageusers() {
-    this.context.history.push('/admin/users') 
+    RedirectTo('/admin/users') 
   }
 
   logout() { 
     Meteor.logout(); 
-    this.context.history.push('/')
+    RedirectTo('/')
   }
 
   getUserPersonalia() {
@@ -172,10 +172,6 @@ var s = {
     width: '200px',
     height: '200px'
   }
-}
-
-Profile.contextTypes = {
-  history: propTypes.historyContext
 }
 
 Profile.propTypes = {

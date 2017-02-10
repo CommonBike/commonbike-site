@@ -14,7 +14,12 @@ class Join extends Component {
   }
 
   componentDidMount() {
-    ReactDOM.findDOMNode(this.refs.flex).style.display = 'flex';
+    const domNode = ReactDOM.findDOMNode(this.refs.flex);
+    if (!domNode) {
+      console.error('flex domNode not found')
+    } else {
+      domNode.style.display = 'flex';
+    }
   }
 
   render() {
