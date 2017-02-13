@@ -34,9 +34,9 @@ const UserAppLogin = () => (<UserApp content={<CustomPage><Login /></CustomPage>
 const UserAppProfile = () => (<UserApp content={<div><Profile isEditable="true" /></div>} />)
 
 const UserAppLocationList = () => (<UserApp content={<LocationList />} />)
-const UserAppLocationDetails = ({params}) => {
+const UserAppLocationDetails = ({match}) => {
   return (
-    <UserApp content={<LocationDetails locationId={params.locationId} />} />
+    <UserApp content={<LocationDetails locationId={match.params.locationId} />} />
   )
 }
 
@@ -50,27 +50,27 @@ const AdminAppTransactionList = () => (<UserApp content={<TransactionList admin=
 
 const UserAppRentalList = () => (<UserApp content={<ObjectList rentalsMode={true} showState={true} showRentalDetails={true} />} />)
 
-const UserAppCustomPageObjectDetails = ({params}) => {
+const UserAppCustomPageObjectDetails = ({match}) => {
   return (
-    <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails objectId={params.objectId}/></CustomPage>} />
+    <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails objectId={match.params.objectId}/></CustomPage>} />
   )
 }
-const UserAppCustomAdminPageObjectDetails = ({params}) => {
+const UserAppCustomAdminPageObjectDetails = ({match}) => {
   return (
-    <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails isEditable="true" objectId={params.objectId}/></CustomPage>} />
+    <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails isEditable="true" objectId={match.params.objectId}/></CustomPage>} />
   )
 }
 
-const UserAppCustomPageObjectDetailsCheckin = ({params}) => {
+const UserAppCustomPageObjectDetailsCheckin = ({match}) => {
   return (
-    <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails objectId={params.objectId} checkedIn={true}/></CustomPage>} />
+    <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails objectId={match.params.objectId} checkedIn={true}/></CustomPage>} />
   )
 }
 
 const UserAppAdminLocationList = () => (<UserApp content={<LocationList isEditable="true" />} />)
-const UserAppAdminLocationDetails = ({params}) => {
+const UserAppAdminLocationDetails = ({match}) => {
   return (
-    <UserApp content={<LocationDetails locationId={params.locationId} isEditable="true"/>} />
+    <UserApp content={<LocationDetails locationId={match.params.locationId} isEditable="true"/>} />
   )
 }
 
@@ -156,10 +156,10 @@ class AppRoutes extends React.Component {
       <RouteWhenLoggedIn path='/admin/rentals' component={UserAppRentalList}/> 
       <RouteWhenLoggedIn path='/admin/location/:locationId' component={UserAppAdminLocationDetails}/> 
       <RouteWhenLoggedIn path='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/> 
-      <RouteWhenLoggedIn path='/admin/users' component={UserAppAdminAdminUsersList}/> 
-      <RouteWhenLoggedIn path='/admin/transactions' component={AdminAppTransactionList}/> 
 
-      <RouteWhenLoggedIn path='/admin/AdminTools' component={UserAppAdminAdminTools}/> 
+      <RouteWhenAdmin path='/admin/users' component={UserAppAdminAdminUsersList}/> 
+      <RouteWhenAdmin path='/admin/AdminTools' component={UserAppAdminAdminTools}/> 
+      <RouteWhenAdmin path='/admin/transactions' component={AdminAppTransactionList}/> 
 
       <Route component={NoMatch}/>
      </Switch>

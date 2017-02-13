@@ -140,10 +140,6 @@ var s = {
   },
 }
 
-EditSettings.contextTypes = {
-  history: propTypes.historyContext
-}
-
 EditSettings.propTypes = {
   title: PropTypes.string.isRequired
 };
@@ -157,7 +153,6 @@ export default createContainer((props) => {
   Meteor.subscribe('settings', true);
 
   var settings = Settings.find({profileName: defaultProfileName}).fetch()[0];
-  console.log('settings', settings)
   if(!settings) {
     return {}
   }
