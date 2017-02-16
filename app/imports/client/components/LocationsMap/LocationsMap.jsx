@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { RedirectTo } from '/client/main'
 import { Settings } from '/imports/api/settings.js'; 
 
 import './Leaflet.EasyButton.js';
@@ -37,7 +37,7 @@ class LocationsMapComponent extends Component {
     var locationMarkersGroup = L.featureGroup().addTo(map);    
     locationMarkersGroup.on("click", function (event) {
         var clickedMarker = event.layer;
-        this.context.history.push('/location/' + clickedMarker.locationId);
+        RedirectTo('/location/' + clickedMarker.locationId);
     }.bind(this));      
 
     var trackingMarkersGroup = L.featureGroup().addTo(map);   // no tracking marker yet!
@@ -117,7 +117,7 @@ class LocationsMapComponent extends Component {
     // var locationMarkersGroup = L.featureGroup(markers);    
     // locationMarkersGroup.on("click", function (event) {
     //     var clickedMarker = event.layer;
-    //     this.context.history.push('/location/' + clickedMarker.locationId);
+    //     RedirectTo('/location/' + clickedMarker.locationId);
     // }.bind(this));      
 
     // return locationMarkersGroup;
@@ -263,10 +263,6 @@ var s = {
     veiligstallengrijs: '/files/Veiligstallen/icon-grijs.png',
     hier: 'https://cdn2.iconfinder.com/data/icons/mini-icon-set-map-location/91/Location_28-48.png'
   }
-}
-
-LocationsMapComponent.contextTypes = {
-  history: propTypes.historyContext
 }
 
 LocationsMapComponent.propTypes = {

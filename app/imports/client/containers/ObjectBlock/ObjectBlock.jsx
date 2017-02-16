@@ -3,7 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import ReactDOM from 'react-dom';
 import Radium from 'radium';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { RedirectTo } from '/client/main'
 
 // Import models
 import { Objects } from '/imports/api/objects.js'; 
@@ -40,8 +40,8 @@ class ObjectBlock extends Component {
     }
   }
 
-  // this.context.history.push('/bike/details/' + this.props.item._id) }
-  viewItem() { this.context.history.push((this.props.isEditable ? '/admin/bike/details/' : '/bike/details/') + this.props.item._id) }
+  // RedirectTo('/bike/details/' + this.props.item._id) }
+  viewItem() { RedirectTo((this.props.isEditable ? '/admin/bike/details/' : '/bike/details/') + this.props.item._id) }
 
   deleteItem() {
     if( ! confirm('Weet je zeker dat je de fiets "'+this.props.item.title+'" wilt verwijderen?') || ! confirm('Sure? If not sure: don\'t') )
@@ -103,10 +103,6 @@ var s = {
     cursor: 'pointer',
     fontWeight: 'bold',
   }
-}
-
-ObjectBlock.contextTypes = {
-  history: propTypes.historyContext
 }
 
 ObjectBlock.propTypes = {

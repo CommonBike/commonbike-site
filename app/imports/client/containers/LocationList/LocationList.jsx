@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import {propTypes} from 'react-router';
 
 // Import models
 import { Locations } from '/imports/api/locations.js'; 

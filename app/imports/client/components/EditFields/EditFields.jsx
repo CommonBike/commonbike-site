@@ -3,7 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { RedirectTo } from '/client/main'
 
 class EditFields extends Component {
 
@@ -188,10 +188,6 @@ var s = {
   },
 }
 
-EditFields.contextTypes = {
-  history: propTypes.historyContext
-}
-
 EditFields.propTypes = {
   title: PropTypes.string,
   fields: React.PropTypes.arrayOf(
@@ -210,4 +206,4 @@ EditFields.defaultProps = {
   fields: [] 
 }
 
-export default EditFields;
+export default EditFields

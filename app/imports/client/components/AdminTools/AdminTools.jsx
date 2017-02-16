@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { RedirectTo } from '/client/main'
 
 // Import components
 import RaisedButton from '../Button/RaisedButton';
@@ -14,7 +14,7 @@ class AdminTools extends Component {
   }
 
   showAllTransactions() {
-    this.context.history.push('/admin/transactions');
+    RedirectTo('/admin/transactions');
   }
 
   clearTransactions() { 
@@ -113,10 +113,6 @@ var s = {
     margin: '10px 0 10px 0',
     border: '1px solid black'
   }
-}
-
-AdminTools.contextTypes = {
-  history: propTypes.historyContext
 }
 
 AdminTools.propTypes = {

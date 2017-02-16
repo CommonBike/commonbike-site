@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import {propTypes, Link} from 'react-router';
+import { Link } from 'react-router';
+import { RedirectTo } from '/client/main'
 
 // Import models
 import { Locations } from '/imports/api/locations.js'; 
@@ -92,10 +93,6 @@ var s = {
   }
 }
 
-LocationList.contextTypes = {
-  history: propTypes.historyContext
-}
-
 LocationList.propTypes = {
   locations: PropTypes.array,
   isEditable: PropTypes.any,
@@ -109,4 +106,4 @@ LocationList.defaultProps = {
   isEditable: false
 }
 
-export default LocationList;
+export default LocationList

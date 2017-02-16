@@ -10,7 +10,7 @@ import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
 import BackButton from '../Button/BackButton.jsx'
 import RaisedButton from '../Button/RaisedButton.jsx'
 import Avatar from '../Avatar/Avatar.jsx'
-import {propTypes} from 'react-router';
+import { RedirectTo } from '/client/main'
 
 class PageHeader extends Component {
 
@@ -19,7 +19,7 @@ class PageHeader extends Component {
   }
 
   gotoProfile() {
-    this.context.history.push('/profile');
+    RedirectTo('/profile');
   }
 
   render() {
@@ -53,12 +53,8 @@ var s = {
   },
 }
 
-PageHeader.contextTypes = {
-  history: propTypes.historyContext
-}
-
 PageHeader.propTypes = {
   children: PropTypes.any,
 };
 
-export default PageHeader;
+export default PageHeader
