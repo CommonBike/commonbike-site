@@ -23,6 +23,7 @@
     "react-router-dom": "next",
     "react-swipe": "^5.0.5",
     "react-tap-event-plugin": "^1.0.0",
+    "soap": "^0.18.0",
     "swipe-js-iso": "^2.0.3",
     "utf-8-validate": "^1.2.1"
   }

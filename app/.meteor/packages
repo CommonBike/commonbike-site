@@ -31,6 +31,10 @@ accounts-github@1.0.11
 accounts-twitter@1.1.12
 aldeed:simple-schema
 alanning:roles
-http
-check
+http@1.2.10
+check@1.2.4
 dferber:prerender
+google-config-ui
+github-config-ui
+twitter-config-ui
+facebook-config-ui

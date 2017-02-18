@@ -14,52 +14,50 @@ import MapSummary from '/imports/client/MapSummary.jsx'
 
 class CommonBikeUI extends Component {
 
+  onTestSoap() {
+    Meteor.call('testsoap', (error, result) => {
+      console.log(error || result)
+    })
+  }
+
   render() {
     return (
       <div style={s.base}>
-
-        <h1>Buttons</h1>
-
         <h2>Button</h2>
-
         <Button>Klik hier! ~ Button</Button>
 
         <Hr />
 
         <h2>BackButton</h2>
-
         <div style={{background: '#000'}}>
           <BackButton />
         </div>
 
         <h2>RaisedButton</h2>
-      
+    
         <RaisedButton>Klik hier! ~ RaisedButton</RaisedButton>
 
         <h2>Basic UI component</h2>
-
         <AccountsUIWrapper />
 
         <Hr />
 
         <h2>Avatar</h2>
-
         <Avatar />
 
         <Hr />
 
         <h2>CheckInCode</h2>
-
         <CheckInCode />
 
         <h2>LoginForm</h2>
-
         <LoginForm />
 
         <h2>MapSummary</h2>
-
         <MapSummary width={600} height={400} />
 
+        <h2>Soap</h2>
+        <RaisedButton onClick={this.onTestSoap}>Test</RaisedButton>
       </div>
     );
   }
