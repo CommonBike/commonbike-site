@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 // Import components
 import PageHeader from '../PageHeader/PageHeader.jsx'
+import FeedbackWidget from '../../containers/FeedbackWidget/FeedbackWidget.jsx';
 
 // UserApp component - represents the whole app
 export default class UserApp extends Component {
@@ -11,6 +12,7 @@ export default class UserApp extends Component {
       <div style={Object.assign({}, s.base, {background: this.props.background})}>
         {this.props.showPageHeader ? <PageHeader /> : null}
         {this.props.content}
+        <FeedbackWidget />
       </div>
     );
   }
@@ -31,8 +33,7 @@ var s = {
   base: {
     maxWidth: '100%',
     minHeight: '100%',
-    height: '100%',
     overflow: 'auto',
-    margin: '0 auto'
+    margin: '0 auto',
   },
 }

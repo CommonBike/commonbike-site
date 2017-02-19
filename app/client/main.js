@@ -29,7 +29,7 @@ import CommonBikeUI from '/imports/client/commonbike-ui.jsx'
 import AdminTools from '/imports/client/components/AdminTools/AdminTools.jsx'
 import NoMatch from '/imports/client/components/NoMatch/NoMatch.jsx'
 
-const UserAppLanding = () => (<UserApp showPageHeader={false} content={<Landing/>} />)
+const UserAppLanding = () => (<UserApp showPageHeader={false} content={<Landing/>} background="#00d0a2" />)
 const UserAppAbout = () => (<UserApp content={<ContentPage><About /></ContentPage>} />) 
 const UserAppJoin = () => (<UserApp content={<ContentPage><Join /></ContentPage>} />) 
 const UserAppLogin = () => (<UserApp content={<CustomPage><Login /></CustomPage>} />) // Login redirectTo={params.redirectTo}
@@ -38,7 +38,7 @@ const UserAppProfile = () => (<UserApp content={<div><Profile isEditable="true" 
 const UserAppLocationList = () => (<UserApp content={<LocationList />} />)
 const UserAppLocationDetails = ({params}) => {
   return (
-    <UserApp content={<LocationDetails locationId={params.locationId} />} />
+    <UserApp content={<LocationDetails locationId={params.locationId} background="#fff" />} />
   )
 }
 
@@ -54,7 +54,7 @@ const UserAppRentalList = () => (<UserApp content={<ObjectList rentalsMode={true
 
 const UserAppCustomPageObjectDetails = ({params}) => {
   return (
-    <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails objectId={params.objectId}/></CustomPage>} />
+    <UserApp content={<CustomPage backgroundColor="#fff"><ObjectDetails objectId={params.objectId}/></CustomPage>} />
   )
 }
 const UserAppCustomAdminPageObjectDetails = ({params}) => {
