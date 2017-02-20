@@ -41,10 +41,14 @@ class EditLocation extends Component {
   }
 
   getLatLongString(lat_lng) {
-    var lat_lng_str = lat_lng.toString();
-    if(lat_lng_str=="0,0") {
-      lat_lng_str="";
-    }
+    var lat_lng_str = "";
+
+    if(lat_lng) {
+      lat_lng_str = lat_lng.toString();
+      if(lat_lng_str=="0,0") {
+        lat_lng_str="";
+      }
+    }  
 
     return lat_lng_str;
   }
