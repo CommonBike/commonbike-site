@@ -61,9 +61,6 @@ if (Meteor.isServer) {
   });
 
 	Meteor.methods({
-    'eric'() {
-      Integrations.slack.sendNotification('eric was here');
-    },
     'transactions.clearAll'() {
         if (!Meteor.userId()||!Roles.userIsInRole( Meteor.userId(), 'admin' )) throw new Meteor.Error('not-authorized');
 
