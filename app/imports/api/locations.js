@@ -3,6 +3,7 @@ import { Mongo } from 'meteor/mongo';
 import { Accounts } from 'meteor/accounts-base'
 
 import { getUserDescription } from '/imports/api/users.js'; 
+import { Integrations } from '/imports/api/integrations.js'; 
 
 export const Locations = new Mongo.Collection('locations');
 
@@ -106,7 +107,7 @@ if(Meteor.isServer) {
       Meteor.call('transactions.addTransaction', 'ADD_LOCATION', description, Meteor.userId(), locationId, null, data);    
 
       var slackmessage = 'Weer een nieuwe locatie toegevoegd: ' + data.title; 
-      Meteor.call('slack.sendnotification_commonbike',  slackmessage);
+      Integrations.slack.sendNotification(slackmessage);
 
       return locationId
     },
@@ -145,7 +146,7 @@ if(Meteor.isServer) {
       Meteor.call('transactions.addTransaction', 'REMOVE_LOCATION', description, Meteor.userId(), _id, null, location);    
 
       var slackmessage = 'Locatie ' + location.title + ' is verwijderd'; 
-      Meteor.call('slack.sendnotification_commonbike',  slackmessage);
+      Integrations.slack.sendNotification(slackmessage);
     },
     'locationprovider.getuserlist'(locationId) {
       // return a list of users that are providers for the given location 

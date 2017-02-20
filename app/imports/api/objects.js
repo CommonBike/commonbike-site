@@ -3,6 +3,7 @@ import { Mongo } from 'meteor/mongo';
 
 import { Locations } from '/imports/api/locations.js'; 
 import { getUserDescription } from '/imports/api/users.js'; 
+import { Integrations } from '/imports/api/integrations.js'; 
 
 export const Objects = new Mongo.Collection('objects');
 
@@ -180,8 +181,7 @@ Meteor.methods({
       slackmessage += ' bij ' + location.title;
     }
     Meteor.call('transactions.addTransaction', 'ADD_OBJECT', description, Meteor.userId(), object.locationId, objectId, data);    
-    Meteor.call('slack.sendnotification_commonbike',  slackmessage);
-
+    Integrations.slack.sendNotification(slackmessage);
   },
   'objects.update'(objectId, data) {
 
@@ -235,7 +235,7 @@ Meteor.methods({
       slackmessage += ' bij ' + location.title;
     }
     Meteor.call('transactions.addTransaction', 'REMOVE_OBJECT', description, Meteor.userId(), object.locationId, object);    
-    Meteor.call('slack.sendnotification_commonbike',  slackmessage);
+    Integrations.slack.sendNotification(slackmessage);
   },
   'objects.setState'(objectId, userId, locationId, newState, userDescription){
     // Make sure the user is logged in
