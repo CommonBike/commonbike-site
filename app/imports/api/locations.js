@@ -130,7 +130,24 @@ if(Meteor.isServer) {
 
       var context =  LocationsSchema.newContext();
       if(context.validate({ $set: changes}, {modifier: true} )) {
+        var location = Locations.findOne(_id);
+
+        // log original values as well
+        var logchanges = {};
+        Object.keys(changes).forEach((fieldname) => { 
+          // convert dot notation to actual value
+          val = new Function('_', 'return _.' + fieldname)(location);
+          logchanges[fieldname] = { new: changes[fieldname], 
+                                    prev: val||'undefined' };
+        });
+
         Locations.update(_id, {$set : changes} );
+
+        var description = getUserDescription(Meteor.user()) + ' heeft de instellingen van locatie ' + location.title + ' gewijzigd';
+        Meteor.call('transactions.addTransaction', 'CHANGESETTINGS_LOCATION', description, Meteor.userId(), _id, null, JSON.stringify(logchanges));    
+      } else {
+        console.log('unable to update location with id ' + _id);
+        console.log(context);
       };
     },
     'locations.remove'(_id){
