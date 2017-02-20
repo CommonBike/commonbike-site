@@ -77,14 +77,6 @@ var testLocations = [
             { title: 'Bikelocker H', description: 'rechterkluis', state: 'available', 
               locktype: 'open-bikelocker'} ]
   },
-  {title:"Zonder provider",
-   imageUrl:'/files/Testdata/lockers.png',
-   providers:[],
-   bikeimage: '/files/Testdata/easyfiets.png',
-   bikes: [ { title: 'Fiets 1', description: 'Blauwe fiets', state: 'available'}, 
-            { title: 'Fiets 2', description: 'Witte fiets', state: 'available'}, 
-            { title: 'Fiets 3', description: 'Rode fiets', state: 'available'} ]
-  },
   {title:"Easyfiets - Bij Leiden CS",
    address: "Bargelaan 68, 2333 CV Leiden",
    lat_lng: [ 52.166636, 4.481510],

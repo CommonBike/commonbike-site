@@ -48,7 +48,7 @@ class ObjectDetails extends Component {
       <div style={s.base}>
 
         <p style={s.intro}>
-          <i><span dangerouslySetInnerHTML={{__html: this.props.location.title}} /></i>
+          Reserveer bij: <span dangerouslySetInnerHTML={{__html: this.props.location.title}} />
         </p>
 
         <center>
@@ -87,7 +87,7 @@ var s = {
     maxWidth: '400px',
     textAlign: 'left',
     minHeight: '80px',
-    fontSize: '1.2em',
+    fontSize: '1.0em',
     fontWeight: '500',
     maxWidth: '300px',
     background: 'url("/files/ObjectDetails/marker.svg") 0 0 / auto 60px no-repeat',
