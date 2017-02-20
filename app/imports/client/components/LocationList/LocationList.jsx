@@ -23,26 +23,9 @@ class LocationList extends Component {
     super(props);
   }
 
-  /**
-   *  newLocation
-   * 
-   * Adds a new location to the database having the title "Locatie-naam"
-   */
-   newLocation() {
-     if(this.props.newLocationHandler) {
-       this.props.newLocationHandler();
-     }
-   }
-
-  renderAdminLinks() {
-    if (location.pathname.startsWith('/admin/')) {
-      return (
-        <Link to='/locations'>Locations</Link>
-      )
-    } else {
-      return (
-        <Link to='/admin/locations'>Admin Locations</Link>
-      )
+  newLocation() {
+    if(this.props.newLocationHandler) {
+      this.props.newLocationHandler();
     }
   }
 
@@ -50,7 +33,6 @@ class LocationList extends Component {
     self = this;
     return (
       <div style={s.base}>
-        {Roles.userIsInRole(Meteor.userId(), 'admin') && this.renderAdminLinks()}
         <div style={Object.assign({display: 'none'}, this.props.isEditable && {display: 'block'})}>
 
           <p style={s.paragraph}>
