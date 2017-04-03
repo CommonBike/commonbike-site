@@ -158,7 +158,7 @@ class AppRoutes extends React.Component {
       <RouteWhenLoggedIn path='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/> 
 
       <RouteWhenAdmin path='/admin/users' component={UserAppAdminAdminUsersList}/> 
-      <RouteWhenAdmin path='/admin/AdminTools' component={UserAppAdminAdminTools}/> 
+      <RouteWhenAdmin path='/admin/admintools' component={UserAppAdminAdminTools}/> 
       <RouteWhenAdmin path='/admin/transactions' component={AdminAppTransactionList}/> 
 
       <Route component={NoMatch}/>

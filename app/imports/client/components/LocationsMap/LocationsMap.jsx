@@ -196,8 +196,6 @@ class LocationsMapComponent extends Component {
     if(this.props.settings) {
       if(this.props.settings.veiligstallen.visible) {
         this.state.parkingButton.addTo(this.state.map);
-      } else {
-        this.state.parkingButton.removeFrom(this.state.map);
       }
     } 
 
