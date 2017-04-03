@@ -26,43 +26,19 @@ class AdminTools extends Component {
   }
 
   cleanTestUsers() {
-    if( !confirm('Weet je zeker dat je alle testgebruikers wilt verwijderen? Dit kan niet ongedaan gemaakt worden.')) {
-      return;
-    }
-
     Meteor.call('testdata.cleanupTestUsers');
-
-    alert('De testgebruikers zijn verwijderd!');
   }
 
   cleanTestData() {
-    if( !confirm('Weet je zeker dat je alle testdata wilt verwijderen? Dit kan niet ongedaan gemaakt worden.')) {
-      return;
-    }
-
     Meteor.call('testdata.cleanupTestData');
-
-    alert('De testdata is verwijderd!');
   }
 
   insertTestUsers() { 
-    if( !confirm('Weet je zeker dat je de testgebruikers wilt toevoegen? Doe dit nooit op de productieserver.')) {
-      return;
-    }
-
     Meteor.call('testdata.checkTestUsers');
-
-    alert('De testgebruikers zijn toegevoegd!');
   }
 
   insertTestData() {
-    if( !confirm('Weet je zeker dat je de testdata wilt toevoegen? Doe dit nooit op de productieserver.')) {
-      return;
-    }
-
     Meteor.call('testdata.checkTestLocations');
-
-    alert('De testdata is toegevoegd!');
   }
 
   databaseCheckup() {

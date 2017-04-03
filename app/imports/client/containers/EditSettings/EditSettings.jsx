@@ -54,7 +54,7 @@ class EditSettings extends Component {
           label: 'Style'
   		},
   		{
-          fieldname: 'mapbox.userId',
+          fieldname: 'description',
           fieldvalue: this.props.settings.mapbox.userId,
           controltype: 'text',
           label: 'UserId',

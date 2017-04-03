@@ -58,21 +58,7 @@ class EditObject extends Component {
 	          label: 'Pincode'
 	  		}
 	  	]
-    } else if(lockType=='skopei-v1') {
-      fields = [
-        {
-            fieldname: 'lock.settings.elockid',
-            fieldvalue: this.props.object.lock.settings.elockid,
-            controltype: 'text',
-            label: 'lock id'
-        },
-        {
-            fieldname: 'lock.settings.pincode',
-            fieldvalue: this.props.object.lock.settings.pincode,
-            controltype: 'text',
-            label: 'Pincode'
-        }
-      ]    } else if(lockType=='plainkey'||lockType=='open-bikelocker') {
+    } else if(lockType=='plainkey'||lockType=='open-bikelocker') {
   		fields = [
 	  		{
 	          fieldname: 'lock.settings.keyid',
@@ -97,7 +83,6 @@ class EditObject extends Component {
   	var lockTypes = [ { _id: 'open-bikelocker', title: 'open-bikelocker'},
   	                  { _id: 'open-keylocker', title: 'open-keylocker'},
   	                  { _id: 'axa-elock', title: 'AXA e-lock'},
-                      { _id: 'skopei-v1', title: 'Skopei e-lock'},
   	                  { _id: 'plainkey', title: 'sleutel'}];
   	var timeUnits = [ { _id: 'day', title: 'dag'},
   	                  { _id: 'halfday', title: 'dagdeel'},
