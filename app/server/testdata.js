@@ -49,10 +49,8 @@ var testLocations = [
    imageUrl:'https://cdn1.iconfinder.com/data/icons/UrbanStories-png-Artdesigner-lv/256/Bicycle_by_Artdesigner.lv.png',
    providers:["s2m@commonbike.com", "user2@commonbike.com"],
    bikeimage: '/files/Block/bike.png',
-   bikes: [ { title: 'Giant 1', description: 'Damesfiets 33879', state: 'available'}, 
-            { title: 'Giant 2', description: 'Damesfiets 33277 (met kinderzit)', state: 'available'}, 
-            { title: 'Giant 3', description: 'Herenfiets 31119', state: 'available'},
-            { title: 'Bakfiets', description: 'Bakfiets', state: 'available'} ]
+   bikes: [ { title: 'Skopei 1', description: 'Demofiets van Skopei', state: 'available', 
+              locktype: 'skopei-v1', locksettings: { elockid: '', pincode: ''}} ]
   },
   {title:"Lockers Zeist",
    address:"Utrechtseweg 2, 3732 HB De Bilt, Netherlands",

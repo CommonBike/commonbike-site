@@ -41,6 +41,10 @@ class Profile extends Component {
     RedirectTo('/admin/users') 
   }
 
+  admintools() {
+    RedirectTo('/admin/admintools') 
+  }
+
   logout() { 
     Meteor.logout(); 
     RedirectTo('/')
@@ -115,6 +119,14 @@ class Profile extends Component {
     }
   }
 
+  getAdminToolsButton() {
+    if(Roles.userIsInRole( Meteor.userId(), 'admin' )) {
+      return ( <RaisedButton onClick={this.admintools.bind(this)}>BEHEERDERSFUNCTIES</RaisedButton> )
+    } else {
+      return ( <div /> )
+    }
+  }
+
   render() {
     self = this;
 
@@ -148,6 +160,8 @@ class Profile extends Component {
           { this.getManageUsersButton() }
 
           { this.getEditSystemSettings() }
+
+          { this.getAdminToolsButton() }
 
           <RaisedButton onClick={this.logout.bind(this)}>LOG UIT</RaisedButton>
         </div>
