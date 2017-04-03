@@ -49,8 +49,11 @@ var testLocations = [
    imageUrl:'https://cdn1.iconfinder.com/data/icons/UrbanStories-png-Artdesigner-lv/256/Bicycle_by_Artdesigner.lv.png',
    providers:["s2m@commonbike.com", "user2@commonbike.com"],
    bikeimage: '/files/Block/bike.png',
-   bikes: [ { title: 'Skopei 1', description: 'Demofiets van Skopei', state: 'available', 
-              locktype: 'skopei-v1', locksettings: { elockid: '', pincode: ''}} ]
+   bikes: [ { title: 'Skopei Demo Bike', description: 'Skopei demonstratiefiets met eLock', state: 'available'}, 
+            { title: 'Giant 1', description: 'Damesfiets 33879', state: 'available'}, 
+            { title: 'Giant 2', description: 'Damesfiets 33277 (met kinderzit)', state: 'available'}, 
+            { title: 'Giant 3', description: 'Herenfiets 31119', state: 'available'},
+            { title: 'Bakfiets', description: 'Bakfiets', state: 'available'} ]
   },
   {title:"Lockers Zeist",
    address:"Utrechtseweg 2, 3732 HB De Bilt, Netherlands",
@@ -74,14 +77,6 @@ var testLocations = [
               locktype: 'open-bikelocker'},
             { title: 'Bikelocker H', description: 'rechterkluis', state: 'available', 
               locktype: 'open-bikelocker'} ]
-  },
-  {title:"Zonder provider",
-   imageUrl:'/files/Testdata/lockers.png',
-   providers:[],
-   bikeimage: '/files/Testdata/easyfiets.png',
-   bikes: [ { title: 'Fiets 1', description: 'Blauwe fiets', state: 'available'}, 
-            { title: 'Fiets 2', description: 'Witte fiets', state: 'available'}, 
-            { title: 'Fiets 3', description: 'Rode fiets', state: 'available'} ]
   },
   {title:"Easyfiets - Bij Leiden CS",
    address: "Bargelaan 68, 2333 CV Leiden",
@@ -226,7 +221,7 @@ var createLockCode = function(length) {
 var createLock = function(locktype, locksettings,object) {
   var lockInfo = {};
 
-  if(locktype!='axa-elock'&&locktype!='open-bikelocker'&&
+  if(locktype!='axa-elock'&&locktype!='skopei-elock'&&locktype!='open-bikelocker'&&
      locktype!='open-keylocker'&&locktype!='plainkey') {
       // assume plainkey for unknown keytypes
       locktype='plainkey';
@@ -243,6 +238,8 @@ var createLock = function(locktype, locksettings,object) {
     lockInfo.settings = Object.assign({keylocker: 1, pincode: '1234'}, locksettings);  
   } else if(locktype=='axa-elock') {
     lockInfo.settings = Object.assign({connectionname: 'AXA_HALLORONALD', pincode: '11111'}, locksettings);
+  } else if(locktype=='skopei-elock') {
+    lockInfo.settings = Object.assign({id: 'xxx-xxx-xxx-xxx', pincode: '11111'}, locksettings);
   }
 
   return lockInfo;

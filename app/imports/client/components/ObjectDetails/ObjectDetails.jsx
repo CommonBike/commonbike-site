@@ -14,6 +14,7 @@ import CheckInOutProcessPlainKey from '../CheckInOutProcess/CheckInOutProcessPla
 import CheckInOutProcessAxaELock from '../CheckInOutProcess/CheckInOutProcessAxaELock';
 import CheckInOutProcessOpenKeylocker from '../CheckInOutProcess/CheckInOutProcessOpenKeylocker';
 import CheckInOutProcessOpenBikelocker from '../CheckInOutProcess/CheckInOutProcessOpenBikelocker';
+import CheckInOutProcessSkopeiLock from '../CheckInOutProcess/CheckInOutProcessSkopeiLock';
 
 class ObjectDetails extends Component {
 
@@ -36,6 +37,10 @@ class ObjectDetails extends Component {
     
     else if(lockType=='axa-elock')
       return <CheckInOutProcessAxaELock 
+          object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
+    
+    else if(lockType=='skopei-v1')
+      return <CheckInOutProcessSkopeiLock 
           object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
     
     else
