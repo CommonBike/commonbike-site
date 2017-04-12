@@ -1,0 +1,71 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:res="Skopei/Reservation" xmlns:ns="http://schemas.datacontract.org/2004/07/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <res:addVehicleReservation>
+         <res:ID>COMMONBIKE</res:ID>
+         <res:Hash>1C87A68FAD132EAAA675DB8634E49A5F7AB2FC8502C533B8C4EEE8BADE775782</res:Hash>
+         <res:MessageID>94210</res:MessageID>
+         <res:Reservation>
+            <ns:DateEnd>2017-04-12T10:16:39.813Z</ns:DateEnd>
+            <ns:DateStart>2017-04-11T10:16:39.813Z</ns:DateStart>
+            <ns:ExternalID>5437710000</ns:ExternalID>
+         </res:Reservation>
+         <res:Reservationitems>
+            <ns:Vehicle>
+               <ns:ReservationItemData>
+                  <ns:Code>9999</ns:Code>
+                  <ns:ElockID>160020</ns:ElockID>
+                  <ns:ExternalID>5437710000</ns:ExternalID>
+               </ns:ReservationItemData>
+            </ns:Vehicle>
+         </res:Reservationitems>
+      </res:addVehicleReservation>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+
+
+
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+   <s:Body>
+      <addVehicleReservationResponse xmlns="Skopei/Reservation">
+         <addVehicleReservationResult xmlns:a="http://schemas.datacontract.org/2004/07/" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+            <a:Reservation>
+               <a:DateEnd>2017-04-12T10:16:00Z</a:DateEnd>
+               <a:DateStart>2017-04-11T10:16:00Z</a:DateStart>
+               <a:Email>
+                  <a:Address/>
+                  <a:AddressFrom/>
+                  <a:Body/>
+                  <a:NameFrom/>
+                  <a:SendMinutesBeforeStart>0</a:SendMinutesBeforeStart>
+                  <a:Subject/>
+               </a:Email>
+               <a:ExternalID>5437710000</a:ExternalID>
+               <a:ID>1290</a:ID>
+               <a:SMS>
+                  <a:Body/>
+                  <a:NameFrom/>
+                  <a:PhoneNumber/>
+                  <a:SendMinutesBeforeStart>0</a:SendMinutesBeforeStart>
+               </a:SMS>
+            </a:Reservation>
+            <a:Reservationitems>
+               <a:Vehicle>
+                  <a:ReservationItemData>
+                     <a:Code>9999</a:Code>
+                     <a:Description/>
+                     <a:ElockID>160020</a:ElockID>
+                     <a:ExternalID>5437710000</a:ExternalID>
+                     <a:ExtraElockID i:nil="true"/>
+                     <a:ID>1290</a:ID>
+                     <a:Pincode>26176</a:Pincode>
+                  </a:ReservationItemData>
+               </a:Vehicle>
+            </a:Reservationitems>
+            <a:Result>OK</a:Result>
+         </addVehicleReservationResult>
+      </addVehicleReservationResponse>
+   </s:Body>
+</s:Envelope>
