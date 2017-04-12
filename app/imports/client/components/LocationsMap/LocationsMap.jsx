@@ -3,6 +3,8 @@ import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
 import { RedirectTo } from '/client/main'
 import { Settings } from '/imports/api/settings.js'; 
+import L from 'leaflet'
+import 'leaflet-search'
 
 import './Leaflet.EasyButton.js';
 
@@ -24,23 +26,62 @@ class LocationsMapComponent extends Component {
     }
   }
 
-  componentDidMount() {
-    var map = L.map('mapid');
+  formatJSON(rawjson) {
+    let json = {}, key, loc, disp = [];
 
+    for(var i in rawjson) {
+      key = rawjson[i].formatted_address;
+      loc = L.latLng( rawjson[i].geometry.location.lat(), rawjson[i].geometry.location.lng() );
+      json[key] = loc;// key,value format
+    }
+
+    return json;
+  }
+
+  componentDidMount() {
+    
+    // Init map
+    let map = L.map('mapid', {
+      zoomControl: false// Hide zoom buttons
+    });
+
+    // Start geocoding
+    let geocoder = new google.maps.Geocoder();
+    let googleGeocoding = (text, callResponse) => geocoder.geocode({address: text}, callResponse);
+
+    // Now add the search control
+    map.addControl( new L.Control.Search({
+      position: 'topleft',
+      sourceData: googleGeocoding,
+      formatData: this.formatJSON,
+      markerLocation: true,
+      autoType: false,
+      autoCollapse: true,
+      minLength: 2
+    }) );
+
+    // Add a leyer for search elements
+    let markersLayer = new L.LayerGroup();
+    map.addLayer(markersLayer);
+
+    // Now set the map view
     map.setView(this.props.startLocation, this.props.startZoom);
 
     map.on('moveend', this.mapChanged.bind(this));
     map.on('zoomend', this.mapChanged.bind(this));
 
-    L.easyButton( '<img src="'+ s.images.hier + '" style="width:32px;height:32px" />', this.toggleTrackUser.bind(this) ).addTo(map);    
+    // Le easy button
+    L.easyButton( '<img src="'+ s.images.hier + '" style="width:22px;height:22px" />', this.toggleTrackUser.bind(this) ).addTo(map);    
 
     var locationMarkersGroup = L.featureGroup().addTo(map);    
     locationMarkersGroup.on("click", function (event) {
-        var clickedMarker = event.layer;
-        RedirectTo('/location/' + clickedMarker.locationId);
+      var clickedMarker = event.layer;
+      RedirectTo('/location/' + clickedMarker.locationId);
     }.bind(this));      
 
+    // Track user location
     var trackingMarkersGroup = L.featureGroup().addTo(map);   // no tracking marker yet!
+    this.toggleTrackUser()
 
     var parkingstates = {
       states: [
@@ -60,9 +101,13 @@ class LocationsMapComponent extends Component {
     };
 
     // Button is not added to map yet: only when enabled
-    var parkingButton = L.easyButton(parkingstates).state(this.state.showParkingMarkers?'zichtbaar':'verborgen');        
+    var parkingButton = L.easyButton(parkingstates).state(
+      this.state.showParkingMarkers ? 'zichtbaar' : 'verborgen'
+    );
 
-    var parkingMarkersGroup = L.geoJSON(null , {pointToLayer: this.parkingPointToLayer.bind(this), filter: this.parkingFilterLayers.bind(this)} ).addTo(map);   // no tracking marker yet!
+    var parkingMarkersGroup = L.geoJSON(null , {
+      pointToLayer: this.parkingPointToLayer.bind(this), filter: this.parkingFilterLayers.bind(this)
+    }).addTo(map); // no tracking marker yet!
 
     this.setState(prevState => ({ map: map, 
                                   trackingMarkersGroup: trackingMarkersGroup,
@@ -72,15 +117,14 @@ class LocationsMapComponent extends Component {
   }
 
   initializeMap() {
-    if(!this.props.settings) {
+    if ( ! this.props.settings)
       return;
-    }
 
     var settings = this.props.settings;
 
     // https://www.mapbox.com/api-documentation/#retrieve-a-static-map-image
-    const url = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
     // const url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+    const url = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
 
     L.tileLayer(url, {
       attribution: '<a href="http://mapbox.com">Mapbox</a> | <a href="http://openstreetmap.org">OpenStreetMap</a>',
@@ -92,10 +136,11 @@ class LocationsMapComponent extends Component {
   }
 
   initializeLocationsMarkers() {
-  // create custom icon
+
+    // create custom icon
     var commonbikeIcon = L.icon({
-        iconUrl: '/favicon/commonbike.png',
-        iconSize: [32, 32], // size of the icon
+          iconUrl: '/favicon/commonbike.png',
+          iconSize: [32, 32], // size of the icon
         });
 
     var markers = [];
@@ -113,7 +158,6 @@ class LocationsMapComponent extends Component {
       }
     }, this.props.locations);
     
-
     // var locationMarkersGroup = L.featureGroup(markers);    
     // locationMarkersGroup.on("click", function (event) {
     //     var clickedMarker = event.layer;
@@ -138,19 +182,20 @@ class LocationsMapComponent extends Component {
 
     var trackingMarkersGroup = this.state.trackingMarkersGroup;
     var marker = undefined;
-    if(trackingMarkersGroup.getLayers().length==0) {
+
+    if (trackingMarkersGroup.getLayers().length==0) {
        // create a new tracking marker
       marker = L.circleMarker([0,0]);
-      marker.zIndexOffset = 1000;
+      marker.zIndexOffset = 2000;// Seems not to work, http://leafletjs.com/reference.html#marker-zindexoffset
       marker.bindPopup("<b>You are here</b>");
-
       trackingMarkersGroup.addLayer(marker)
     } else {
       marker = trackingMarkersGroup.getLayers()[0];
     }
 
     marker.setLatLng(newLatLng);
-    if(!this.state.map.getBounds().contains(newLatLng)) {
+
+    if( ! this.state.map.getBounds().contains(newLatLng)) {
       this.state.map.setView(newLatLng);
     }
 
@@ -201,7 +246,7 @@ class LocationsMapComponent extends Component {
 
     this.state.parkingMarkersGroup.clearLayers();
 
-    if(!this.state.showParkingMarkers) {
+    if( ! this.state.showParkingMarkers) {
       return;
     }
 
@@ -211,7 +256,6 @@ class LocationsMapComponent extends Component {
   toggleParking() {
     this.setState(prevState => ({ showParkingMarkers: !prevState.showParkingMarkers}))
     this.state.parkingButton.state(this.state.showParkingMarkers?'zichtbaar':'verborgen');
-
     this.initializeParkingLayer();
   }
 
@@ -244,8 +288,9 @@ class LocationsMapComponent extends Component {
     }
 
     return (
-        <div id='mapid' style={Object.assign({}, s.base, {width: this.props.width, height: this.props.height, maxWidth: '100%'})}>
-        </div>
+      <div id='mapid' style={Object.assign({}, s.base, {width: this.props.width, height: this.props.height, maxWidth: '100%'})}>
+        { Meteor.userId() ? <a style={s.avatar} onClick={() => RedirectTo('/profile')}><Avatar /></a> : <div /> }
+      </div>
     );
   }
 }
@@ -254,18 +299,38 @@ var s = {
   base: {
     fontSize: 'default',
     lineHeight: 'default',
-    background: '#e0e0e0'
+    background: '#e0e0e0',
+    textAlign: 'right'
+  },
+  avatar: {
+    display: 'inline-block',
+    position: 'relative',
+    zIndex: 2000,
+    margin: '15px 20px'
   },
   images: {
     veiligstallen: '/files/Veiligstallen/icon.png',
     veiligstallengrijs: '/files/Veiligstallen/icon-grijs.png',
-    hier: 'https://cdn2.iconfinder.com/data/icons/mini-icon-set-map-location/91/Location_28-48.png'
+    // hier: 'https://cdn2.iconfinder.com/data/icons/mini-icon-set-map-location/91/Location_28-48.png'
+    hier: 'https://einheri.nl/assets/img/home_files/compass-black.svg'
+  },
+  searchForLocation: {
+    position: 'relative',
+    zIndex: 90000, 
+    display: 'block',
+    width: 'calc(100vw - 40px)',
+    margin: '20px auto',
+    borderRadius: 0,
+    border: 'none',
+    height: '50px',
+    lineHeight: '50px',
+    boxShadow: '0px 0px 10px rgba(0,0,0,0.2)'
   }
 }
 
 LocationsMapComponent.propTypes = {
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
+  width: PropTypes.any,
+  height: PropTypes.any,
   locations: PropTypes.array,
   mapboxSettings: PropTypes.object,
   clickItemHandler: PropTypes.any,
@@ -274,8 +339,8 @@ LocationsMapComponent.propTypes = {
 };
 
 LocationsMapComponent.defaultProps = {
-  width: window.innerWidth,
-  height: window.innerHeight-78,
+  width: '100vw',
+  height: '70vh',
   clickItemHandler: '',
   startLocation: [52.159685, 4.490405],
   startZoom: 13

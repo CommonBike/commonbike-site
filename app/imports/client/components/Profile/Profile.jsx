@@ -13,14 +13,6 @@ class Profile extends Component {
     super(props);
   }
 
-  newreservation() {
-     RedirectTo('/locations') 
-  }
-
-  newreservationMap() { 
-    RedirectTo('/map') 
-  }
-
   reservations() {
     RedirectTo('/objects') 
   }
@@ -144,10 +136,6 @@ class Profile extends Component {
           <p style={s.personalia}>
             { this.getUserPersonalia() }
           </p>
-
-          <RaisedButton onClick={this.newreservation.bind(this)}>NIEUWE RESERVERING</RaisedButton>
-
-          <RaisedButton onClick={this.newreservationMap.bind(this)}>ZOEK OP KAART</RaisedButton>
 
           <RaisedButton onClick={this.reservations.bind(this)}>MIJN RESERVERINGEN</RaisedButton>
 

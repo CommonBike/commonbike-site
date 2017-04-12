@@ -33,7 +33,7 @@ const UserAppJoin = () => (<UserApp content={<ContentPage><Join /></ContentPage>
 const UserAppLogin = () => (<UserApp content={<CustomPage><Login /></CustomPage>} />) // Login redirectTo={params.redirectTo}
 const UserAppProfile = () => (<UserApp content={<div><Profile isEditable="true" /></div>} />)
 
-const UserAppLocationList = () => (<UserApp content={<LocationList />} />)
+const UserAppLocationList = () => (<UserApp showPageHeader={false} content={<div><LocationsMap /><LocationList /></div>} />)
 const UserAppLocationDetails = ({match}) => {
   return (
     <UserApp content={<LocationDetails locationId={match.params.locationId} />} />
