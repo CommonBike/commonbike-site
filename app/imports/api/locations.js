@@ -3,6 +3,7 @@ import { Mongo } from 'meteor/mongo';
 import { Accounts } from 'meteor/accounts-base'
 
 import { getUserDescription } from '/imports/api/users.js'; 
+import { Integrations } from '/imports/api/integrations.js'; 
 
 export const Locations = new Mongo.Collection('locations');
 
@@ -106,7 +107,7 @@ if(Meteor.isServer) {
       Meteor.call('transactions.addTransaction', 'ADD_LOCATION', description, Meteor.userId(), locationId, null, data);    
 
       var slackmessage = 'Weer een nieuwe locatie toegevoegd: ' + data.title; 
-      Meteor.call('slack.sendnotification_commonbike',  slackmessage);
+      Integrations.slack.sendNotification(slackmessage);
 
       return locationId
     },
@@ -130,7 +131,24 @@ if(Meteor.isServer) {
 
       var context =  LocationsSchema.newContext();
       if(context.validate({ $set: changes}, {modifier: true} )) {
+        var location = Locations.findOne(_id);
+
+        // log original values as well
+        var logchanges = {};
+        Object.keys(changes).forEach((fieldname) => { 
+          // convert dot notation to actual value
+          val = new Function('_', 'return _.' + fieldname)(location);
+          logchanges[fieldname] = { new: changes[fieldname], 
+                                    prev: val||'undefined' };
+        });
+
         Locations.update(_id, {$set : changes} );
+
+        var description = getUserDescription(Meteor.user()) + ' heeft de instellingen van locatie ' + location.title + ' gewijzigd';
+        Meteor.call('transactions.addTransaction', 'CHANGESETTINGS_LOCATION', description, Meteor.userId(), _id, null, JSON.stringify(logchanges));    
+      } else {
+        console.log('unable to update location with id ' + _id);
+        console.log(context);
       };
     },
     'locations.remove'(_id){
@@ -145,7 +163,7 @@ if(Meteor.isServer) {
       Meteor.call('transactions.addTransaction', 'REMOVE_LOCATION', description, Meteor.userId(), _id, null, location);    
 
       var slackmessage = 'Locatie ' + location.title + ' is verwijderd'; 
-      Meteor.call('slack.sendnotification_commonbike',  slackmessage);
+      Integrations.slack.sendNotification(slackmessage);
     },
     'locationprovider.getuserlist'(locationId) {
       // return a list of users that are providers for the given location 

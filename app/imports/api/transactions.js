@@ -4,7 +4,7 @@ import { Accounts } from 'meteor/accounts-base'
 import { Locations } from '/imports/api/locations.js'; 
 import { Objects } from '/imports/api/objects.js'; 
 import { getUserDescription } from '/imports/api/users.js'; 
-import { getSettingsServerSide } from '/imports/api/settings.js'; 
+import { Integrations } from '/imports/api/integrations.js'; 
 
 export const Transactions = new Mongo.Collection('transactions');
 
@@ -95,29 +95,14 @@ if (Meteor.isServer) {
   		Meteor.call('transactions.addTransaction', 'SET_STATE_' + newstate.toUpperCase(), description, userid, locationid, objectid, null)
 
       if(newstate=='reserved') {
-        Meteor.call('slack.sendnotification_commonbike', 'Fiets '+ objectdata.title + ' is gereserveerd bij ' + locationdata.title);
+        Integrations.slack.sendNotification('Fiets '+ objectdata.title + ' is gereserveerd bij ' + locationdata.title);
       } else if(newstate=='inuse') {
-        Meteor.call('slack.sendnotification_commonbike', 'Fiets '+ objectdata.title + ' is opgehaald bij ' + locationdata.title);
+        Integrations.slack.sendNotification('Fiets '+ objectdata.title + ' is opgehaald bij ' + locationdata.title);
       } else if(newstate=='available') {
-        Meteor.call('slack.sendnotification_commonbike', 'Fiets '+ objectdata.title + ' is teruggezet bij ' + locationdata.title);
+        Integrations.slack.sendNotification('Fiets '+ objectdata.title + ' is teruggezet bij ' + locationdata.title);
       } else if(newstate=='outoforder') {
-        Meteor.call('slack.sendnotification_commonbike', 'Fiets '+ objectdata.title + ' is buiten gebruik bij ' + locationdata.title);
+        Integrations.slack.sendNotification('Fiets '+ objectdata.title + ' is buiten gebruik bij ' + locationdata.title);
       }
-  	},
-    'slack.sendnotification_commonbike'(notification) {
-      var settings = getSettingsServerSide();
-      var slack = settings.slack;
-      if(!slack.notify) { return }
-
-      HTTP.post(slack.address, {
-        "params": { "payload": JSON.stringify(
-                                      { "channel": "#" + slack.channel,
-                                        "username": slack.name,
-                                        "text": notification,
-                                        "icon_emoji": slack.icon_emoji
-                                      })
-                  }
-      });
-    }      
+  	}     
   })
 }

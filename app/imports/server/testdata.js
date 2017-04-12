@@ -51,9 +51,6 @@ var testLocations = [
    bikeimage: '/files/Block/bike.png',
    bikes: [ { title: 'Skopei Demo Bike', description: 'Skopei demonstratiefiets met eLock', state: 'available'}, 
             { title: 'Giant 1', description: 'Damesfiets 33879', state: 'available'}, 
-            { title: 'Giant 2', description: 'Damesfiets 33277 (met kinderzit)', state: 'available'}, 
-            { title: 'Giant 3', description: 'Herenfiets 31119', state: 'available'},
-            { title: 'Bakfiets', description: 'Bakfiets', state: 'available'} ]
   },
   {title:"Lockers Zeist",
    address:"Utrechtseweg 2, 3732 HB De Bilt, Netherlands",

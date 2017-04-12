@@ -6,7 +6,7 @@ import { RedirectTo } from '/client/main'
 // Import components
 import RaisedButton from '../Button/RaisedButton';
 import '../../../api/users.js'; 
-
+import EditSettings from '/imports/client/containers/EditSettings/EditSettings.jsx'
 
 class Profile extends Component {
   constructor(props) {
@@ -39,6 +39,10 @@ class Profile extends Component {
 
   manageusers() {
     RedirectTo('/admin/users') 
+  }
+
+  admintools() {
+    RedirectTo('/admin/admintools') 
   }
 
   logout() { 
@@ -107,6 +111,22 @@ class Profile extends Component {
     }
   }
 
+  getEditSystemSettings() {
+    if(Roles.userIsInRole( Meteor.userId(), 'admin' )) {
+      return (<EditSettings title="SYSTEEMINSTELLINGEN"/> )
+    } else {
+      return ( <div /> )
+    }
+  }
+
+  getAdminToolsButton() {
+    if(Roles.userIsInRole( Meteor.userId(), 'admin' )) {
+      return ( <RaisedButton onClick={this.admintools.bind(this)}>BEHEERDERSFUNCTIES</RaisedButton> )
+    } else {
+      return ( <div /> )
+    }
+  }
+
   render() {
     self = this;
 
@@ -138,6 +158,10 @@ class Profile extends Component {
           { this.getMyRentalsButton() }
 
           { this.getManageUsersButton() }
+
+          { this.getEditSystemSettings() }
+
+          { this.getAdminToolsButton() }
 
           <RaisedButton onClick={this.logout.bind(this)}>LOG UIT</RaisedButton>
         </div>
