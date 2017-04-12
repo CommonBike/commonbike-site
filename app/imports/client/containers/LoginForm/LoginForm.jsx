@@ -12,8 +12,15 @@ class LoginForm extends Component {
 
   //+ loginHandler :: Object -> void 
   loginHandler(userCredentials) {
-    Meteor.loginWithPassword(userCredentials.username, userCredentials.password);
-    if(this.props.loginCallback) { this.props.loginCallback() }
+    let self = this;
+    Meteor.loginWithPassword(userCredentials.username, userCredentials.password, function(err) {
+      if(err) {
+        alert(err.reason)
+      } else {
+        if (self.props.loginCallback)
+          self.props.loginCallback()
+      }
+    });
   }
 
   //+ signUpHandler :: Object -> void 
