@@ -49,7 +49,7 @@ var testLocations = [
    imageUrl:'https://cdn1.iconfinder.com/data/icons/UrbanStories-png-Artdesigner-lv/256/Bicycle_by_Artdesigner.lv.png',
    providers:["s2m@commonbike.com", "user2@commonbike.com"],
    bikeimage: '/files/Block/bike.png',
-   bikes: [ { title: 'Skopei 1', description: 'Demofiets van Skopei', state: 'available', 
+   bikes: [ { lat_lng: [52.0890892, 5.1111248], title: 'Skopei 1', description: 'Demofiets van Skopei', state: 'available', 
               locktype: 'skopei-v1', locksettings: { elockid: '', pincode: ''}} ]
   },
   {title:"Lockers Zeist",
@@ -306,6 +306,7 @@ export const checkTestLocations = function() {
           title: bike.title,
           description: bike.description,
           imageUrl: locationData.bikeimage,
+          lat_lng: bike.lat_lng,
           state: { state: bike.state,
                    userId: firstproviderid,
                    timestamp: timestamp,

@@ -85,7 +85,17 @@ export const ObjectsSchema = new SimpleSchema({
   lock: {
     type: Object,
     blackbox: true
-  }
+  },
+  lat_lng: {
+    type:   Array,
+    label: "GPS location",
+    maxCount: 2
+  },
+  'lat_lng.$': {
+    type: Number,
+    decimal: true,
+    optional: true
+  },
 });
 
 if (Meteor.isServer) {

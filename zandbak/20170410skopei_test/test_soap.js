@@ -44,7 +44,7 @@ function rent_bike(ELockID, duration_hours = 24) {
 				             'Reservationitems': {'Vehicle[]': { ReservationItemData: {ElockID: gElockID1, ExternalID: gTempExternalID, Code: '9999'}}}}; // { }
 				add_authentication(args);
 
-				console.log(args);
+				// console.log(args);
 				console.log('********************************************************************************\n');
 
 		    client.addVehicleReservation(args, function(err, result) {
@@ -58,7 +58,7 @@ function rent_bike(ELockID, duration_hours = 24) {
 		    		}
 		    });
 
-
+				// console.log(client);
 		    console.log(client.lastRequest);
 		});
 
@@ -81,7 +81,7 @@ function cancel_reservation(ELockID, duration_hours = 24) {
 		    		if(err) {
 							console.log('********************************************************************************\n');
 			        console.log('cancelVehicleReservation - error ');
-			        // console.log(err);
+			        console.log(err);
 		    		} else {
 							console.log('********************************************************************************\n');
 			        console.log(result);

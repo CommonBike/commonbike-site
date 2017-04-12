@@ -8,6 +8,7 @@ import './Leaflet.EasyButton.js';
 
 // Import models
 import { Locations, Address2LatLng } from '/imports/api/locations.js'; 
+import { Objects } from '/imports/api/objects.js';
 
 class LocationsMapComponent extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class LocationsMapComponent extends Component {
       watchId : undefined,
       trackingMarkersGroup: undefined,
       locationMarkersGroup: undefined,
+      objectMarkersGroup: undefined,
       showParkingMarkers: false,
       parkingButton: undefined,
       parkingMarkersGroup: undefined
@@ -39,6 +41,12 @@ class LocationsMapComponent extends Component {
         var clickedMarker = event.layer;
         RedirectTo('/location/' + clickedMarker.locationId);
     }.bind(this));      
+
+    var objectMarkersGroup = L.featureGroup().addTo(map);
+    objectMarkersGroup.on("click", function (event) {
+        var clickedMarker = event.layer;
+        RedirectTo('/bike/details/' + clickedMarker.bikeLocationId);
+    }.bind(this));
 
     var trackingMarkersGroup = L.featureGroup().addTo(map);   // no tracking marker yet!
 
@@ -67,6 +75,7 @@ class LocationsMapComponent extends Component {
     this.setState(prevState => ({ map: map, 
                                   trackingMarkersGroup: trackingMarkersGroup,
                                   locationMarkersGroup: locationMarkersGroup,
+                                  objectMarkersGroup: objectMarkersGroup,
                                   parkingButton: parkingButton,
                                   parkingMarkersGroup: parkingMarkersGroup}));    
   }
@@ -92,12 +101,6 @@ class LocationsMapComponent extends Component {
   }
 
   initializeLocationsMarkers() {
-  // create custom icon
-    var commonbikeIcon = L.icon({
-        iconUrl: '/favicon/commonbike.png',
-        iconSize: [32, 32], // size of the icon
-        });
-
     var markers = [];
     R.map((location) =>  {
       if(!location.lat_lng&&location.address) {
@@ -106,7 +109,13 @@ class LocationsMapComponent extends Component {
       }
 
       if(location.lat_lng) {
-        var marker = L.marker(location.lat_lng, {icon: commonbikeIcon, zIndexOffset: -1000});
+        // create custom icon
+        var commonbikeIcon = L.icon({
+          iconUrl: location.imageUrl,
+          iconSize: [32, 32], // size of the icon
+        });
+
+        var marker = L.marker(location.lat_lng, {icon: commonbikeIcon, zIndexOffset: -1000}); // locationMarker
         marker.locationId = location._id;
         // markers.push(marker); // .bindPopup(location.title)
         this.state.locationMarkersGroup.addLayer(marker);
@@ -121,6 +130,24 @@ class LocationsMapComponent extends Component {
     // }.bind(this));      
 
     // return locationMarkersGroup;
+  }
+
+  initializeObjectsMarkers() {
+  // create custom icon
+    var bikeIcon = L.icon({
+        iconUrl: '/files/ObjectDetails/marker.svg',
+        iconSize: [16, 16], // size of the icon
+        });
+
+    var markers = [];
+    R.map((object) => {
+      if(object.lat_lng) {
+        var marker = L.marker(object.lat_lng, {icon: bikeIcon, zIndexOffset: -900}); // bike object marker
+        marker.bikeLocationId = object._id;
+        // markers.push(marker); // .bindPopup(location.title)
+        this.state.objectMarkersGroup.addLayer(marker);
+      }
+    }, this.props.objects);
   }
 
   mapChanged() {
@@ -141,7 +168,7 @@ class LocationsMapComponent extends Component {
     if(trackingMarkersGroup.getLayers().length==0) {
        // create a new tracking marker
       marker = L.circleMarker([0,0]);
-      marker.zIndexOffset = 1000;
+      marker.zIndexOffset = -800; // use marker/tracking
       marker.bindPopup("<b>You are here</b>");
 
       trackingMarkersGroup.addLayer(marker)
@@ -240,6 +267,7 @@ class LocationsMapComponent extends Component {
     if(this.state.map) {
       this.initializeMap();
       this.initializeLocationsMarkers();
+      this.initializeObjectsMarkers();
       this.initializeParkingLayer();
     }
 
@@ -267,6 +295,7 @@ LocationsMapComponent.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   locations: PropTypes.array,
+  objects: PropTypes.array,
   mapboxSettings: PropTypes.object,
   clickItemHandler: PropTypes.any,
   startLocation: PropTypes.array,
@@ -283,13 +312,16 @@ LocationsMapComponent.defaultProps = {
 
 export default LocationsMap = createContainer((props) => {
   Meteor.subscribe('locations', false);
+  Meteor.subscribe('objects', false);
   Meteor.subscribe('settings', false);
 
   var locations = Locations.find({}, { sort: {title: 1} }).fetch()
+  var objects = Objects.find({}, { sort: {title: 1} }).fetch()
   var settings = Settings.findOne({});
 
   return {
     locations: locations,
+    objects: objects,
     settings: settings
   };
 }, LocationsMapComponent);
