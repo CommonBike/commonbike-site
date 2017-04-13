@@ -122,7 +122,7 @@ export const RedirectTo = (path) => {
 //
 class AppRoutes extends React.Component {
   onRedirectToEventHandler(event) {
-    this.props.push(event.detail.path)
+    this.props.history.push(event.detail.path)
   }
 
   componentDidMount() {
