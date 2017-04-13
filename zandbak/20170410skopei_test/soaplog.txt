@@ -1,0 +1,6 @@
+-- test Skopei API ---------
+<cancelVehicleReservation xmlns="Skopei/Reservation"><ID>COMMONBIKE</ID><Hash>C1F2FE6256ECF253DA5EE1537AEE822591041510E033B1500F9D257F26485AB2</Hash><MessageID>53598</MessageID><Reservation><q7:DateEnd xmlns:q7="http://schemas.datacontract.org/2004/07/">2017-05-01T00:00:00Z</q7:DateEnd><q7:DateStart xmlns:q7="http://schemas.datacontract.org/2004/07/">2017-01-01T00:00:00Z</q7:DateStart><q7:ExternalID xmlns:q7="http://schemas.datacontract.org/2004/07/">10001</q7:ExternalID><q7:ID xmlns:q7="http://schemas.datacontract.org/2004/07/">1301</q7:ID></Reservation><Reservationitems><q7:Vehicle xmlns:q7="http://schemas.datacontract.org/2004/07/"><q7:ReservationItemData><q7:ElockID>170178</q7:ElockID><q7:ExternalID>10001</q7:ExternalID><q7:Code>9999</q7:Code></q7:ReservationItemData></q7:Vehicle></Reservationitems></cancelVehicleReservation>
+********************************************************************************
+
+[object Object]
+[object Object]
