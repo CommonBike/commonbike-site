@@ -1,3 +1,5 @@
+import L from 'leaflet'
+
 (function(){
 
 // This is for grouping buttons into a bar

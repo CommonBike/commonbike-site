@@ -84,7 +84,6 @@ class Login extends Component {
 
   render() {
     const {currentUser} = this.props
-    // console.log(currentUser)
     const active = currentUser && currentUser.profile && currentUser.profile.active
     return (
       <div style={s.base}>

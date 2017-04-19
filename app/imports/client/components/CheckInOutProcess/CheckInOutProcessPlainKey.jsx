@@ -23,9 +23,6 @@ class CheckInOutProcessPlainKey extends CheckInOutProcessBase {
   }
 
   checkCode() {
-    // if(ReactDOM.findDOMNode(this.refs.code).value != '25')
-    //   return alert('Dat is niet de juiste code. Probeer het opnieuw.');
-
     this.setState({showCodeEntry:false});
 
     this.setObjectAvailable();

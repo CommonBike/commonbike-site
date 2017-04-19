@@ -33,12 +33,12 @@ class Landing extends Component {
 
         <div style={s.bottomWrapper}>
           <p>
-            <a style={s.smallText} href="/join">euhm, maar hoe werkt dat dan?</a>
+            <a style={s.smallText} onClick={() => RedirectTo('/join')}>euhm, maar hoe werkt dat dan?</a>
           </p>
 
-			<RaisedButton onClick={this.login.bind(this)}>
-				{ this.props.currentUser ? "Waar kan ik fietsen?" : "Meld je aan voor de pilot" }
-			</RaisedButton>
+    			<RaisedButton onClick={this.login.bind(this)}>
+    				{ this.props.currentUser ? "Waar kan ik fietsen?" : "Meld je aan voor de pilot" }
+    			</RaisedButton>
         </div>
 
       </div>
