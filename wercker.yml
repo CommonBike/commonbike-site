@@ -23,7 +23,6 @@ build:
   # http://devcenter.wercker.com/docs/steps/index.html
   steps:
     # A step that executes `npm install` command
-    - cp app/package.json package.json 
     - npm-install
     # A step that executes `npm test` command
     - npm-test
