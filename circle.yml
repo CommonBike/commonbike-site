@@ -1,0 +1,16 @@
+machine:
+  node:
+    
+test:
+  override:
+    - echo test
+
+general:
+  artifacts:
+    - "validate.json" # a single file, relative to the build directory
+    
+deployment:
+  prod:
+    branch: master
+    commands:
+#      - aws s3 sync site s3://demo2.d1g.nl --delete --acl public-read
