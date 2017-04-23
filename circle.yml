@@ -1,5 +1,10 @@
 machine:
   node:
+    version: 4.2.6
+    
+dependencies:
+  override:
+    - npm install --production
     
 test:
   override:
@@ -13,4 +18,5 @@ deployment:
   prod:
     branch: master
     commands:
+    - echo install
 #      - aws s3 sync site s3://demo2.d1g.nl --delete --acl public-read
