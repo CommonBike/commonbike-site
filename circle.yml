@@ -4,6 +4,7 @@ machine:
     
 dependencies:
   override:
+    - cp app/package.json package.json
     - npm install --production
     
 test:
