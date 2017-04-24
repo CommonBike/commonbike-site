@@ -1,14 +1,18 @@
 machine:
   node:
-    version: 4.2.6
+   version: 0.10.40
+  pre:
+   - meteor || curl https://install.meteor.com | /bin/sh
+  post:
+   - meteor --version
     
 dependencies:
   cache_directories:
     - ~/.meteor
   override:
-    - meteor || curl https://install.meteor.com | /bin/sh
     - cp app/package.json package.json
     - npm install --production
+    - meteor npm install --save babel-runtime
     
 test:
   override:
