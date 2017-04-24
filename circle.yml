@@ -8,10 +8,11 @@ dependencies:
   override:
     - meteor || curl https://install.meteor.com | /bin/sh
     - npm install --production
+    - meteor npm install --save babel-runtime
+    - cd app; meteor update --patch
     
 test:
   override:
-    - echo test
 #    - cd app; meteor --settings settings_demo.json
     - cd app; meteor add dispatch:mocha
     - cd app; meteor test --once --driver-package dispatch:mocha
@@ -19,10 +20,11 @@ test:
 general:
   artifacts:
     - "validate.json" # a single file, relative to the build directory
+    - "package.json"
     
 deployment:
   prod:
-    branch: master
+    branch: cicd
     commands:
     - echo install
 #      - aws s3 sync site s3://demo2.d1g.nl --delete --acl public-read
