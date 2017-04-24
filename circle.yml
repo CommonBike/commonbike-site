@@ -13,8 +13,8 @@ test:
   override:
     - echo test
 #    - cd app; meteor --settings settings_demo.json
-    - meteor add dispatch:mocha
-    - meteor test --once --driver-package dispatch:mocha
+    - cd app; meteor add dispatch:mocha
+    - cd app; meteor test --once --driver-package dispatch:mocha
 
 general:
   artifacts:
