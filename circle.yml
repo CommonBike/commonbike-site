@@ -1,6 +1,6 @@
 machine:
   node:
-    version: 4.2.6
+#    version: 4.2.6
     
 dependencies:
   cache_directories:
@@ -11,7 +11,7 @@ dependencies:
     - npm install -g node-gyp
 #    - npm install -g selenium-standalone
     - npm install
-#    - meteor npm install --save babel-runtime
+    - meteor npm install --save babel-runtime
 #    - cd app; meteor update --patch
 #    - npm install --production
 
@@ -30,5 +30,5 @@ deployment:
   prod:
     branch: cicd
     commands:
-    - echo install
-#      - aws s3 sync site s3://demo2.d1g.nl --delete --acl public-read
+    heroku:
+      appname: peter-bike-heroku-cd
