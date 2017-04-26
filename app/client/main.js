@@ -25,6 +25,7 @@ import LocationsMap from '/imports/client/components/LocationsMap/LocationsMap.j
 import ObjectDetails from '/imports/client/containers/ObjectDetails/ObjectDetails.jsx'
 import CommonBikeUI from '/imports/client/commonbike-ui.jsx'
 import AdminTools from '/imports/client/components/AdminTools/AdminTools.jsx'
+import LogList from '/imports/client/containers/LogList/LogList.jsx'
 import NoMatch from '/imports/client/components/NoMatch/NoMatch.jsx'
 
 const UserAppLanding = () => (<UserApp showPageHeader={false} content={<Landing/>} />)
@@ -47,6 +48,8 @@ const UserAppObjectList = () => (<UserApp content={<ObjectList showPrice={true} 
 const UserAppTransactionList = () => (<UserApp content={<TransactionList />} />)
 
 const AdminAppTransactionList = () => (<UserApp content={<TransactionList admin="true" />} />)
+
+const AdminAppLogList = () => (<UserApp content={<LogList admin="true" />} />)
 
 const UserAppRentalList = () => (<UserApp content={<ObjectList rentalsMode={true} showState={true} showRentalDetails={true} />} />)
 
@@ -160,6 +163,7 @@ class AppRoutes extends React.Component {
       <RouteWhenAdmin path='/admin/users' component={UserAppAdminAdminUsersList}/> 
       <RouteWhenAdmin path='/admin/admintools' component={UserAppAdminAdminTools}/> 
       <RouteWhenAdmin path='/admin/transactions' component={AdminAppTransactionList}/> 
+      <RouteWhenLoggedIn path='/admin/log' component={AdminAppLogList}/> 
 
       <Route component={NoMatch}/>
      </Switch>

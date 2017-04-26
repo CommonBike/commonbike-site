@@ -69,6 +69,12 @@ class EditFields extends Component {
         );
 
         break;
+      case 'message':
+        return (
+          <div style={s.message} key={key}>{field.text}</div>
+        );
+
+        break;
       case 'text':
         return (
           <div style={s.editline} key={key}>
@@ -199,6 +205,13 @@ var s = {
     fontSize: '14px',
     width: '100%',
     borderBottom: '2px solid black',
+    padding: '5px',
+    margin: '0 0 5px 0'
+  },
+  message: {
+    textAlign: 'center',
+    fontSize: '14px',
+    width: '100%',
     padding: '5px',
     margin: '0 0 5px 0'
   },

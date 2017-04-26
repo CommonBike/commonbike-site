@@ -28,6 +28,11 @@ export const StateSchema = new SimpleSchema({
     label: "Description",
     defaultValue: ''
   },
+  rentalInfo: {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
 });
 
 export const PriceSchema = new SimpleSchema({
@@ -148,7 +153,8 @@ export const createObject = (locationId, title) => {
     price: {value: '0',
             currency: 'euro',
             timeunit: 'day',
-            description: 'tijdelijk gratis'}
+            description: 'tijdelijk gratis'},
+    	    lat_lng: [0, 0]
   }
 
   try {
@@ -261,7 +267,7 @@ Meteor.methods({
     Meteor.call('transactions.addTransaction', 'REMOVE_OBJECT', description, Meteor.userId(), object.locationId, object);    
     Integrations.slack.sendNotification(slackmessage);
   },
-  'objects.setState'(objectId, userId, locationId, newState, userDescription){
+  'objects.setState'(objectId, userId, locationId, newState, userDescription, rentalInfo){
     // Make sure the user is logged in
     if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
 
@@ -272,7 +278,8 @@ Meteor.methods({
         'state.userId': userId,
         'state.state': newState,
         'state.timestamp': timestamp,
-        'state.userDescription': userDescription||'anonymous' }
+        'state.userDescription': userDescription||'anonymous',
+        'state.rentalInfo': rentalInfo||{} }
     });
 
     var object = Objects.findOne(objectId, {title:1});
@@ -280,5 +287,5 @@ Meteor.methods({
     Meteor.call('transactions.changeStateForObject', newState, description, objectId, locationId);    
 
     return;
-  },
+  },          
 });

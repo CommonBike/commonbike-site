@@ -4,6 +4,8 @@ import { Accounts } from 'meteor/accounts-base'
 import '/imports/api/users.js'
 import { Objects } from '/imports/api/objects.js'; 
 import { Settings } from '/imports/api/settings.js'; 
+import { Log } from '/imports/api/log.js'
+import '/imports/server/testdata.js'
 
 Meteor.startup(() => {
 	// code to run on server at startup

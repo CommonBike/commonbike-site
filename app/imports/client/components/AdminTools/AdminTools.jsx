@@ -65,6 +65,10 @@ class AdminTools extends Component {
     alert('De testdata is toegevoegd!');
   }
 
+  showLog() {
+    RedirectTo('/admin/log');
+  }
+
   databaseCheckup() {
     
   }
@@ -111,6 +115,9 @@ class AdminTools extends Component {
 
           <RaisedButton onClick={this.insertTestData.bind(this)}>TESTDATA TOEVOEGEN</RaisedButton>
 
+        </div>
+        <div style={s.centerbox}>
+          <RaisedButton onClick={this.showLog.bind(this)}>LOG TONEN</RaisedButton>
         </div>
       </div>
     );

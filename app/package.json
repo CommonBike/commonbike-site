@@ -7,7 +7,9 @@
   },
   "dependencies": {
     "bcrypt": "^0.8.7",
+    "bluebird": "^3.5.0",
     "bufferutil": "^1.2.1",
+    "crypto-js": "^3.1.9-1",
     "draft-js": "^0.9.1",
     "fluture": "^4.0.3",
     "leaflet": "^1.0.3",
@@ -24,7 +26,7 @@
     "react-router-dom": "=4.0.0-beta.5",
     "react-swipe": "^5.0.5",
     "react-tap-event-plugin": "^1.0.0",
-    "soap": "^0.19.0",
+    "soap": "git@github.com:mosbuma/node-soap.git",
     "swipe-js-iso": "^2.0.3",
     "utf-8-validate": "^1.2.1"
   }

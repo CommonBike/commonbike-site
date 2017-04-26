@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import CheckInOutProcessBase from '../CheckInOutProcess/CheckInOutProcessBase';
 import { StyleProvider } from '../../StyleProvider.js'
+import { getUserDescription } from '/imports/api/users.js'; 
 
 
 // Import components
@@ -12,24 +13,44 @@ class CheckInOutProcessSkopeiLock extends CheckInOutProcessBase {
     super(props);
   }
 
+  rentBicycle() {
+    Meteor.call('skopei.rentbike', this.props.object._id, this.props.locationId, (error, result) => {
+      if(error) {
+        Meteor.call('log.write', 'unable to call skopei.rentbike method',error);
+      }
+    })    
+  }
+
+  endRentBicycle() {
+    Meteor.call('skopei.endrentbike', this.props.object._id, this.props.locationId, (error, result) => {
+      if(error) {
+        Meteor.call('log.write', 'unable to call skopei.endrentbike method',error);
+      }
+    })    
+  }
+
+  getNeatEndTime() {
+    var enddate = new Date(this.props.object.state.rentalInfo.dateend);
+    return enddate.toLocaleTimeString();
+  }
+
   renderButtonsForUser() {
     return (
       <div style={s.base}>
       {this.props.object.state.state=='available' ?
-        <Button onClick={() => this.setObjectInUse() } buttonStyle="hugeSmallerFont">Huur</Button> : <div /> }
+        <Button onClick={() => this.rentBicycle() } buttonStyle="hugeSmallerFont">Huur</Button> : <div /> }
       {this.props.object.state.state=='inuse' ? 
         <div style={s.base}>
           <ul style={s.list}>
+            <li style={s.listitem}>Uw huurperiode loopt tot {this.getNeatEndTime()}</li>
             <li style={s.listitem}>Uw fiets openen?</li>
             <li style={s.listitem}>Uw huurfiets is voorzien van een Skopei e-Lock</li>
             <li style={s.listitem}>Zoek in het verhuurrek naar {this.props.object.description}</li>
-            <li style={s.listitem}>Open het fietsslot door de code </li>
-            <li style={s.listitem}><b>{this.props.object.lock.settings.keyid}</b></li>
-            <li style={s.listitem}>in te voeren.</li>
+            <li style={s.listitem}>Open het fietsslot door de code <b>{this.props.object.state.rentalInfo.pincode}</b> in te voeren.</li>
             <li style={s.listitem}>Uw huurfiets weer inleveren?</li>
             <li style={s.listitem}>Sluit het slot op de fiets en druk op onderstaande knop</li>
           </ul>
-          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Einde verhuur</Button>
+          <Button style={s.button} onClick={() => this.endRentBicycle() } buttonStyle="hugeSmallerFont">Einde verhuur</Button>
         </div>
         : <div /> }
       {this.props.object.state.state=='outoforder' ? 

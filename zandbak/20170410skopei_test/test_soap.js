@@ -136,7 +136,7 @@ function rent_bike(ElockID, durationHours = 24) {
 
 						    // log_line(client.lastMessage);
 							}
-		    		}
+		    		} 
 		    });
 
 		    return true;
@@ -276,8 +276,8 @@ var duration_hours = 8
 var fromdtISO = "2017-01-01T00:00:00Z"; // startdt.toISOString()
 var todtISO = "2017-05-01T00:00:00Z"; // enddt.toISOString()
 
-var startdtISO = "2017-04-12T12:00:00Z"; // startdt.toISOString()
-var enddtISO = "2017-04-12T20:00:00Z"; // enddt.toISOString()
+var startdtISO = "2017-04-21T12:00:00Z"; // startdt.toISOString()
+var enddtISO = "2017-04-21T20:00:00Z"; // enddt.toISOString()
 var ElockID1 = '170178';
 
 rent_bike(ElockID1);

@@ -65,12 +65,6 @@ class EditObject extends Component {
             fieldvalue: this.props.object.lock.settings.elockid,
             controltype: 'text',
             label: 'lock id'
-        },
-        {
-            fieldname: 'lock.settings.pincode',
-            fieldvalue: this.props.object.lock.settings.pincode,
-            controltype: 'text',
-            label: 'Pincode'
         }
       ]    } else if(lockType=='plainkey'||lockType=='open-bikelocker') {
   		fields = [
@@ -83,6 +77,68 @@ class EditObject extends Component {
 	  	]
     } else {
     	// onbekend type slot
+    }
+
+    return fields;
+  }
+
+  getRentalFields() {
+    var fields = [];
+    var lockType = this.props.object.lock.type;
+    if(lockType=='skopei-v1') {
+      if(!this.props.object.state.rentalInfo||!this.props.object.state.rentalInfo.externalid) {
+        fields = [
+          {
+              controltype: 'header',
+              label: 'Verhuur (Skopei slot)'
+          },
+          {
+              controltype: 'message',
+              text: 'Niet verhuurd'
+          },
+        ]
+
+        return fields;  // no reservation info
+      }
+
+      fields = [
+        {
+            controltype: 'header',
+            label: 'Verhuur (Skopei slot)'
+        },
+        {
+            fieldname: 'state.rentalInfo.externalid',
+            fieldvalue: this.props.object.state.rentalInfo.externalid,
+            controltype: 'text',
+            label: 'External ID'
+        },
+        {
+            fieldname: 'state.rentalInfo.datestart',
+            fieldvalue: this.props.object.state.rentalInfo.datestart,
+            controltype: 'text',
+            label: 'Date Start'
+        },
+        {
+            fieldname: 'state.rentalInfo.dateend',
+            fieldvalue: this.props.object.state.rentalInfo.dateend,
+            controltype: 'text',
+            label: 'Date End'
+        },
+        {
+            fieldname: 'state.rentalInfo.code',
+            fieldvalue: this.props.object.state.rentalInfo.code,
+            controltype: 'text',
+            label: 'Code'
+        },
+        {
+            fieldname: 'state.rentalInfo.pincode',
+            fieldvalue: this.props.object.state.rentalInfo.pincode,
+            controltype: 'text',
+            label: 'Pincode'
+        }
+      ] 
+    } else {
+      // onbekend type slot
     }
 
     return fields;
@@ -176,6 +232,8 @@ class EditObject extends Component {
   	]
 
   	fields = fields.concat(this.getLockFields());
+
+    fields = fields.concat(this.getRentalFields());
 
     return (
       <EditFields fields={fields} apply={this.update.bind(this)} />
