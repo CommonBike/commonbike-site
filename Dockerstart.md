@@ -8,6 +8,8 @@ Then, as `root` run
 ```shell
 apt update
 apt install npm nodejs
+npm install -g node-gyp
+ln -s /usr/bin/nodejs /usr/bin/node
 curl https://install.meteor.com/ | sh
 ```
 Then you install the commonbike app in the following way.
@@ -24,7 +26,7 @@ cd ../
 docker build --rm=true -t commonbikerc .
 ```
 The argument `-t commonbikerc` shows the name of the new container. This should match the name in the `docker-compose.yml` file. 
-Then, finally you can start the containers with:
+Finally you can start the containers with:
 ```shell
 docker-compose up
 ```
