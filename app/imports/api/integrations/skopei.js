@@ -52,12 +52,12 @@ class SkopeiAPIClass {
 		var createClient = this.promise.promisify(require('soap').createClient);
 
 		createClient(gSkopeiURL).then(Meteor.bindEnvironment(function(client)  {
-				Meteor.call('log.write', 'Skopei client initialized')
-				this.SoapClient = client;
-			}.bind(this))
-		).catch(function(e) {
-			console.error(e.stack)
-		})
+        Meteor.call('log.write', 'Skopei client initialized')
+        this.SoapClient = client;
+      }.bind(this))
+    ).catch(function(e) {
+      console.error(e.stack)
+    })
 	}
 
   addAuthentication(args) {
@@ -74,13 +74,14 @@ class SkopeiAPIClass {
     var newState = 'inuse'
     var user = getUserDescription(Meteor.user());
 
+    // Check if given Object exists on given Location
 	  var object = Objects.findOne(objectId, {title:1, locationId:1});
 	  if(!object||object.lock.type!='skopei-v1') {
 	  	Meteor.call('log.write', `No object or unable to use skopei driver for non skopei object`);
-
 	  	return false;
 	  }
 
+    // Check if Object has an e-lock
 		ElockID = object.lock.settings.elockid;
 		if(ElockID==0) {
 	  	Meteor.call('log.write', `Skopei lock ID is not set for this object`);
@@ -115,7 +116,9 @@ class SkopeiAPIClass {
 		var context = {
 			objectId: objectId
 		}
-		var addVehicleReservation = this.promise.promisify(this.SoapClient.addVehicleReservation, this);
+
+    // Ask the API to do a reservation
+    var addVehicleReservation = this.promise.promisify(this.SoapClient.addVehicleReservation, this);
     addVehicleReservation(args).then(Meteor.bindEnvironment(function(result) {
       if(result.addVehicleReservationResult.Result=="OK") {
         var vehicle=result.addVehicleReservationResult.Reservationitems.Vehicle;
@@ -130,7 +133,6 @@ class SkopeiAPIClass {
 				};
 
 				Meteor.call('objects.setState', this.objectId, Meteor.userId(), null, newState, user, rentalInfo);
-
 				Meteor.call('log.write', 'addVehicleReservation: OK', result);
 			} else {
 				var description = "addVehicleReservation: NOT OK"

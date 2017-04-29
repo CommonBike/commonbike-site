@@ -16,7 +16,7 @@ var AllStyles = {
 	  base: {
 	    fontSize: 'default',
 	    lineHeight: 'default',
-	    padding: '20px 20px 0 20px',
+	    padding: '20px 0 0 0',
 	    textAlign: 'center',
 	  },
 	  button: {
