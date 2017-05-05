@@ -15,7 +15,7 @@ import CheckInOutProcessAxaELock from '../CheckInOutProcess/CheckInOutProcessAxa
 import CheckInOutProcessOpenKeylocker from '../CheckInOutProcess/CheckInOutProcessOpenKeylocker';
 import CheckInOutProcessOpenBikelocker from '../CheckInOutProcess/CheckInOutProcessOpenBikelocker';
 import CheckInOutProcessSkopeiLock from '../CheckInOutProcess/CheckInOutProcessSkopeiLock';
-import ManageAPIkeys from '../ManageAPIKeys/ManageAPIKeys';
+import ManageApiKeys from '../ManageApiKeys/ManageApiKeys';
 
 class ObjectDetails extends Component {
 
@@ -69,11 +69,11 @@ class ObjectDetails extends Component {
           :null }
 
         { this.props.isEditable? 
-          <ManageAPIKeys ownerId={this.props.locationId} type="object" />
+          <ManageApiKeys keyOwnerId={this.props.object._id} keyType="object" />
           :null }
 
         { this.renderCheckInOutProcess() }
-        
+
       </div>
     );
   }

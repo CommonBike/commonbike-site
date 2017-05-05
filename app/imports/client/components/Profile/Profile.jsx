@@ -7,6 +7,7 @@ import { RedirectTo } from '/client/main'
 import RaisedButton from '../Button/RaisedButton';
 import '../../../api/users.js'; 
 import EditSettings from '/imports/client/containers/EditSettings/EditSettings.jsx'
+import ManageApiKeys from '../ManageApiKeys/ManageApiKeys';
 
 class Profile extends Component {
   constructor(props) {
@@ -144,6 +145,8 @@ class Profile extends Component {
           { this.getMyLocationsButton() }
 
           { this.getMyRentalsButton() }
+
+          <ManageApiKeys keyOwnerId={Meteor.userId()} keyType="user" />
 
           { this.getManageUsersButton() }
 

@@ -2,46 +2,52 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import R from 'ramda';
 
-// usage    <ManageUserlist methodsBaseName='locationprovider' parentId={this.props.locationId} />
+// Import components
+import TextField from '../TextField/TextField.jsx';
+import CopyToClipboard from 'react-copy-to-clipboard';
 
-
-class ManageAPIKeys extends Component {
+export default class ManageApiKeys extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { showDetails: false, APIKeysList: [] }
+    this.state = { showDetails: false, ApiKeysList: [] }
   }
 
   componentDidMount() {
-    if(this.props.methodsBaseName && this.props.keyOwnerId) {
-      Meteor.call('getAPIKeysList', this.props.keyOwnerId, this.props.keyType, this.updateAPIKeysList.bind(this));
-    }
+   if(this.props.keyType && this.props.keyOwnerId) {
+     Meteor.call('apikeys.getlist', this.props.keyOwnerId, this.props.keyType, this.updateApiKeysList.bind(this));
+   }
   }
 
-  updateAPIKeysList(error, result) {
+  updateApiKeysList(error, result) {
     if(error) return alert(error.error);
 
     // Reset input field
     ReactDOM.findDOMNode(this.refs.keyname).value = '';
 
+    console.log(JSON.stringify(result, 0,2));
+
     // Set new data
-    this.setState(prevState => ({APIKeysList : result }));
+    this.setState(prevState => ({ApiKeysList : result }));
   }
 
-  reloadAPIKeysList(error, result) {
+  reloadApiKeysList(error, result) {
     if(error) return alert(error.error);
 
-    Meteor.call('getAPIKeysList', this.props.keyOwnerId, this.props.keyType, this.updateAPIKeysList.bind(this));
+    Meteor.call('apikeys.getlist', this.props.keyOwnerId, this.props.keyType, this.updateApiKeysList.bind(this));
   }
 
-  addAPIKey(e) {
+
+  addApiKey(e) {
     if(e) e.preventDefault();
+
     keyName = ReactDOM.findDOMNode(this.refs.keyname).value;
-    Meteor.call('addAPIKey', this.props.keyOwnerId, this.props.keyType, keyName, this.reloadAPIKeysList.bind(this));
+    console.log('keyname:' + keyName)
+    Meteor.call('apikeys.add', this.props.keyOwnerId, this.props.keyType, keyName, this.reloadApiKeysList.bind(this));
   }
 
-  removeAPIKey(keyId) {
-    confirm('Sure?') && Meteor.call('removeAPIKey', this.props.keyOwnerId, keyId, this.reloadAPIKeysList.bind(this));
+  removeApiKey(keyId) {
+   confirm('Sure?') && Meteor.call('apikeys.remove', keyId, this.reloadApiKeysList.bind(this));
   }
 
   render() {
@@ -50,8 +56,8 @@ class ManageAPIKeys extends Component {
     return (
       <div style={s.box}>
         <div style={s.titel}>
-          API Keys
-          <img src={ s.images.details } style={s.icon} alt="toggle" onClick={() => this.setState(prevState => ({ showDetails: ! prevState.showDetails}))} />
+          Api Keys
+          <img src={ s.images.details } style={s.icon} alt="toggle" onClick={() => this.setState(prevState => ({ showDetails: ! prevState.showDetails}))}  />
         </div>
 
         { this.createList() }
@@ -64,17 +70,18 @@ class ManageAPIKeys extends Component {
     return (
       <div style={Object.assign({}, s.lijst, ! this.state.showDetails && {display: 'none'})}>
 
-        <form style={Object.assign({display: 'flex'}, s.lijstitem)} onSubmit={this.addAPIKey.bind(this)}> 
+        <form style={Object.assign({display: 'flex'}, s.lijstitem)} onSubmit={this.addApiKey.bind(this)}> 
           <TextField type="text" ref="keyname" placeholder="beschrijving" name="keyname" style={s.textField} />
-          <button type="submit" style={s.addicon} ref="addAPIKey" title="add user" />
+          <button type="submit" style={s.addicon} ref="addApiKey" title="add user" />
         </form>        
 
         {R.map((apikey) =>  <div style={s.lijstitem} key={apikey._id}>
+                              <CopyToClipboard text={apikey.key} onCopy={() => alert(apikey.key + " gekopieerd")} >
+                                <img style={s.icon} src={s.images.clipboard} />
+                              </CopyToClipboard>                                                           
                               <span>{apikey.name}</span>
-                              {this.state.APIKeysList.length > 1 &&
-                              <img style={s.icon}  src={s.images.trashcan} onClick={() => this.removeAPIKey(apikey._id) } />
-                              }
-                          </div>, this.state.APIKeysList)}
+                              <img style={s.icon} src={s.images.trashcan} onClick={() => this.removeApiKey(apikey._id) } />
+                            </div>, this.state.ApiKeysList)}
       </div>
     ); 
   }
@@ -141,7 +148,8 @@ var s = {
 
   images: {
     details: 'https://cdn1.iconfinder.com/data/icons/general-9/500/more-48.png',
-    trashcan: 'https://cdn4.iconfinder.com/data/icons/miu/24/editor-trash-delete-recycle-bin-glyph-48.png'
+    trashcan: 'https://cdn4.iconfinder.com/data/icons/miu/24/editor-trash-delete-recycle-bin-glyph-48.png',
+    clipboard: 'https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-clipboard-48.png'
   },
 
   textField: {
@@ -151,14 +159,13 @@ var s = {
   },
 }
 
-ManageAPIKeys.propTypes = {
+ManageApiKeys.propTypes = {
   keyType: PropTypes.string,    // type of key that is managed
   keyOwnerId: PropTypes.string, // id of document owns this key
 };
 
-ManageAPIKeys.defaultProps = {
+ManageApiKeys.defaultProps = {
   keyType: "",
   keyOwnerId: "",
 }
 
-export default ManageAPIKeys;

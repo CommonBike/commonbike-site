@@ -6,8 +6,8 @@ import R from 'ramda';
 import EditLocation from '../../containers/EditLocation/EditLocation';
 import RaisedButton from '../Button/RaisedButton.jsx'
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
+import ManageApiKeys from '../ManageApiKeys/ManageApiKeys';
 import ManageUserlist from '../ManageUserlist/ManageUserlist';
-import ManageAPIkeys from '../ManageAPIKeys/ManageAPIKeys.jsx';
 import MapSummary from '../../MapSummary'
 
 class LocationDetails extends Component {
@@ -43,7 +43,7 @@ class LocationDetails extends Component {
           :null }
 
         { this.props.isEditable? 
-          <ManageAPIKeys keyOwnerId={this.props.locationId} keyType="object" />
+          <ManageApiKeys keyOwnerId={this.props.locationId} keyType="location" />
           :null }
 
         <RaisedButton style={Object.assign({display: 'none'}, this.props.isEditable && {display: 'block'})} onClick={this.newObject.bind(this)}>

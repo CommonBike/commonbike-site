@@ -5,7 +5,7 @@ import R from 'ramda';
 // Import components
 import TextField from '../TextField/TextField.jsx';
 
-class ManageUserlist extends Component {
+export default class ManageUserlist extends Component {
   constructor(props) {
     super(props);
 
@@ -180,4 +180,4 @@ ManageUserlist.defaultProps = {
   parentId: "",
 }
 
-export default ManageUserlist;
+
