@@ -6,6 +6,7 @@ import { Objects } from '/imports/api/objects.js';
 import { Settings } from '/imports/api/settings.js'; 
 import { Log } from '/imports/api/log.js'
 import '/imports/server/testdata.js'
+import '/imports/server/api/api-key.js'
 
 Meteor.startup(() => {
 	// code to run on server at startup

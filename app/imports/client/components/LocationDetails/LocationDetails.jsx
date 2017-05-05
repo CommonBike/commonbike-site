@@ -7,6 +7,7 @@ import EditLocation from '../../containers/EditLocation/EditLocation';
 import RaisedButton from '../Button/RaisedButton.jsx'
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
 import ManageUserlist from '../ManageUserlist/ManageUserlist';
+import ManageAPIkeys from '../ManageAPIKeys/ManageAPIKeys.jsx';
 import MapSummary from '../../MapSummary'
 
 class LocationDetails extends Component {
@@ -39,6 +40,10 @@ class LocationDetails extends Component {
         { this.props.isEditable? 
           <ManageUserlist methodsBaseName='locationprovider'
                           parentId={this.props.locationId} />
+          :null }
+
+        { this.props.isEditable? 
+          <ManageAPIKeys keyOwnerId={this.props.locationId} keyType="object" />
           :null }
 
         <RaisedButton style={Object.assign({display: 'none'}, this.props.isEditable && {display: 'block'})} onClick={this.newObject.bind(this)}>
