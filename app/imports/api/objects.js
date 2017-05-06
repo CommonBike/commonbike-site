@@ -109,7 +109,7 @@ if (Meteor.isServer) {
   });
 }
 
-var getStateChangeNeatDescription = (objectTitle, newState) => {
+export function getStateChangeNeatDescription(objectTitle, newState) {
   var description = ""
   if(newState=='reserved') {
     description = objectTitle + " gereserveerd"

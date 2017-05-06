@@ -86,7 +86,12 @@ if (Meteor.isServer) {
   	},
   	'transactions.changeStateForObject'(newstate, actiondescription, objectid, locationid) {
   		var userid = Meteor.userId();
-  	  var userdata = Meteor.users.findOne({_id:userid}, {emails:1});
+      if(userid&&userid!=null) {
+        var userdata = Meteor.users.findOne({_id:userid}, {emails:1});
+        userDescription = userdata.emails[0].address;
+      } else {
+        userDescription = "anoniem";
+      }
       if(locationid&&locationid!=null) {
         var locationdata = Locations.findOne({_id: locationid}, {title: 1});
         locationtitle = locationdata.title;
@@ -95,7 +100,7 @@ if (Meteor.isServer) {
       }
       var objectdata = Objects.findOne({_id: objectid}, {title: 1});
 
-  		var description = "gebruiker \'" + userdata.emails[0].address + '\' heeft ' + actiondescription + ' op locatie \'' + locationtitle + '\'';
+  		var description = "gebruiker \'" + userDescription + '\' heeft ' + actiondescription + ' op locatie \'' + locationtitle + '\'';
 
   		Meteor.call('transactions.addTransaction', 'SET_STATE_' + newstate.toUpperCase(), description, userid, locationid, objectid, null)
 
