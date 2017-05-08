@@ -1,10 +1,17 @@
 #include <ESP8266WiFi.h>
 // #include <WiFiClientSecure.h>
 #include <ArduinoJson.h>
+#include "settings.h"
 
 // this sketch has been written for the NODEMCU V1.0 (ESP8266) Module
 // it uses modules from the dealextream/aliexpress 37-in-1 sensor kit 
 // documentation: https://tkkrlab.nl/wiki/Arduino_37_sensors
+//
+// Requires arduinoJSON library!
+//
+// usage
+//
+// copy settings_demo.h to settings.h and fill in the network info and commonbike API Key
 
 // PINOUT: 
 
@@ -16,23 +23,6 @@
 //RGB module R - 220R - NODEMCU D6
 //RGB module G - 220R - NODEMCU D7
 
-// usage
-
-// 1. enter wifi network credentials below
-//
-const char* ssid = "xanadu";
-// const char* ssid = "Delhi";  
-const char* password = "hondenkop77##";
-
-// 2. create an API key in the commonbike GUI for the object that you want to rent
-// - You must be manager for the location that the object belongs to
-// - go to the corresponding location (Mijn locaties -> select location -> click info)
-// - go to the object (select object, click info)
-// - create an API key
-//
-// enter the API key below
-
-const char* api_key = "8c9ee150814ab93892196fa00bc55719";
 
 // commonbike server info
 const unsigned long HTTP_TIMEOUT = 5000;  // max respone time from server
