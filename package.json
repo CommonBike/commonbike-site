@@ -6,7 +6,6 @@
     "start": "meteor run --settings settings.json"
   },
   "dependencies": {
-#    "bcrypt": "^0.8.7",
     "bufferutil": "^1.2.1",
     "draft-js": "^0.9.1",
     "fluture": "^4.0.3",
