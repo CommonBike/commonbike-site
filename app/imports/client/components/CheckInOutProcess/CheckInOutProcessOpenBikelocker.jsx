@@ -10,11 +10,6 @@ class CheckInOutProcessOpenBikelocker extends CheckInOutProcessBase {
     super(props);
   }
 
-  testDialout() {
-    console.log('locker test dialout!');
-    Meteor.call('dialoutapi.wakeupcall', this.props.object._id);
-  }
-
   setObjectReserved() {
     super.setObjectReserved();
     console.log('locker reserved!');
@@ -56,7 +51,6 @@ class CheckInOutProcessOpenBikelocker extends CheckInOutProcessBase {
   renderButtonsForUser() {
     return (
       <div style={s.base}>
-      <Button style={s.button} onClick={() => this.testDialout() } buttonStyle="hugeSmallerFont">BEL MIJ!</Button>
       {this.props.object.state.state=='available' ?
         <Button style={s.button} onClick={() => this.setObjectReserved() } buttonStyle="hugeSmallerFont">Reserveer</Button> : <div /> }
       {this.props.object.state.state=='reserved' ?
