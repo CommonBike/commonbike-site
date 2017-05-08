@@ -1,10 +1,14 @@
 language: node_js
+sudo: required
 dist: trusty
 node_js:
   - "7"
 env:
   - CXX=g++-4.8
   - LAIKA_OPTIONS="-t 5000"
+services:
+  - mongodb
+  - docker
 addons:
   apt:
     sources:
@@ -13,5 +17,5 @@ addons:
       - g++-4.8
 #before_install:
 #  - "curl -L https://raw.githubusercontent.com/arunoda/travis-ci-laika/master/configure.sh | /bin/sh"
-services:
-  - mongodb
+after_success:
+  - docker build -f Dockerfile -t testtag .
