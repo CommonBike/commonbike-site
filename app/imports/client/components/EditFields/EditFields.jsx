@@ -116,7 +116,7 @@ class EditFields extends Component {
         );
 
         break;
-      default: 
+      default:
         return (<div />);
         break;
     }
@@ -127,7 +127,7 @@ class EditFields extends Component {
       <div style={s.box}>
         <div style={s.titelbox}>
           {this.props.title}
-          <img src={ s.images.details } style={s.editicon} alt="toggle" onClick={() => this.setState(prevState => ({ showDetails: ! prevState.showDetails}))} />
+          <img src={ s.images.details } style={s.editicon} alt="" onClick={() => this.setState(prevState => ({ showDetails: ! prevState.showDetails}))} />
         </div>
 
         { this.state.showDetails?
@@ -136,13 +136,13 @@ class EditFields extends Component {
             }
             <div style={s.confirmline}>
                 <div />
-                <img src={s.images.yes} style={s.icon} onClick={this.apply.bind(this)} hidden={Object.keys(this.state.changes).length==0}/>          
-                <img src={s.images.no} style={s.icon} onClick={this.reset.bind(this)} />          
+                <img src={s.images.yes} style={s.icon} onClick={this.apply.bind(this)} hidden={Object.keys(this.state.changes).length==0}/>
+                <img src={s.images.no} style={s.icon} onClick={this.reset.bind(this)} />
             </div>
           </form>
           :null
         }
-      </div> 
+      </div>
     );
   }
 }
@@ -247,7 +247,7 @@ EditFields.propTypes = {
             React.PropTypes.shape({
               fieldname: React.PropTypes.string,
               fieldvalue: React.PropTypes.oneOfType([
-                React.PropTypes.string,   
+                React.PropTypes.string,
                 React.PropTypes.number,
                 React.PropTypes.bool]),
               controltype: React.PropTypes.string,
@@ -258,8 +258,8 @@ EditFields.propTypes = {
 };
 
 EditFields.defaultProps = {
-  title: 'Instellingen',
-  fields: [] 
+  title: 'INSTELLINGEN',
+  fields: []
 }
 
 export default EditFields

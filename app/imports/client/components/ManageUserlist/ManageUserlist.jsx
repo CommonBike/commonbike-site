@@ -44,9 +44,9 @@ export default class ManageUserlist extends Component {
     confirm('Sure?') && Meteor.call(this.props.methodsBaseName + '.removeuser', this.props.parentId, userId, this.reloadUserList.bind(this));
   }
 
-  // NICE TO HAVE: enable these event handlers + corresponding code above to enable the add button when a valid email address has been 
+  // NICE TO HAVE: enable these event handlers + corresponding code above to enable the add button when a valid email address has been
   // typed by the user
-  // setEmailValid(error, emailvalid) { 
+  // setEmailValid(error, emailvalid) {
   //   if(!error) {
   //     console.log('emailvalid set to:', emailvalid);
 
@@ -66,13 +66,13 @@ export default class ManageUserlist extends Component {
     return (
       <div style={s.box}>
         <div style={s.titel}>
-          Beheerders
-          <img src={ s.images.details } style={s.icon} alt="toggle" onClick={() => this.setState(prevState => ({ showDetails: ! prevState.showDetails}))} />
+          BEHEERDERS
+          <img src={ s.images.details } style={s.icon} alt="" onClick={() => this.setState(prevState => ({ showDetails: ! prevState.showDetails}))} />
         </div>
 
         { this.createList() }
 
-      </div> 
+      </div>
     );
   }
 
@@ -80,12 +80,12 @@ export default class ManageUserlist extends Component {
     return (
       <div style={Object.assign({}, s.lijst, ! this.state.showDetails && {display: 'none'})}>
 
-        <form style={Object.assign({display: 'flex'}, s.lijstitem)} onSubmit={this.addUser.bind(this)}> 
-          <TextField type="email" ref="email" placeholder="nieuw e-mailadres" 
+        <form style={Object.assign({display: 'flex'}, s.lijstitem)} onSubmit={this.addUser.bind(this)}>
+          <TextField type="email" ref="email" placeholder="nieuw e-mailadres"
                      name="email" style={s.textField}
             />
           <button type="submit" style={s.addicon} ref="adduser" title="add user" />
-        </form>        
+        </form>
 
         {R.map((user) =>  <div style={s.lijstitem} key={user._id}>
                               <span>{user.email}</span>
@@ -95,7 +95,7 @@ export default class ManageUserlist extends Component {
                           </div>, this.state.userList)}
 
       </div>
-    ); 
+    );
   }
 }
 
@@ -179,5 +179,3 @@ ManageUserlist.defaultProps = {
   methodsBaseName: "",
   parentId: "",
 }
-
-

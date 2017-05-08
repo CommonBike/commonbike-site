@@ -9,7 +9,7 @@ lockerAPI = {
       return getObject.ownerid;
     } else {
       return false;
-    }    
+    }
   },
   connection: function( request ) {
     var getRequestContents = lockerAPI.utility.getRequestContents( request ),
@@ -21,7 +21,7 @@ lockerAPI = {
       return { owner: validObject, data: getRequestContents };
     } else {
       return { error: 401, message: "Invalid API key." };
-    }    
+    }
   },
   handleRequest: function( request, response, resource, method ) {
     var connection = lockerAPI.connection( request );
@@ -29,7 +29,7 @@ lockerAPI = {
       lockerAPI.methods[ resource ]( response, connection );
     } else {
       lockerAPI.utility.response( response, 401, connection );
-    }    
+    }
   },
   methods: {
     object: function( response, connection ) {
@@ -38,7 +38,7 @@ lockerAPI = {
         lockerAPI.utility.response( response, 404, { error: 404, message: "Unknown locker" } );
         return;
       }
-      
+
       var hasData   = lockerAPI.utility.hasData( connection.data );
       if(!hasData) {
         // send status
@@ -69,7 +69,7 @@ lockerAPI = {
 
               var object = Objects.findOne(connection.owner, {title:1, 'state.state':1 });
               var description = getStateChangeNeatDescription(object.title, newState);
-              Meteor.call('transactions.changeStateForObject', newState, description, object._id, null);    
+              Meteor.call('transactions.changeStateForObject', newState, description, object._id, null);
 
               objectinfo = {
                 title: object.title,
@@ -96,7 +96,7 @@ lockerAPI = {
 
               var object = Objects.findOne(connection.owner, {title:1, 'state.state':1 });
               var description = getStateChangeNeatDescription(object.title, newState);
-              Meteor.call('transactions.changeStateForObject', newState, description, object._id, null);    
+              Meteor.call('transactions.changeStateForObject', newState, description, object._id, null);
 
               objectinfo = {
                 title: object.title,
@@ -115,7 +115,7 @@ lockerAPI = {
         }
       } else {
         lockerAPI.utility.response( response, 403, { error: 403, message: "POST calls must have an action (rent_start or rent_end) passed in the request body in the correct format." } );
-      }       
+      }
     }
   },
   resources: {},
@@ -142,7 +142,7 @@ lockerAPI = {
     },
     validate: function( data, pattern ) {
       return Match.test( data, pattern );
-    }    
+    }
   }
 };
 
@@ -151,12 +151,8 @@ var bodyParser = require("body-parser");
 
 WebApp.connectHandlers
     .use(bodyParser.urlencoded({ extended: true }))
-    .use(bodyParser.json())    
+    .use(bodyParser.json())
     .use('/api/locker/v1', function (req, res) {
-  console.log('Doing stuff with lockers!!!!')
-  console.log(getStateChangeNeatDescription);
-
-  this.data = '';
 
   res.setHeader( 'Access-Control-Allow-Origin', '*' );
 
@@ -166,5 +162,5 @@ WebApp.connectHandlers
     res.end( 'Set OPTIONS.' );
   } else {
     lockerAPI.handleRequest( req, res, 'object' );
-  }  
+  }
 });

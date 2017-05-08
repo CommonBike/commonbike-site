@@ -10,8 +10,8 @@ import { RedirectTo } from '/client/main'
 import EditFields from '../../components/EditFields/EditFields';
 
 // Import models
-import { Objects, ObjectsSchema } from '/imports/api/objects.js'; 
-import { Locations } from '/imports/api/locations.js'; 
+import { Objects, ObjectsSchema } from '/imports/api/objects.js';
+import { Locations } from '/imports/api/locations.js';
 
 class EditObject extends Component {
 
@@ -66,7 +66,25 @@ class EditObject extends Component {
             controltype: 'text',
             label: 'lock id'
         }
-      ]    } else if(lockType=='plainkey'||lockType=='open-bikelocker') {
+      ]    } else if(lockType=='plainkey') {
+  		fields = [
+	  		{
+	          fieldname: 'lock.settings.keyid',
+	          fieldvalue: this.props.object.lock.settings.keyid,
+	          controltype: 'text',
+	          label: 'Sleutelnr.'
+	  		}
+	  	]
+    } else if(lockType=='open-bikelocker') {
+      fields = [
+        {
+            fieldname: 'lock.settings.phonenr',
+            fieldvalue: this.props.object.lock.settings.phonenr,
+            controltype: 'text',
+            label: 'Inbelnummer'
+        }
+      ]
+    } else if(lockType=='plainkey') {
   		fields = [
 	  		{
 	          fieldname: 'lock.settings.keyid',
@@ -136,7 +154,7 @@ class EditObject extends Component {
             controltype: 'text',
             label: 'Pincode'
         }
-      ] 
+      ]
     } else {
       // onbekend type slot
     }

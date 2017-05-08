@@ -7,6 +7,7 @@ import R from 'ramda';
 
 // Import components
 import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
+import CommonBikeLogoDevelopment from '../CommonBikeLogoDevelopment/CommonBikeLogoDevelopment.jsx'
 import BackButton from '../Button/BackButton.jsx'
 import RaisedButton from '../Button/RaisedButton.jsx'
 import Avatar from '../Avatar/Avatar.jsx'
@@ -22,12 +23,20 @@ class PageHeader extends Component {
     RedirectTo('/profile');
   }
 
+  getLogo() {
+    if(Meteor.isProduction) {
+      return (<CommonBikeLogo type="common" style={s.logo} />);
+    } else {
+      return (<CommonBikeLogoDevelopment type="common" style={s.logo} />);
+    }
+  }
+
   render() {
     return (
       <div style={s.base}>
         <div style={s.flex}>
           <BackButton />
-          <a onClick={() => RedirectTo('/locations')} style={{display: 'flex'}}><CommonBikeLogo type="common" style={s.logo} /></a>
+          <a onClick={() => RedirectTo('/locations')} style={{display: 'flex'}}>{this.getLogo()}</a>
           { Meteor.userId() ? <a onClick={this.gotoProfile.bind(this)}><Avatar /></a> : <div /> }
         </div>
         {this.props.children}

@@ -2,8 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import CheckInOutProcessBase from '../CheckInOutProcess/CheckInOutProcessBase';
 import { StyleProvider } from '../../StyleProvider.js'
-
-
 // Import components
 import Button from '../Button/Button';
 
@@ -12,12 +10,56 @@ class CheckInOutProcessOpenBikelocker extends CheckInOutProcessBase {
     super(props);
   }
 
+  testDialout() {
+    console.log('locker test dialout!');
+    Meteor.call('dialoutapi.wakeupcall', this.props.object._id);
+  }
+
+  setObjectReserved() {
+    super.setObjectReserved();
+    console.log('locker reserved!');
+    Meteor.call('dialoutapi.wakeupcall', this.props.object._id);
+  }
+
+  setObjectInUse() {
+    super.setObjectInUse();
+    console.log('locker in use!');
+    Meteor.call('dialoutapi.wakeupcall', this.props.object._id);
+  }
+
+  setObjectAvailable() {
+    super.setObjectAvailable();
+    console.log('locker available!');
+    Meteor.call('dialoutapi.wakeupcall', this.props.object._id);
+  }
+
+  setObjectOutOfOrder() {
+    super.setObjectOutOfOrder();
+    console.log('locker out of order!');
+    Meteor.call('dialoutapi.wakeupcall', this.props.object._id);
+  }
+
+  renderButtonsForProvider() {
+      return (
+        <div style={s.base}>
+          { this.props.object.state.state=='available' ?
+            <Button onClick={() => this.setObjectOutOfOrder() } buttonStyle="hugeSmallerFont">Maak Niet Beschikbaar</Button>: <div /> }
+          { this.props.object.state.state=='reserved' ?
+            <Button onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">ANNULEER RESERVERING</Button>: <div /> }
+          { this.props.object.state.state=='inuse' ?
+            <Button onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">ANNULEER VERHUUR</Button>: <div /> }
+          { this.props.object.state.state=='outoforder' ?
+            <Button onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">MAAK BESCHIKBAAR</Button>: <div /> }
+        </div>)
+  }
+
   renderButtonsForUser() {
     return (
       <div style={s.base}>
+      <Button style={s.button} onClick={() => this.testDialout() } buttonStyle="hugeSmallerFont">BEL MIJ!</Button>
       {this.props.object.state.state=='available' ?
         <Button style={s.button} onClick={() => this.setObjectReserved() } buttonStyle="hugeSmallerFont">Reserveer</Button> : <div /> }
-      {this.props.object.state.state=='reserved' ? 
+      {this.props.object.state.state=='reserved' ?
         <div style={s.base}>
           <ul style={s.list}>
             <li style={s.listitem}>U kunt uw fiets stallen in </li>
@@ -36,7 +78,7 @@ class CheckInOutProcessOpenBikelocker extends CheckInOutProcessBase {
           <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Annuleer Reservering</Button>
         </div>
         : <div /> }
-      {this.props.object.state.state=='inuse' ? 
+      {this.props.object.state.state=='inuse' ?
         <div style={s.base}>
           <ul style={s.list}>
             <li style={s.listitem}>Uw fiets is gestald in</li>
@@ -51,11 +93,11 @@ class CheckInOutProcessOpenBikelocker extends CheckInOutProcessBase {
             <li style={s.listitem}>Haal nu de fiets uit de kluis</li>
             <li style={s.listitem}>Wilt u alstublieft de kluisdeur weer sluiten?</li>
           </ul>
-          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Fiets Verwijderd</Button> 
+          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Fiets Verwijderd</Button>
         </div>
         : <div /> }
-      {this.props.object.state.state=='outoforder' ? 
-          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Maak Beschikbaar</Button> 
+      {this.props.object.state.state=='outoforder' ?
+          <Button style={s.button} onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Maak Beschikbaar</Button>
         : <div /> }
       </div>
     );

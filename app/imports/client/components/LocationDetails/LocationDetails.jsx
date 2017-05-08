@@ -33,21 +33,21 @@ class LocationDetails extends Component {
         </center>
 
 
-        { this.props.isEditable? 
+        { this.props.isEditable?
           <EditLocation locationId={this.props.location._id} />
           :null }
 
-        { this.props.isEditable? 
+        { this.props.isEditable?
           <ManageUserlist methodsBaseName='locationprovider'
                           parentId={this.props.locationId} />
           :null }
 
-        { this.props.isEditable? 
+        {/* this.props.isEditable?
           <ManageApiKeys keyOwnerId={this.props.locationId} keyType="location" />
-          :null }
+          :null */}
 
         <RaisedButton style={Object.assign({display: 'none'}, this.props.isEditable && {display: 'block'})} onClick={this.newObject.bind(this)}>
-          Nieuwe fiets
+          NIEUWE FIETS
         </RaisedButton>
 
         { this.props.objects.length != 0 ?
@@ -61,7 +61,7 @@ class LocationDetails extends Component {
                               showRentalDetails={this.props.isEditable} />
                             , this.props.objects)
           :
-          <p style={s.paragraph}>GEEN FIETSEN BESCHIKBAAR</p> 
+          <p style={s.paragraph}>GEEN FIETSEN BESCHIKBAAR</p>
         }
 
 

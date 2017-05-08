@@ -56,13 +56,13 @@ export default class ManageApiKeys extends Component {
     return (
       <div style={s.box}>
         <div style={s.titel}>
-          Api Keys
+          API KEYS
           <img src={ s.images.details } style={s.icon} alt="toggle" onClick={() => this.setState(prevState => ({ showDetails: ! prevState.showDetails}))}  />
         </div>
 
         { this.createList() }
 
-      </div> 
+      </div>
     );
   }
 
@@ -70,20 +70,20 @@ export default class ManageApiKeys extends Component {
     return (
       <div style={Object.assign({}, s.lijst, ! this.state.showDetails && {display: 'none'})}>
 
-        <form style={Object.assign({display: 'flex'}, s.lijstitem)} onSubmit={this.addApiKey.bind(this)}> 
+        <form style={Object.assign({display: 'flex'}, s.lijstitem)} onSubmit={this.addApiKey.bind(this)}>
           <TextField type="text" ref="keyname" placeholder="beschrijving" name="keyname" style={s.textField} />
           <button type="submit" style={s.addicon} ref="addApiKey" title="add user" />
-        </form>        
+        </form>
 
         {R.map((apikey) =>  <div style={s.lijstitem} key={apikey._id}>
                               <CopyToClipboard text={apikey.key} onCopy={() => alert(apikey.key + " gekopieerd")} >
                                 <img style={s.icon} src={s.images.clipboard} />
-                              </CopyToClipboard>                                                           
+                              </CopyToClipboard>
                               <span>{apikey.name}</span>
                               <img style={s.icon} src={s.images.trashcan} onClick={() => this.removeApiKey(apikey._id) } />
                             </div>, this.state.ApiKeysList)}
       </div>
-    ); 
+    );
   }
 }
 
@@ -168,4 +168,3 @@ ManageApiKeys.defaultProps = {
   keyType: "",
   keyOwnerId: "",
 }
-

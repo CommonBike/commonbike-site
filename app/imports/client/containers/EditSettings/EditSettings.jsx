@@ -10,7 +10,7 @@ import {propTypes} from 'react-router';
 import EditFields from '../../components/EditFields/EditFields';
 
 // Import models
-import { Settings, SettingsSchema, defaultProfileName } from '/imports/api/settings.js'; 
+import { Settings, SettingsSchema, defaultProfileName } from '/imports/api/settings.js';
 
 class EditSettings extends Component {
 
@@ -116,6 +116,34 @@ class EditSettings extends Component {
           controltype: 'number',
           label: 'timestamp of last download'
       },
+      {
+          controltype: 'header',
+          label: 'Openbikelocker'
+      },
+      {
+          fieldname: 'openbikelocker.twilio_enabled',
+          fieldvalue: this.props.settings.openbikelocker.twilio_enabled,
+          label: 'Dialout Enabled',
+          controltype: 'yesno'
+      },
+      {
+          fieldname: 'openbikelocker.twilio_accountsid',
+          fieldvalue: this.props.settings.openbikelocker.twilio_accountsid,
+          controltype: 'text',
+          label: 'Twilio AccoutSid'
+      },
+      {
+          fieldname: 'openbikelocker.twilio_authtoken',
+          fieldvalue: this.props.settings.openbikelocker.twilio_authtoken,
+          controltype: 'text',
+          label: 'Twilio AuthToken'
+      },
+      {
+          fieldname: 'openbikelocker.twilio_fromnumber',
+          fieldvalue: this.props.settings.openbikelocker.twilio_fromnumber,
+          controltype: 'text',
+          label: 'Twilio From Phonenumber'
+      },
   	]
 
     return (
@@ -145,7 +173,7 @@ EditSettings.propTypes = {
 };
 
 EditSettings.defaultProps = {
-  title: 'Instellingen'
+  title: 'INSTELLINGEN'
 }
 
 export default createContainer((props) => {

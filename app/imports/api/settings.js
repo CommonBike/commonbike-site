@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo';
-import { getUserDescription } from '/imports/api/users.js'; 
+import { getUserDescription } from '/imports/api/users.js';
 
 export const Settings = new Mongo.Collection('settings');
 
@@ -93,8 +93,30 @@ export const VeiligstallenSchema = new SimpleSchema({
   }
 });
 
+export const OpenBikeLockerSchema = new SimpleSchema({
+  'twilio_enabled': {
+    type: Boolean,
+    label: "openbikelocker.twilio_enabled.",
+    defaultValue: 'false'
+  },
+  'twilio_accountsid': {
+    type: String,
+    label: "openbikelocker.twilio_accountsid",
+    defaultValue: ''
+  },
+  'twilio_authtoken': {
+    type: String,
+    label: "openbikelocker.twilio_authtoken",
+    defaultValue: ''
+  },
+	'twilio_fromnumber': {
+    type: String,
+    label: "openbikelocker.twilio_fromnumber",
+    defaultValue: ''
+  }
+});
 
-// for now there is only one set of settings. Later on profilename can be used later 
+// for now there is only one set of settings. Later on profilename can be used later
 // to use different settings for different instances
 
 export const SettingsSchema = new SimpleSchema({
@@ -119,6 +141,9 @@ export const SettingsSchema = new SimpleSchema({
   },
   veiligstallen: {
   	type: VeiligstallenSchema
+  },
+	openbikelocker: {
+  	type: OpenBikeLockerSchema
   }
 });
 
@@ -132,7 +157,7 @@ if (Meteor.isServer) {
 		  var settings = Settings.findOne({profileName: defaultProfileName});
 	    if( ! settings) {
 		    var settingsId = Settings.insert({});
-	    	settings = { 
+	    	settings = {
 	    		_id: settingsId,
 	    		profileName: defaultProfileName,
 	    		version: latestSettingsVersion,
@@ -151,7 +176,13 @@ if (Meteor.isServer) {
   				  visible:false,
   				  kmlURL: '<fill in Webhook URL here, channel and name below, set notify to true>',
   				  kmlLastDownloadTimestamp: 0
-	    		}
+	    		},
+					openbikelocker: {
+						twilio_enabled:false,
+						twilio_accountsid: "",
+						twilio_authtoken: "",
+						twilio_fromnumber: ""
+					}
 	    	}
 
 		    try {
@@ -162,11 +193,22 @@ if (Meteor.isServer) {
 		      return;
 		    }
 
-				Settings.update(settingsId, settings, {validate: false});    
+				Settings.update(settingsId, settings, {validate: false});
 
 		    var description = 'Standaard instellingen aangemaakt';
-		    Meteor.call('transactions.addTransaction', 'CREATE_SETTINGS', description, Meteor.userId(), null, null, settings);    
+		    Meteor.call('transactions.addTransaction', 'CREATE_SETTINGS', description, Meteor.userId(), null, null, settings);
 	    } else {
+				if(!settings.openbikelocker) {
+					settings.openbikelocker = {
+						twilio_enabled:false,
+						twilio_accountsid: "",
+						twilio_authtoken: "",
+						twilio_fromnumber: ""
+					}
+
+					Settings.update(settings._id, settings, {validate: false});
+				}
+
 		    try {
 		      check(settings, SettingsSchema);
 		    } catch(ex) {
@@ -188,10 +230,10 @@ if (Meteor.isServer) {
 	  	  throw new Meteor.Error('schema-error');
 	    }
 
-			Settings.update(settingsId, settings, {validate: false});    
+			Settings.update(settingsId, settings, {validate: false});
 
 	    var description = getUserDescription(Meteor.user()) + ' heeft de instellingen van profiel ' + settings.profileName + ' gewijzigd';
-	    Meteor.call('transactions.addTransaction', 'CHANGE_SETTINGS', description, Meteor.userId(), null, null, settings);    
+	    Meteor.call('transactions.addTransaction', 'CHANGE_SETTINGS', description, Meteor.userId(), null, null, settings);
 	  },
 	  'settings.applychanges'(_id, changes) {
 		  // Make sure the user is logged in
@@ -203,17 +245,17 @@ if (Meteor.isServer) {
 
         // log original values as well
         var logchanges = {};
-        Object.keys(changes).forEach((fieldname) => { 
+        Object.keys(changes).forEach((fieldname) => {
           // convert dot notation to actual value
           val = new Function('_', 'return _.' + fieldname)(oldsettings);
-          logchanges[fieldname] = { new: changes[fieldname], 
+          logchanges[fieldname] = { new: changes[fieldname],
           	                        prev: val||'undefined' };
         });
 
 				Settings.update(_id, {$set : changes} );
 
         var description = getUserDescription(Meteor.user()) + ' heeft de systeeminstellingen gewijzigd';
-        Meteor.call('transactions.addTransaction', 'CHANGESETTINGS_SYSTEMSETTINGS', description, Meteor.userId(), null, null, JSON.stringify(logchanges));    
+        Meteor.call('transactions.addTransaction', 'CHANGESETTINGS_SYSTEMSETTINGS', description, Meteor.userId(), null, null, JSON.stringify(logchanges));
 			};
     },
 	});
