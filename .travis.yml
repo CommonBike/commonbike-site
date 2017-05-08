@@ -3,13 +3,14 @@ node_js:
   - "7"
 env:
   - CXX=g++-4.8
+  - LAIKA_OPTIONS="-t 5000"
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
-# before_install:
-#  - "curl -L https://raw.githubusercontent.com/arunoda/travis-ci-laika/master/configure.sh | /bin/sh"
+before_install:
+  - "curl -L https://raw.githubusercontent.com/arunoda/travis-ci-laika/master/configure.sh | /bin/sh"
 services:
   - mongodb
