@@ -12,13 +12,15 @@ services:
 
 before_install:
   - "curl -L https://raw.githubusercontent.com/arunoda/travis-ci-meteor-packages/master/configure.sh | /bin/sh"
-  - cd app; meteor npm install --save babel-runtime react react-dom react-router ramda radium react-swipe fluture react-contenteditable leaflet
+  - npm install -g node-gyp
+  - cd app
+  - meteor npm install --save babel-runtime react react-dom react-router ramda radium react-swipe fluture react-contenteditable leaflet
 install:
-  - cd app; meteor npm install --production
+  - meteor npm install --production
   
 before_script:
   - "export PATH=$HOME/.meteor:$PATH"
 script: 
-  - cd app; meteor build --allow-superuser --directory ../mrt_build --server-only
+  - meteor build --allow-superuser --directory ../mrt_build --server-only
 after_success:
   - "docker build -f Dockerfile -t testtag ."
