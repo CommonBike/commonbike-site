@@ -9,19 +9,14 @@ env:
 services:
   - mongodb
   - docker
-#addons:
-#  apt:
-#    sources:
-#      - ubuntu-toolchain-r-test
-#    packages:
-#      - g++-4.8
-#before_install:
-#  - "curl -L https://raw.githubusercontent.com/arunoda/travis-ci-laika/master/configure.sh | /bin/sh"
 
 before_install:
   - "curl -L https://raw.githubusercontent.com/arunoda/travis-ci-meteor-packages/master/configure.sh | /bin/sh"
+install:
+  - cd app; npm install --production
 before_script:
   - "export PATH=$HOME/.meteor:$PATH"
-
+script: 
+  - cd app; meteor build --verbose --allow-superuser --directory ../mrt_build --server-only
 after_success:
-  - docker build -f Dockerfile -t testtag .
+  - "docker build -f Dockerfile -t testtag ."
