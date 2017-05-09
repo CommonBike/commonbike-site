@@ -12,8 +12,10 @@ services:
 
 before_install:
   - "curl -L https://raw.githubusercontent.com/arunoda/travis-ci-meteor-packages/master/configure.sh | /bin/sh"
+#  - meteor npm install --save babel-runtime react react-dom react-router ramda radium react-swipe fluture react-contenteditable leaflet
 install:
-  - cd app; npm install --production
+  - npm install --production
+  
 before_script:
   - "export PATH=$HOME/.meteor:$PATH"
 script: 
