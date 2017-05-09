@@ -5,7 +5,7 @@ node_js:
   - "7"
 env:
   - CXX=g++-4.8
-  - LAIKA_OPTIONS="-t 5000"
+#  - LAIKA_OPTIONS="-t 5000"
 services:
   - mongodb
   - docker
@@ -14,7 +14,7 @@ before_install:
   - "curl -L https://raw.githubusercontent.com/arunoda/travis-ci-meteor-packages/master/configure.sh | /bin/sh"
   - cd app; meteor npm install --save babel-runtime react react-dom react-router ramda radium react-swipe fluture react-contenteditable leaflet
 install:
-  - cd app; npm install --production
+  - cd app; meteor npm install --production
   
 before_script:
   - "export PATH=$HOME/.meteor:$PATH"
