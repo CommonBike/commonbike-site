@@ -23,4 +23,4 @@ before_script:
 script: 
   - meteor build --allow-superuser --directory ../mrt_build --server-only
 after_success:
-  - "docker build -f Dockerfile -t testtag ."
+  - cd .. ; docker build -f Dockerfile -t testtag .
