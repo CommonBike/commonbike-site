@@ -15,7 +15,7 @@ class Login extends Component {
 
   /**
    *  APP DASHBOARDS
-   * 
+   *
    * Facebook: https://developers.facebook.com/apps/328645994158360/settings/
    * Google: https://console.developers.google.com/apis/credentials?highlightClient=347856876516-if94srm24tciclpid7keqibf02p4dctn.apps.googleusercontent.com&project=commonbike-149108
    * GitHub: https://github.com/settings/applications/437650
@@ -74,9 +74,10 @@ class Login extends Component {
     return (
       <div style={Object.assign({padding: '20px'}, s.base)}>
         <p>Leuk dat je mee wilt doen!</p>
-        <p>We zijn gestart met een besloten gebruikersgroep in Leiden. <a href="mailto:info@commonbike.com">Mail ons</a> als je nu al mee wilt fietsen en testen in Leiden.</p>
+        <p>We zijn gestart met een besloten gebruikersgroep in Leiden.<p>
+        </p><a style={s.anchor} href="mailto:info@commonbike.com">Mail ons</a> als je nu al mee wilt fietsen en testen.</p>
         <p>We sturen je als eerste een bericht als we uitbreiden.</p>
-        <p><a href="http://commonbike.com/" target="_blank"><i>Hoe werkt CommonBike?</i></a></p>
+        <p><a style={s.anchor} href="http://commonbike.com/" target="_blank"><i>Hoe werkt CommonBike?</i></a></p>
         <p><button onClick={this.logout}>Uitloggen</button></p>
       </div>
     )
@@ -84,7 +85,13 @@ class Login extends Component {
 
   render() {
     const {currentUser} = this.props
-    const active = currentUser && currentUser.profile && currentUser.profile.active
+    const {settings} = this.props
+
+    active = currentUser && currentUser.profile && currentUser.profile.active
+    // if(!settings.onboarding.enabled) {
+    //   active=true;
+    // }
+
     return (
       <div style={s.base}>
         {currentUser ? (active ? RedirectTo('/locations') : this.renderTeaser())
@@ -109,6 +116,9 @@ var s = {
     textAlign: 'center',
     fontWeight: '500',
   },
+  anchor: {
+    color: '#000',
+  },
   intro: {
     padding: '0 5px'
   },
@@ -124,6 +134,7 @@ var s = {
 
 export default createContainer((props) => {
   return {
-    currentUser: Meteor.user()
+    currentUser: Meteor.user(),
+    // settings: Settings.findOne({})
   };
 }, Login);

@@ -1,6 +1,6 @@
-import { Objects } from '/imports/api/objects.js'; 
-import { Locations } from '/imports/api/locations.js'; 
-import { getUserDescription } from '/imports/api/users.js'; 
+import { Objects } from '/imports/api/objects.js';
+import { Locations } from '/imports/api/locations.js';
+import { getUserDescription } from '/imports/api/users.js';
 
 /* requires fix below in node_modules\soap\lib\client.js : 209+
 
@@ -43,7 +43,7 @@ Client.prototype._setSequenceArgs = function(argsScheme, args) {
 
 gSkopeiURL = 'https://backend-tst.skopei.com/webservice/ReservationV1.svc?wsdl';
 gClientId = 'COMMONBIKE';
-gClientKey = 'b453d2b0-9da1-4c5b-ab3c-6b6b5d7b7dbc';   
+gClientKey = 'b453d2b0-9da1-4c5b-ab3c-6b6b5d7b7dbc';
 
 class SkopeiAPIClass {
   constructor() {
@@ -52,7 +52,7 @@ class SkopeiAPIClass {
 		var createClient = this.promise.promisify(require('soap').createClient);
 
 		createClient(gSkopeiURL).then(Meteor.bindEnvironment(function(client)  {
-        Meteor.call('log.write', 'Skopei client initialized')
+//        Meteor.call('log.write', 'Skopei client initialized')
         this.SoapClient = client;
       }.bind(this))
     ).catch(function(e) {
@@ -98,14 +98,14 @@ class SkopeiAPIClass {
 
 		// actual API call starts here
 		var args = { Reservation: {
-									ExternalID: '1', 
-									DateStart: dateStart.toISOString(), 
+									ExternalID: '1',
+									DateStart: dateStart.toISOString(),
 									DateEnd: dateEnd.toISOString()},
-		             	Reservationitems : { 
+		             	Reservationitems : {
 		             		Vehicle: [
 		             			{ ReservationItemData: {
-		             					ElockID: ElockID, 
-		             					ExternalID: objectId, 
+		             					ElockID: ElockID,
+		             					ExternalID: objectId,
 		             					Code: Code}
 		             			}
 		             		]
@@ -123,8 +123,8 @@ class SkopeiAPIClass {
       if(result.addVehicleReservationResult.Result=="OK") {
         var vehicle=result.addVehicleReservationResult.Reservationitems.Vehicle;
         var reservation=result.addVehicleReservationResult.Reservation;
-        rentalInfo = { 
-        	externalid: reservation.ExternalID, 
+        rentalInfo = {
+        	externalid: reservation.ExternalID,
 					datestart: reservation.DateStart,
 					dateend: reservation.DateEnd,
         	code: vehicle.ReservationItemData.Code,
@@ -157,17 +157,17 @@ class SkopeiAPIClass {
 		rentalInfo = object.state.rentalInfo;
     Meteor.call('log.write', 'endRentBike', rentalInfo);
 		var args = { Reservation: {
-										ExternalID: rentalInfo.externalid, 
-										DateStart: rentalInfo.datestart, 
+										ExternalID: rentalInfo.externalid,
+										DateStart: rentalInfo.datestart,
 										DateEnd: rentalInfo.dateend,
 										ID: rentalInfo.id
 
 									},
-		             	Reservationitems : { 
+		             	Reservationitems : {
 		             		Vehicle: [
 		             			{ ReservationItemData: {
-		             					ElockID: object.lock.settings.elockid, 
-		             					ExternalID: objectId, 
+		             					ElockID: object.lock.settings.elockid,
+		             					ExternalID: objectId,
 		             				}
 		             			}
 		             		]
@@ -231,7 +231,7 @@ class SkopeiAPIClass {
 	testWebservice(message) {
     console.log('test_service '+ message);
 
-		var args = { text:  message}; 
+		var args = { text:  message};
 		this.addAuthentication(args);
 
 		console.log('+++++++++++++++++++++++++++++++++++++++');

@@ -84,6 +84,15 @@ class EditFields extends Component {
         );
 
         break;
+      case 'text-readonly':
+        return (
+          <div style={s.editline} key={key}>
+            <input style={s.control} type='INPUT' key={field.fieldname} name={field.fieldname} defaultValue={field.fieldvalue} onChange={this.onFieldChange.bind(this)} readOnly />
+            <label style={s.label} key={'label_'+field.fieldname} htmlFor={field.fieldname}>{field.label}</label>
+          </div>
+        );
+
+        break;
       case 'number':
         return (
           <div style={s.editline} key={key}>

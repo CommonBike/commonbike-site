@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo';
 import { Accounts } from 'meteor/accounts-base'
-import { Integrations } from '/imports/api/integrations.js'; 
+import { Integrations } from '/imports/api/integrations.js';
+import { getSettingsServerSide } from '/imports/api/settings.js';
 
 // publish all users if current user is administrator (for client side adminstration)
 if(Meteor.isServer) {
@@ -19,7 +20,7 @@ if(Meteor.isServer) {
   });
 }
 
-// general purpose functions 
+// general purpose functions
 export const getUserDescription = (user) => {
   var description = '';
   if(user.emails && user.emails.length>0 && user.emails[0].address) {
@@ -92,6 +93,21 @@ if(Meteor.isServer) {
       }
 
       Meteor.users.update(userId, {$set : { 'profile.cancreatelocations' : isActive }});
+    },
+    'currentuser.AutoOnboard'() {
+      if(!this.userId) {
+        return
+      }
+
+      if(getSettingsServerSide().onboarding.enabled) {
+        return
+      }
+
+      Meteor.users.update(this.userId, {$set : { 'profile.active' : true }});
+
+      if(isActive) {
+        Integrations.slack.sendNotification('Er is een nieuwe deelnemer geactiveerd!');
+      }
     },
   })
 }

@@ -6,7 +6,7 @@ import {render} from 'react-dom'
 import {BrowserRouter as Router, Switch, Route, withRouter} from 'react-router-dom'
 import Redirect from 'react-router/Redirect'
 
-import Settings from '/imports/api/settings.js'; 
+import Settings from '/imports/api/settings.js';
 
 import UserApp from '/imports/client/components/UserApp/UserApp.jsx'
 import Landing from '/imports/client/components/Landing/Landing.jsx'
@@ -29,8 +29,8 @@ import LogList from '/imports/client/containers/LogList/LogList.jsx'
 import NoMatch from '/imports/client/components/NoMatch/NoMatch.jsx'
 
 const UserAppLanding = () => (<UserApp showPageHeader={false} content={<Landing/>} />)
-const UserAppAbout = () => (<UserApp content={<ContentPage><About /></ContentPage>} />) 
-const UserAppJoin = () => (<UserApp content={<ContentPage><Join /></ContentPage>} />) 
+const UserAppAbout = () => (<UserApp content={<ContentPage><About /></ContentPage>} />)
+const UserAppJoin = () => (<UserApp content={<ContentPage><Join /></ContentPage>} />)
 const UserAppLogin = () => (<UserApp content={<CustomPage><Login /></CustomPage>} />) // Login redirectTo={params.redirectTo}
 const UserAppProfile = () => (<UserApp content={<div><Profile isEditable="true" /></div>} />)
 
@@ -143,27 +143,27 @@ class AppRoutes extends React.Component {
       <Route exact path='/' component={UserAppLanding}/>
       <Route path='/about' component={UserAppAbout}/>
       <Route path='/join' component={UserAppJoin}/>
-      <Route path='/login' component={UserAppLogin}/> 
+      <Route path='/login' component={UserAppLogin}/>
 
-      <RouteWhenLoggedIn path='/profile' component={UserAppProfile}/> 
-      <RouteWhenLoggedIn path='/locations' component={UserAppLocationList}/> 
-      <RouteWhenLoggedIn path='/map' component={UserAppLocationsMap}/> 
-      <RouteWhenLoggedIn path='/objects' component={UserAppObjectList}/> 
-      <RouteWhenLoggedIn path='/transactions' component={UserAppTransactionList}/> 
-      <RouteWhenLoggedIn path='/location/:locationId' component={UserAppLocationDetails}/> 
-      <RouteWhenLoggedIn path='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
-      <RouteWhenLoggedIn path='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 
-      <RouteWhenLoggedIn path='/commonbike-ui' component={CommonBikeUI}/> 
-      
-      <RouteWhenLoggedIn path='/admin/locations' component={UserAppAdminLocationList}/> 
-      <RouteWhenLoggedIn path='/admin/rentals' component={UserAppRentalList}/> 
-      <RouteWhenLoggedIn path='/admin/location/:locationId' component={UserAppAdminLocationDetails}/> 
-      <RouteWhenLoggedIn path='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/> 
+      <RouteWhenLoggedIn path='/profile' component={UserAppProfile}/>
+      <RouteWhenLoggedIn path='/locations' component={UserAppLocationList}/>
+      <RouteWhenLoggedIn path='/map' component={UserAppLocationsMap}/>
+      <RouteWhenLoggedIn path='/objects' component={UserAppObjectList}/>
+      <RouteWhenLoggedIn path='/transactions' component={UserAppTransactionList}/>
+      <RouteWhenLoggedIn path='/location/:locationId' component={UserAppLocationDetails}/>
+      <RouteWhenLoggedIn path='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/>
+      <RouteWhenLoggedIn path='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/>
+      <RouteWhenLoggedIn path='/commonbike-ui' component={CommonBikeUI}/>
 
-      <RouteWhenAdmin path='/admin/users' component={UserAppAdminAdminUsersList}/> 
-      <RouteWhenAdmin path='/admin/admintools' component={UserAppAdminAdminTools}/> 
-      <RouteWhenAdmin path='/admin/transactions' component={AdminAppTransactionList}/> 
-      <RouteWhenLoggedIn path='/admin/log' component={AdminAppLogList}/> 
+      <RouteWhenLoggedIn path='/admin/locations' component={UserAppAdminLocationList}/>
+      <RouteWhenLoggedIn path='/admin/rentals' component={UserAppRentalList}/>
+      <RouteWhenLoggedIn path='/admin/location/:locationId' component={UserAppAdminLocationDetails}/>
+      <RouteWhenLoggedIn path='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/>
+
+      <RouteWhenAdmin path='/admin/users' component={UserAppAdminAdminUsersList}/>
+      <RouteWhenAdmin path='/admin/admintools' component={UserAppAdminAdminTools}/>
+      <RouteWhenAdmin path='/admin/transactions' component={AdminAppTransactionList}/>
+      <RouteWhenLoggedIn path='/admin/log' component={AdminAppLogList}/>
 
       <Route component={NoMatch}/>
      </Switch>
@@ -186,6 +186,6 @@ class App extends React.Component {
 //
 Meteor.startup(() => {
   Meteor.subscribe("settings");
-  
+
   render(<App/>, document.getElementById('root'))
 })

@@ -85,7 +85,7 @@ var s = {
     minHeight: '80px',
     fontSize: '1.2em',
     fontWeight: '500',
-    background: 'url("/files/LocationDetails/marker.svg") 0 0 / auto 60px no-repeat',
+    background: 'url("/files/LocationDetails/marker.svg") 0 0 / auto 30px no-repeat',
   },
 
 }

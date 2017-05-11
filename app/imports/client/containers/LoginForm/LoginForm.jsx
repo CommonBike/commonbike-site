@@ -10,7 +10,7 @@ class LoginForm extends Component {
     super(props);
   }
 
-  //+ loginHandler :: Object -> void 
+  //+ loginHandler :: Object -> void
   loginHandler(userCredentials) {
     let self = this;
     Meteor.loginWithPassword(userCredentials.username, userCredentials.password, function(err) {
@@ -23,7 +23,7 @@ class LoginForm extends Component {
     });
   }
 
-  //+ signUpHandler :: Object -> void 
+  //+ signUpHandler :: Object -> void
   signUpHandler(userCredentials) {
     Accounts.createUser({
       email: userCredentials.email,
@@ -35,6 +35,8 @@ class LoginForm extends Component {
 
         alert(msg);
         console.log(err);
+      } else {
+        Meteor.call('currentuser.AutoOnboard');
       }
     });
     if(this.props.callback) {

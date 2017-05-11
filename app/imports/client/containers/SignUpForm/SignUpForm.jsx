@@ -10,7 +10,7 @@ class SignUpForm extends Component {
     super(props);
   }
 
-  //+ signUpHandler :: Object -> void 
+  //+ signUpHandler :: Object -> void
   signUpHandler(userCredentials) {
     Accounts.createUser({
       email: userCredentials.email,

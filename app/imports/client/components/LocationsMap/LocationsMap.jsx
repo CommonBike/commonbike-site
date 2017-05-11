@@ -2,21 +2,21 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
 import { RedirectTo } from '/client/main'
-import { Settings } from '/imports/api/settings.js'; 
+import { Settings } from '/imports/api/settings.js';
 import L from 'leaflet'
 import 'leaflet-search'
 
 import './Leaflet.EasyButton.js';
 
 // Import models
-import { Locations, Address2LatLng } from '/imports/api/locations.js'; 
+import { Locations, Address2LatLng } from '/imports/api/locations.js';
 import { Objects } from '/imports/api/objects.js';
 
 class LocationsMapComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { 
+    this.state = {
       map: undefined,
       watchId : undefined,
       trackingMarkersGroup: undefined,
@@ -41,7 +41,7 @@ class LocationsMapComponent extends Component {
   }
 
   componentDidMount() {
-    
+
     // Init map
     let map = L.map('mapid', {
       zoomControl: false// Hide zoom buttons
@@ -73,13 +73,13 @@ class LocationsMapComponent extends Component {
     map.on('zoomend', this.mapChanged.bind(this));
 
     // Le easy button
-    L.easyButton( '<img src="'+ s.images.hier + '" style="width:22px;height:22px" />', this.toggleTrackUser.bind(this) ).addTo(map);    
+    L.easyButton( '<img src="'+ s.images.hier + '" style="width:22px;height:22px" />', this.toggleTrackUser.bind(this) ).addTo(map);
 
-    var locationMarkersGroup = L.featureGroup().addTo(map);    
+    var locationMarkersGroup = L.featureGroup().addTo(map);
     locationMarkersGroup.on("click", function (event) {
       var clickedMarker = event.layer;
       RedirectTo('/location/' + clickedMarker.locationId);
-    }.bind(this));      
+    }.bind(this));
 
     var objectMarkersGroup = L.featureGroup().addTo(map);
     objectMarkersGroup.on("click", function (event) {
@@ -103,7 +103,7 @@ class LocationsMapComponent extends Component {
           title: 'verberg stallingen',
           icon: '<img src="'+ s.images.veiligstallen + '" style="width:32px;height:32px" />',
           onClick: this.toggleParking.bind(this)
-        },         
+        },
       ]
     };
 
@@ -116,12 +116,12 @@ class LocationsMapComponent extends Component {
       pointToLayer: this.parkingPointToLayer.bind(this), filter: this.parkingFilterLayers.bind(this)
     }).addTo(map); // no tracking marker yet!
 
-    this.setState(prevState => ({ map: map, 
+    this.setState(prevState => ({ map: map,
                                   trackingMarkersGroup: trackingMarkersGroup,
                                   locationMarkersGroup: locationMarkersGroup,
                                   objectMarkersGroup: objectMarkersGroup,
                                   parkingButton: parkingButton,
-                                  parkingMarkersGroup: parkingMarkersGroup}));    
+                                  parkingMarkersGroup: parkingMarkersGroup}));
   }
 
   initializeMap() {
@@ -164,12 +164,12 @@ class LocationsMapComponent extends Component {
         this.state.locationMarkersGroup.addLayer(marker);
       }
     }, this.props.locations);
-    
-    // var locationMarkersGroup = L.featureGroup(markers);    
+
+    // var locationMarkersGroup = L.featureGroup(markers);
     // locationMarkersGroup.on("click", function (event) {
     //     var clickedMarker = event.layer;
     //     RedirectTo('/location/' + clickedMarker.locationId);
-    // }.bind(this));      
+    // }.bind(this));
 
     // return locationMarkersGroup;
   }
@@ -267,7 +267,7 @@ class LocationsMapComponent extends Component {
       if(this.props.settings.veiligstallen.visible) {
         this.state.parkingButton.addTo(this.state.map);
       }
-    } 
+    }
 
     this.state.parkingMarkersGroup.clearLayers();
 
@@ -276,7 +276,7 @@ class LocationsMapComponent extends Component {
     }
 
     omnivore.kml('/files/Veiligstallen/veiligstallen.kml', null, this.state.parkingMarkersGroup).addTo(this.state.map);
-  } 
+  }
 
   toggleParking() {
     this.setState(prevState => ({ showParkingMarkers: !prevState.showParkingMarkers}))
@@ -298,7 +298,7 @@ class LocationsMapComponent extends Component {
          iconAnchor: [24, 24],
          popupAnchor:  [1, -12],
          iconUrl: s.images.veiligstallen
-    });    
+    });
     return L.marker(latlng, {icon: parkingIcon});
   }
 
@@ -342,7 +342,7 @@ var s = {
   },
   searchForLocation: {
     position: 'relative',
-    zIndex: 90000, 
+    zIndex: 90000,
     display: 'block',
     width: 'calc(100vw - 40px)',
     margin: '20px auto',
@@ -367,7 +367,7 @@ LocationsMapComponent.propTypes = {
 
 LocationsMapComponent.defaultProps = {
   width: '100vw',
-  height: '70vh',
+  height: '50vh',
   clickItemHandler: '',
   startLocation: [52.159685, 4.490405],
   startZoom: 13

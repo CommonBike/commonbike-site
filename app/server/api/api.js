@@ -4,7 +4,6 @@ import { Objects, getStateChangeNeatDescription } from '/imports/api/objects.js'
 lockerAPI = {
   authentication: function( apiKey ) {
     var getObject = ApiKeys.findOne( { "key": apiKey, "type": "object" }, { fields: { "ownerid": 1 } } );
-    console.log('validation', apiKey);
     if ( getObject ) {
       return getObject.ownerid;
     } else {
@@ -35,86 +34,116 @@ lockerAPI = {
     object: function( response, connection ) {
       var object = Objects.findOne({_id: connection.owner});
       if(!object) {
+        Meteor.call('log.write', "request for unknown locker", connection.owner)
         lockerAPI.utility.response( response, 404, { error: 404, message: "Unknown locker" } );
         return;
+      }
+
+      objectinfo = {
+        state: object.state.state,
+        timestamp: object.state.timestamp,
+        username: '',
+      }
+
+      if(object.state.rentalInfo&&object.state.rentalInfo.cardhash) {
+        objectinfo.cardhash = object.state.rentalInfo.cardhash;
+      } else {
+        objectinfo.cardhash = '';
       }
 
       var hasData   = lockerAPI.utility.hasData( connection.data );
       if(!hasData) {
         // send status
-        objectinfo = {
-          title: object.title,
-          state: object.state.state
-        }
-
         lockerAPI.utility.response( response, 200, objectinfo );
         return;
       }
 
-      var validData = lockerAPI.utility.validate( connection.data, { "action": String });
-      if (validData) {
+      var validData = lockerAPI.utility.validate( connection.data, { "action": String, "cardhash": String, "pincode": String, "timestamp": String });
+      if (!validData) {
+          Meteor.call('log.write', "invalid action request from locker ", connection.data)
+          lockerAPI.utility.response( response, 403, { error: 403, message: "POST calls must have an action, cardhash and pincode passed in the request body in the correct format." } );
+      } else {
+        Meteor.call('log.write', "action request from locker ", connection.data)
+
         var action = connection.data.action;
-        switch(object.state.state) {
-          case 'available':
-            if(action=='rent_start'||action=='rent_toggle') {
-              var newState = 'inuse'
-              var timestamp = new Date().valueOf();
-              Objects.update({_id: object._id}, { $set: {
-                  'state.userId': null,
-                  'state.state': newState,
-                  'state.timestamp': timestamp,
-                  'state.userDescription': 'via kluisbediening',
-                  'state.rentalInfo': {} }
-              });
+        var cardhash = connection.data.cardhash;
+        var pincode = connection.data.pincode;
+        // var timestamp = connection.data.timestamp; -> Later convert from locker date/time
+        var timestamp =  new Date().valueOf();
 
-              var object = Objects.findOne(connection.owner, {title:1, 'state.state':1 });
-              var description = getStateChangeNeatDescription(object.title, newState);
-              Meteor.call('transactions.changeStateForObject', newState, description, object._id, null);
+        var userId = object.state.userId;
+        var description = object.state.userDescription;
+        if(cardhash=="nocard") {
+          // keep existing userid / description
+        } else {
+          // card used to rent the locker: find if a user exists with the given cardhash as a card
+          if(false) {
+            // statedata.state.userId = -> id van gevonden gebruiker
+            userId="";
+            description="Lokaal gehuurd"
+          } else {
+            userId="";
+            description="Lokaal gehuurd"
+          }
+        }
 
-              objectinfo = {
-                title: object.title,
-                state: object.state.state
-              }
+        var statedata = {
+            'state.state': action,
+            'state.userId': userId,
+            'state.userDescription': description,
+            'state.timestamp': timestamp,
+            'state.rentalInfo.cardhash': cardhash,
+            'state.rentalInfo.pincode': pincode
+        }
 
-              lockerAPI.utility.response( response, 200, objectinfo );
-            } else {
-              lockerAPI.utility.response( response, 403, { error: 403, message: "Unable to execute " + action + ". locker is " + object.state.state } );
-            }
-            break;
-          case 'reserved':
+        switch(action) {
           case 'inuse':
-            if(action=='rent_end'||action=='rent_toggle') {
-              var newState = 'available'
-              var timestamp = new Date().valueOf();
-              Objects.update({_id: object._id}, { $set: {
-                  'state.userId': null,
-                  'state.state': newState,
-                  'state.timestamp': timestamp,
-                  'state.userDescription': '',
-                  'state.rentalInfo': {} }
-              });
+            Meteor.call('log.write', "API: locker " + connection.owner + " state set to inuse")
+            var newState = action;
+            var timestamp = new Date().valueOf();
+            Objects.update({_id: object._id}, { $set: statedata });
 
-              var object = Objects.findOne(connection.owner, {title:1, 'state.state':1 });
-              var description = getStateChangeNeatDescription(object.title, newState);
-              Meteor.call('transactions.changeStateForObject', newState, description, object._id, null);
+            var object = Objects.findOne(connection.owner, {title:1, 'state.state':1 });
+            var description = getStateChangeNeatDescription(object.title, newState);
+            Meteor.call('transactions.changeStateForObject', newState, description, object._id, null);
 
-              objectinfo = {
-                title: object.title,
-                state: object.state.state
-              }
+            objectinfo.state = object.state.state;
+            objectinfo.timestamp = object.state.timestamp;
+            objectinfo.username = '';
+            objectinfo.cardhash = object.state.rentalInfo.cardhash;
 
-              lockerAPI.utility.response( response, 200, objectinfo );
-            } else {
-              lockerAPI.utility.response( response, 403, { error: 403, message: "Unable to execute " + action + ". locker is " + object.state.state} );
-            }
+            lockerAPI.utility.response( response, 200, objectinfo );
+
             break;
           case 'outoforder':
+          case 'available':
+            Meteor.call('log.write', "API: locker " + connection.owner + " state set to " + action);
+            var newState = action;
+            var timestamp = new Date().valueOf();
+            Objects.update({_id: object._id}, { $set: {
+                'state.userId': null,
+                'state.state': newState,
+                'state.timestamp': timestamp,
+                'state.userDescription': '',
+                'state.rentalInfo': {} }
+            });
+
+            var object = Objects.findOne(connection.owner, {title:1, 'state.state':1 });
+            var description = getStateChangeNeatDescription(object.title, newState);
+            Meteor.call('transactions.changeStateForObject', newState, description, object._id, null);
+
+            objectinfo.state = object.state.state;
+            objectinfo.timestamp = object.state.timestamp;
+            objectinfo.username = '';
+            objectinfo.cardhash = '';
+
+            lockerAPI.utility.response( response, 200, objectinfo );
+            break;
           default:
+            Meteor.call('log.write', "API: locker " + connection.owner + " unable to execute " + action);
             lockerAPI.utility.response( response, 403, { error: 403, message: "Unable to execute " + action + ". locker is " + object.state.state } );
             break;
         }
-      } else {
-        lockerAPI.utility.response( response, 403, { error: 403, message: "POST calls must have an action (rent_start or rent_end) passed in the request body in the correct format." } );
       }
     }
   },

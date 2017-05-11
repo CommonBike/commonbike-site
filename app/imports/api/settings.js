@@ -96,7 +96,7 @@ export const VeiligstallenSchema = new SimpleSchema({
 export const OpenBikeLockerSchema = new SimpleSchema({
   'twilio_enabled': {
     type: Boolean,
-    label: "openbikelocker.twilio_enabled.",
+    label: "openbikelocker.twilio_enabled",
     defaultValue: 'false'
   },
   'twilio_accountsid': {
@@ -113,6 +113,14 @@ export const OpenBikeLockerSchema = new SimpleSchema({
     type: String,
     label: "openbikelocker.twilio_fromnumber",
     defaultValue: ''
+  }
+});
+
+export const OnboardingSchema = new SimpleSchema({
+  'enabled': {
+    type: Boolean,
+    label: "onboarding.enabled",
+    defaultValue: 'true'
   }
 });
 
@@ -144,7 +152,11 @@ export const SettingsSchema = new SimpleSchema({
   },
 	openbikelocker: {
   	type: OpenBikeLockerSchema
-  }
+  },
+	onboarding: {
+		type: OnboardingSchema
+  },
+
 });
 
 if (Meteor.isServer) {
@@ -204,6 +216,14 @@ if (Meteor.isServer) {
 						twilio_accountsid: "",
 						twilio_authtoken: "",
 						twilio_fromnumber: ""
+					}
+
+					Settings.update(settings._id, settings, {validate: false});
+				}
+
+				if(!settings.onboarding) {
+					settings.onboarding = {
+						enabled:true
 					}
 
 					Settings.update(settings._id, settings, {validate: false});

@@ -5,7 +5,7 @@ import Radium from 'radium';
 import R from 'ramda';
 
 // Import models
-import { Locations } from '/imports/api/locations.js'; 
+import { Locations } from '/imports/api/locations.js';
 
 // Import components
 import RaisedButton from '../Button/RaisedButton.jsx';
@@ -35,14 +35,20 @@ class Block extends Component {
   }
 
   state2Text(state) {
-    if (state=='available') {
-      text = 'BESCHIKBAAR'; 
+    if (state=='r_available') {
+      text = 'BESCHIKBAAR';
+    } else if (state=='r_rentstart') {
+      text = 'VERHUURD';
+    } else if (state=='r_outoforder') {
+      text = 'BUITEN GEBRUIK';
+    } if (state=='available') {
+      text = 'BESCHIKBAAR';
     } else if (state=='reserved') {
       text = 'GERESERVEERD';
     } else if (state=='inuse') {
-      text = 'VERHUURD'; 
+      text = 'VERHUURD';
     } else if (state=='outoforder') {
-      text = 'BUITEN GEBRUIK'; 
+      text = 'BUITEN GEBRUIK';
     } else {
       text = 'ONBEKEND';
     }

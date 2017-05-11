@@ -144,6 +144,17 @@ class EditSettings extends Component {
           controltype: 'text',
           label: 'Twilio From Phonenumber'
       },
+      {
+          controltype: 'header',
+          label: 'Onboarding'
+      },
+  		{
+          fieldname: 'onboarding.enabled',
+          fieldvalue: this.props.settings.onboarding.enabled,
+          controltype: 'combo',
+          label: 'Enabled',
+          controltype: 'yesno'
+  		},
   	]
 
     return (
