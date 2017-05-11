@@ -55,6 +55,14 @@ class CheckInOutProcessOpenBikelocker extends CheckInOutProcessBase {
     };
     var user = getUserDescription(Meteor.user());
     Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), this.props.object.locationId,newState, user, rentalInfo);
+
+    Meteor.call('dialoutapi.wakeupcall', this.props.object._id);
+  }
+
+  setObjectState(newState) {
+    super.setObjectState(newState);
+
+    Meteor.call('dialoutapi.wakeupcall', this.props.object._id);
   }
 
   renderButtonsForUser() {
@@ -68,24 +76,23 @@ class CheckInOutProcessOpenBikelocker extends CheckInOutProcessBase {
               <li style={s.listitem,s.mediumFont}>CONTROLEREN</li>
               <li style={s.listitem,s.mediumFont}>BESCHIKBAARHEID</li>
             </ul>
-            <Button onClick={() => this.setObjectState("available") } buttonStyle="hugeSmallerFont">ANNULEER</Button>: <div /> }
-          </div> : <div /> }
+            <Button onClick={() => this.setObjectState("available") } buttonStyle="hugeSmallerFont">ANNULEER</Button>
+          </div>: <div /> }
         {this.props.object.state.state=="inuse" ?
           <div>
             <ul style={s.list}>
               <li style={s.listitem,s.mediumFont}>PINCODE</li>
               <li style={s.listitem,s.largeFont}><b>{this.props.object.state.rentalInfo.pincode}</b></li>
             </ul>
-            <Button onClick={() => this.setObjectState("r_available") } buttonStyle="hugeSmallerFont">ANNULEER</Button>: <div /> }
-          </div>
-          : <div /> }
+            <Button onClick={() => this.setObjectState("r_available") } buttonStyle="hugeSmallerFont">ANNULEER</Button>
+          </div>: <div /> }
         {this.props.object.state.state=="r_available" ?
             <div>
               <ul style={s.list}>
                 <li style={s.listitem,s.mediumFont}>CONTROLEREN</li>
                 <li style={s.listitem,s.mediumFont}>TRANSACTIE</li>
               </ul>
-              <Button onClick={() => this.setObjectState("available") } buttonStyle="hugeSmallerFont">ANNULEER</Button>: <div /> }
+              <Button onClick={() => this.setObjectState("available") } buttonStyle="hugeSmallerFont">ANNULEER</Button>
             </div> : <div /> }
       </div>
     );

@@ -9,7 +9,7 @@ dialoutTwelio = {
       // dial number request a status update
       var settings = Settings.findOne({});
       if(!settings.openbikelocker.twilio_enabled) {
-        console.log('Twilio Dialout has not been enabled ');
+        Meteor.call('log.write', 'Twilio Dialout has not been enabled ');
         return false;
       }
 
@@ -30,14 +30,13 @@ dialoutTwelio = {
       }
 
       config.url = "http://demo.twilio.com/docs/voice.xml";
-      console.log(config);
 
       client.calls.create(config, function(err, call) {
           // console.log(err || call);
           if(err) {
-            console.log('unable to sent wakeup call to ' + tophonenumber);
+            // Meteor.call('log.write', 'unable to sent wakeup call to ' + tophonenumber, JSON.stringify(err))
           } else {
-            console.log('sent wakeup call to ' + tophonenumber);
+            // Meteor.call('log.write', 'sent wakeup call to ' + tophonenumber)
           }
       })
     }
@@ -48,18 +47,19 @@ if(Meteor.isServer) {
     'dialoutapi.wakeupcall'(objectId) {
         var object = Objects.findOne({_id: objectId});
         if(!object) {
-          console.log('can call unknown object ' + objectId)
+          Meteor.call('log.write', 'cant call unknown object ' + objectId);
           return false;
         }
         if(object.lock&&object.lock.type!='open-bikelocker') {
-          console.log('this object does not need a wakeup call ' + object._id);
+          Meteor.call('log.write', 'this object does not need a wakeup call ' + object._id);
           return false;
         }
 
         var toPhoneNumber = object.lock.settings.phonenr;
         var thisserverurl = this.connection.httpHeaders.host;
 
-        console.log('making wakeup call to ' + toPhoneNumber);
+        Meteor.call('log.write', 'making wakeup call to ' + toPhoneNumber)
+
         dialoutTwelio.wakeupCall(thisserverurl, toPhoneNumber);
     }
   });
