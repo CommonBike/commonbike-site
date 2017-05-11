@@ -35,10 +35,10 @@ volatile unsigned long next_poll_millis = 0;
 
 // commonbike server info
 const unsigned long HTTP_TIMEOUT = 5000;  // max respone time from server
-// const char* commonbikeServer = "develop.common.bike";
-//const int commonbikeServerHttpPort = 80;
-const char* commonbikeServer = "192.168.150.105";
-const int commonbikeServerHttpPort = 3000;
+const char* commonbikeServer = "develop.common.bike";
+const int commonbikeServerHttpPort = 80;
+//const char* commonbikeServer = "192.168.150.105";
+//const int commonbikeServerHttpPort = 3000;
 const int commonbikeServerHttpsPort = 443;
 
 // Todo: make HTTPS version
