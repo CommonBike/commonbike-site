@@ -22,5 +22,6 @@ before_script:
   - "export PATH=$HOME/.meteor:$PATH"
 script: 
   - meteor build --allow-superuser --directory ../mrt_build --server-only
+  - ls -l ../mrt_build
 after_success:
   - cd .. ; docker build -f Dockerfile -t testtag .
