@@ -14,7 +14,7 @@ before_install:
   - "curl -L https://raw.githubusercontent.com/arunoda/travis-ci-meteor-packages/master/configure.sh | /bin/sh"
   - npm install -g node-gyp
   - cd app
-  - npm install --save babel-runtime react react-dom react-router ramda radium react-swipe fluture react-contenteditable leaflet
+  - npm install -g --save babel-runtime react react-dom react-router ramda radium react-swipe fluture react-contenteditable leaflet
 install:
   - npm install --production
   
@@ -25,4 +25,4 @@ script:
 after_success:
   - cd .. ; docker build -f Dockerfile -t testtag .
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-  - docker push testtag
+  - docker push petersgriddle/testtag
