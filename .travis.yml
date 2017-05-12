@@ -14,7 +14,7 @@ before_install:
   - "curl -L https://raw.githubusercontent.com/arunoda/travis-ci-meteor-packages/master/configure.sh | /bin/sh"
   - npm install -g node-gyp
   - cd app
-  - npm install -g --save babel-runtime react react-dom react-router ramda radium react-swipe fluture react-contenteditable leaflet
+  - meteor npm install -g --save babel-runtime react react-dom react-router ramda radium react-swipe fluture react-contenteditable leaflet
 install:
   - npm install --production
   
