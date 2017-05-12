@@ -23,6 +23,6 @@ before_script:
 script: 
   - meteor build --allow-superuser --directory ../mrt_build --server-only
 after_success:
-  - cd .. ; docker build -f Dockerfile -t testtag .
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  - cd .. ; docker build -f Dockerfile -t testtag .
   - docker push petersgriddle/testtag
