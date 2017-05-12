@@ -25,4 +25,5 @@ script:
 after_success:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
   - cd .. ; docker build -f Dockerfile -t testtag .
+  - docker images
   - docker push petersgriddle/testtag
