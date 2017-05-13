@@ -26,7 +26,7 @@ before_script:
 script: 
   - meteor build --allow-superuser --directory ../mrt_build --server-only
 after_success:
-  - cd ..
+  - cd ..; pwd
   — sh .travis/deploy_dockerhub.sh
   - docker images
   - echo $TRAVIS_BRANCH
