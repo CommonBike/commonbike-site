@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { RedirectTo } from '/client/main'
 
 // Import components
 import RaisedButton from '../Button/RaisedButton';
@@ -14,7 +14,7 @@ class AdminTools extends Component {
   }
 
   showAllTransactions() {
-    this.context.history.push('/admin/transactions');
+    RedirectTo('/admin/transactions');
   }
 
   clearTransactions() { 
@@ -26,19 +26,43 @@ class AdminTools extends Component {
   }
 
   cleanTestUsers() {
+    if( !confirm('Weet je zeker dat je alle testgebruikers wilt verwijderen? Dit kan niet ongedaan gemaakt worden.')) {
+      return;
+    }
+
     Meteor.call('testdata.cleanupTestUsers');
+
+    alert('De testgebruikers zijn verwijderd!');
   }
 
   cleanTestData() {
+    if( !confirm('Weet je zeker dat je alle testdata wilt verwijderen? Dit kan niet ongedaan gemaakt worden.')) {
+      return;
+    }
+
     Meteor.call('testdata.cleanupTestData');
+
+    alert('De testdata is verwijderd!');
   }
 
   insertTestUsers() { 
+    if( !confirm('Weet je zeker dat je de testgebruikers wilt toevoegen? Doe dit nooit op de productieserver.')) {
+      return;
+    }
+
     Meteor.call('testdata.checkTestUsers');
+
+    alert('De testgebruikers zijn toegevoegd!');
   }
 
   insertTestData() {
+    if( !confirm('Weet je zeker dat je de testdata wilt toevoegen? Doe dit nooit op de productieserver.')) {
+      return;
+    }
+
     Meteor.call('testdata.checkTestLocations');
+
+    alert('De testdata is toegevoegd!');
   }
 
   databaseCheckup() {
@@ -113,10 +137,6 @@ var s = {
     margin: '10px 0 10px 0',
     border: '1px solid black'
   }
-}
-
-AdminTools.contextTypes = {
-  history: propTypes.historyContext
 }
 
 AdminTools.propTypes = {

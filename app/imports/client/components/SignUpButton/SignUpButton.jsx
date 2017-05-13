@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import Radium from 'radium';
-import {propTypes} from 'react-router';
+import { RedirectTo } from '/client/main'
 
 // Import components
 import RaisedButton from '../Button/RaisedButton.jsx'
 
 class SignUpButton extends Component {
 
-  login() { this.context.history.push('/login') }
+  login() { RedirectTo('/login') }
 
   render() {
     return (
@@ -19,10 +19,6 @@ class SignUpButton extends Component {
   }
 
 };
-
-SignUpButton.contextTypes = {
-  history: propTypes.historyContext
-}
 
 SignUpButton.propTypes = {
   /**

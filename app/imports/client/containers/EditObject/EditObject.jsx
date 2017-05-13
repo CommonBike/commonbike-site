@@ -4,7 +4,7 @@ import ContentEditable from 'react-contenteditable';
 import ReactDOM from 'react-dom';
 import Radium from 'radium';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { RedirectTo } from '/client/main'
 
 // Import components
 import EditFields from '../../components/EditFields/EditFields';
@@ -21,12 +21,6 @@ class EditObject extends Component {
 
   update(changes) {
     Meteor.call('objects.applychanges', this.props.object._id, changes);
-
-    return true;
-  }
-
-  updatePrice(changes) {
-    Meteor.call('objects.applypricechanges', this.props.object._id, changes);
 
     return true;
   }
@@ -188,10 +182,6 @@ var s = {
     borderBottom: 'solid 5px #bc8311',
     textAlign: 'left',
   },
-}
-
-EditObject.contextTypes = {
-  history: propTypes.historyContext
 }
 
 EditObject.propTypes = {

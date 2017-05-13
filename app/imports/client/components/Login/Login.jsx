@@ -5,7 +5,7 @@ import { Accounts } from 'meteor/accounts-base';
 import AccountsUIWrapper from '/imports/client/containers/AccountsUIWrapper/AccountsUIWrapper.jsx';
 import ReactSwipe from 'react-swipe';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { RedirectTo } from '/client/main'
 
 // Import templates
 import SquareButton from '../SquareButton/SquareButton.jsx';
@@ -84,11 +84,10 @@ class Login extends Component {
 
   render() {
     const {currentUser} = this.props
-    // console.log(currentUser)
     const active = currentUser && currentUser.profile && currentUser.profile.active
     return (
       <div style={s.base}>
-        {currentUser ? (active ? this.context.history.push('/locations') : this.renderTeaser())
+        {currentUser ? (active ? RedirectTo('/locations') : this.renderTeaser())
                                 : this.renderIntro()}
 
       </div>
@@ -121,10 +120,6 @@ var s = {
     justifyContent: 'space-around',
     background: '#fff'
   }
-}
-
-Login.contextTypes = {
-  history: propTypes.historyContext
 }
 
 export default createContainer((props) => {

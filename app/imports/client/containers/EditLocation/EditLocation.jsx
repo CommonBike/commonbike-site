@@ -4,7 +4,6 @@ import ContentEditable from 'react-contenteditable';
 import ReactDOM from 'react-dom';
 import Radium from 'radium';
 import R from 'ramda';
-import {propTypes} from 'react-router';
 
 // Import components
 import EditFields from '../../components/EditFields/EditFields';
@@ -42,10 +41,14 @@ class EditLocation extends Component {
   }
 
   getLatLongString(lat_lng) {
-    var lat_lng_str = lat_lng.toString();
-    if(lat_lng_str=="0,0") {
-      lat_lng_str="";
-    }
+    var lat_lng_str = "";
+
+    if(lat_lng) {
+      lat_lng_str = lat_lng.toString();
+      if(lat_lng_str=="0,0") {
+        lat_lng_str="";
+      }
+    }  
 
     return lat_lng_str;
   }
@@ -108,10 +111,6 @@ var s = {
     borderBottom: 'solid 5px #bc8311',
     textAlign: 'left',
   },
-}
-
-EditLocation.contextTypes = {
-  history: propTypes.historyContext
 }
 
 EditLocation.propTypes = {

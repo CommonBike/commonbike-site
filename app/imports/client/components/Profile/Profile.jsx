@@ -1,49 +1,45 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { RedirectTo } from '/client/main'
 
 // Import components
 import RaisedButton from '../Button/RaisedButton';
 import '../../../api/users.js'; 
-
+import EditSettings from '/imports/client/containers/EditSettings/EditSettings.jsx'
 
 class Profile extends Component {
   constructor(props) {
     super(props);
   }
 
-  newreservation() {
-     this.context.history.push('/locations') 
-  }
-
-  newreservationMap() { 
-    this.context.history.push('/map') 
-  }
-
   reservations() {
-    this.context.history.push('/objects') 
+    RedirectTo('/objects') 
   }
 
   locations() { 
-    this.context.history.push('/admin/locations') 
+    RedirectTo('/admin/locations') 
   }
 
   rentals() { 
-    this.context.history.push('/admin/rentals') 
+    RedirectTo('/admin/rentals') 
   }
 
   transactions() { 
-    this.context.history.push('/transactions') 
+    RedirectTo('/transactions') 
   }
 
   manageusers() {
-    this.context.history.push('/admin/users') 
+    RedirectTo('/admin/users') 
+  }
+
+  admintools() {
+    RedirectTo('/admin/admintools') 
   }
 
   logout() { 
     Meteor.logout(); 
-    this.context.history.push('/')
+    RedirectTo('/')
   }
 
   getUserPersonalia() {
@@ -107,6 +103,22 @@ class Profile extends Component {
     }
   }
 
+  getEditSystemSettings() {
+    if(Roles.userIsInRole( Meteor.userId(), 'admin' )) {
+      return (<EditSettings title="SYSTEEMINSTELLINGEN"/> )
+    } else {
+      return ( <div /> )
+    }
+  }
+
+  getAdminToolsButton() {
+    if(Roles.userIsInRole( Meteor.userId(), 'admin' )) {
+      return ( <RaisedButton onClick={this.admintools.bind(this)}>BEHEERDERSFUNCTIES</RaisedButton> )
+    } else {
+      return ( <div /> )
+    }
+  }
+
   render() {
     self = this;
 
@@ -125,10 +137,6 @@ class Profile extends Component {
             { this.getUserPersonalia() }
           </p>
 
-          <RaisedButton onClick={this.newreservation.bind(this)}>NIEUWE RESERVERING</RaisedButton>
-
-          <RaisedButton onClick={this.newreservationMap.bind(this)}>ZOEK OP KAART</RaisedButton>
-
           <RaisedButton onClick={this.reservations.bind(this)}>MIJN RESERVERINGEN</RaisedButton>
 
           <RaisedButton onClick={this.transactions.bind(this)}>MIJN GESCHIEDENIS</RaisedButton>
@@ -138,6 +146,10 @@ class Profile extends Component {
           { this.getMyRentalsButton() }
 
           { this.getManageUsersButton() }
+
+          { this.getEditSystemSettings() }
+
+          { this.getAdminToolsButton() }
 
           <RaisedButton onClick={this.logout.bind(this)}>LOG UIT</RaisedButton>
         </div>
@@ -162,10 +174,6 @@ var s = {
     width: '200px',
     height: '200px'
   }
-}
-
-Profile.contextTypes = {
-  history: propTypes.historyContext
 }
 
 Profile.propTypes = {

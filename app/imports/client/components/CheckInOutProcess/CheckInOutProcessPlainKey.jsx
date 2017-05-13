@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import ReactDOM from 'react-dom';
-import {propTypes} from 'react-router';
 import CheckInOutProcessBase from '../CheckInOutProcess/CheckInOutProcessBase';
 import { StyleProvider } from '../../StyleProvider.js'
 
@@ -24,9 +23,6 @@ class CheckInOutProcessPlainKey extends CheckInOutProcessBase {
   }
 
   checkCode() {
-    // if(ReactDOM.findDOMNode(this.refs.code).value != '25')
-    //   return alert('Dat is niet de juiste code. Probeer het opnieuw.');
-
     this.setState({showCodeEntry:false});
 
     this.setObjectAvailable();

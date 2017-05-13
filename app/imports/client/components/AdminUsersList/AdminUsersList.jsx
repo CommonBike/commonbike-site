@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import {propTypes, Link} from 'react-router';
+import { Link } from 'react-router';
+import { RedirectTo } from '/client/main'
 
 // Import components
 import UserDetails from '../UserDetails/UserDetails.jsx';
@@ -50,10 +51,6 @@ var s = {
   }
 }
 
-AdminUsersList.contextTypes = {
-  history: propTypes.historyContext
-}
-
 AdminUsersList.propTypes = {
   users: PropTypes.any,
   isEditable: PropTypes.any
@@ -64,4 +61,4 @@ AdminUsersList.defaultProps = {
   isEditable: false
 }
 
-export default AdminUsersList;
+export default AdminUsersList

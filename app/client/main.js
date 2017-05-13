@@ -3,9 +3,7 @@
  */
 import React from 'react'
 import {render} from 'react-dom'
-import Router from 'react-router/BrowserRouter'
-import Match from 'react-router/Match'
-import Miss from 'react-router/Miss'
+import {BrowserRouter as Router, Switch, Route, withRouter} from 'react-router-dom'
 import Redirect from 'react-router/Redirect'
 
 import Settings from '/imports/api/settings.js'; 
@@ -35,10 +33,10 @@ const UserAppJoin = () => (<UserApp content={<ContentPage><Join /></ContentPage>
 const UserAppLogin = () => (<UserApp content={<CustomPage><Login /></CustomPage>} />) // Login redirectTo={params.redirectTo}
 const UserAppProfile = () => (<UserApp content={<div><Profile isEditable="true" /></div>} />)
 
-const UserAppLocationList = () => (<UserApp content={<LocationList />} />)
-const UserAppLocationDetails = ({params}) => {
+const UserAppLocationList = () => (<UserApp showPageHeader={false} content={<div><LocationsMap /><LocationList /></div>} />)
+const UserAppLocationDetails = ({match}) => {
   return (
-    <UserApp content={<LocationDetails locationId={params.locationId} />} />
+    <UserApp content={<LocationDetails locationId={match.params.locationId} />} />
   )
 }
 
@@ -52,27 +50,27 @@ const AdminAppTransactionList = () => (<UserApp content={<TransactionList admin=
 
 const UserAppRentalList = () => (<UserApp content={<ObjectList rentalsMode={true} showState={true} showRentalDetails={true} />} />)
 
-const UserAppCustomPageObjectDetails = ({params}) => {
+const UserAppCustomPageObjectDetails = ({match}) => {
   return (
-    <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails objectId={params.objectId}/></CustomPage>} />
+    <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails objectId={match.params.objectId}/></CustomPage>} />
   )
 }
-const UserAppCustomAdminPageObjectDetails = ({params}) => {
+const UserAppCustomAdminPageObjectDetails = ({match}) => {
   return (
-    <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails isEditable="true" objectId={params.objectId}/></CustomPage>} />
+    <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails isEditable="true" objectId={match.params.objectId}/></CustomPage>} />
   )
 }
 
-const UserAppCustomPageObjectDetailsCheckin = ({params}) => {
+const UserAppCustomPageObjectDetailsCheckin = ({match}) => {
   return (
-    <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails objectId={params.objectId} checkedIn={true}/></CustomPage>} />
+    <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails objectId={match.params.objectId} checkedIn={true}/></CustomPage>} />
   )
 }
 
 const UserAppAdminLocationList = () => (<UserApp content={<LocationList isEditable="true" />} />)
-const UserAppAdminLocationDetails = ({params}) => {
+const UserAppAdminLocationDetails = ({match}) => {
   return (
-    <UserApp content={<LocationDetails locationId={params.locationId} isEditable="true"/>} />
+    <UserApp content={<LocationDetails locationId={match.params.locationId} isEditable="true"/>} />
   )
 }
 
@@ -82,8 +80,8 @@ const UserAppAdminAdminUsersList = () => (<UserApp content={<AdminUsersList />} 
 const UserAppAdminAdminTools = () => (<UserApp content={<AdminTools />} />)
 
 // see: https://react-router.now.sh/auth-workflow
-const MatchWhenLoggedIn = ({ component: Component, ...rest }) => (
-  <Match {...rest} render={props => (
+const RouteWhenLoggedIn = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={props => (
     Meteor.userId() ? (
       <Component {...props}/>
     ) : (
@@ -96,8 +94,8 @@ const MatchWhenLoggedIn = ({ component: Component, ...rest }) => (
 )
 
 // see: https://react-router.now.sh/auth-workflow
-const MatchWhenAdmin = ({ component: Component, ...rest }) => (
-  <Match {...rest} render={props => (
+const RouteWhenAdmin = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={props => (
     Roles.userIsInRole(Meteor.userId(), 'admin') ? (
       <Component {...props}/>
     ) : (
@@ -110,39 +108,78 @@ const MatchWhenAdmin = ({ component: Component, ...rest }) => (
 )
 
 //
-const App = () => (
-  <Router>
-    <div>
-      <Match exactly pattern='/' component={UserAppLanding}/>
-      <Match pattern='/about' component={UserAppAbout}/>
-      <Match pattern='/join' component={UserAppJoin}/>
-      <Match pattern='/login' component={UserAppLogin}/> 
+const EVENT_REDIRECTTO = 'EVENT_REDIRECTTO'
+
+export const RedirectTo = (path) => {
+  const event = new CustomEvent(EVENT_REDIRECTTO, {
+    detail: {
+      path: path
+    }
+  })
+  window.dispatchEvent(event)
+}
+
+//
+class AppRoutes extends React.Component {
+  onRedirectToEventHandler(event) {
+    this.props.history.push(event.detail.path)
+  }
+
+  componentDidMount() {
+    window.addEventListener(EVENT_REDIRECTTO, this.onRedirectToEventHandler.bind(this))
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener(EVENT_REDIRECTTO, this.onRedirectToEventHandler.bind(this))
+  }
+
+  //
+  render() {
+    return (
+     <Switch>
+      <Route exact path='/' component={UserAppLanding}/>
+      <Route path='/about' component={UserAppAbout}/>
+      <Route path='/join' component={UserAppJoin}/>
+      <Route path='/login' component={UserAppLogin}/> 
+
+      <RouteWhenLoggedIn path='/profile' component={UserAppProfile}/> 
+      <RouteWhenLoggedIn path='/locations' component={UserAppLocationList}/> 
+      <RouteWhenLoggedIn path='/map' component={UserAppLocationsMap}/> 
+      <RouteWhenLoggedIn path='/objects' component={UserAppObjectList}/> 
+      <RouteWhenLoggedIn path='/transactions' component={UserAppTransactionList}/> 
+      <RouteWhenLoggedIn path='/location/:locationId' component={UserAppLocationDetails}/> 
+      <RouteWhenLoggedIn path='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
+      <RouteWhenLoggedIn path='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 
+      <RouteWhenLoggedIn path='/commonbike-ui' component={CommonBikeUI}/> 
       
-      <MatchWhenLoggedIn pattern='/profile' component={UserAppProfile}/> 
-      <MatchWhenLoggedIn pattern='/locations' component={UserAppLocationList}/> 
-      <MatchWhenLoggedIn pattern='/map' component={UserAppLocationsMap}/> 
-      <MatchWhenLoggedIn pattern='/objects' component={UserAppObjectList}/> 
-      <MatchWhenLoggedIn pattern='/transactions' component={UserAppTransactionList}/> 
-      <MatchWhenLoggedIn pattern='/location/:locationId' component={UserAppLocationDetails}/> 
-      <MatchWhenLoggedIn pattern='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
-      <MatchWhenLoggedIn pattern='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 
-      <MatchWhenLoggedIn pattern='/commonbike-ui' component={CommonBikeUI}/> 
-      
-      <MatchWhenLoggedIn pattern='/admin/locations' component={UserAppAdminLocationList}/> 
-      <MatchWhenLoggedIn pattern='/admin/rentals' component={UserAppRentalList}/> 
-      <MatchWhenLoggedIn pattern='/admin/location/:locationId' component={UserAppAdminLocationDetails}/> 
-      <MatchWhenLoggedIn pattern='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/> 
-      <MatchWhenLoggedIn pattern='/admin/users' component={UserAppAdminAdminUsersList}/> 
-      <MatchWhenLoggedIn pattern='/admin/transactions' component={AdminAppTransactionList}/> 
+      <RouteWhenLoggedIn path='/admin/locations' component={UserAppAdminLocationList}/> 
+      <RouteWhenLoggedIn path='/admin/rentals' component={UserAppRentalList}/> 
+      <RouteWhenLoggedIn path='/admin/location/:locationId' component={UserAppAdminLocationDetails}/> 
+      <RouteWhenLoggedIn path='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/> 
 
-      <MatchWhenLoggedIn pattern='/admin/AdminTools' component={UserAppAdminAdminTools}/> 
+      <RouteWhenAdmin path='/admin/users' component={UserAppAdminAdminUsersList}/> 
+      <RouteWhenAdmin path='/admin/admintools' component={UserAppAdminAdminTools}/> 
+      <RouteWhenAdmin path='/admin/transactions' component={AdminAppTransactionList}/> 
 
+      <Route component={NoMatch}/>
+     </Switch>
+  )}
+}
 
-      <Miss component={NoMatch}/>
-    </div>
-  </Router>
-)
+const AppRoutesWithRouterContext = withRouter(AppRoutes)
 
+//
+class App extends React.Component {
+  render() {
+    return (
+      <Router>
+        <AppRoutesWithRouterContext/>
+      </Router>
+    )
+  }
+}
+
+//
 Meteor.startup(() => {
   Meteor.subscribe("settings");
   

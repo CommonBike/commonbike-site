@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import Radium, { StyleRoot } from 'radium';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { RedirectTo } from '/client/main'
 
 // Import components
 import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
@@ -16,7 +16,7 @@ class Landing extends Component {
   }
 
   login() { 
-    this.context.history.push('/login')
+    RedirectTo('/login')
   }
 
   render() {
@@ -33,12 +33,12 @@ class Landing extends Component {
 
         <div style={s.bottomWrapper}>
           <p>
-            <a style={s.smallText} href="/join">euhm, maar hoe werkt dat dan?</a>
+            <a style={s.smallText} onClick={() => RedirectTo('/join')}>euhm, maar hoe werkt dat dan?</a>
           </p>
 
-			<RaisedButton onClick={this.login.bind(this)}>
-				{ this.props.currentUser ? "Waar kan ik fietsen?" : "Meld je aan voor de pilot" }
-			</RaisedButton>
+    			<RaisedButton onClick={this.login.bind(this)}>
+    				{ this.props.currentUser ? "Waar kan ik fietsen?" : "Meld je aan voor de pilot" }
+    			</RaisedButton>
         </div>
 
       </div>
@@ -81,10 +81,6 @@ var s = {
     fontSize: '0.8em',
     fontWeight: '500',
   }
-}
-
-Landing.contextTypes = {
-  history: propTypes.historyContext
 }
 
 export default createContainer((props) => {

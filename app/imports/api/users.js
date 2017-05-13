@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo';
 import { Accounts } from 'meteor/accounts-base'
+import { Integrations } from '/imports/api/integrations.js'; 
 
 // publish all users if current user is administrator (for client side adminstration)
 if(Meteor.isServer) {
@@ -63,7 +64,7 @@ if(Meteor.isServer) {
       Meteor.users.update(userId, {$set : { 'profile.active' : isActive }});
 
       if(isActive) {
-          Meteor.call('slack.sendnotification_commonbike', 'Er is een nieuwe deelnemer geactiveerd!');
+        Integrations.slack.sendNotification('Er is een nieuwe deelnemer geactiveerd!');
       }
     },
     'currentuser.setAdmin'(userId, isActive) {

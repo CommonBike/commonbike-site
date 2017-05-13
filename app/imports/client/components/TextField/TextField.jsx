@@ -8,9 +8,13 @@ class TextField extends Component {
     super(props);
   }
 
+  handleChange(e) {
+    console.log(e);
+  }
+
   render() {
     return (
-      <input required={this.props.required} style={Object.assign({}, s, this.props.style)} type={this.props.type} name={this.props.name} placeholder={this.props.placeholder} onChange={this.props.onChange} onBlur={this.props.onChange} />
+      <input onChange={this.handleChange.bind(this)} required={this.props.required} style={Object.assign({}, s, this.props.style)} type={this.props.type} name={this.props.name} placeholder={this.props.placeholder} onChange={this.props.onChange} onBlur={this.props.onChange} />
     )
   }
 

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
-import {propTypes} from 'react-router';
+import { RedirectTo } from '/client/main'
 
 // Import components
 import EditObject from '../../containers/EditObject/EditObject';
@@ -94,10 +94,6 @@ var s = {
   },
 }
 
-ObjectDetails.contextTypes = {
-  history: propTypes.historyContext
-}
-
 ObjectDetails.propTypes = {
   object: PropTypes.object,
   location: PropTypes.object,
@@ -110,4 +106,4 @@ ObjectDetails.defaultProps = {
   isEditable: false
 }
 
-export default ObjectDetails;
+export default ObjectDetails
