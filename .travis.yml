@@ -12,8 +12,8 @@ services:
   - docker
 
 before_install:
-  - npm install # bloody version issues. Google for yourself babel-runtime
-  - "curl -L https://raw.githubusercontent.com/arunoda/travis-ci-meteor-packages/master/configure.sh | /bin/sh"
+#  - npm install # bloody version issues. Google for yourself babel-runtime
+#  - "curl -L https://raw.githubusercontent.com/arunoda/travis-ci-meteor-packages/master/configure.sh | /bin/sh"
   - meteor npm install --save babel-runtime
   - npm install -g node-gyp
   - sudo ln -s /usr/bin/nodejs /usr/bin/node
