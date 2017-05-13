@@ -19,7 +19,8 @@ before_install:
   - npm install -g node-gyp
   - sudo ln -s /usr/bin/nodejs /usr/bin/node
   - cd app
-  - echo meteor # meteor npm install -g --save babel-runtime react react-dom react-router ramda radium react-swipe fluture react-contenteditable leaflet
+  - echo meteor # 
+  - meteor npm install -g --save babel-runtime react react-dom react-router ramda radium react-swipe fluture react-contenteditable leaflet
 install:
   - npm install --production
   
