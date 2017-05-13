@@ -2,7 +2,8 @@ language: node_js
 sudo: required
 dist: trusty
 node_js:
-  - "6"
+#  - "6"
+  - stable
 env:
   - CXX=g++-4.8
 #  - LAIKA_OPTIONS="-t 5000"
@@ -28,7 +29,7 @@ script:
   
 after_success:
   - cd ..
-  - "sh .travis/deploy_dockerhub.sh"
+  - sh .travis/deploy_dockerhub.sh
   - docker images
   - echo $TRAVIS_BRANCH
   - test “$TRAVIS_BRANCH” = “cicd” && sh .travis/deploy_heroku.sh
