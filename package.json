@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "bufferutil": "^1.2.1",
-    "draft-js": "^0.9.1",
     "fluture": "^4.0.3",
     "leaflet": "^1.0.3",
     "leaflet-search": "^2.7.2",
