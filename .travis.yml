@@ -28,7 +28,7 @@ install:
 before_script:
   - "export PATH=$HOME/.meteor:$PATH"
 script: 
-  - meteor build --allow-superuser --directory ../mrt_build --server-only
+  - meteor build --allow-superuser --directory ../mrt_build
   
 after_success:
   - cd ..
