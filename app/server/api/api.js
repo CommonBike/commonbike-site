@@ -73,7 +73,7 @@ lockerAPI = {
 
         var userId = object.state.userId;
         var description = object.state.userDescription;
-        if(cardhash=="nocard") {
+        if(cardhash=="00000000") {
           // keep existing userid / description
         } else {
           // card used to rent the locker: find if a user exists with the given cardhash as a card

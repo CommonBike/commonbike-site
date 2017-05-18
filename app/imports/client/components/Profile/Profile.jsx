@@ -138,11 +138,11 @@ class Profile extends Component {
             { this.getUserPersonalia() }
           </p>
 
-          <RaisedButton onClick={() => RedirectTo('/locations')}>VIND EEN FIETS</RaisedButton>
+          <RaisedButton onClick={() => RedirectTo('/locations')}>ZOEK</RaisedButton>
 
-          <RaisedButton onClick={this.reservations.bind(this)}>MIJN RESERVERINGEN</RaisedButton>
+          <RaisedButton onClick={this.reservations.bind(this)}>FIETS</RaisedButton>
 
-          <RaisedButton onClick={this.transactions.bind(this)}>MIJN GESCHIEDENIS</RaisedButton>
+          <RaisedButton onClick={this.transactions.bind(this)}>GESCHIEDENIS</RaisedButton>
 
           { this.getMyLocationsButton() }
 

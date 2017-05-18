@@ -50,7 +50,7 @@ class CheckInOutProcessOpenBikelocker extends CheckInOutProcessBase {
     }
 
     var rentalInfo = {
-      'cardhash': 'nocard',
+      'cardhash': '00000000',
       'pincode': ''
     };
     var user = getUserDescription(Meteor.user());
