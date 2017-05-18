@@ -3,6 +3,33 @@ import { Mongo } from 'meteor/mongo';
 import { Accounts } from 'meteor/accounts-base'
 import { Integrations } from '/imports/api/integrations.js';
 import { getSettingsServerSide } from '/imports/api/settings.js';
+import { CoinSchema } from '/imports/api/bikecoin.js';
+
+export const UserProfileSchema = new SimpleSchema({
+  active: {
+    type: Boolean,
+    label: "Active",
+    defaultValue: 'false'
+  },
+  'name': {
+    type: String,
+    label: "Name",
+    defaultValue: 'anonymous'
+  },
+  'avatar': {
+    type: String,
+    label: "Avatar",
+    defaultValue: ''
+  },
+  cancreatelocations: {
+    type: Boolean,
+    label: "Can Create Locations",
+    defaultValue: 'false'
+  },
+  wallet: {
+    type: CoinSchema
+  },
+});
 
 // publish all users if current user is administrator (for client side adminstration)
 if(Meteor.isServer) {
@@ -62,7 +89,24 @@ if(Meteor.isServer) {
         return
       }
 
-      Meteor.users.update(userId, {$set : { 'profile.active' : isActive }});
+      var data = { 'profile.active' : isActive }
+
+      var user = Meteor.users.findOne(userId);
+      if(user) {
+        if(!user.profile || !user.profile.wallet || (user.profile.wallet.address=='' && user.profile.wallet.privatekey=='')) {
+
+          console.log('Added keypair to user during activation');
+
+          var newCBCkeypair = require('/server/api/CBC.js').newCBCkeypair;
+          var keypair = newCBCkeypair();
+          data = { 'profile.active' : isActive,
+                   'profile.wallet.address':  keypair.address,
+    		           'profile.wallet.privatekey':  keypair.privatekey
+                  }
+        }
+  		}
+
+      Meteor.users.update(userId, {$set : data});
 
       if(isActive) {
         Integrations.slack.sendNotification('Er is een nieuwe deelnemer geactiveerd!');
@@ -99,15 +143,22 @@ if(Meteor.isServer) {
         return
       }
 
-      if(getSettingsServerSide().onboarding.enabled) {
+      if(!getSettingsServerSide().onboarding.enabled) {
         return
       }
 
-      Meteor.users.update(this.userId, {$set : { 'profile.active' : true }});
+      console.log('AutoOnboarding user ' + this.userId);
 
-      if(isActive) {
-        Integrations.slack.sendNotification('Er is een nieuwe deelnemer geactiveerd!');
-      }
+      var newCBCkeypair = require('/server/api/CBC.js').newCBCkeypair;
+			var keypair = newCBCkeypair();
+      Meteor.users.update(this.userId, {$set : { 'profile.active' : true,
+                                                 'profile.wallet' : { address : keypair.address,
+                                                                      privatekey :  keypair.privatekey
+                                                                    }
+                                                }
+                                        });
+
+      Integrations.slack.sendNotification('Er is een nieuwe deelnemer geactiveerd!');
     },
   })
 }

@@ -128,13 +128,24 @@ export const OnboardingSchema = new SimpleSchema({
 export const CoinSettingsSchema = new SimpleSchema({
 	'enabled': {
     type: Boolean,
-    label: "onboarding.enabled",
+    label: "bikecoin.enabled",
     defaultValue: 'true'
+  },
+	'provider_url': {
+    type: String,
+    label: "bikecoin.provider_url",
+    defaultValue: ''
+  },
+	'token_address': {
+    type: String,
+    label: "bikecoin.token_address",
+    defaultValue: ''
   },
 	wallet: {
 		type: CoinSchema
 	}
 })
+
 
 // for now there is only one set of settings. Later on profilename can be used later
 // to use different settings for different instances
@@ -212,6 +223,8 @@ if (Meteor.isServer) {
 					onboarding: { enabled:false },
 					bikecoin: {
 						enabled:false,
+						provider_url: '',
+						token_address: '',
 						wallet: {
 							address: '',
 							privatekey: ''
@@ -252,6 +265,8 @@ if (Meteor.isServer) {
 				if(!settings.bikecoin) {
 					settings.bikecoin = {
 						enabled:false,
+						provider_url: '',
+						token_address: '',
 						wallet: {
 							address: '',
 							privatekey: ''
@@ -262,6 +277,24 @@ if (Meteor.isServer) {
 					Settings.update(settings._id, settings, {validate: false});
 				}
 
+				if(settings.bikecoin.wallet.address=='' && settings.bikecoin.wallet.address=='') {
+					var newCBCkeypair = require('/server/api/CBC.js').newCBCkeypair;
+
+					var keypair = newCBCkeypair();
+					settings.bikecoin.wallet.address = keypair.address;
+				  settings.bikecoin.wallet.privatekey = keypair.privatekey;
+
+					console.log('adding bikecoin keypair to general settings')
+					Settings.update(settings._id, settings, {validate: false});
+				}
+
+				if(settings.bikecoin.provider_url=='') {
+				  settings.bikecoin.provider_url='https://ropsten.infura.io/sCQUO1V3FOoOUWGZBtig';
+
+					console.log('setting provider URL to ropsten testnet');
+					Settings.update(settings._id, settings, {validate: false});
+				}
+				
 		    try {
 		      check(settings, SettingsSchema);
 		    } catch(ex) {
@@ -317,5 +350,5 @@ if (Meteor.isServer) {
 	Meteor.startup(() => {
 		Meteor.call('settings.check');
 	});
-	
+
 }

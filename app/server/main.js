@@ -2,8 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base'
 
 import '/imports/api/users.js'
-import { Objects } from '/imports/api/objects.js'; 
-import { Settings } from '/imports/api/settings.js'; 
+import { Objects } from '/imports/api/objects.js';
+import { Settings } from '/imports/api/settings.js';
 import '/imports/api/api-keys.js'
 import { Log } from '/imports/api/log.js'
 import '/imports/server/testdata.js'
@@ -15,7 +15,7 @@ Meteor.startup(() => {
 	if(false) {
 		var myObjects = Objects.find().fetch();
 		_.each(myObjects, function (objectData) {
-		    
+
 		    var timestamp =  new Date().valueOf();
 		    var length = 5;
 		    var base = Math.pow(10, length+1);
@@ -39,27 +39,51 @@ Meteor.startup(() => {
 			}
 		});
 
-		var myUsers = Meteor.users.find().fetch();
-		_.each(myUsers, function (user) {
-			if(!user.profile || !user.profile.active) {
-				Meteor.users.update(user._id, {$set : { 'profile.active' : false }});
-			}
-			if(!user.profile || !user.profile.name) {
-				Meteor.users.update(user._id, {$set : { 'profile.name' : 'anonymous' }});
-			}
-			if(!user.profile || !user.profile.avatar) {
-				Meteor.users.update(user._id, {$set : { 'profile.avatar' : '' }});
-			}
-		});	
 	}
+
+
+	var myUsers = Meteor.users.find().fetch();
+	_.each(myUsers, function (user) {
+		if(!user.profile || !user.profile.active) {
+			Meteor.users.update(user._id, {$set : { 'profile.active' : false }});
+		}
+		if(!user.profile || !user.profile.name) {
+			Meteor.users.update(user._id, {$set : { 'profile.name' : 'anonymous' }});
+		}
+		if(!user.profile || !user.profile.avatar) {
+			Meteor.users.update(user._id, {$set : { 'profile.avatar' : '' }});
+		}
+		if(!user.profile || !user.profile.cancreatelocations) {
+			Meteor.users.update(user._id, {$set : { 'profile.cancreatelocations' : 'false' }});
+		}
+
+		if(!user.profile || !user.profile.wallet) {
+			Meteor.users.update(user._id, {$set : { 'profile.wallet.address' : '',
+		                                          'profile.wallet.privatekey' : '' }});
+		}
+
+		if(user.profile && user.profile.wallet &&
+		   user.profile.wallet.address=='' && user.profile.wallet.privatekey=='') {
+
+			console.log('creating new keypair for user ' + user.name);
+
+		  var newCBCkeypair = require('/server/api/CBC.js').newCBCkeypair;
+
+			var keypair = newCBCkeypair();
+
+			Meteor.users.update(user._id, {$set : { 'profile.wallet.address' : keypair.address,
+		                                          'profile.wallet.privatekey' :  keypair.privatekey	}});
+		}
+
+	});
 
 	// move price from hardcoded to object
 	if(false) {
-		var newprice = { 
+		var newprice = {
 			value: '0',
 			currency: 'euro',
 			timeunit: 'day',
-			description: 'tijdelijk gratis' 
+			description: 'tijdelijk gratis'
 		};
 
 		var myObjects = Objects.find().fetch();

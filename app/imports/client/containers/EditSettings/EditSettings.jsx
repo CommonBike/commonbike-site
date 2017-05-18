@@ -167,6 +167,18 @@ class EditSettings extends Component {
           controltype: 'yesno'
   		},
       {
+          fieldname: 'bikecoin.provider_url',
+          fieldvalue: this.props.settings.bikecoin.provider_url,
+          controltype: 'text',
+          label: 'Provider URL'
+      },
+      {
+          fieldname: 'bikecoin.token_address',
+          fieldvalue: this.props.settings.bikecoin.token_address,
+          controltype: 'text',
+          label: 'Token Address'
+      },
+      {
           fieldname: 'bikecoin.coin.wallet.address',
           fieldvalue: this.props.settings.bikecoin.wallet.address,
           controltype: 'text',

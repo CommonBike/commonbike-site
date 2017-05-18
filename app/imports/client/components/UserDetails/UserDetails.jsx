@@ -47,11 +47,14 @@ class UserDetails extends Component {
     var isActive = false;
     var picture = '';
     var canCreateLocations = false;
+    var publickey = '';
     if (user.profile) {
         name = user.profile.name||'anoniem'
         isActive = user.profile.active|| false
         picture = user.profile.avatar|| ''
         canCreateLocations = user.profile.cancreatelocations|| false
+        publickey = user.profile.wallet && user.profile.wallet.address|| ''
+        if(publickey!='') publickey=publickey.substring(0,10)+'.....'
     }
     var email = user.emails ? user.emails[0].address : name + ' (no email)'
     var isAdmin = Roles.userIsInRole(user._id, 'admin');
@@ -64,7 +67,7 @@ class UserDetails extends Component {
         backcolor = 'red'
       } else if(isAdmin) {
         backcolor = 'yellow'
-      } 
+      }
     }
 
     return (
@@ -79,10 +82,11 @@ class UserDetails extends Component {
                 <li style={s.listitem}><img style={s.profilepicture} src={picture}/></li>
                 <li style={s.listitem}>{name}</li>
                 <li style={s.listitem}>{email}</li>
+                <li style={s.listitem}>{publickey}</li>
                 <li style={s.listitem}>Admin: { this.getToggleButton('currentuser.setAdmin', user._id, isAdmin, readonly, 'Weet je zeker dat je deze gebruiker admin rechten wilt geven?') }</li>
                 <li style={s.listitem}>Active: { this.getToggleButton('currentuser.setActive', user._id, isActive, readonly) }</li>
                 <li style={s.listitem}>Add locations: { this.getToggleButton('currentuser.canCreateLocations', user._id, canCreateLocations, false) }</li>
-              </ul> 
+              </ul>
             }
           </div>
         </article>

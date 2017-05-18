@@ -158,7 +158,10 @@ export const createObject = (locationId, title) => {
             currency: 'euro',
             timeunit: 'day',
             description: 'tijdelijk gratis'},
-    	    lat_lng: [0, 0]
+    	    lat_lng: [0, 0],
+    wallet: { address : '',
+              privatekey :  ''
+            }
   }
 
   try {
@@ -188,6 +191,14 @@ Meteor.methods({
   	// Strip HTML Tags
     data.title = data.title.replace(/<.*?>/g, " ").replace(/\s+/g, " ").trim();
 
+    // assign new keypair to object
+    var newCBCkeypair = require('/server/api/CBC.js').newCBCkeypair;
+
+    var keypair = newCBCkeypair();
+
+    data.wallet.address=keypair.address;
+    data.wallet.privatekey=keypair.privatekey;
+
     // Insert object
     var objectId = Objects.insert(data);
 
@@ -201,7 +212,9 @@ Meteor.methods({
       slackmessage += ' bij ' + location.title;
     }
     Meteor.call('transactions.addTransaction', 'ADD_OBJECT', description, Meteor.userId(), object.locationId, objectId, data);
-    Integrations.slack.sendNotification(slackmessage);
+    if (Meteor.isServer) {
+      Integrations.slack.sendNotification(slackmessage);
+    }
   },
   'objects.update'(objectId, data) {
 

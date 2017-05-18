@@ -45,6 +45,7 @@ dialoutTwelio = {
 if(Meteor.isServer) {
   Meteor.methods({
     'dialoutapi.wakeupcall'(objectId) {
+        var settings = Settings.findOne({});
         var object = Objects.findOne({_id: objectId});
         if(!object) {
           Meteor.call('log.write', 'cant call unknown object ' + objectId);
@@ -53,14 +54,22 @@ if(Meteor.isServer) {
         if(object.lock&&object.lock.type!='open-bikelocker') {
           Meteor.call('log.write', 'this object does not need a wakeup call ' + object._id);
           return false;
+
         }
 
-        var toPhoneNumber = object.lock.settings.phonenr;
+        var toPhoneNumber = object.lock.settings.phonenr|| '';
         var thisserverurl = this.connection.httpHeaders.host;
 
-        Meteor.call('log.write', 'making wakeup call to ' + toPhoneNumber)
+        if(toPhoneNumber!='') {
+            Meteor.call('log.write', 'making wakeup call to ' + toPhoneNumber)
 
-        dialoutTwelio.wakeupCall(thisserverurl, toPhoneNumber);
+            dialoutTwelio.wakeupCall(thisserverurl, toPhoneNumber);
+        } else {
+            Meteor.call('log.write', 'unable to make  wakeup call to object ' + object.title + ' [id:' + object._id + '] - No phonenumber set');
+            return false;
+        }
+
+        return true;
     }
   });
 }
