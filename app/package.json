@@ -7,12 +7,15 @@
   },
   "dependencies": {
     "bcrypt": "^0.8.7",
+    "bip39": "^2.3.0",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "bufferutil": "^1.2.1",
     "connect": "^3.6.1",
     "crypto-js": "^3.1.9-1",
     "draft-js": "^0.9.1",
+    "eth-ens-namehash": "^2.0.0",
+    "ethereumjs-wallet": "^0.6.0",
     "fluture": "^4.0.3",
     "leaflet": "^1.0.3",
     "leaflet-search": "^2.7.2",
@@ -31,7 +34,9 @@
     "react-tap-event-plugin": "^1.0.0",
     "soap": "git+ssh://git@github.com/mosbuma/node-soap.git",
     "swipe-js-iso": "^2.0.3",
+    "truffle-hdwallet-provider": "^0.0.3",
     "twilio": "^3.0.0",
-    "utf-8-validate": "^1.2.1"
+    "utf-8-validate": "^1.2.1",
+    "web3": "^0.19.0"
   }
 }
