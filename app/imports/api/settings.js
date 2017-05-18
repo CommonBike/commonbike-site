@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo';
 import { getUserDescription } from '/imports/api/users.js';
+import { CoinSchema } from '/imports/api/bikecoin.js';
 
 export const Settings = new Mongo.Collection('settings');
 
@@ -124,6 +125,17 @@ export const OnboardingSchema = new SimpleSchema({
   }
 });
 
+export const CoinSettingsSchema = new SimpleSchema({
+	'enabled': {
+    type: Boolean,
+    label: "onboarding.enabled",
+    defaultValue: 'true'
+  },
+	wallet: {
+		type: CoinSchema
+	}
+})
+
 // for now there is only one set of settings. Later on profilename can be used later
 // to use different settings for different instances
 
@@ -156,7 +168,9 @@ export const SettingsSchema = new SimpleSchema({
 	onboarding: {
 		type: OnboardingSchema
   },
-
+	bikecoin: {
+	    type: CoinSettingsSchema
+  },
 });
 
 if (Meteor.isServer) {
@@ -194,7 +208,15 @@ if (Meteor.isServer) {
 						twilio_accountsid: "",
 						twilio_authtoken: "",
 						twilio_fromnumber: ""
-					}
+					},
+					onboarding: { enabled:false },
+					bikecoin: {
+						enabled:false,
+						wallet: {
+							address: '',
+							privatekey: ''
+						}
+					},
 	    	}
 
 		    try {
@@ -222,10 +244,21 @@ if (Meteor.isServer) {
 				}
 
 				if(!settings.onboarding) {
-					settings.onboarding = {
-						enabled:true
+					settings.onboarding = { enabled: false };
+
+					Settings.update(settings._id, settings, {validate: false});
+				}
+
+				if(!settings.bikecoin) {
+					settings.bikecoin = {
+						enabled:false,
+						wallet: {
+							address: '',
+							privatekey: ''
+						}
 					}
 
+					console.log('adding bikecoin settings')
 					Settings.update(settings._id, settings, {validate: false});
 				}
 
@@ -233,6 +266,7 @@ if (Meteor.isServer) {
 		      check(settings, SettingsSchema);
 		    } catch(ex) {
 		      console.log('data for settings does not match schema: ' + ex.message);
+					console.log(JSON.stringify(ex.message));
 			  	throw new Meteor.Error('invalid-settings');
 		    }
 	    }
@@ -283,4 +317,5 @@ if (Meteor.isServer) {
 	Meteor.startup(() => {
 		Meteor.call('settings.check');
 	});
+	
 }

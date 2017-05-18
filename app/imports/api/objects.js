@@ -4,6 +4,7 @@ import { Mongo } from 'meteor/mongo';
 import { Locations } from '/imports/api/locations.js';
 import { getUserDescription } from '/imports/api/users.js';
 import { Integrations } from '/imports/api/integrations.js';
+import { CoinSchema } from '/imports/api/bikecoin.js';
 
 export const Objects = new Mongo.Collection('objects');
 
@@ -100,6 +101,9 @@ export const ObjectsSchema = new SimpleSchema({
     type: Number,
     decimal: true,
     optional: true
+  },
+  'wallet': {
+    type: CoinSchema
   },
 });
 

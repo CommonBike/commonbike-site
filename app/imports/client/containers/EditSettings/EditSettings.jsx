@@ -155,6 +155,29 @@ class EditSettings extends Component {
           label: 'Enabled',
           controltype: 'yesno'
   		},
+      {
+          controltype: 'header',
+          label: 'CommonBikeCoin'
+      },
+  		{
+          fieldname: 'bikecoin.enabled',
+          fieldvalue: this.props.settings.bikecoin.enabled,
+          controltype: 'combo',
+          label: 'Enabled',
+          controltype: 'yesno'
+  		},
+      {
+          fieldname: 'bikecoin.coin.wallet.address',
+          fieldvalue: this.props.settings.bikecoin.wallet.address,
+          controltype: 'text',
+          label: 'Address'
+      },
+      {
+          fieldname: 'bikecoin.coin.wallet.privatekey',
+          fieldvalue: this.props.settings.bikecoin.wallet.privatekey,
+          controltype: 'text',
+          label: 'Private Key'
+      },
   	]
 
     return (
