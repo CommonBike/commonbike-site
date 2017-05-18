@@ -1,8 +1,12 @@
 pragma solidity ^0.4.2;
 
 /*
-  Taken from https://ethereum.org/token#full-coin-code
-  Deployed on https://ropsten.etherscan.io/address/0x0e5656d5a43a6baad0e48e849cc0660ad9feaba4
+  Taken from        https://ethereum.org/token#full-coin-code
+  Deployed via      https://ethereum.github.io/browser-solidity
+  Deployment TX     https://ropsten.etherscan.io/tx/0x85576c4b39013e7bd2ca94a05b34c549b2187aa27ae4871a88b06fb7a98e2f9b
+  Contract details  https://ropsten.etherscan.io/address/
+
+  OLD Deployed on https://ropsten.etherscan.io/address/0x0e5656d5a43a6baad0e48e849cc0660ad9feaba4
 */
 
 contract owned {
