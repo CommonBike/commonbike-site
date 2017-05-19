@@ -141,6 +141,11 @@ export const CoinSettingsSchema = new SimpleSchema({
     label: "bikecoin.token_address",
     defaultValue: ''
   },
+	'token_abi': {
+    type: String,
+    label: "bikecoin.token_abi",
+    defaultValue: ''
+  },
 	wallet: {
 		type: CoinSchema
 	}
@@ -225,6 +230,7 @@ if (Meteor.isServer) {
 						enabled:false,
 						provider_url: '',
 						token_address: '',
+						token_abi: '',
 						wallet: {
 							address: '',
 							privatekey: ''
@@ -267,6 +273,7 @@ if (Meteor.isServer) {
 						enabled:false,
 						provider_url: '',
 						token_address: '',
+						token_abi: '',
 						wallet: {
 							address: '',
 							privatekey: ''

@@ -4,8 +4,6 @@ var Web3 = require("web3")
 var fs = require("fs")
 var solc = require('solc')
 
-var token_abi = require('/imports/api/smartcontracts/BikeCoinAbi.json') // note: perhaps we better store this in settings.bikecoin.abi
-
 import { Settings } from '/imports/api/settings.js';
 
 
@@ -36,18 +34,23 @@ export default class BikeCoin {
       const decimalUnits  = 2
       const tokenSymbol   = 'BC'
 
-      const myContractReturned = contract.new(
+      contract.new(
         initialSupply, tokenName, decimalUnits, tokenSymbol,
         {from: wallet.address, data: bytecode, gas: 100000 + contractGasEstimate, gasPrice: web3.toWei(20, 'gwei')},
-        (error, myContract) => {
+        (error, contract) => {
           if (error) { console.error(error); return; }
-          BikeCoin.myContract = myContract
-          // console.log(myContract)
+          // console.log(contract)
+          BikeCoin.contract = contract
+
+          // TODO:
+          //    settings.bikecoin.token_address = contract.address (will be available after mining!)
+          //    settings.bikecoin.token_abi = abi
+
+          // note:
+          //    // settings.bikecoin.wallet.address = 0xaa1fa720748bd61676d383d6b1e638df2c025577
+          //    BikeCoin.contract().balanceOf(settings.bikecoin.wallet.address, (err,nBikeCoins)=>console.log(nBikeCoins.toNumber()))
         }
       )
-      // console.log('myContractReturned', myContractReturned)
-
-      BikeCoin.contractReturned = myContractReturned
     })
 
     // return {web3: web3, bytecode: bytecode, abi: abi, contract: contract}
@@ -64,10 +67,10 @@ export default class BikeCoin {
   }
 
   static web3(seedPhrase) {
-    if (!seedPhrase) {
-      console.warn('BikeCoin.web3 missing seedPhrase')
-      return
-    }
+    // if (!seedPhrase) {
+    //   console.warn('BikeCoin.web3 missing seedPhrase')
+    //   return
+    // }
 
     const provider = new HDWalletProvider(seedPhrase, Settings.findOne().bikecoin.provider_url)
     return new Web3(provider)
@@ -81,8 +84,8 @@ export default class BikeCoin {
   }
 
   static contract(seedPhrase) {
-    const { token_address } = Settings.findOne().bikecoin
-    return this.web3(seedPhrase).eth.contract(token_abi).at(token_address)
+    const { token_address, token_abi } = Settings.findOne().bikecoin
+    return this.web3(seedPhrase).eth.contract(JSON.parse(token_abi)).at(token_address)
   }
 
 } // end of class BikeCoin

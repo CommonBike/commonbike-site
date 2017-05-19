@@ -179,6 +179,12 @@ class EditSettings extends Component {
           label: 'Token Address'
       },
       {
+          fieldname: 'bikecoin.token_abi',
+          fieldvalue: this.props.settings.bikecoin.token_abi,
+          controltype: 'text',
+          label: 'Token ABI'
+      },
+      {
           fieldname: 'bikecoin.coin.wallet.address',
           fieldvalue: this.props.settings.bikecoin.wallet.address,
           controltype: 'text',
