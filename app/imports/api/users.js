@@ -97,8 +97,8 @@ if(Meteor.isServer) {
 
           console.log('Added keypair to user during activation');
 
-          var newCBCkeypair = require('/server/api/CBC.js').newCBCkeypair;
-          var keypair = newCBCkeypair();
+          var BikeCoin = require('/server/api/BikeCoin.js');
+          var keypair = BikeCoin.newKeypair();
           data = { 'profile.active' : isActive,
                    'profile.wallet.address':  keypair.address,
     		           'profile.wallet.privatekey':  keypair.privatekey
@@ -149,8 +149,8 @@ if(Meteor.isServer) {
 
       console.log('AutoOnboarding user ' + this.userId);
 
-      var newCBCkeypair = require('/server/api/CBC.js').newCBCkeypair;
-			var keypair = newCBCkeypair();
+      var BikeCoin = require('/server/api/BikeCoin.js');
+			var keypair = BikeCoin.newKeypair();
       Meteor.users.update(this.userId, {$set : { 'profile.active' : true,
                                                  'profile.wallet' : { address : keypair.address,
                                                                       privatekey :  keypair.privatekey

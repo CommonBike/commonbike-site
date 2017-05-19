@@ -67,9 +67,9 @@ Meteor.startup(() => {
 
 			console.log('creating new keypair for user ' + user.name);
 
-		  var newCBCkeypair = require('/server/api/CBC.js').newCBCkeypair;
+		  var BikeCoin = require('/server/api/BikeCoin.js');
 
-			var keypair = newCBCkeypair();
+			var keypair = BikeCoin.newKeypair();
 
 			Meteor.users.update(user._id, {$set : { 'profile.wallet.address' : keypair.address,
 		                                          'profile.wallet.privatekey' :  keypair.privatekey	}});

@@ -192,9 +192,9 @@ Meteor.methods({
     data.title = data.title.replace(/<.*?>/g, " ").replace(/\s+/g, " ").trim();
 
     // assign new keypair to object
-    var newCBCkeypair = require('/server/api/CBC.js').newCBCkeypair;
+    var BikCoin = require('/server/api/BikeCoin.js');
 
-    var keypair = newCBCkeypair();
+    var keypair = BikeCoin.newKeypair();
 
     data.wallet.address=keypair.address;
     data.wallet.privatekey=keypair.privatekey;

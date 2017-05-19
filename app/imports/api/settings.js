@@ -278,9 +278,9 @@ if (Meteor.isServer) {
 				}
 
 				if(settings.bikecoin.wallet.address=='' && settings.bikecoin.wallet.address=='') {
-					var newCBCkeypair = require('/server/api/CBC.js').newCBCkeypair;
+					var BikeCoin = require('/server/api/BikeCoin.js');
 
-					var keypair = newCBCkeypair();
+					var keypair = BikeCoin.newKeypair();
 					settings.bikecoin.wallet.address = keypair.address;
 				  settings.bikecoin.wallet.privatekey = keypair.privatekey;
 
@@ -294,7 +294,7 @@ if (Meteor.isServer) {
 					console.log('setting provider URL to ropsten testnet');
 					Settings.update(settings._id, settings, {validate: false});
 				}
-				
+
 		    try {
 		      check(settings, SettingsSchema);
 		    } catch(ex) {
