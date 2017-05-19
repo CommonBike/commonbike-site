@@ -7,6 +7,9 @@ var solc = require('solc')
 import { Settings } from '/imports/api/settings.js';
 
 
+const gasMargin = 100000
+const gasPrice = 20000000000
+
 export default class BikeCoin {
   static settings() {
     console.log(Settings.findOne().bikecoin)
@@ -26,7 +29,7 @@ export default class BikeCoin {
     const contract     = web3.eth.contract(JSON.parse(abi))
 
     web3.eth.estimateGas({data: '0x' + bytecode}, (error, contractGasEstimate) => {
-      BikeCoin.contractGasEstimate = contractGasEstimate
+      // BikeCoin.contractGasEstimate = contractGasEstimate
       // console.log('contractGasEstimate', contractGasEstimate)
 
       const initialSupply = 1000000
@@ -36,7 +39,7 @@ export default class BikeCoin {
 
       contract.new(
         initialSupply, tokenName, decimalUnits, tokenSymbol,
-        {from: wallet.address, data: bytecode, gas: 100000 + contractGasEstimate, gasPrice: web3.toWei(20, 'gwei')},
+        {from: wallet.address, data: bytecode, gas: gasMargin + contractGasEstimate, gasPrice: gasPrice},
         (error, contract) => {
           if (error) { console.error(error); return; }
           // console.log(contract)
@@ -47,7 +50,7 @@ export default class BikeCoin {
           //    settings.bikecoin.token_abi = abi
 
           // note:
-          //    // settings.bikecoin.wallet.address = 0xaa1fa720748bd61676d383d6b1e638df2c025577
+          //    // settings.bikecoin.wallet.address = '0xaa1fa720748bd61676d383d6b1e638df2c025577'
           //    BikeCoin.contract().balanceOf(settings.bikecoin.wallet.address, (err,nBikeCoins)=>console.log(nBikeCoins.toNumber()))
         }
       )
@@ -66,26 +69,35 @@ export default class BikeCoin {
     }
   }
 
-  static web3(seedPhrase) {
-    // if (!seedPhrase) {
-    //   console.warn('BikeCoin.web3 missing seedPhrase')
-    //   return
-    // }
-
+  static web3(seedPhrase) { // note: we only need to supply seedPhrase when we need to sign a transaction!
     const provider = new HDWalletProvider(seedPhrase, Settings.findOne().bikecoin.provider_url)
     return new Web3(provider)
   }
 
-  static balance(seedPhrase) {
-    const { wallet } = Settings.findOne().bikecoin
-    this.web3(seedPhrase).eth.getBalance(wallet.address, (err, balance) => {
-      console.log(err || balance.toNumber())
+  static balance(address,) {
+    const web3 = BikeCoin.web3()
+    web3.eth.getBalance(address, (err, balance) => {
+      if (err) { console.error(err); return; }
+      console.log(address, 'contains', web3.fromWei(balance, 'ether').toNumber(), 'ETH')
     })
   }
 
   static contract(seedPhrase) {
     const { token_address, token_abi } = Settings.findOne().bikecoin
-    return this.web3(seedPhrase).eth.contract(JSON.parse(token_abi)).at(token_address)
+    const web3 = BikeCoin.web3(seedPhrase)
+    return web3.eth.contract(JSON.parse(token_abi)).at(token_address)
+  }
+
+  static ownerSendEtherTo(to, amount=0.01) { // owner is the account the deployed the BikeCoin (this script/webapp)
+    const { wallet } = Settings.findOne().bikecoin
+    const web3 = BikeCoin.web3(wallet.privatekey)
+    web3.eth.sendTransaction(
+      {from: wallet.address, to: to, value: web3.toWei(amount, 'ether'), gas: gasMargin + 21000, gasPrice: gasPrice},
+      (err, result) => {
+        if (err) { console.error(err); return; }
+        console.log(wallet.address, 'sent', amount, 'ETH to', to, 'with txhash', result)
+      }
+    )
   }
 
 } // end of class BikeCoin
