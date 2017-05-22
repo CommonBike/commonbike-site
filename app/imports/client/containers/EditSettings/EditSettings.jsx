@@ -146,7 +146,7 @@ class EditSettings extends Component {
       },
       {
           controltype: 'header',
-          label: 'Onboarding'
+          label: 'Automatic Onboarding'
       },
   		{
           fieldname: 'onboarding.enabled',
@@ -157,7 +157,7 @@ class EditSettings extends Component {
   		},
       {
           controltype: 'header',
-          label: 'CommonBikeCoin'
+          label: 'BikeCoin Contract'
       },
   		{
           fieldname: 'bikecoin.enabled',
@@ -173,6 +173,12 @@ class EditSettings extends Component {
           label: 'Provider URL'
       },
       {
+          fieldname: 'bikecoin.deploycontract',
+          fieldvalue: 'bikecoin.deploycontract',
+          controltype: 'serverside-action',
+          label: 'Deploy Contract'
+      },
+      {
           fieldname: 'bikecoin.token_address',
           fieldvalue: this.props.settings.bikecoin.token_address,
           controltype: 'text',
@@ -183,6 +189,10 @@ class EditSettings extends Component {
           fieldvalue: this.props.settings.bikecoin.token_abi,
           controltype: 'text',
           label: 'Token ABI'
+      },
+      {
+          controltype: 'header',
+          label: 'Application BikeCoin Wallet'
       },
       {
           fieldname: 'bikecoin.coin.wallet.address',
@@ -198,11 +208,21 @@ class EditSettings extends Component {
       },
   	]
 
+    var handlers = [
+      { name: "deploycontract",
+        action: this.deployContract
+      }
+    ]
+
     return (
-      <EditFields title={this.props.title} fields={fields} apply={this.update.bind(this)} />
+      <EditFields title={this.props.title} fields={fields} handlers={handlers} apply={this.update.bind(this)} />
     );
   }
 
+  deployContract() {
+    console.log("deploy the contracts now!!!!!!")
+    // Meteor.call('bikecoin.deploycontract');
+  }
 }
 
 var s = {

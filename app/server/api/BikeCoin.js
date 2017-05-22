@@ -5,7 +5,7 @@ var fs = require("fs")
 var solc = require('solc')
 
 import { Settings } from '/imports/api/settings.js';
-
+import { logwrite } from '/imports/api/log.js';
 
 const initialSupply = 1000000
 const tokenName     = 'BikeCoin'
@@ -53,22 +53,32 @@ export default class BikeCoin {
     const bytecode     = compiledContract.contracts[contractName].bytecode
     const contract     = web3.eth.contract(JSON.parse(abi))
 
-    web3.eth.estimateGas({data: '0x' + bytecode}, (error, contractGasEstimate) => {
+    web3.eth.estimateGas({data: '0x' + bytecode}, Meteor.bindEnvironment((error, contractGasEstimate) => {
       contract.new(
         initialSupply, tokenName, decimalUnits, tokenSymbol,
         {from: wallet.address, data: bytecode, gas: gasMargin + contractGasEstimate, gasPrice: gasPrice},
-        (error, contract) => {
-          if (error) { console.error(error); return; }
+        Meteor.bindEnvironment((error, contract) => {
+          if (error) {
+            Meteor.call('log.write', "BikeCoin: Unable to deploy", JSON.stringify(error));
+            console.error(error);
+            return;
+          }
+
           // console.log(contract)
-          BikeCoin.contract = contract
-
-          // TODO:
-          //    settings.bikecoin.token_address = contract.address (will be available after mining!)
-          //    settings.bikecoin.token_abi = abi
-        }
+          var settings = Settings.findOne();
+          BikeCoin.contract = contract;
+          if(contract.address) {
+            Settings.update(settings._id, {$set : { 'bikecoin.token_address' : contract.address,
+      		                                          'bikecoin.token_abi' :  abi }});
+            logwrite("BikeCoin: Contract deployed at address " + contract.address);
+          } else {
+            Settings.update(settings._id, {$set : { 'bikecoin.token_address' : '<waiting for deployment>',
+      		                                          'bikecoin.token_abi' :  abi }});
+            logwrite("BikeCoin: Waiting for contract deployment");
+          }
+        })
       )
-    })
-
+    }))
     // return {web3: web3, bytecode: bytecode, abi: abi, contract: contract}
   }
 
@@ -141,3 +151,18 @@ export default class BikeCoin {
 } // end of class BikeCoin
 
 global.BikeCoin = BikeCoin
+
+if(Meteor.isServer) {
+   Meteor.methods({
+    'bikecoin.deploycontract'() {
+      if(!Roles.userIsInRole(Meteor.userId(), 'admin')) {
+        // only administrators can deploy
+        logwrite('Attempt to deploy BikeCoin contract by unauthorized user ' + Meteor.userId());
+        return;
+      }
+
+      logwrite('New version of BikeCoin contract deployed by user ' + Meteor.userId());
+      BikeCoin.deploy();
+    },
+  });
+}

@@ -7,6 +7,7 @@ import { Settings } from '/imports/api/settings.js';
 import '/imports/api/api-keys.js'
 import { Log } from '/imports/api/log.js'
 import '/imports/server/testdata.js'
+import BikeCoin from '/server/api/BikeCoin.js';
 
 Meteor.startup(() => {
 	// code to run on server at startup
@@ -65,12 +66,7 @@ Meteor.startup(() => {
 		if(user.profile && user.profile.wallet &&
 		   user.profile.wallet.address=='' && user.profile.wallet.privatekey=='') {
 
-			console.log('creating new keypair for user ' + user.name);
-
-		  var BikeCoin = require('/server/api/BikeCoin.js');
-
 			var keypair = BikeCoin.newKeypair();
-
 			Meteor.users.update(user._id, {$set : { 'profile.wallet.address' : keypair.address,
 		                                          'profile.wallet.privatekey' :  keypair.privatekey	}});
 		}
