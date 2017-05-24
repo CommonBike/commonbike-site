@@ -7,6 +7,11 @@ var solc = require('solc')
 import { Settings } from '/imports/api/settings.js';
 import { logwrite } from '/imports/api/log.js';
 
+// used in the utility functions
+
+import { getUserDescription } from '/imports/api/users.js';
+import { Objects } from '/imports/api/objects.js';
+
 const initialSupply = 1000000
 const tokenName     = 'BikeCoin'
 const decimalUnits  = 2
@@ -148,6 +153,74 @@ export default class BikeCoin {
     BikeCoin.etherSend(Settings.findOne().bikecoin.wallet.privatekey, toAddress, amount)
   }
 
+  static listUserAccounts() {
+    var myUsers = Meteor.users.find().fetch();
+    _.each(myUsers, function (user) {
+  		if(user.profile && user.profile.wallet && user.profile.wallet.address!='') {
+  			console.log(getUserDescription(user) + ' [' + user._id + ']: ' +  user.profile.wallet.address);
+  		}
+    })
+  }
+
+  static listBalances() {
+    var myUsers = Meteor.users.find().fetch();
+    _.each(myUsers, function (user) {
+  		if(user.profile && user.profile.wallet && user.profile.wallet.address!='') {
+  			console.log(BikeCoin.etherBalanceOfUser(user._id));
+  		}
+    })
+    var myObjects = Objects.find().fetch();
+    console.log(myObjects);
+    _.each(myObjects, function (object) {
+  		if(object.wallet && object.wallet.address!='') {
+        console.log(BikeCoin.etherBalanceOfObject(object._id));
+  		}
+    })
+  }
+
+  static listObjectAccounts() {
+    var myObjects = Objects.find().fetch();
+    console.log(myObjects);
+    _.each(myObjects, function (object) {
+  		if(object.wallet && object.wallet.address!='') {
+  			console.log(object.title + ' [' + object._id + ']: ' +  object.wallet.address);
+  		}
+    })
+  }
+
+  static etherBalanceOfUser(userId) {
+    var aUser = Meteor.users.findOne(userId, {'wallet.address':1});
+    if(!aUser) return 0.0;
+
+    return BikeCoin.etherBalance(aUser.profile.wallet.address);
+  }
+
+  static etherBalanceOfObject(objectId) {
+    var object = Objects.findOne(objectId, {'wallet.address':1});
+    if(!object) return 0.0;
+
+    return BikeCoin.etherBalance(object.wallet.address);
+  }
+
+  static spoilUsers(amountEther = 0.01) {
+    var myUsers = Meteor.users.find().fetch();
+    _.each(myUsers, function (user) {
+  		if(user.profile && user.profile.wallet && user.profile.wallet.address) {
+        BikeCoin.etherSendByApp(user.profile.wallet.address.substring(2), amountEther);
+  		}
+    })
+  }
+
+  static spoilObjects(amountEther = 0.01) {
+    var myObjects = Objects.find().fetch();
+    console.log(myObjects);
+    _.each(myObjects, function (object) {
+      if(object.wallet && object.wallet.address!='') {
+        BikeCoin.etherSendByApp(object.wallet.address.substring(2), amountEther);
+        console.log(object.title + ' [' + object._id + ']: ' +  object.wallet.address);
+      }
+    })
+  }
 } // end of class BikeCoin
 
 global.BikeCoin = BikeCoin

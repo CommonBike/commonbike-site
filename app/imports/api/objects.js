@@ -6,6 +6,10 @@ import { getUserDescription } from '/imports/api/users.js';
 import { Integrations } from '/imports/api/integrations.js';
 import { CoinSchema } from '/imports/api/bikecoin.js';
 
+if(Meteor.isServer) {
+  import BikeCoin from '/server/api/BikeCoin.js';
+}
+
 export const Objects = new Mongo.Collection('objects');
 
 export const StateSchema = new SimpleSchema({
@@ -192,10 +196,7 @@ Meteor.methods({
     data.title = data.title.replace(/<.*?>/g, " ").replace(/\s+/g, " ").trim();
 
     // assign new keypair to object
-    var BikCoin = require('/server/api/BikeCoin.js');
-
     var keypair = BikeCoin.newKeypair();
-
     data.wallet.address=keypair.address;
     data.wallet.privatekey=keypair.privatekey;
 

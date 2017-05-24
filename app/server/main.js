@@ -16,30 +16,13 @@ Meteor.startup(() => {
 	if(false) {
 		var myObjects = Objects.find().fetch();
 		_.each(myObjects, function (objectData) {
-
-		    var timestamp =  new Date().valueOf();
-		    var length = 5;
-		    var base = Math.pow(10, length+1);
-		    var code = Math.floor(base + Math.random() * base)
-		    var keycode = code.toString().substring(1, length+1);
-
-			if(!objectData.state) {
-			    Objects.update(objectData._id, {$set:{
-			      state: {state: 'available',
-	              		  userId: null,
-	                      timestamp: timestamp}
-			    }});
-			}
-
-			if(!objectData.lock) {
-			    Objects.update(objectData._id, {$set:{
-			      lock: {type: 'plainkey',
-			             settings: {keyid: keycode }
-			         }
-			    }});
+			if(!objectData.wallet || (object.wallet.address=='' && object.wallet.privatekey=='')) {
+					var keypair = BikeCoin.newKeypair();
+					console.log('add wallet to object' + objectData.title);
+			    Objects.update(objectData._id, {$set : { 'wallet.address' : keypair.address,
+				                                          'wallet.privatekey' :  keypair.privatekey	}});
 			}
 		});
-
 	}
 
 
