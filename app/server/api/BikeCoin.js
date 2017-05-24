@@ -45,12 +45,12 @@ export default class BikeCoin {
 
 
   // BikeCoin related helpers
-  static deploy() {
+  static deploy(filename = 'token/BikeCoin.sol') {
     const { provider_url, wallet } = Settings.findOne().bikecoin
     const web3 = BikeCoin.web3(wallet.privatekey)
 
     // cwd = ~/GitHub/commonbike-site/app/.meteor/local/build/programs/server
-    const source = fs.readFileSync('../../../../../imports/api/smartcontracts/BikeCoin.sol', 'utf8');
+    const source = fs.readFileSync('../../../../../imports/api/smartcontracts/' + filename, 'utf8');
     const compiledContract = solc.compile(source, 1) // 1 = enable optimizer
 
     const contractName = ':BikeCoin'
