@@ -8,8 +8,15 @@ class Balance extends Component {
   constructor(props) {
     super(props);
 
+    console.log('balance constructor called');
+
     var Web3 = require("web3")
     this.web3 = new Web3(new Web3.providers.HttpProvider(this.props.providerurl));
+    if(this.web3.eth && this.web3.eth.watch) {
+      console.log('has watch function!');
+      // this.web3.eth.watch('chain').changed(()=>this.updateEtherBalance().bind(this));
+      this.web3.eth.watch('chain').changed((i)=>console.log('chain changed!'));
+    };
 
     this.state = { balance: "??????"};
   }
@@ -26,6 +33,7 @@ class Balance extends Component {
 
     var balanceWei = this.web3.eth.getBalance(this.props.address);
     var balanceEth = this.web3.fromWei(balanceWei, 'ether').toNumber()
+    console.log('new balance set for ' + this.props.address + ' ' + balanceEth)
     this.setState({balance: balanceEth});
   }
 

@@ -26,9 +26,10 @@ class ObjectDetails extends Component {
   }
 
   getBalance(item) {
-    if(this.props.item&&this.props.item.wallet) {
-       return (<Balance label="SALDO" address={this.props.item.wallet.address} providerurl="https://ropsten.infura.io/sCQUO1V3FOo" />);
+    if(item&&item.wallet) {
+       return (<Balance label="SALDO" address={item.wallet.address} providerurl="https://ropsten.infura.io/sCQUO1V3FOo" />);
     } else {
+       console.log('no wallet!', item)
        return (<div />);
      }
   }
@@ -102,7 +103,7 @@ class ObjectDetails extends Component {
           <ManageApiKeys keyOwnerId={this.props.object._id} keyType="object" />
           :null }
 
-        <div>{ this.getBalance() }</div>
+        <div>{ this.getBalance( this.props.object ) }</div>
 
         { this.renderCheckInOutProcess() }
 
