@@ -21,6 +21,8 @@ class LocationList extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = { mapBoundaries: null }
   }
 
   /**
@@ -49,17 +51,51 @@ class LocationList extends Component {
     alert('De locatie is toegevoegd aan de lijst.');
   }
 
+  /*
+    getVisibleObjectsOnly :: ? -> ?
+
+    Get only the objects inside the maps boundaries.
+  */
+  getVisibleObjectsOnly(object) {
+
+    // Every object needs a lat/lng
+    if( ! object.lat_lng)
+      return false;
+
+    // If mapBoundaries is not set: exclude this object
+    if( ! this.state.mapBoundaries)
+      return false;
+
+    // Every object needs to be visible inside the map boundaries
+    // #TODO: Should work below the equator as well
+    let b = this.state.mapBoundaries, o = object, visibleOnMap = false;
+    visibleOnMap = b._southWest.lat <= o.lat_lng[0] && b._northEast.lat >= o.lat_lng[0] // (check if object lies between latitude 'west' & latitude 'east')
+    visibleOnMap = visibleOnMap && b._northEast.lng >= o.lat_lng[1] && b._southWest.lng <= o.lat_lng[1] // (check if object lies between longitude 'north' & longitude 'south')
+
+    return visibleOnMap;
+  }
+
+  // mapChange :: Object { _northEast: {lat: Float, lng: Float}, _southWest: {lat: Float, lng: Float} } -> void
+  mapChanged(boundaries) {
+    // Check input
+    check(boundaries, L.LatLngBounds)
+    // Set new state
+    this.setState({ mapBoundaries: boundaries })
+  }
+
   render() {
+    locations = R.filter(this.getVisibleObjectsOnly.bind(this), this.props.locations)
     return (
       <div>
-        <LocationsMap locations={this.props.locations}
+        <LocationsMap locations={locations}
                         objects={this.props.objects}
                         settings={this.props.settings}
+                        mapChanged={this.mapChanged.bind(this)}
                         />
-        <LocationsList locations={this.props.locations} 
-                             isEditable={this.props.isEditable} 
-                             newLocationHandler={this.newLocationHandler.bind(this)}
-                             canCreateLocations={this.props.canCreateLocations} />
+        <LocationsList locations={locations} 
+                        isEditable={this.props.isEditable} 
+                        newLocationHandler={this.newLocationHandler.bind(this)}
+                        canCreateLocations={this.props.canCreateLocations} />
       </div>
     );
   }

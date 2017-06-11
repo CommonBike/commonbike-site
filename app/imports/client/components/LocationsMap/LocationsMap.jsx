@@ -190,7 +190,12 @@ class LocationsMapComponent extends Component {
     }, this.props.objects);
   }
 
-  mapChanged() {
+  mapChanged(e) {
+
+    // Send changed trigger to parent
+    this.props.mapChanged ? this.props.mapChanged(this.state.map.getBounds()) : null
+
+    // Show parking markers if the app demands it
     if(this.state.showParkingMarkers) {
       this.initializeParkingLayer();
     }
@@ -274,7 +279,7 @@ class LocationsMapComponent extends Component {
     }
 
     omnivore.kml('/files/Veiligstallen/veiligstallen.kml', null, this.state.parkingMarkersGroup).addTo(this.state.map);
-  } 
+  }
 
   toggleParking() {
     this.setState(prevState => ({ showParkingMarkers: !prevState.showParkingMarkers}))
@@ -358,6 +363,7 @@ LocationsMapComponent.propTypes = {
   locations: PropTypes.array,
   objects: PropTypes.array,
   mapboxSettings: PropTypes.object,
+  mapChanged: PropTypes.func,
   clickItemHandler: PropTypes.any,
   startLocation: PropTypes.array,
   startZoom: PropTypes.number

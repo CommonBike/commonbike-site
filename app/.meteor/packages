@@ -32,7 +32,7 @@ accounts-twitter@1.1.12
 aldeed:simple-schema
 alanning:roles
 http@1.2.10
-check@1.2.4
+check
 dferber:prerender
 google-config-ui
 github-config-ui
