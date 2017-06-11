@@ -6,15 +6,30 @@ services:
     volumes:
       - /usr/share/commonbike_mdb:/data/db
     ports:
+      - localhost:4001:27017
+  db-test:
+    restart: always
+    image: mongo:3.4.0
+    volumes:
+      - /usr/share/commonbike_test_mdb:/data/test_db
+    ports:
       - localhost:4011:27017
 
   app:
     restart: always
-    image: commonbikerc:latest
+    image: commonbike:latest
     environment:
-      - 'ROOT_URL:"https://common.bike"'
-      - 'METEOR_SETTINGS:{"mapbox":{"style":"mapbox.streets","accessToken":"pk.PRIVATEKEY"},"private":{"testdata":{"cleanupusers":false,"cleanupother":false,"insert":false,"log":false},"slack":{"notify":true,"address":"https://hooks.slack.com/services/comm/on/non","channel":"commonbike-bot","name":"commonbike-bot"}}}'
+      ROOT_URL: 'https://common.bike'
     links:
       - db:db
+    ports:
+      - localhost:4000:80
+  app-test:
+    restart: always
+    image: commonbike-test:latest
+    environment:
+      ROOT_URL: 'https://test.common.bike'
+    links:
+      - db-test:db
     ports:
       - localhost:4010:80
