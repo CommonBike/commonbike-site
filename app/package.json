@@ -17,6 +17,7 @@
     "leaflet": "^1.0.3",
     "leaflet-search": "^2.7.2",
     "meteor-node-stubs": "~0.2.0",
+    "mongodb-backup": "^1.6.9",
     "radium": "^0.18.1",
     "ramda": "^0.22.1",
     "react": "=15.4.0",
