@@ -12,7 +12,7 @@ do
   ##
   if [ "develop" == "$branch" ]; then
     #docker img name
-    imageName='commonbike'
+    imageName='commonbike-test'
 
     #docker container name
     containerName="$imageName"
@@ -62,7 +62,7 @@ do
   ##
   if [ "master" == "$branch" ]; then
     #docker img name
-    imageName='commonbike-test'
+    imageName='commonbike'
 
     #docker container name
     containerName="$imageName"
