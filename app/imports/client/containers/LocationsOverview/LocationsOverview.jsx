@@ -3,10 +3,13 @@ import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
 
 // Import models
+import { Settings } from '/imports/api/settings.js'; 
 import { Locations } from '/imports/api/locations.js'; 
+import { Objects } from '/imports/api/objects.js';
 
 // Import components
-import LocationListComponent from '../../components/LocationList/LocationList';
+import LocationsList from '/imports/client/components/LocationsList/LocationsList';
+import LocationsMap from '/imports/client/components/LocationsMap/LocationsMap';
 
 /**
  *  LocationList
@@ -48,10 +51,16 @@ class LocationList extends Component {
 
   render() {
     return (
-      <LocationListComponent locations={this.props.locations} 
+      <div>
+        <LocationsMap locations={this.props.locations}
+                        objects={this.props.objects}
+                        settings={this.props.settings}
+                        />
+        <LocationsList locations={this.props.locations} 
                              isEditable={this.props.isEditable} 
                              newLocationHandler={this.newLocationHandler.bind(this)}
                              canCreateLocations={this.props.canCreateLocations} />
+      </div>
     );
   }
 
@@ -81,6 +90,8 @@ LocationList.defaultProps = {
 
 export default createContainer((props) => {
   Meteor.subscribe('locations', props.isEditable)
+  Meteor.subscribe('objects', false);
+  Meteor.subscribe('settings', false);
 
   var user=Meteor.user();
   var canCreateLocations = false;
@@ -91,6 +102,8 @@ export default createContainer((props) => {
   return {
     currentUser: Meteor.user(),
     locations: Locations.find({}, { sort: {title: 1} }).fetch(),
+    objects: Objects.find({}, { sort: {title: 1} }).fetch(),
+    settings: Settings.findOne({}),
     canCreateLocations: canCreateLocations
   };
 }, LocationList);

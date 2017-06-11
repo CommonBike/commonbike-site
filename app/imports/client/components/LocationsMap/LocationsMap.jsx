@@ -2,15 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
 import { RedirectTo } from '/client/main'
-import { Settings } from '/imports/api/settings.js'; 
 import L from 'leaflet'
 import 'leaflet-search'
 
 import './Leaflet.EasyButton.js';
 
 // Import models
-import { Locations, Address2LatLng } from '/imports/api/locations.js'; 
-import { Objects } from '/imports/api/objects.js';
+import { Address2LatLng } from '/imports/api/locations.js'; 
 
 class LocationsMapComponent extends Component {
   constructor(props) {
@@ -374,17 +372,9 @@ LocationsMapComponent.defaultProps = {
 }
 
 export default LocationsMap = createContainer((props) => {
-  Meteor.subscribe('locations', false);
-  Meteor.subscribe('objects', false);
-  Meteor.subscribe('settings', false);
-
-  var locations = Locations.find({}, { sort: {title: 1} }).fetch()
-  var objects = Objects.find({}, { sort: {title: 1} }).fetch()
-  var settings = Settings.findOne({});
-
   return {
-    locations: locations,
-    objects: objects,
-    settings: settings
+    locations: props.locations,
+    objects: props.objects,
+    settings: props.settings
   };
 }, LocationsMapComponent);
