@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base'
 
 import '/imports/api/users.js'
-import { Locations } from '/imports/api/locations.js';
+import { Locations, toGeoJSONPoint, Address2GeoJSONPoint } from '/imports/api/locations.js';
 import { Objects } from '/imports/api/objects.js';
 import { Settings } from '/imports/api/settings.js';
 import '/imports/api/api-keys.js'
@@ -83,15 +83,11 @@ Meteor.startup(() => {
 		// convert all locations to use geoJSON for coordinates
 		var myLocations = Locations.find().fetch();
 		_.each(myLocations, function (locationData) {
-			if(true) { // !locationData.loc
-		    var geoJSON = {
-			    "type" : "Point",
-			    "coordinates" : [
-			        locationData.lat_lng[1],
-							locationData.lat_lng[0],
-			    ]
-				}
-		    Locations.update(locationData._id, {$set:{ loc: geoJSON }});
+			if(locationData.coordinates) {
+				console.log('convert location to geoJSON for ' + locationData.title)
+
+				var geoJSON = toGeoJSONPoint(locationData.lat_lng[0], locationData.lat_lng[1]);
+		    Locations.update(locationData._id, {$set:{ coordinates: geoJSON }});
 
 		    var desc = 'geoJSON location set for ' + locationData.title;
 				Meteor.call('transactions.addTransaction', 'SET_GEOLOC', desc, null, locationData._id,null);
@@ -100,6 +96,29 @@ Meteor.startup(() => {
 
 		// add index to objects/ collection
 		Locations._ensureIndex({'loc.coordinates':'2dsphere'});
+
+		// convert all locations to use geoJSON for coordinates
+		var myObjects = Objects.find().fetch();
+		_.each(myObjects, function (objectData) {
+			if(!objectData.coordinates) {
+				console.log('convert object coordinates to geoJSON for ' + objectData.title)
+
+				var geoJSON;
+				if(objectData.lat_lng) {
+				 	geoJSON = toGeoJSONPoint(objectData.lat_lng[0], objectData.lat_lng[1]);
+				} else {
+					geoJSON = toGeoJSONPoint(-999,-999);
+				}
+		    Objects.update(objectData._id, {$set:{ coordinates: geoJSON }});
+
+		    var desc = 'geoJSON location set for ' + objectData.title;
+				Meteor.call('transactions.addTransaction', 'SET_GEOLOC', desc, null, null, objectData._id);
+			}
+		});
+
+		var loc = Address2GeoJSONPoint('lekplantsoen 29, 3522GL Utrecht');
+		var loc = Address2GeoJSONPoint('asdfasdfasdf asdf asdfa sdf adf');
+		var loc = Address2GeoJSONPoint();
 	}
 });
 

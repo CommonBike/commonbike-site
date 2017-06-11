@@ -16,12 +16,11 @@ import ContentPage from '/imports/client/components/ContentPage/ContentPage.jsx'
 import Login from '/imports/client/components/Login/Login.jsx'
 import CustomPage from '/imports/client/components/CustomPage/CustomPage.jsx'
 import Profile from '/imports/client/components/Profile/Profile.jsx'
-import LocationList from '/imports/client/containers/LocationList/LocationList.jsx'
+import LocationsOverview from '/imports/client/containers/LocationsOverview/LocationsOverview.jsx'
 import LocationDetails from '/imports/client/containers/LocationDetails/LocationDetails.jsx'
 import TransactionList from '/imports/client/containers/TransactionList/TransactionList.jsx'
 import AdminUsersList from '/imports/client/containers/AdminUsersList/AdminUsersList.jsx'
 import ObjectList from '/imports/client/containers/ObjectList/ObjectList.jsx'
-import LocationsMap from '/imports/client/components/LocationsMap/LocationsMap.jsx'
 import ObjectDetails from '/imports/client/containers/ObjectDetails/ObjectDetails.jsx'
 import CommonBikeUI from '/imports/client/commonbike-ui.jsx'
 import AdminTools from '/imports/client/components/AdminTools/AdminTools.jsx'
@@ -34,7 +33,7 @@ const UserAppJoin = () => (<UserApp content={<ContentPage><Join /></ContentPage>
 const UserAppLogin = () => (<UserApp content={<CustomPage><Login /></CustomPage>} />) // Login redirectTo={params.redirectTo}
 const UserAppProfile = () => (<UserApp content={<div><Profile isEditable="true" /></div>} />)
 
-const UserAppLocationList = () => (<UserApp showPageHeader={false} content={<div><LocationsMap /><LocationList /></div>} />)
+const UserAppLocationsOverview = () => (<UserApp showPageHeader={false} content={<LocationsOverview />} />)
 const UserAppLocationDetails = ({match}) => {
   return (
     <UserApp content={<LocationDetails locationId={match.params.locationId} />} />
@@ -70,7 +69,7 @@ const UserAppCustomPageObjectDetailsCheckin = ({match}) => {
   )
 }
 
-const UserAppAdminLocationList = () => (<UserApp content={<LocationList isEditable="true" />} />)
+const UserAppAdminLocationsOverview = () => (<UserApp content={<LocationsOverview isEditable="true" />} />)
 const UserAppAdminLocationDetails = ({match}) => {
   return (
     <UserApp content={<LocationDetails locationId={match.params.locationId} isEditable="true"/>} />
@@ -146,7 +145,7 @@ class AppRoutes extends React.Component {
       <Route path='/login' component={UserAppLogin}/>
 
       <RouteWhenLoggedIn path='/profile' component={UserAppProfile}/>
-      <RouteWhenLoggedIn path='/locations' component={UserAppLocationList}/>
+      <RouteWhenLoggedIn path='/locations' component={UserAppLocationsOverview}/>
       <RouteWhenLoggedIn path='/map' component={UserAppLocationsMap}/>
       <RouteWhenLoggedIn path='/objects' component={UserAppObjectList}/>
       <RouteWhenLoggedIn path='/transactions' component={UserAppTransactionList}/>
@@ -155,7 +154,7 @@ class AppRoutes extends React.Component {
       <RouteWhenLoggedIn path='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/>
       <RouteWhenLoggedIn path='/commonbike-ui' component={CommonBikeUI}/>
 
-      <RouteWhenLoggedIn path='/admin/locations' component={UserAppAdminLocationList}/>
+      <RouteWhenLoggedIn path='/admin/locations' component={UserAppAdminLocationsOverview}/>
       <RouteWhenLoggedIn path='/admin/rentals' component={UserAppRentalList}/>
       <RouteWhenLoggedIn path='/admin/location/:locationId' component={UserAppAdminLocationDetails}/>
       <RouteWhenLoggedIn path='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/>

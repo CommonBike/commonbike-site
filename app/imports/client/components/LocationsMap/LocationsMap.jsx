@@ -2,15 +2,22 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
 import { RedirectTo } from '/client/main'
+<<<<<<< HEAD
 import { Settings } from '/imports/api/settings.js';
+=======
+>>>>>>> remotes/origin/feature/89-merge-location-list-and-map-together
 import L from 'leaflet'
 import 'leaflet-search'
 
 import './Leaflet.EasyButton.js';
 
 // Import models
+<<<<<<< HEAD
 import { LocationsFiltered, Address2LatLng } from '/imports/api/locations.js';
 import { Objects } from '/imports/api/objects.js';
+=======
+import { Address2LatLng } from '/imports/api/locations.js'; 
+>>>>>>> remotes/origin/feature/89-merge-location-list-and-map-together
 
 class LocationsMapComponent extends Component {
   constructor(props) {
@@ -201,6 +208,7 @@ class LocationsMapComponent extends Component {
     }, this.props.objects);
   }
 
+<<<<<<< HEAD
   mapChanged() {
     if(!this.state.map) return;
 
@@ -218,6 +226,14 @@ class LocationsMapComponent extends Component {
     Meteor.subscribe('nextbike.objects_latlong',s_lat,w_lng,n_lat,e_lng);
     Meteor.subscribe('locations.objects_latlong',s_lat,w_lng,n_lat,e_lng);
 
+=======
+  mapChanged(e) {
+
+    // Send changed trigger to parent
+    this.props.mapChanged ? this.props.mapChanged(this.state.map.getBounds()) : null
+
+    // Show parking markers if the app demands it
+>>>>>>> remotes/origin/feature/89-merge-location-list-and-map-together
     if(this.state.showParkingMarkers) {
       this.initializeParkingLayer();
     }
@@ -387,6 +403,7 @@ LocationsMapComponent.propTypes = {
   locations: PropTypes.array,
   objects: PropTypes.array,
   mapboxSettings: PropTypes.object,
+  mapChanged: PropTypes.func,
   clickItemHandler: PropTypes.any,
   startLocation: PropTypes.array,
   startZoom: PropTypes.number
@@ -401,6 +418,7 @@ LocationsMapComponent.defaultProps = {
 }
 
 export default LocationsMap = createContainer((props) => {
+<<<<<<< HEAD
   // Meteor.subscribe('locations', false);
   Meteor.subscribe('objects', false);
   Meteor.subscribe('settings', false);
@@ -410,9 +428,11 @@ export default LocationsMap = createContainer((props) => {
   var objects = Objects.find({}, { sort: {title: 1} }).fetch()
   var settings = Settings.findOne({});
 
+=======
+>>>>>>> remotes/origin/feature/89-merge-location-list-and-map-together
   return {
-    locations: locations,
-    objects: objects,
-    settings: settings
+    locations: props.locations,
+    objects: props.objects,
+    settings: props.settings
   };
 }, LocationsMapComponent);

@@ -6,7 +6,6 @@ class VelocityAPIClass {
   constructor() {
     var settings = getSettingsServerSide().velocity;
     this.enabled = settings.enabled;
-    console.log(this.enabled);
 	}
 
   checkUserEmailAddress(emailaddress) {

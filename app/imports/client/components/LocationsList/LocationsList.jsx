@@ -11,7 +11,6 @@ import { Locations } from '/imports/api/locations.js';
 import LocationBlock from '../../containers/LocationBlock/LocationBlock';
 import RaisedButton from '../Button/RaisedButton';
 
-
 /**
  *  LocationList
  * 

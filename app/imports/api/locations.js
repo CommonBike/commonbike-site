@@ -8,6 +8,24 @@ import { Integrations } from '/imports/api/integrations.js';
 export const Locations = new Mongo.Collection('locations');
 export const LocationsFiltered = new Mongo.Collection('locationsfiltered');
 
+export const geoJSONPointSchema = new SimpleSchema({
+  type: {
+    type: String,
+    label: "Type",
+    max: 32
+  },
+  coordinates: {
+    type:   Array,
+    label: "coordinates",
+    maxCount: 2
+  },
+  'coordinates.$': {
+    type: Number,
+    decimal: true,
+    optional: true
+  },
+});
+
 // MB: GPS coordinates are always stored as array. Empty array means not set
 // (needed for schema validation)
 export const LocationsSchema = new SimpleSchema({
@@ -43,27 +61,10 @@ export const LocationsSchema = new SimpleSchema({
     optional: true,
     max: 1000
   },
-  loc: {
-    type: geoJSONPointSchema
+  point: {
+    type: geoJSONPointSchema,
+    optional: false
   }
-});
-
-export const geoJSONPointSchema = new SimpleSchema({
-  type: {
-    type: String,
-    label: "Type",
-    max: 32
-  },
-  coordinates: {
-    type:   Array,
-    label: "coordinates",
-    maxCount: 2
-  },
-  'coordinates.$': {
-    type: Number,
-    decimal: true,
-    optional: true
-  },
 });
 
 if (Meteor.isServer) {
@@ -95,9 +96,6 @@ if (Meteor.isServer) {
       return this.ready();
     }
 
-    // var filter =  { 'lat_lng[0]': {$gte : sw_lat, $lt: ne_lat},
-    //                 'lat_lng[1]':  {$gte : sw_lng, $lt: ne_lng} }
-
     var filter =  { loc : { $geoWithin :{ $box : [[w, s], [e, n]]} }};
 
     // console.log('fetching location objects within ' + JSON.stringify(filter));
@@ -114,6 +112,13 @@ if (Meteor.isServer) {
   });
 }
 
+export const toGeoJSONPoint = (lat, lng) => {
+  return {
+    "type" : "Point",
+    "coordinates" : [ lng, lat ]
+  }
+}
+
 export const Address2LatLng = (address) => {
   if (!address) {
     return ''
@@ -122,8 +127,35 @@ export const Address2LatLng = (address) => {
   const url = 'http://maps.google.com/maps/api/geocode/json?address=' + encodeURI(address)
   const response = HTTP.get(url)
   const obj = JSON.parse(response.content)
-  const location = obj.results[0].geometry.location
-  return [location.lat, location.lng]
+  if(obj.results.length>0) {
+    const location = obj.results[0].geometry.location
+    return [location.lat, location.lng]
+  } else {
+    return ''
+  }
+}
+
+export const Address2GeoJSONPoint = (address) => {
+  var point = {
+    "type" : "Point",
+    "coordinates" : [ -999, -999 ]
+  }
+
+  if (!address) return point;
+
+  const url = 'http://maps.google.com/maps/api/geocode/json?address=' + encodeURI(address)
+  const response = HTTP.get(url)
+  const obj = JSON.parse(response.content)
+
+  if(obj.results.length>0) {
+    const location = obj.results[0].geometry.location
+    point = {
+      "type" : "Point",
+      "coordinates" : [ location.lng, location.lat ]
+    }
+  }
+
+  return point;
 }
 
 // The methods below operate on Meteor.users and use Accounts, so they should not be
