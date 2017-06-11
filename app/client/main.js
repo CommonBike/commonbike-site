@@ -30,7 +30,11 @@ import NoMatch from '/imports/client/components/NoMatch/NoMatch.jsx'
 const UserAppLanding = () => (<UserApp showPageHeader={false} content={<Landing/>} />)
 const UserAppAbout = () => (<UserApp content={<ContentPage><About /></ContentPage>} />) 
 const UserAppJoin = () => (<UserApp content={<ContentPage><Join /></ContentPage>} />) 
-const UserAppLogin = () => (<UserApp content={<CustomPage><Login /></CustomPage>} />) // Login redirectTo={params.redirectTo}
+const UserAppLogin = ({match}) => {
+  // TEMPORARY because I can't find the way to get query params via react-router:
+  var redirectTo = window.location.search.split('=')[1];
+  return (<UserApp content={<CustomPage><Login redirectTo={redirectTo} /></CustomPage>} />)
+}
 const UserAppProfile = () => (<UserApp content={<div><Profile isEditable="true" /></div>} />)
 
 const UserAppLocationList = () => (<UserApp showPageHeader={false} content={<div><LocationsMap /><LocationList /></div>} />)
@@ -141,14 +145,14 @@ class AppRoutes extends React.Component {
       <Route path='/about' component={UserAppAbout}/>
       <Route path='/join' component={UserAppJoin}/>
       <Route path='/login' component={UserAppLogin}/> 
+      <Route path='/locations' component={UserAppLocationList}/> 
+      <Route path='/map' component={UserAppLocationsMap}/> 
+      <Route path='/objects' component={UserAppObjectList}/> 
+      <Route path='/location/:locationId' component={UserAppLocationDetails}/> 
+      <Route path='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
 
       <RouteWhenLoggedIn path='/profile' component={UserAppProfile}/> 
-      <RouteWhenLoggedIn path='/locations' component={UserAppLocationList}/> 
-      <RouteWhenLoggedIn path='/map' component={UserAppLocationsMap}/> 
-      <RouteWhenLoggedIn path='/objects' component={UserAppObjectList}/> 
       <RouteWhenLoggedIn path='/transactions' component={UserAppTransactionList}/> 
-      <RouteWhenLoggedIn path='/location/:locationId' component={UserAppLocationDetails}/> 
-      <RouteWhenLoggedIn path='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
       <RouteWhenLoggedIn path='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 
       <RouteWhenLoggedIn path='/commonbike-ui' component={CommonBikeUI}/> 
       

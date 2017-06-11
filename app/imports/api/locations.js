@@ -46,10 +46,6 @@ export const LocationsSchema = new SimpleSchema({
 
 if (Meteor.isServer) {
   Meteor.publish('locations', function tasksPublication(providerMode=false) {
-    if (!this.userId) {
-      return this.ready();
-    }
-
     if(!providerMode) {
       return Locations.find();
     } else {

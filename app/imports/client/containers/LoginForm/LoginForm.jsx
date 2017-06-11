@@ -17,8 +17,9 @@ class LoginForm extends Component {
       if(err) {
         alert(err.reason)
       } else {
-        if (self.props.loginCallback)
+        if (self.props.loginCallback) {
           self.props.loginCallback()
+        }
       }
     });
   }

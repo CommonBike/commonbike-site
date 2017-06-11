@@ -36,8 +36,8 @@ class Landing extends Component {
             <a style={s.smallText} onClick={() => RedirectTo('/join')}>euhm, maar hoe werkt dat dan?</a>
           </p>
 
-    			<RaisedButton onClick={this.login.bind(this)}>
-    				{ this.props.currentUser ? "Waar kan ik fietsen?" : "Meld je aan voor de pilot" }
+    			<RaisedButton onClick={RedirectTo.bind(this, '/locations')}>
+    				Waar kan ik fietsen?
     			</RaisedButton>
         </div>
 

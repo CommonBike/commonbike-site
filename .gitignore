@@ -1,5 +1,6 @@
 .meteor
+.vscode
+android-app
 mrt_build
 node_modules
 npm-debug.log
-.vscode
