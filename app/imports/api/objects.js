@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo';
 
-import { Locations, geoJSONPointSchema } from '/imports/api/locations.js';
+import { Locations } from '/imports/api/locations.js'; // , geoJSONPointSchema
 import { getUserDescription } from '/imports/api/users.js';
 import { Integrations } from '/imports/api/integrations.js';
 
@@ -100,10 +100,6 @@ export const ObjectsSchema = new SimpleSchema({
     type: Number,
     decimal: true,
     optional: true
-  },
-  point: {
-    type: geoJSONPointSchema,
-    optional: false
   }
 });
 

@@ -46,14 +46,10 @@ gSkopeiURL = 'https://backend-tst.skopei.com/webservice/ReservationV1.svc?wsdl';
 
 class SkopeiAPIClass {
   constructor() {
-    return false;
-
 		this.promise = require("bluebird");
 
 		var createClient = this.promise.promisify(require('soap').createClient);
-
 		createClient(gSkopeiURL).then(Meteor.bindEnvironment(function(client)  {
-//        Meteor.call('log.write', 'Skopei client initialized')
         this.SoapClient = client;
       }.bind(this))
     ).catch(function(e) {
@@ -74,6 +70,11 @@ class SkopeiAPIClass {
 	}
 
 	rentBike(objectId, locationId, durationHours = 4) {
+    if(!getSettingsServerSide().skopei.enabled) {
+      Meteor.call('log.write', `Skopei integration has been disabled`);
+	  	return false;
+    }
+
     var newState = 'inuse'
     var user = getUserDescription(Meteor.user());
 
@@ -151,6 +152,11 @@ class SkopeiAPIClass {
 	}
 
 	endRentBike(objectId, locationId) {
+    if(!getSettingsServerSide().skopei.enabled) {
+      Meteor.call('log.write', `Skopei integration has been disabled`);
+	  	return false;
+    }
+
 	  var object = Objects.findOne(objectId, {title:1, locationId:1});
 	  if(!object||object.lock.type!='skopei-v1') {
 	  	Meteor.call('log.write', `No object or unable to use skopei driver for non skopei object`);
@@ -202,6 +208,11 @@ class SkopeiAPIClass {
 	}
 
 	getReservationData(objectId) {
+    if(!getSettingsServerSide().skopei.enabled) {
+      Meteor.call('log.write', `Skopei integration has been disabled`);
+	  	return false;
+    }
+
     var object = Objects.findOne(objectId, {title:1, locationId:1});
     if(!object||object.lock.type!='skopei-v1') {
     	Meteor.call('log.write', `No object or unable to use skopei driver for non skopei object`);
@@ -261,11 +272,9 @@ Meteor.methods( {
     return SkopeiAPI.rentBike(objectId, locationId)
   },
   'skopei.endrentbike'(objectId, locationId) {
-    console.log('skopei.endRentBike server call')
     return SkopeiAPI.endRentBike(objectId, locationId);
   },
   'skopei.logrentalInfo'(objectId) {
-    console.log('skopei.checkreservation server call')
     return SkopeiAPI.getReservationData(objectId);
   }
 });

@@ -221,7 +221,7 @@ class EditSettings extends Component {
       },
       {
           fieldname: 'velocity.enabled',
-          fieldvalue: this.props.settings.skopei.enabled,
+          fieldvalue: this.props.settings.velocity.enabled,
           label: 'Enabled',
           controltype: 'yesno'
       },
@@ -237,7 +237,7 @@ class EditSettings extends Component {
       <EditFields title={this.props.title} fields={fields} apply={this.update.bind(this)} />
     );
   }
-
+  
 }
 
 var s = {

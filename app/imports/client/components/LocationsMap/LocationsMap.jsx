@@ -2,22 +2,14 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
 import { RedirectTo } from '/client/main'
-<<<<<<< HEAD
 import { Settings } from '/imports/api/settings.js';
-=======
->>>>>>> remotes/origin/feature/89-merge-location-list-and-map-together
 import L from 'leaflet'
 import 'leaflet-search'
 
 import './Leaflet.EasyButton.js';
 
-// Import models
-<<<<<<< HEAD
 import { LocationsFiltered, Address2LatLng } from '/imports/api/locations.js';
 import { Objects } from '/imports/api/objects.js';
-=======
-import { Address2LatLng } from '/imports/api/locations.js'; 
->>>>>>> remotes/origin/feature/89-merge-location-list-and-map-together
 
 class LocationsMapComponent extends Component {
   constructor(props) {
@@ -154,7 +146,6 @@ class LocationsMapComponent extends Component {
   initializeLocationsMarkers() {
     var markers = [];
 
-    console.log('init location markers');
     this.state.locationMarkersGroup.clearLayers();
 
     R.map((location) =>  {
@@ -163,22 +154,18 @@ class LocationsMapComponent extends Component {
         location.lat_lng= ll;
       }
 
-      if(location.loc) {
+      if(location.lat_lng) {
         // create custom icon
         var commonbikeIcon = L.icon({
           iconUrl: location.imageUrl,
           iconSize: [32, 32], // size of the icon
         });
 
-        console.log('adding ' + location.title);
-
-        var marker = L.marker([location.loc.coordinates[1],location.loc.coordinates[0]] , {icon: commonbikeIcon, zIndexOffset: -1000}); // locationMarker
+        var marker = L.marker([location.lat_lng[0],location.lat_lng[1]] , {icon: commonbikeIcon, zIndexOffset: -1000}); // locationMarker
         marker.locationId = location._id;
         // markers.push(marker); // .bindPopup(location.title)
         this.state.locationMarkersGroup.addLayer(marker);
       }
-
-      console.log('initializeLocationMarkers - ' + this.state.locationMarkersGroup.getLayers().length + ' markers found');
     }, this.props.locations);
 
     // var locationMarkersGroup = L.featureGroup(markers);
@@ -208,32 +195,11 @@ class LocationsMapComponent extends Component {
     }, this.props.objects);
   }
 
-<<<<<<< HEAD
-  mapChanged() {
-    if(!this.state.map) return;
-
-    console.log('process map changed');
-
-//    console.log(JSON.stringify(this.state.map.getBounds(),0,4));
-
-    var bounds = this.state.map.getBounds();
-    var n_lat = bounds.getNorth();
-    var w_lng = bounds.getWest();
-    var s_lat = bounds.getSouth();
-    var e_lng = bounds.getEast();
-
-//    Meteor.subscribe('goabout.objects_latlong', s_lat,w_lng,n_lat,e_lng);
-    Meteor.subscribe('nextbike.objects_latlong',s_lat,w_lng,n_lat,e_lng);
-    Meteor.subscribe('locations.objects_latlong',s_lat,w_lng,n_lat,e_lng);
-
-=======
   mapChanged(e) {
-
     // Send changed trigger to parent
     this.props.mapChanged ? this.props.mapChanged(this.state.map.getBounds()) : null
 
     // Show parking markers if the app demands it
->>>>>>> remotes/origin/feature/89-merge-location-list-and-map-together
     if(this.state.showParkingMarkers) {
       this.initializeParkingLayer();
     }
@@ -418,18 +384,6 @@ LocationsMapComponent.defaultProps = {
 }
 
 export default LocationsMap = createContainer((props) => {
-<<<<<<< HEAD
-  // Meteor.subscribe('locations', false);
-  Meteor.subscribe('objects', false);
-  Meteor.subscribe('settings', false);
-  // Meteor.subscribe('goabout.objects_latlong', 0,0,0,0);
-
-  var locations = LocationsFiltered.find({}, { sort: {title: 1} }).fetch()
-  var objects = Objects.find({}, { sort: {title: 1} }).fetch()
-  var settings = Settings.findOne({});
-
-=======
->>>>>>> remotes/origin/feature/89-merge-location-list-and-map-together
   return {
     locations: props.locations,
     objects: props.objects,

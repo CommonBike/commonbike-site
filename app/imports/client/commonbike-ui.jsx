@@ -21,10 +21,6 @@ class CommonBikeUI extends Component {
   }
 
   onTestVelocity() {
-    Meteor.call('velocity.checkuser', 'M@h1.nl', (error, result) => {
-      console.log(error || result)
-    })
-
     Meteor.call('velocity.checkuser', 'mosbuma@bumos.nl', (error, result) => {
       console.log(error || result)
     })
@@ -38,7 +34,8 @@ class CommonBikeUI extends Component {
 
   render() {
     return (
-      <div style={s.base}>
+     <div style={s.base}>
+
         <h2>Velocity Onboarding</h2>
         <RaisedButton onClick={this.onTestVelocity}>Test Velocity Onboarding</RaisedButton>
 

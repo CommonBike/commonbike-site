@@ -8,24 +8,6 @@ import { Integrations } from '/imports/api/integrations.js';
 export const Locations = new Mongo.Collection('locations');
 export const LocationsFiltered = new Mongo.Collection('locationsfiltered');
 
-export const geoJSONPointSchema = new SimpleSchema({
-  type: {
-    type: String,
-    label: "Type",
-    max: 32
-  },
-  coordinates: {
-    type:   Array,
-    label: "coordinates",
-    maxCount: 2
-  },
-  'coordinates.$': {
-    type: Number,
-    decimal: true,
-    optional: true
-  },
-});
-
 // MB: GPS coordinates are always stored as array. Empty array means not set
 // (needed for schema validation)
 export const LocationsSchema = new SimpleSchema({
@@ -60,16 +42,10 @@ export const LocationsSchema = new SimpleSchema({
     label: "Image URL",
     optional: true,
     max: 1000
-  },
-  point: {
-    type: geoJSONPointSchema,
-    optional: false
   }
 });
 
 if (Meteor.isServer) {
-  gLocationsFilter = {false};
-
   Meteor.publish('locations', function tasksPublication(providerMode=false) {
     if (!this.userId) {
       return this.ready();
@@ -91,32 +67,6 @@ if (Meteor.isServer) {
     }
   });
 
-  Meteor.publish('locations.objects_latlong', function locationsLatLongPublication(s, w, n, e) {
-    if (!this.userId) {
-      return this.ready();
-    }
-
-    var filter =  { loc : { $geoWithin :{ $box : [[w, s], [e, n]]} }};
-
-    // console.log('fetching location objects within ' + JSON.stringify(filter));
-
-    var tmplocations = Locations.find(filter).fetch();
-
-    // console.log('found ' + tmplocations.length + ' locations');
-    var self = this;
-    _.each(tmplocations, function(location) {
-         self.added('locationsfiltered', location._id, location);
-    });
-
-    self.ready();
-  });
-}
-
-export const toGeoJSONPoint = (lat, lng) => {
-  return {
-    "type" : "Point",
-    "coordinates" : [ lng, lat ]
-  }
 }
 
 export const Address2LatLng = (address) => {
@@ -133,29 +83,6 @@ export const Address2LatLng = (address) => {
   } else {
     return ''
   }
-}
-
-export const Address2GeoJSONPoint = (address) => {
-  var point = {
-    "type" : "Point",
-    "coordinates" : [ -999, -999 ]
-  }
-
-  if (!address) return point;
-
-  const url = 'http://maps.google.com/maps/api/geocode/json?address=' + encodeURI(address)
-  const response = HTTP.get(url)
-  const obj = JSON.parse(response.content)
-
-  if(obj.results.length>0) {
-    const location = obj.results[0].geometry.location
-    point = {
-      "type" : "Point",
-      "coordinates" : [ location.lng, location.lat ]
-    }
-  }
-
-  return point;
 }
 
 // The methods below operate on Meteor.users and use Accounts, so they should not be
@@ -186,7 +113,6 @@ if(Meteor.isServer) {
       Meteor.call('transactions.addTransaction', 'ADD_LOCATION', description, Meteor.userId(), locationId, null, data);
 
       var slackmessage = 'Weer een nieuwe locatie toegevoegd: ' + data.title;
-      Integrations.slack.sendNotification(slackmessage);
 
       return locationId
     },
@@ -209,6 +135,7 @@ if(Meteor.isServer) {
       if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
 
       var context =  LocationsSchema.newContext();
+      Integrations.slack.sendNotification(slackmessage);
       if(context.validate({ $set: changes}, {modifier: true} )) {
         var location = Locations.findOne(_id);
 
@@ -252,7 +179,7 @@ if(Meteor.isServer) {
                                     {fields: {_id:1, emails:1}}).fetch();
       if(daUsers) {
         var result = [];
-        daUsers.forEach(function(ubooksbooksser) {
+        daUsers.forEach(function(user) {
           if(user.emails) {
             result.push({_id: user._id, email: user.emails[0].address});
           }

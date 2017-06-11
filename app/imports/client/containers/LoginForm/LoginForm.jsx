@@ -31,14 +31,15 @@ class LoginForm extends Component {
     }, function(err){
       if(err) {
         let msg = err.reason;
-        if(err.error == 403) msg += ' Great that you did join CommonBike! You will receive an email notification soon.';
+        if(err.error == 403) {
+          msg += ' Great that you did join CommonBike! You will receive an email notification soon.';
+        }
 
         alert(msg);
         console.log(err);
-      } else {
-        Meteor.call('currentuser.AutoOnboard');
       }
     });
+
     if(this.props.callback) {
       this.props.callback()
     }

@@ -3,8 +3,8 @@ import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
 
 // Import models
-import { Settings } from '/imports/api/settings.js'; 
-import { Locations } from '/imports/api/locations.js'; 
+import { Settings } from '/imports/api/settings.js';
+import { Locations } from '/imports/api/locations.js';
 import { Objects } from '/imports/api/objects.js';
 
 // Import components
@@ -13,7 +13,7 @@ import LocationsMap from '/imports/client/components/LocationsMap/LocationsMap';
 
 /**
  *  LocationList
- * 
+ *
  * @param {Object} locations
  * @param {Boolean} isEditable
  */
@@ -27,7 +27,7 @@ class LocationList extends Component {
 
   /**
    *  newLocationHandler
-   * 
+   *
    * Adds a new location to the database having the title "_Een nieuwe locatie"
    */
   newLocationHandler() {
@@ -43,7 +43,7 @@ class LocationList extends Component {
 
   newLocationAdded(error, result) {
     // Re-subscribe is necessary: otherwise the location does not show up
-    // in the provider's location list without a full page reload (there is no 
+    // in the provider's location list without a full page reload (there is no
     // subscription relation with the user table that maintains the list
     // of managed locations per user)
     Meteor.subscribe('locations', this.props.isEditable);
@@ -84,7 +84,12 @@ class LocationList extends Component {
   }
 
   render() {
-    locations = R.filter(this.getVisibleObjectsOnly.bind(this), this.props.locations)
+    if(!this.props.isEditable) {
+      locations = R.filter(this.getVisibleObjectsOnly.bind(this), this.props.locations)
+    } else {
+      locations = this.props.locations
+    }
+    
     return (
       <div>
         <LocationsMap locations={locations}
@@ -92,8 +97,8 @@ class LocationList extends Component {
                         settings={this.props.settings}
                         mapChanged={this.mapChanged.bind(this)}
                         />
-        <LocationsList locations={locations} 
-                        isEditable={this.props.isEditable} 
+        <LocationsList locations={locations}
+                        isEditable={this.props.isEditable}
                         newLocationHandler={this.newLocationHandler.bind(this)}
                         canCreateLocations={this.props.canCreateLocations} />
       </div>
