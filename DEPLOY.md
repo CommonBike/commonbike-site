@@ -14,7 +14,7 @@ First, add the server as remote branch.
 
 Now choose: where do you want to deploy?
 
-1. To the test environment, beta.common.bike?
+1. To the test environment, test.common.bike?
 
    `git push deploy branch-you-want-to-deploy:develop`
 
