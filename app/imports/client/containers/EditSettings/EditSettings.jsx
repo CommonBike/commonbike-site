@@ -155,6 +155,82 @@ class EditSettings extends Component {
           label: 'Enabled',
           controltype: 'yesno'
   		},
+      {
+          controltype: 'header',
+          label: 'MongoDB Backup'
+      },
+      {
+          fieldname: 'backup.location',
+          fieldvalue: this.props.settings.backup.location,
+          controltype: 'text',
+          label: 'storage directory'
+      },
+      {
+          controltype: 'header',
+          label: 'Skopei Integration'
+      },
+      {
+          fieldname: 'skopei.enabled',
+          fieldvalue: this.props.settings.skopei.enabled,
+          label: 'Enabled',
+          controltype: 'yesno'
+      },
+      {
+          fieldname: 'skopei.clientid',
+          fieldvalue: this.props.settings.skopei.clientid,
+          controltype: 'text',
+          label: 'Client ID'
+      },
+      {
+          fieldname: 'skopei.clientkey',
+          fieldvalue: this.props.settings.skopei.clientkey,
+          controltype: 'text',
+          label: 'Client Key'
+      },
+      {
+          controltype: 'header',
+          label: 'GoAbout Integration'
+      },
+      {
+          fieldname: 'goabout.enabled',
+          fieldvalue: this.props.settings.goabout.enabled,
+          label: 'Enabled',
+          controltype: 'yesno'
+      },
+      {
+          fieldname: 'goabout.clientid',
+          fieldvalue: this.props.settings.goabout.clientid,
+          controltype: 'text',
+          label: 'Client ID'
+      },
+      {
+          fieldname: 'goabout.clientsecret',
+          fieldvalue: this.props.settings.goabout.clientsecret,
+          controltype: 'text',
+          label: 'Client Secret'
+      },
+      {
+          fieldname: 'goabout.userbearertoken',
+          fieldvalue: this.props.settings.goabout.userbearertoken,
+          controltype: 'text',
+          label: 'User Bearer Token'
+      },
+      {
+          controltype: 'header',
+          label: 'Velocity Options'
+      },
+      {
+          fieldname: 'velocity.enabled',
+          fieldvalue: this.props.settings.skopei.enabled,
+          label: 'Enabled',
+          controltype: 'yesno'
+      },
+      {
+          fieldname: 'velocity.token',
+          fieldvalue: this.props.settings.velocity.token,
+          controltype: 'text',
+          label: 'Onboarding Token'
+      },
   	]
 
     return (

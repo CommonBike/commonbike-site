@@ -5,8 +5,7 @@ import { RedirectTo } from '/client/main'
 
 // Import components
 import RaisedButton from '../Button/RaisedButton';
-import { getUserDescription } from '/imports/api/users.js'; 
-
+import { getUserDescription } from '/imports/api/users.js';
 
 class AdminTools extends Component {
   constructor(props) {
@@ -17,7 +16,7 @@ class AdminTools extends Component {
     RedirectTo('/admin/transactions');
   }
 
-  clearTransactions() { 
+  clearTransactions() {
     if( !confirm('Weet je zeker dat je de complete transactie historie wilt wissen? Dit kan niet ongedaan gemaakt worden.')) {
       return;
     }
@@ -45,7 +44,7 @@ class AdminTools extends Component {
     alert('De testdata is verwijderd!');
   }
 
-  insertTestUsers() { 
+  insertTestUsers() {
     if( !confirm('Weet je zeker dat je de testgebruikers wilt toevoegen? Doe dit nooit op de productieserver.')) {
       return;
     }
@@ -70,11 +69,11 @@ class AdminTools extends Component {
   }
 
   databaseCheckup() {
-    
+
   }
 
   databaseBackup() {
-
+    Meteor.call('databasetools.backup');
   }
 
   databaseRestore() {
@@ -84,8 +83,8 @@ class AdminTools extends Component {
   getOnlineOfflineButton() {
   }
 
-  goOfflineOnline() { 
-    
+  goOfflineOnline() {
+
   }
 
   render() {
@@ -115,6 +114,9 @@ class AdminTools extends Component {
 
           <RaisedButton onClick={this.insertTestData.bind(this)}>TESTDATA TOEVOEGEN</RaisedButton>
 
+        </div>
+        <div style={s.centerbox}>
+          <RaisedButton onClick={this.databaseBackup.bind(this)}>DATABASE BACKUP</RaisedButton>
         </div>
         <div style={s.centerbox}>
           <RaisedButton onClick={this.showLog.bind(this)}>LOG TONEN</RaisedButton>

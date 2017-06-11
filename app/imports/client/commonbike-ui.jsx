@@ -14,6 +14,22 @@ import MapSummary from '/imports/client/MapSummary.jsx'
 
 class CommonBikeUI extends Component {
 
+  onTestGoAbout() {
+    Meteor.call('goabout.testservice', (error, result) => {
+      console.log(error || result)
+    })
+  }
+
+  onTestVelocity() {
+    Meteor.call('velocity.checkuser', 'M@h1.nl', (error, result) => {
+      console.log(error || result)
+    })
+
+    Meteor.call('velocity.checkuser', 'mosbuma@bumos.nl', (error, result) => {
+      console.log(error || result)
+    })
+  }
+
   onTestSoap() {
     Meteor.call('testsoap', (error, result) => {
       console.log(error || result)
@@ -23,6 +39,12 @@ class CommonBikeUI extends Component {
   render() {
     return (
       <div style={s.base}>
+        <h2>Velocity Onboarding</h2>
+        <RaisedButton onClick={this.onTestVelocity}>Test Velocity Onboarding</RaisedButton>
+
+        <h2>GoAbout</h2>
+        <RaisedButton onClick={this.onTestGoAbout}>Test GoAbout API</RaisedButton>
+
         <h2>Button</h2>
         <Button>Klik hier! ~ Button</Button>
 
@@ -34,7 +56,7 @@ class CommonBikeUI extends Component {
         </div>
 
         <h2>RaisedButton</h2>
-    
+
         <RaisedButton>Klik hier! ~ RaisedButton</RaisedButton>
 
         <h2>Basic UI component</h2>

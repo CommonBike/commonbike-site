@@ -1,6 +1,7 @@
 import { Objects } from '/imports/api/objects.js';
 import { Locations } from '/imports/api/locations.js';
 import { getUserDescription } from '/imports/api/users.js';
+import { getSettingsServerSide } from '/imports/api/settings.js';
 
 /* requires fix below in node_modules\soap\lib\client.js : 209+
 
@@ -42,11 +43,11 @@ Client.prototype._setSequenceArgs = function(argsScheme, args) {
 */
 
 gSkopeiURL = 'https://backend-tst.skopei.com/webservice/ReservationV1.svc?wsdl';
-gClientId = 'COMMONBIKE';
-gClientKey = 'b453d2b0-9da1-4c5b-ab3c-6b6b5d7b7dbc';
 
 class SkopeiAPIClass {
   constructor() {
+    return false;
+
 		this.promise = require("bluebird");
 
 		var createClient = this.promise.promisify(require('soap').createClient);
@@ -63,10 +64,12 @@ class SkopeiAPIClass {
   addAuthentication(args) {
 		var SHA256 = require("crypto-js/sha256");
 
-		args.ID = gClientId;
+    var skopeisettings = getSettingsServerSide().skopei;
+
+		args.ID = skopeisettings.clientid;
 		args.MessageID = Math.floor((Math.random() * 100000) + 1);
 
-		var basestr = args.ID + gClientKey.toUpperCase() + args.MessageID;
+		var basestr = args.ID + skopeisettings.clientkey.toUpperCase() + args.MessageID;
 		args.Hash = SHA256(basestr).toString().toUpperCase();
 	}
 

@@ -9,7 +9,7 @@ import 'leaflet-search'
 import './Leaflet.EasyButton.js';
 
 // Import models
-import { Locations, Address2LatLng } from '/imports/api/locations.js';
+import { LocationsFiltered, Address2LatLng } from '/imports/api/locations.js';
 import { Objects } from '/imports/api/objects.js';
 
 class LocationsMapComponent extends Component {
@@ -41,7 +41,6 @@ class LocationsMapComponent extends Component {
   }
 
   componentDidMount() {
-
     // Init map
     let map = L.map('mapid', {
       zoomControl: false// Hide zoom buttons
@@ -66,11 +65,13 @@ class LocationsMapComponent extends Component {
     let markersLayer = new L.LayerGroup();
     map.addLayer(markersLayer);
 
-    // Now set the map view
     map.setView(this.props.startLocation, this.props.startZoom);
 
     map.on('moveend', this.mapChanged.bind(this));
     map.on('zoomend', this.mapChanged.bind(this));
+
+    // Now set the map view
+    map.setView(this.props.startLocation, this.props.startZoom);
 
     // Le easy button
     L.easyButton( '<img src="'+ s.images.hier + '" style="width:22px;height:22px" />', this.toggleTrackUser.bind(this) ).addTo(map);
@@ -145,24 +146,32 @@ class LocationsMapComponent extends Component {
 
   initializeLocationsMarkers() {
     var markers = [];
+
+    console.log('init location markers');
+    this.state.locationMarkersGroup.clearLayers();
+
     R.map((location) =>  {
       if(!location.lat_lng&&location.address) {
         var ll = Address2LatLng(location.address);
         location.lat_lng= ll;
       }
 
-      if(location.lat_lng) {
+      if(location.loc) {
         // create custom icon
         var commonbikeIcon = L.icon({
           iconUrl: location.imageUrl,
           iconSize: [32, 32], // size of the icon
         });
 
-        var marker = L.marker(location.lat_lng, {icon: commonbikeIcon, zIndexOffset: -1000}); // locationMarker
+        console.log('adding ' + location.title);
+
+        var marker = L.marker([location.loc.coordinates[1],location.loc.coordinates[0]] , {icon: commonbikeIcon, zIndexOffset: -1000}); // locationMarker
         marker.locationId = location._id;
         // markers.push(marker); // .bindPopup(location.title)
         this.state.locationMarkersGroup.addLayer(marker);
       }
+
+      console.log('initializeLocationMarkers - ' + this.state.locationMarkersGroup.getLayers().length + ' markers found');
     }, this.props.locations);
 
     // var locationMarkersGroup = L.featureGroup(markers);
@@ -193,6 +202,22 @@ class LocationsMapComponent extends Component {
   }
 
   mapChanged() {
+    if(!this.state.map) return;
+
+    console.log('process map changed');
+
+//    console.log(JSON.stringify(this.state.map.getBounds(),0,4));
+
+    var bounds = this.state.map.getBounds();
+    var n_lat = bounds.getNorth();
+    var w_lng = bounds.getWest();
+    var s_lat = bounds.getSouth();
+    var e_lng = bounds.getEast();
+
+//    Meteor.subscribe('goabout.objects_latlong', s_lat,w_lng,n_lat,e_lng);
+    Meteor.subscribe('nextbike.objects_latlong',s_lat,w_lng,n_lat,e_lng);
+    Meteor.subscribe('locations.objects_latlong',s_lat,w_lng,n_lat,e_lng);
+
     if(this.state.showParkingMarkers) {
       this.initializeParkingLayer();
     }
@@ -202,6 +227,8 @@ class LocationsMapComponent extends Component {
   // user location tracking related functions
   // ----------------------------------------------------------------------------
   trackSuccess(pos) {
+    console.log('trackSuccess');
+
     const {coords} = pos
     newLatLng = [coords.latitude, coords.longitude]
 
@@ -220,7 +247,7 @@ class LocationsMapComponent extends Component {
 
     marker.setLatLng(newLatLng);
 
-    if( ! this.state.map.getBounds().contains(newLatLng)) {
+    if(!this.state.map.getBounds().contains(newLatLng)) {
       this.state.map.setView(newLatLng);
     }
 
@@ -374,11 +401,12 @@ LocationsMapComponent.defaultProps = {
 }
 
 export default LocationsMap = createContainer((props) => {
-  Meteor.subscribe('locations', false);
+  // Meteor.subscribe('locations', false);
   Meteor.subscribe('objects', false);
   Meteor.subscribe('settings', false);
+  // Meteor.subscribe('goabout.objects_latlong', 0,0,0,0);
 
-  var locations = Locations.find({}, { sort: {title: 1} }).fetch()
+  var locations = LocationsFiltered.find({}, { sort: {title: 1} }).fetch()
   var objects = Objects.find({}, { sort: {title: 1} }).fetch()
   var settings = Settings.findOne({});
 

@@ -124,6 +124,68 @@ export const OnboardingSchema = new SimpleSchema({
   }
 });
 
+export const BackupSchema = new SimpleSchema({
+  'location': {
+    type: String,
+    label: "Backup Location",
+    defaultValue: '~/backup-commonbike'
+  }
+});
+
+export const SkopeiSchema = new SimpleSchema({
+	'enabled': {
+    type: Boolean,
+    label: "skopei.enabled",
+    defaultValue: 'false'
+  },
+	'clientid': {
+    type: String,
+    label: "skopei.clientid",
+    defaultValue: '<fill in client id here, client key below, set enable to true>'
+  },
+	'clientkey': {
+    type: String,
+    label: "skopei.clientkey",
+    defaultValue: ''
+  },
+});
+
+export const VelocitySchema = new SimpleSchema({
+	'enabled': {
+    type: Boolean,
+    label: "velocity.enabled",
+    defaultValue: 'false'
+  },
+	'token': {
+    type: String,
+    label: "velocity.token",
+    defaultValue: '<fill in token here>'
+  }
+});
+
+export const GoAboutSchema = new SimpleSchema({
+	'enabled': {
+    type: Boolean,
+    label: "goabout.enabled",
+    defaultValue: 'false'
+  },
+	'clientid': {
+    type: String,
+    label: "goabout.clientid",
+    defaultValue: '<fill in client id here, client secret / usertoken below, set enable to true>'
+  },
+	'clientsecret': {
+    type: String,
+    label: "goabout.clientsecret",
+    defaultValue: ''
+  },
+	'userbearertoken': {
+    type: String,
+    label: "goabout.userbearertoken",
+    defaultValue: ''
+  },
+});
+
 // for now there is only one set of settings. Later on profilename can be used later
 // to use different settings for different instances
 
@@ -156,7 +218,22 @@ export const SettingsSchema = new SimpleSchema({
 	onboarding: {
 		type: OnboardingSchema
   },
-
+	backup: {
+    type: BackupSchema
+  },
+	skopei: {
+    type: SkopeiSchema
+  },
+	velocity: {
+    type: VelocitySchema
+  },
+	goabout: {
+    type: GoAboutSchema
+  },
+	bikecoin: {				// ignore this: is used in bikecoin branch
+		type: Object,
+		blackbox: true
+  }
 });
 
 if (Meteor.isServer) {
@@ -224,6 +301,59 @@ if (Meteor.isServer) {
 				if(!settings.onboarding) {
 					settings.onboarding = {
 						enabled:true
+					}
+
+					Settings.update(settings._id, settings, {validate: false});
+				}
+
+				if(!settings.backup) {
+					settings.backup = {
+						location:'~/backup-commonbike'
+					}
+
+					Settings.update(settings._id, settings, {validate: false});
+				}
+
+				if(!settings.skopei) {
+					settings.skopei = {
+						enabled:false,
+						clientid: '',
+						clientkey: ''
+					}
+
+					Settings.update(settings._id, settings, {validate: false});
+				}
+
+				if(!settings.velocity) {
+					settings.velocity = {
+						enabled:false,
+						token: ''
+					}
+
+					Settings.update(settings._id, settings, {validate: false});
+				}
+
+				if(!settings.goabout) {
+					settings.goabout = {
+						enabled:false,
+						clientid: '',
+						clientsecret: '',
+						userbearertoken: ''
+					}
+
+					Settings.update(settings._id, settings, {validate: false});
+				}
+
+				if(!settings.bikecoin) {
+					settings.bikecoin = {
+						enabled:false,
+						provider_url : '',
+		        "token_address" : '',
+		        "token_abi" : [],
+						"wallet" : {
+						            "address" : '',
+						            "privatekey" : ''
+		        }
 					}
 
 					Settings.update(settings._id, settings, {validate: false});
