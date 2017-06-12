@@ -120,6 +120,7 @@ if(Meteor.isServer) {
       Meteor.call('transactions.addTransaction', 'ADD_LOCATION', description, Meteor.userId(), locationId, null, data);
 
       var slackmessage = 'Weer een nieuwe locatie toegevoegd: ' + data.title;
+      Integrations.slack.sendNotification(slackmessage);
 
       return locationId
     },
@@ -142,7 +143,6 @@ if(Meteor.isServer) {
       if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
 
       var context =  LocationsSchema.newContext();
-      Integrations.slack.sendNotification(slackmessage);
       if(context.validate({ $set: changes}, {modifier: true} )) {
         var location = Locations.findOne(_id);
 
