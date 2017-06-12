@@ -25,8 +25,8 @@ if (Meteor.isServer) {
 
 	// use this function serverside to get all settings
 	export const getSettingsServerSide = function(profileName) {
-		if(!profileName) {
-			profileName=defaultProfileName
+		if( ! profileName) {
+			profileName = defaultProfileName
 		}
 
 		var settings = Settings.findOne({profileName: profileName});

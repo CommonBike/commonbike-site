@@ -34,26 +34,30 @@ export const getUserDescription = (user) => {
   return description;
 }
 
-// user profile data serverside  functions
+// user profile data serverside functions
 if(Meteor.isServer) {
+
   // Validate username, sending a specific error message on failure.
   Accounts.validateNewUser((user) => {
+
     if(user.emails && user.emails.length>0 && user.emails[0].address) {
       user_email = user.emails[0].address;
       user_pass = user.services.password
       console.log(JSON.stringify(user, 0,2));
-    } else {
+    }
+
+    else {
       return false;
     }
 
-    if (!getSettingsServerSide().velocity.enabled) {
+    // If VeloCity onboarding is not enabled: user is validated by default
+    if ( ! getSettingsServerSide().velocity.enabled) {
       return true;
-    } else {
-      if(VelocityAPI.checkUserEmailAddress(user_email)) {
-        return true;
-      } else {
-        return false;
-      }
+    }
+
+    // If VeloCity onboarding is enabled: check if email address is on the list
+    else {
+      return VelocityAPI.checkUserEmailAddress(user_email)
     }
   });
 
