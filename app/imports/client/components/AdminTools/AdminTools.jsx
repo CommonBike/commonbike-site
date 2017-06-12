@@ -7,7 +7,7 @@ import { RedirectTo } from '/client/main'
 import RaisedButton from '../Button/RaisedButton';
 import { getUserDescription } from '/imports/api/users.js';
 
-import { Backuplist } from '/imports/api/databasetools.js';
+// import { Backuplist } from '/imports/api/databasetools.js';
 
 class AdminTools extends Component {
   constructor(props) {
@@ -105,17 +105,18 @@ class AdminTools extends Component {
         <div style={s.centerbox}>
           <RaisedButton onClick={this.showLog.bind(this)}>LOG TONEN</RaisedButton>
         </div>
-        <div style={s.centerbox}>
-          <RaisedButton hidden onClick={this.databaseCheckup.bind(this)}>DATABASE CHECKUP</RaisedButton>
-
-          <RaisedButton onClick={this.databaseBackup.bind(this)}>DATABASE BACKUP</RaisedButton>
-
-          { this.props.backuplist.map(item =>  <RaisedButton key={item.name} onClick={this.databaseRestore.bind(this, item.name)}>RESTORE BACKUP {item.name.toUpperCase()}</RaisedButton>) }
-        </div>
       </div>
     );
   }
 }
+
+// <div style={s.centerbox}>
+//   <RaisedButton hidden onClick={this.databaseCheckup.bind(this)}>DATABASE CHECKUP</RaisedButton>
+//
+//   <RaisedButton onClick={this.databaseBackup.bind(this)}>DATABASE BACKUP</RaisedButton>
+//
+//              { this.props.backuplist.map(item =>  <RaisedButton key={item.name} onClick={this.databaseRestore.bind(this, item.name)}>RESTORE BACKUP {item.name.toUpperCase()}</RaisedButton>) }
+// </div>
 
 var s = {
   base: {
@@ -140,19 +141,19 @@ var s = {
 }
 
 AdminTools.propTypes = {
-  backuplist: PropTypes.array,
+//  backuplist: PropTypes.array,
 };
 
 AdminTools.defaultProps = {
-  backuplist: []
+//  backuplist: []
 }
 
 export default createContainer((props) => {
   Meteor.subscribe('users');
-  Meteor.subscribe('backuplist');
+//  Meteor.subscribe('backuplist');
 
   return {
-    backuplist : Backuplist.find().fetch()
+//    backuplist : Backuplist.find().fetch()
   };
 }, AdminTools);
 

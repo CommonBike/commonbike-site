@@ -113,7 +113,7 @@ class GoAboutAPIClass {
   }
 
   checkLocations() {
-//    try {
+    try {
       if(!this.enabled) {
         console.log('goabout service is disabled');
         return;
@@ -198,10 +198,10 @@ class GoAboutAPIClass {
         // console.log('Goabout bike response:');
         // console.log(JSON.stringify(bikecontent,0,4));
       }); // _.each
-    // } catch(ex) {
-    //     console.log('Goabout error:' + ex);
-    //     return false;
-    // }
+    } catch(ex) {
+        console.log('Goabout error:' + ex);
+        return false;
+    }
   }
 
   getAvailableProducts(s,w,n,e) {
