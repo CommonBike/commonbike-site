@@ -83,21 +83,31 @@ class LocationList extends Component {
     this.setState({ mapBoundaries: boundaries })
   }
 
+  getMap(locations) {
+    if(!this.props.isEditable) {
+      return (
+        <LocationsMap locations={locations}
+                        objects={this.props.objects}
+                        settings={this.props.settings}
+                        mapChanged={this.mapChanged.bind(this)}
+                        />
+      );
+    } else {
+      return (<div />);
+    }
+  }
+
   render() {
     if(!this.props.isEditable) {
       locations = R.filter(this.getVisibleObjectsOnly.bind(this), this.props.locations)
     } else {
       locations = this.props.locations
     }
-    
+
     return (
       <div>
-        <LocationsMap locations={locations}
-                        objects={this.props.objects}
-                        settings={this.props.settings}
-                        mapChanged={this.mapChanged.bind(this)}
-                        />
-        <LocationsList locations={locations}
+       { this.getMap(locations)}
+       <LocationsList locations={locations}
                         isEditable={this.props.isEditable}
                         newLocationHandler={this.newLocationHandler.bind(this)}
                         canCreateLocations={this.props.canCreateLocations} />
