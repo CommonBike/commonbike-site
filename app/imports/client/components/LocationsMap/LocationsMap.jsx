@@ -197,6 +197,8 @@ class LocationsMapComponent extends Component {
 
   mapChanged(e) {
     // Send changed trigger to parent
+    if(!this.state.map) return;
+    
     this.props.mapChanged ? this.props.mapChanged(this.state.map.getBounds()) : null
 
     // Show parking markers if the app demands it

@@ -159,7 +159,7 @@ class AppRoutes extends React.Component {
       <RouteWhenLoggedIn path='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/>
       <RouteWhenLoggedIn path='/commonbike-ui' component={CommonBikeUI}/>
 
-      <RouteWhenLoggedIn path='/admin/locations' component={UserAppAdminLocationOverview}/>
+      <RouteWhenLoggedIn path='/admin/locations' component={UserAppAdminLocationsOverview}/>
       <RouteWhenLoggedIn path='/admin/rentals' component={UserAppRentalList}/>
       <RouteWhenLoggedIn path='/admin/location/:locationId' component={UserAppAdminLocationDetails}/>
       <RouteWhenLoggedIn path='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/>
