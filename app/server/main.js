@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base'
 
+import { Settings } from '/imports/api/settings.js';
+import '/imports/api/transactions.js';
 import '/imports/api/users.js'
 import { Locations, toGeoJSONPoint, Address2GeoJSONPoint } from '/imports/api/locations.js';
 import { Objects } from '/imports/api/objects.js';
-import { Settings } from '/imports/api/settings.js';
 import '/imports/api/api-keys.js'
 import { Log } from '/imports/api/log.js'
 import '/imports/server/testdata.js'
@@ -57,28 +58,6 @@ Meteor.startup(() => {
 		});
 	}
 
-	// move price from hardcoded to object
-	if(false) {
-		var newprice = {
-			value: '0',
-			currency: 'euro',
-			timeunit: 'day',
-			description: 'tijdelijk gratis'
-		};
-
-		var myObjects = Objects.find().fetch();
-		_.each(myObjects, function (objectData) {
-			if(!objectData.price||!!objectData.price.value||
-			   !objectData.price.currency||!!objectData.price.timeunit||
-			   !objectData.description ) {
-			    Objects.update(objectData._id, {$set:{ price: newprice }});
-
-			    var desc = 'price set to ' + newprice.description + ' for ' + objectData.title;
-				Meteor.call('transactions.addTransaction', 'SET_PRICE', desc, null, null, objectData._id);
-			}
-		});
-	}
-
 	if(true) {
 		var myLocations = Locations.find().fetch();
 		_.each(myLocations, function (locationData) {
@@ -89,7 +68,13 @@ Meteor.startup(() => {
 		    Locations.update(locationData._id, {$unset:{ point: "" }});
 			}
 			if(locationData.loc) {
-		    Locations.update(locationData._id, {$unset:{ coordinates: "" }});
+		    Locations.update(locationData._id, {$unset:{ loc: "" }});
+			}
+			if(!locationData.locationType) {
+				locationData.locationType = 'commonbike'
+				locationData.externalId = ''
+
+				Locations.update(locationData._id, locationData, {validate: false});
 			}
 		});
 		_.each(myObjects, function (objectData) {
@@ -98,6 +83,9 @@ Meteor.startup(() => {
 			}
 			if(objectData.point) {
 		    Objects.update(objectData._id, {$unset:{ point: "" }});
+			}
+			if(objectData.loc) {
+		    Locations.update(objectData._id, {$unset:{ loc: "" }});
 			}
 		});
 	}

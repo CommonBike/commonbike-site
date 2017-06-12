@@ -231,13 +231,23 @@ class EditSettings extends Component {
           controltype: 'text',
           label: 'Onboarding Token'
       },
+      {
+          controltype: 'header',
+          label: 'Use GPS Location'
+      },
+      {
+          fieldname: 'gps.enabled',
+          fieldvalue: this.props.settings.gps.enabled,
+          label: 'Enabled',
+          controltype: 'yesno'
+      }
   	]
 
     return (
       <EditFields title={this.props.title} fields={fields} apply={this.update.bind(this)} />
     );
   }
-  
+
 }
 
 var s = {

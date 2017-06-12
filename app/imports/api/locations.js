@@ -42,6 +42,18 @@ export const LocationsSchema = new SimpleSchema({
     label: "Image URL",
     optional: true,
     max: 1000
+  },
+  locationType: {
+    type: String,
+    label: "Location type",
+    optional: false,
+    max: 32
+  },
+  externalId: {
+    type: String,
+    label: "External id",
+    optional: false,
+    max: 128
   }
 });
 
@@ -62,7 +74,6 @@ if (Meteor.isServer) {
       }
     }
   });
-
 }
 
 export const Address2LatLng = (address) => {
@@ -158,14 +169,17 @@ if(Meteor.isServer) {
       Meteor.users.update({}, {$pull: {'profile.provider_locations': _id}});
 
       var location = Locations.findOne(_id);
+      if(location) {
+        Locations.remove(_id);
 
-      Locations.remove(_id);
+        var description = getUserDescription(Meteor.user()) + ' heeft locatie ' + location.title + ' verwijderd';
+        Meteor.call('transactions.addTransaction', 'REMOVE_LOCATION', description, Meteor.userId(), _id, null, location);
 
-      var description = getUserDescription(Meteor.user()) + ' heeft locatie ' + location.title + ' verwijderd';
-      Meteor.call('transactions.addTransaction', 'REMOVE_LOCATION', description, Meteor.userId(), _id, null, location);
-
-      var slackmessage = 'Locatie ' + location.title + ' is verwijderd';
-      Integrations.slack.sendNotification(slackmessage);
+        var slackmessage = 'Locatie ' + location.title + ' is verwijderd';
+        Integrations.slack.sendNotification(slackmessage);
+      } else {
+        console.log('unknown location' + _id);
+      }
     },
     'locationprovider.getuserlist'(locationId) {
       // return a list of users that are providers for the given location

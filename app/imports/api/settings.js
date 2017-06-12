@@ -8,7 +8,7 @@ const latestSettingsVersion = 1;		// FUTURE: for automatic update of settings la
 export const defaultProfileName = 'default';   // FUTURE: multiple profiles
 
 // set fields/objects that are also visible to the client here
-const publicFieldset = {profileName:1, mapbox:1, veiligstallen:1};
+const publicFieldset = {profileName:1, mapbox:1, veiligstallen:1, gps: 1};
 
 if (Meteor.isServer) {
 	Meteor.publish('settings', function settingsPublication(profileName) {
@@ -27,6 +27,14 @@ if (Meteor.isServer) {
 	export const getSettingsServerSide = function(profileName) {
 		if(!profileName) {
 			profileName=defaultProfileName
+		}
+
+		var settings = Settings.findOne({profileName: profileName});
+
+		if(!settings) {
+			Meteor.call('settings.check');
+
+			settings = Settings.findOne({profileName: profileName});
 		}
 
 		return Settings.findOne({profileName: profileName});
@@ -186,6 +194,25 @@ export const GoAboutSchema = new SimpleSchema({
   },
 });
 
+export const GPSSchema = new SimpleSchema({
+	'enabled': {
+    type: Boolean,
+    label: "gps enabled",
+    defaultValue: 'false'
+  },
+	lat_lng: {
+    type:   Array,
+    label: "GPS location",
+    maxCount: 2
+  },
+  'lat_lng.$': {
+    type: Number,
+    decimal: true,
+    optional: true
+  }
+});
+
+
 // for now there is only one set of settings. Later on profilename can be used later
 // to use different settings for different instances
 
@@ -233,7 +260,10 @@ export const SettingsSchema = new SimpleSchema({
 	bikecoin: {				// ignore this: is used in bikecoin branch
 		type: Object,
 		blackbox: true
-  }
+  },
+	gps: {
+    type: GPSSchema
+  },
 });
 
 if (Meteor.isServer) {
@@ -242,9 +272,20 @@ if (Meteor.isServer) {
 	    // Make sure this runs serverside only
 	    if ( ! Meteor.isServer) throw new Meteor.Error('not-authorized');
 
+			if(Meteor.users.find().fetch().length==0) {
+				Accounts.createUser({
+				                            username: 'commonbike-admin',
+				                            email : 'info@common.bike',
+				                            password : 'commonbike-admin-!!##',
+				                            profile  : {
+				                                active: true
+				                            }
+				    });
+			}
+
 	    // for now there is only one settings profile
 		  var settings = Settings.findOne({profileName: defaultProfileName});
-	    if( ! settings) {
+	    if( !settings) {
 		    var settingsId = Settings.insert({});
 	    	settings = {
 	    		_id: settingsId,
@@ -271,7 +312,42 @@ if (Meteor.isServer) {
 						twilio_accountsid: "",
 						twilio_authtoken: "",
 						twilio_fromnumber: ""
-					}
+					},
+					onboarding: {
+					  enabled:true
+					},
+					backup: {
+					  location:''
+					},
+					skopei : {
+					  enabled:false,
+					  clientid: '',
+					  clientkey: ''
+					},
+					velocity : {
+					  enabled:false,
+					  token: ''
+					},
+					goabout : {
+					  enabled:false,
+					  clientid: '',
+					  clientsecret: '',
+					  userbearertoken: ''
+					},
+					bikecoin : {
+					  enabled:false,
+					  provider_url : '',
+					  "token_address" : '',
+					  "token_abi" : [],
+					  "wallet" : {
+					              "address" : '',
+					              "privatekey" : ''
+					  }
+					},
+					gps: {
+						enabled:true,
+						lat_lng: [999,999]
+				  },
 	    	}
 
 		    try {
@@ -354,6 +430,15 @@ if (Meteor.isServer) {
 						            "address" : '',
 						            "privatekey" : ''
 		        }
+					}
+
+					Settings.update(settings._id, settings, {validate: false});
+				}
+
+				if(!settings.gps) {
+					settings.gps = {
+						enabled:true,
+						lat_lng: [999,999]
 					}
 
 					Settings.update(settings._id, settings, {validate: false});

@@ -102,14 +102,106 @@ class GoAboutAPIClass {
           return false;
         }
 
-        bikecontent = JSON.parse(response.content);
-        console.log('Goabout bike response:');
-        console.log(JSON.stringify(bikecontent,0,4));
+        // bikecontent = JSON.parse(response.content);
+        // console.log('Goabout bike response:');
+        // console.log(JSON.stringify(bikecontent,0,4));
       }); // _.each
     } catch(ex) {
         console.log('Goabout error:' + JSON.stringify(ex));
         return false;
     }
+  }
+
+  checkLocations() {
+//    try {
+      if(!this.enabled) {
+        console.log('goabout service is disabled');
+        return;
+      }
+
+      var url = gGoAboutAPIURL;
+      url = 'https://api.goabout.com/'
+      url = 'https://coconut.goabout.com/products/303/locations'
+      response = HTTP.get(url,
+        {
+          "headers": {
+                    "Authorization": "Bearer " + getSettingsServerSide().goabout.userbearertoken
+                  }
+        }
+      );
+
+      if(response.statusCode!=200) {
+        console.log('Goabout unable to get location info. Status code ' + response.statusCode);
+        return false;
+      }
+
+      content = JSON.parse(response.content);
+      // console.log('Goabout location response:');
+      // console.log(JSON.stringify(content,0,4));
+
+      // check if the location still exists in the GoAbout config
+      var locations = Locations.find({locationType: "goabout"}).fetch();
+      _.each(locations, (location) => {
+        var found=false;
+        for(i=0;i<content.items.length;i++) {
+          console.log(content.items[i].id.toString() + ' vs ' + location.externalId);
+          if(content.items[i].id.toString()==location.externalId) { found=true }
+        };
+        if(!found) {
+          console.log('delete location ' + location._id);
+          Meteor.call('locations.remove', location._id);
+        }
+      });
+
+      _.each(content.items, (item)=>{
+        var current = Locations.findOne({$and: [{locationType: "goabout"}, {externalId: item.id.toString()}]});
+
+        data = {
+          title: item.label,
+          lat_lng: item.coordinates.split(",").map(Number),
+          address: item.address,
+          description: item.instructions,
+          locationType: 'goabout',
+          externalId: item.id.toString(),
+          imageUrl: '/files/Velocity/velocity-logo.png'
+        }
+
+        var locationId;
+        if(!current) {
+          console.log('add new location');
+          console.log(JSON.stringify(data));
+
+          locationId = Locations.insert(data);
+        } else {
+          console.log('update location');
+          console.log(JSON.stringify(data));
+
+          Locations.update(current._id, {$set: data});
+        }
+
+        // url = `https://coconut.goabout.com/products/303/locations/${item.id}/bicycles`;
+        // console.log('call ' + url);
+        // response = HTTP.get(url,
+        //   {
+        //     "headers": {
+        //               "Authorization": "Bearer " + getSettingsServerSide().goabout.userbearertoken
+        //             }
+        //   }
+        // );
+        //
+        // if(response.statusCode!=200) {
+        //   console.log('Goabout unable to get bike info. Status code ' + response.statusCode);
+        //   return false;
+        // }
+        //
+        // bikecontent = JSON.parse(response.content);
+        // console.log('Goabout bike response:');
+        // console.log(JSON.stringify(bikecontent,0,4));
+      }); // _.each
+    // } catch(ex) {
+    //     console.log('Goabout error:' + ex);
+    //     return false;
+    // }
   }
 
   getAvailableProducts(s,w,n,e) {
@@ -169,6 +261,10 @@ Meteor.publish('goabout.objects_latlong', function goaboutPublication(s, w, n, e
 
 Meteor.methods( {
   'goabout.testservice'() {
-    return GoAboutAPI.testWebservice();
+//    return GoAboutAPI.testWebservice();
+    return GoAboutAPI.checkLocations();
+  },
+  'goabout.checklocations'() {
+    return GoAboutAPI.checkLocations();
   },
 });
