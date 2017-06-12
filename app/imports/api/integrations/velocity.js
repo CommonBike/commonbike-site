@@ -6,28 +6,27 @@ if(Meteor.isServer) {
   class VelocityAPIClass {
     constructor() {
       var settings = getSettingsServerSide().velocity;
+      console.log('settings', settings);
       this.enabled = settings.enabled;
   	}
 
-    checkUserEmailAddress(emailaddress) {
+    checkUserEmailAddress(emailAddress) {
       try {
-        if(!this.enabled) {
-          console.log('velocity onboarding is disabled');
+        if( ! this.enabled) {
+          console.log('VeloCity onboarding is disabled');
           return false;
         }
 
         var SHA256 = require("crypto-js/sha256");
-        var url = gVelocityAPIURL + '/' + SHA256(emailaddress.toLowerCase()).toString().toLowerCase();
+        var url = gVelocityAPIURL + '/' + SHA256(emailAddress.toLowerCase()).toString().toLowerCase();
 
         console.log('validating @ ' + url + '');
 
-        var response = HTTP.get(url,
-          {
-            "headers": {
-                      "token": getSettingsServerSide().velocity.token
-                    }
+        var response = HTTP.get(url, {
+          "headers": {
+            "token": getSettingsServerSide().velocity.token
           }
-        );
+        });
 
         if(response.statusCode==200) {
           content = JSON.parse(response.content);

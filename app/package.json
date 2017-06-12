@@ -8,7 +8,7 @@
   "dependencies": {
     "bcrypt": "^0.8.7",
     "bluebird": "^3.5.0",
-    "body-parser": "^1.17.1",
+    "body-parser": "^1.17.2",
     "bson-ext": "^1.0.5",
     "bufferutil": "^1.2.1",
     "connect": "^3.6.1",
@@ -34,7 +34,7 @@
     "react-tap-event-plugin": "^1.0.0",
     "soap": "git+ssh://git@github.com/mosbuma/node-soap.git",
     "swipe-js-iso": "^2.0.3",
-    "twilio": "^3.0.0",
+    "twilio": "^3.3.0",
     "utf-8-validate": "^1.2.1"
   }
 }

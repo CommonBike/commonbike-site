@@ -32,7 +32,7 @@ class LoginForm extends Component {
     }, function(err){
       if(err) {
         let msg = err.reason;
-        if(err.error == 403) {
+        if(err.error == 403 && err.message != 'User validation failed [403]') {
           msg += ' Great that you did join CommonBike! You will receive an email notification soon.';
         }
 
