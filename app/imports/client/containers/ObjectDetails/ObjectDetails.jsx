@@ -23,6 +23,7 @@ class ObjectDetails extends Component {
   render() {
     return (
       <ObjectDetailsComponent
+        currentUser={this.props.currentUser}
         location={this.props.location}
         object={this.props.object}
         checkedIn={this.props.checkedIn}
@@ -57,6 +58,7 @@ export default createContainer((props) => {
 
   // Return variables for use in this component
   return {
+    currentUser: Meteor.user(),
     object: object,
     location: object ? Locations.find({_id: object.locationId}).fetch()[0] : {}
   };

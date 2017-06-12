@@ -49,7 +49,11 @@ class ObjectDetails extends Component {
 
     var lockType = this.props.object.lock.type;
 
-    if(lockType=='open-bikelocker')
+    // If not logged in: refer to login page
+    if( ! this.props.currentUser)
+      return <Button onClick={RedirectTo.bind(this, '/login?redirectTo=/bike/details/'+this.props.object._id)}>Log in om te reserveren</Button>
+
+    else if(lockType=='open-bikelocker')
       return <CheckInOutProcessOpenBikelocker
           object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
 
@@ -103,15 +107,16 @@ class ObjectDetails extends Component {
 var s = StyleProvider.getInstance().checkInOutProcess;
 
 ObjectDetails.propTypes = {
-  object: PropTypes.object,
-  location: PropTypes.object,
+  currentUser: PropTypes.object,
   isEditable: PropTypes.any,
+  location: PropTypes.object,
+  object: PropTypes.object,
 };
 
 ObjectDetails.defaultProps = {
-  object: {},
+  isEditable: false,
   location: {},
-  isEditable: false
+  object: {},
 }
 
 export default ObjectDetails

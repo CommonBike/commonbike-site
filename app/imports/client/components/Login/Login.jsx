@@ -21,7 +21,7 @@ class Login extends Component {
    * GitHub: https://github.com/settings/applications/437650
    */
 
-  onError(err) {
+  loginCallback(err) {
     if(err) {
       console.log(err);
       alert(err.message);
@@ -30,10 +30,10 @@ class Login extends Component {
 
   logout() { Meteor.logout() }
 
-  loginWithGoogle() { Meteor.loginWithGoogle({ requestPermissions: ['email'] }, this.onError) }
-  loginWithGithub() { Meteor.loginWithGithub({ requestPermissions: ['email'] }), this.onError }
-  loginWithTwitter() { Meteor.loginWithTwitter({}, this.onError) }
-  loginWithFacebook() { Meteor.loginWithFacebook({ requestPermissions: ['public_profile'] }, this.onError) }
+  loginWithGoogle() { Meteor.loginWithGoogle({ requestPermissions: ['email'] }, this.loginCallback.bind(this)) }
+  loginWithGithub() { Meteor.loginWithGithub({ requestPermissions: ['email'] }), this.loginCallback.bind(this) }
+  loginWithTwitter() { Meteor.loginWithTwitter({}, this.loginCallback.bind(this)) }
+  loginWithFacebook() { Meteor.loginWithFacebook({ requestPermissions: ['public_profile'] }, this.loginCallback.bind(this)) }
 
   renderIntro() {
     return (
@@ -63,7 +63,7 @@ class Login extends Component {
         </p>
 
         <div style={{textAlign: 'center'}}>
-          <LoginForm />
+          <LoginForm loginCallback={this.loginCallback.bind(this)} />
         </div>
 
       </div>
@@ -94,7 +94,7 @@ class Login extends Component {
 
     return (
       <div style={s.base}>
-        {currentUser ? (active ? RedirectTo('/locations') : this.renderTeaser())
+        {currentUser ? (active ? RedirectTo(this.props.redirectTo ? this.props.redirectTo : '/locations') : this.renderTeaser())
                                 : this.renderIntro()}
 
       </div>
@@ -130,6 +130,10 @@ var s = {
     justifyContent: 'space-around',
     background: '#fff'
   }
+}
+
+Login.propTypes = {
+  redirectTo: PropTypes.string
 }
 
 export default createContainer((props) => {
