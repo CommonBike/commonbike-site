@@ -69,7 +69,7 @@ class LocationsMapComponent extends Component {
     map.on('moveend', this.mapChanged.bind(this));
     map.on('zoomend', this.mapChanged.bind(this));
 
-    this.props.mapChanged ? this.props.mapChanged(map.getBounds()) : null    
+    this.props.mapChanged ? this.props.mapChanged(map.getBounds()) : null
 
     // Now set the map view
     map.setView(this.props.startLocation, this.props.startZoom);
@@ -202,6 +202,7 @@ class LocationsMapComponent extends Component {
 
   mapChanged(e) {
     // Send changed trigger to parent
+    if(!this.state) return;
     if(!this.state.map) return;
 
     this.props.mapChanged ? this.props.mapChanged(this.state.map.getBounds()) : null
@@ -331,7 +332,7 @@ class LocationsMapComponent extends Component {
 
     return (
       <div id='mapid' style={Object.assign({}, s.base, {width: this.props.width, height: this.props.height, maxWidth: '100%'})}>
-        { Meteor.userId() ? <a style={s.avatar} onClick={() => RedirectTo('/profile')}><Avatar /></a> : <div /> }
+        { Meteor.userId() ? <a style={s.avatar} onClick={() => RedirectTo('/profile')}><Avatar /></a> : <a style={s.avatar} onClick={() => RedirectTo('/login')}><Avatar /></a> }
       </div>
     );
   }
