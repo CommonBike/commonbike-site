@@ -24,6 +24,13 @@ class LoginForm extends Component {
     });
   }
 
+  openLink() {
+    var link = "https://www.bikepassepartout.com";
+    var win = window.open(link);
+    win.focus();
+  }
+
+
   //+ signUpHandler :: Object -> void
   signUpHandler(userCredentials) {
     Accounts.createUser({
@@ -31,15 +38,18 @@ class LoginForm extends Component {
       password: userCredentials.password
     }, function(err){
       if(err) {
-        let msg = err.reason;
         if(err.error == 403 && err.message != 'User validation failed [403]') {
-          msg += ' Great that you did join CommonBike! You will receive an email notification soon.';
+          // goto
+          msg = '{ Please register with bikepasspartout first }.';
+          this.openlink();
+        } else {
+          let msg = err.reason;
         }
 
         alert(msg);
         console.log(err);
       }
-    });
+    }.bind(this));
 
     if(this.props.callback) {
       this.props.callback()

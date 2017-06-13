@@ -69,6 +69,8 @@ class LocationsMapComponent extends Component {
     map.on('moveend', this.mapChanged.bind(this));
     map.on('zoomend', this.mapChanged.bind(this));
 
+    this.props.mapChanged ? this.props.mapChanged(map.getBounds()) : null    
+
     // Now set the map view
     map.setView(this.props.startLocation, this.props.startZoom);
 
@@ -124,7 +126,7 @@ class LocationsMapComponent extends Component {
                                 // parkingButton: parkingButton,
                                 // parkingMarkersGroup: parkingMarkersGroup
 
-    this.mapChanged();
+    setTimeout(this.mapChanged,1000);
   }
 
   initializeMap() {
