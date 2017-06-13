@@ -90,38 +90,41 @@ class LocationsMapComponent extends Component {
     var trackingMarkersGroup = L.featureGroup().addTo(map);   // no tracking marker yet!
     this.toggleTrackUser()
 
-    var parkingstates = {
-      states: [
-        {
-          stateName: 'verborgen',
-          icon: '<img src="'+ s.images.veiligstallengrijs + '" style="width:32px;height:32px" />',
-          title: 'toon stallingen',
-          onClick: this.toggleParking.bind(this)
-        },
-        {
-          stateName: 'zichtbaar',
-          title: 'verberg stallingen',
-          icon: '<img src="'+ s.images.veiligstallen + '" style="width:32px;height:32px" />',
-          onClick: this.toggleParking.bind(this)
-        },
-      ]
-    };
+    // var parkingstates = {
+    //   states: [
+    //     {
+    //       stateName: 'verborgen',
+    //       icon: '<img src="'+ s.images.veiligstallengrijs + '" style="width:32px;height:32px" />',
+    //       title: 'toon stallingen',
+    //       onClick: this.toggleParking.bind(this)
+    //     },
+    //     {
+    //       stateName: 'zichtbaar',
+    //       title: 'verberg stallingen',
+    //       icon: '<img src="'+ s.images.veiligstallen + '" style="width:32px;height:32px" />',
+    //       onClick: this.toggleParking.bind(this)
+    //     },
+    //   ]
+    // };
+    //
+    // // Button is not added to map yet: only when enabled
+    // var parkingButton = L.easyButton(parkingstates).state(
+    //   this.state.showParkingMarkers ? 'zichtbaar' : 'verborgen'
+    // );
 
-    // Button is not added to map yet: only when enabled
-    var parkingButton = L.easyButton(parkingstates).state(
-      this.state.showParkingMarkers ? 'zichtbaar' : 'verborgen'
-    );
-
-    var parkingMarkersGroup = L.geoJSON(null , {
-      pointToLayer: this.parkingPointToLayer.bind(this), filter: this.parkingFilterLayers.bind(this)
-    }).addTo(map); // no tracking marker yet!
+    // var parkingMarkersGroup = L.geoJSON(null , {
+    //   pointToLayer: this.parkingPointToLayer.bind(this), filter: this.parkingFilterLayers.bind(this)
+    // }).addTo(map); // no tracking marker yet!
 
     this.setState(prevState => ({ map: map,
                                   trackingMarkersGroup: trackingMarkersGroup,
                                   locationMarkersGroup: locationMarkersGroup,
                                   objectMarkersGroup: objectMarkersGroup,
-                                  parkingButton: parkingButton,
-                                  parkingMarkersGroup: parkingMarkersGroup}));
+                                }));
+                                // parkingButton: parkingButton,
+                                // parkingMarkersGroup: parkingMarkersGroup
+
+    this.mapChanged();
   }
 
   initializeMap() {
@@ -198,13 +201,13 @@ class LocationsMapComponent extends Component {
   mapChanged(e) {
     // Send changed trigger to parent
     if(!this.state.map) return;
-    
+
     this.props.mapChanged ? this.props.mapChanged(this.state.map.getBounds()) : null
 
     // Show parking markers if the app demands it
-    if(this.state.showParkingMarkers) {
-      this.initializeParkingLayer();
-    }
+    // if(this.state.showParkingMarkers) {
+    //   this.initializeParkingLayer();
+    // }
   }
 
   // ----------------------------------------------------------------------------
@@ -265,53 +268,53 @@ class LocationsMapComponent extends Component {
   // ----------------------------------------------------------------------------
   // parking related functions
   // ----------------------------------------------------------------------------
-  clearParkingLayer() {
-    if(!this.state.parkingMarkersGroup) {
-      return;
-    }
-
-    this.state.parkingMarkersGroup.clearLayers();
-  }
-
-  initializeParkingLayer() {
-    if(this.props.settings) {
-      if(this.props.settings.veiligstallen.visible) {
-        this.state.parkingButton.addTo(this.state.map);
-      }
-    }
-
-    this.state.parkingMarkersGroup.clearLayers();
-
-    if( ! this.state.showParkingMarkers) {
-      return;
-    }
-
-    omnivore.kml('/files/Veiligstallen/veiligstallen.kml', null, this.state.parkingMarkersGroup).addTo(this.state.map);
-  }
-
-  toggleParking() {
-    this.setState(prevState => ({ showParkingMarkers: !prevState.showParkingMarkers}))
-    this.state.parkingButton.state(this.state.showParkingMarkers?'zichtbaar':'verborgen');
-    this.initializeParkingLayer();
-  }
-
-  parkingFilterLayers(feature, layer) {
-    var coords = feature.geometry.coordinates;
-    var newLatLng = [coords[1], coords[0]]
-
-    // only add visible items
-    return (this.state.map.getBounds().contains(newLatLng));
-  }
-
-  parkingPointToLayer(feature, latlng) {
-    var parkingIcon = new L.Icon({
-         iconSize: [24, 24],
-         iconAnchor: [24, 24],
-         popupAnchor:  [1, -12],
-         iconUrl: s.images.veiligstallen
-    });
-    return L.marker(latlng, {icon: parkingIcon});
-  }
+  // clearParkingLayer() {
+  //   if(!this.state.parkingMarkersGroup) {
+  //     return;
+  //   }
+  //
+  //   this.state.parkingMarkersGroup.clearLayers();
+  // }
+  //
+  // initializeParkingLayer() {
+  //   if(this.props.settings) {
+  //     if(this.props.settings.veiligstallen.visible) {
+  //       this.state.parkingButton.addTo(this.state.map);
+  //     }
+  //   }
+  //
+  //   this.state.parkingMarkersGroup.clearLayers();
+  //
+  //   if( ! this.state.showParkingMarkers) {
+  //     return;
+  //   }
+  //
+  //   omnivore.kml('/files/Veiligstallen/veiligstallen.kml', null, this.state.parkingMarkersGroup).addTo(this.state.map);
+  // }
+  //
+  // toggleParking() {
+  //   this.setState(prevState => ({ showParkingMarkers: !prevState.showParkingMarkers}))
+  //   this.state.parkingButton.state(this.state.showParkingMarkers?'zichtbaar':'verborgen');
+  //   this.initializeParkingLayer();
+  // }
+  //
+  // parkingFilterLayers(feature, layer) {
+  //   var coords = feature.geometry.coordinates;
+  //   var newLatLng = [coords[1], coords[0]]
+  //
+  //   // only add visible items
+  //   return (this.state.map.getBounds().contains(newLatLng));
+  // }
+  //
+  // parkingPointToLayer(feature, latlng) {
+  //   var parkingIcon = new L.Icon({
+  //        iconSize: [24, 24],
+  //        iconAnchor: [24, 24],
+  //        popupAnchor:  [1, -12],
+  //        iconUrl: s.images.veiligstallen
+  //   });
+  //   return L.marker(latlng, {icon: parkingIcon});
+  // }
 
   // ----------------------------------------------------------------------------
   // rendering
@@ -321,7 +324,7 @@ class LocationsMapComponent extends Component {
       this.initializeMap();
       this.initializeLocationsMarkers();
       this.initializeObjectsMarkers();
-      this.initializeParkingLayer();
+      // this.initializeParkingLayer();
     }
 
     return (
@@ -381,8 +384,9 @@ LocationsMapComponent.defaultProps = {
   width: '100vw',
   height: '50vh',
   clickItemHandler: '',
-  startLocation: [52.159685, 4.490405],
-  startZoom: 13
+//  startLocation: [52.159685, 4.490405], // Leiden
+  startLocation: [51.842122, 5.859506],   // Nijmegen
+  startZoom: 15
 }
 
 export default LocationsMap = createContainer((props) => {

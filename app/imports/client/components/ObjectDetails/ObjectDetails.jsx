@@ -16,6 +16,7 @@ import CheckInOutProcessAxaELock from '../CheckInOutProcess/CheckInOutProcessAxa
 import CheckInOutProcessOpenKeylocker from '../CheckInOutProcess/CheckInOutProcessOpenKeylocker';
 import CheckInOutProcessOpenBikelocker from '../CheckInOutProcess/CheckInOutProcessOpenBikelocker';
 import CheckInOutProcessSkopeiLock from '../CheckInOutProcess/CheckInOutProcessSkopeiLock';
+import CheckInOutProcessGoAboutLock from '../CheckInOutProcess/CheckInOutProcessGoAboutLock';
 import ManageApiKeys from '../ManageApiKeys/ManageApiKeys';
 
 class ObjectDetails extends Component {
@@ -67,6 +68,10 @@ class ObjectDetails extends Component {
 
     else if(lockType=='skopei-v1')
       return <CheckInOutProcessSkopeiLock
+          object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
+
+    else if(lockType=='goabout-v1')
+      return <CheckInOutProcessGoAboutLock
           object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
 
     else

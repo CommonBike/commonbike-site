@@ -15,7 +15,7 @@ import MapSummary from '/imports/client/MapSummary.jsx'
 class CommonBikeUI extends Component {
 
   onTestGoAbout() {
-    Meteor.call('goabout.testservice', (error, result) => {
+    Meteor.call('goabout.checklocations', (error, result) => {
       console.log(error || result)
     })
   }

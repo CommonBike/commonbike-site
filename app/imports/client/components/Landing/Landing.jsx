@@ -7,6 +7,7 @@ import { RedirectTo } from '/client/main'
 
 // Import components
 import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
+import VelocityLogo from '../VelocityLogo/VelocityLogo.jsx'
 import RaisedButton from '../Button/RaisedButton.jsx';
 
 class Landing extends Component {
@@ -15,7 +16,7 @@ class Landing extends Component {
     ReactDOM.findDOMNode(this.refs.base).style.display = 'flex';
   }
 
-  login() { 
+  login() {
     RedirectTo('/login')
   }
 
@@ -24,6 +25,7 @@ class Landing extends Component {
       <div style={s.base} ref="base">
 
         <CommonBikeLogo style={s.logo} />
+        <VelocityLogo style={s.logo2} />
 
         <StyleRoot>
           <p style={s.introText}>
@@ -63,11 +65,14 @@ var s = {
     minHeight: '568px',
   },
   logo: {
-    height: '100px'
+    height: '50px'
+  },
+  logo2: {
+    height: '220px'
   },
   introText: {
     maxWidth: '320px',
-    padding: '20px',
+    padding: '10px',
     margin: '0 auto',
     fontWeight: '500',
     fontSize: '1.45em',
