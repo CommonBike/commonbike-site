@@ -25,8 +25,9 @@ class LoginForm extends Component {
   }
 
   openLink() {
+    console.log("open new window")
     var link = "https://www.bikepassepartout.com";
-    var win = window.open(link);
+    var win = window.open(link, "_blank");
     win.focus();
   }
 
@@ -38,23 +39,28 @@ class LoginForm extends Component {
       password: userCredentials.password
     }, function(err){
       if(err) {
-        if(err.error == 403 && err.message != 'User validation failed [403]') {
-          // goto
-          msg = '{ Please register with bikepasspartout first }.';
-          this.openlink();
-        } else {
-          let msg = err.reason;
-        }
+        // if(err.error == 403 && err.message != 'User validation failed [403]') {
+        //   // goto
+        //   msg = '{ Please register with bikepasspartout first }.';
+        //   this.openlink();
+        // } else {
+        //   let msg = err.reason;
+        // }
 
+        msg = 'Please register with bikepasspartout first.';
         alert(msg);
-        console.log(err);
+
+        this.openLink();
+        // console.log(err);
       }
     }.bind(this));
 
     if(this.props.callback) {
       this.props.callback()
     }
+
   }
+
 
   render() {
     return (
