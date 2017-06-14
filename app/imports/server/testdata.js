@@ -42,6 +42,8 @@ var testLocations = [
             //   locktype: 'skopei-v1', locksettings: { elockid: '170178'}},
             { title: 'GoAbout Demo Bike', description: 'de GoAbout fiets met nummer xxxx', state: 'available',
               locktype: 'goabout-v1', locksettings: { elockid: '170178', code: 'asdfasdfasdfasdfasdf' }},
+            { title: 'OpenELock Demo Bike', description: 'de CommonBike Elock fiets met nummer xxxx', state: 'available',
+              locktype: 'open-elock', locksettings: { elockid: '0611', code: 'herewegonow' }},
             // { title: 'Batavus 1 (AXA)', description: 'Fietsnr. 1122', state: 'available',
             //   locktype: 'axa-elock', locksettings: { connectionname: 'AXA lock EFGGGHA1321', pincode: '00908'}},
             // { title: 'Batavus 2 (KeyLocker)', description: 'Fietsnr. 1134', state: 'available',
@@ -223,7 +225,7 @@ var createLock = function(locktype, locksettings,object) {
   var lockInfo = {};
 
   if(locktype!='axa-elock'&&locktype!='goabout-v1'&&locktype!='skopei-v1'&&locktype!='open-bikelocker'&&
-     locktype!='open-keylocker'&&locktype!='plainkey') {
+     locktype!='open-keylocker'&&locktype!='open-elock'&&locktype!='plainkey') {
       // assume plainkey for unknown keytypes
       locktype='plainkey';
   }
@@ -241,7 +243,7 @@ var createLock = function(locktype, locksettings,object) {
     lockInfo.settings = Object.assign({connectionname: 'AXA_HALLORONALD', pincode: '11111'}, locksettings);
   } else if(locktype=='skopei-v1') {
     lockInfo.settings = Object.assign({elockid: 'xxxxxx'}, locksettings);
-  } else if(locktype=='goabout-v1') {
+  } else if(locktype=='goabout-v1'||locktype=='open-elock') {
     lockInfo.settings = Object.assign({elockid: 'xxxxxx', code: 'asdfadsfadsfasdfasdfasdf'}, locksettings);
   }
 

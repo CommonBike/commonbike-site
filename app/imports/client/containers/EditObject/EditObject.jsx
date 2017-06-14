@@ -67,7 +67,7 @@ class EditObject extends Component {
             label: 'lock id'
         }
       ]
-    } else if(lockType=='goabout-v1') {
+    } else if(lockType=='goabout-v1'||lockType=='open-elock') {
       fields = [
         {
             fieldname: 'lock.settings.elockid',
@@ -100,15 +100,6 @@ class EditObject extends Component {
             label: 'Inbelnummer'
         }
       ]
-    } else if(lockType=='plainkey') {
-  		fields = [
-	  		{
-	          fieldname: 'lock.settings.keyid',
-	          fieldvalue: this.props.object.lock.settings.keyid,
-	          controltype: 'text',
-	          label: 'Sleutelnr.'
-	  		}
-	  	]
     } else {
     	// onbekend type slot
     }
@@ -238,7 +229,8 @@ class EditObject extends Component {
   	                  { _id: 'axa-elock', title: 'AXA e-lock'},
                       { _id: 'skopei-v1', title: 'Skopei e-lock'},
                       { _id: 'goabout-v1', title: 'GoAbout e-lock'},
-  	                  { _id: 'plainkey', title: 'sleutel'}];
+                      { _id: 'open-elock', title: 'CommonBike e-lock'},
+                    	{ _id: 'plainkey', title: 'sleutel'}];
   	var timeUnits = [ { _id: 'day', title: 'dag'},
   	                  { _id: 'halfday', title: 'dagdeel'},
   	                  { _id: 'hour', title: 'uur'}];

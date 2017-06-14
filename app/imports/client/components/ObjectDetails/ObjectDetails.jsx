@@ -15,6 +15,7 @@ import CheckInOutProcessPlainKey from '../CheckInOutProcess/CheckInOutProcessPla
 import CheckInOutProcessAxaELock from '../CheckInOutProcess/CheckInOutProcessAxaELock';
 import CheckInOutProcessOpenKeylocker from '../CheckInOutProcess/CheckInOutProcessOpenKeylocker';
 import CheckInOutProcessOpenBikelocker from '../CheckInOutProcess/CheckInOutProcessOpenBikelocker';
+import CheckInOutProcessOpenELock from '../CheckInOutProcess/CheckInOutProcessOpenELock';
 import CheckInOutProcessSkopeiLock from '../CheckInOutProcess/CheckInOutProcessSkopeiLock';
 import CheckInOutProcessGoAboutLock from '../CheckInOutProcess/CheckInOutProcessGoAboutLock';
 import ManageApiKeys from '../ManageApiKeys/ManageApiKeys';
@@ -56,6 +57,10 @@ class ObjectDetails extends Component {
 
     else if(lockType=='open-bikelocker')
       return <CheckInOutProcessOpenBikelocker
+          object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
+
+    else if(lockType=='open-elock')
+      return <CheckInOutProcessOpenELock
           object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
 
     else if(lockType=='open-keylocker')
