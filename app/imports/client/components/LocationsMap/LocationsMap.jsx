@@ -42,7 +42,7 @@ class LocationsMapComponent extends Component {
   componentDidMount() {
     // Init map
     let map = L.map('mapid', {
-      zoomControl: false// Hide zoom buttons
+      zoomControl: true// Hide zoom buttons
     });
 
     // Start geocoding
@@ -90,7 +90,7 @@ class LocationsMapComponent extends Component {
     }.bind(this));
 
     var trackingMarkersGroup = L.featureGroup().addTo(map);   // no tracking marker yet!
-    this.toggleTrackUser()
+    // this.toggleTrackUser()   // Velocity: Always show the initially set position, reposition when user clicks compass icon
 
     // var parkingstates = {
     //   states: [
@@ -161,15 +161,29 @@ class LocationsMapComponent extends Component {
 
       if(location.lat_lng) {
         // create custom icon
+        let imageUrl;
+        if(location.imageUrl&&location.imageUrl!='') {
+          imageUrl = location.imageUrl;
+        } else {
+          imageUrl = '/files/LocationDetails/location.png'
+        }
         var commonbikeIcon = L.icon({
-          iconUrl: location.imageUrl,
+          iconUrl: imageUrl,
           iconSize: [32, 32], // size of the icon
         });
 
         var marker = L.marker([location.lat_lng[0],location.lat_lng[1]] , {icon: commonbikeIcon, zIndexOffset: -1000}); // locationMarker
         marker.locationId = location._id;
         // markers.push(marker); // .bindPopup(location.title)
-        this.state.locationMarkersGroup.addLayer(marker);
+        try {
+          this.state.locationMarkersGroup.addLayer(marker);
+        } catch(ex) {
+          console.error(ex);
+          console.log('error for location ' + location.title + '/' + location.imageUrl)
+          console.log(JSON.stringify(location,0,2));
+        }
+      } else {
+        console.log('not lat_lng for ' + location.title)
       }
     }, this.props.locations);
 

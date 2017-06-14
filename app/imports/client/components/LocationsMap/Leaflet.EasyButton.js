@@ -171,12 +171,12 @@ L.Control.EasyButton = L.Control.extend({
 
     this.button = L.DomUtil.create(this.options.tagName, '');
 
-    // the next three if statements should be collapsed into the options 
+    // the next three if statements should be collapsed into the options
     // when it's time for breaking changes.
     if (this.tagName === 'button') {
         this.button.type = 'button';
     }
-    
+
     if (this.options.id ){
       this.button.id = this.options.id;
     }
@@ -302,7 +302,9 @@ L.Control.EasyButton = L.Control.extend({
 
   removeFrom: function (map) {
 
-    this._container.parentNode.removeChild(this._container);
+    if(this._container.parentNode) {
+      this._container.parentNode.removeChild(this._container);  
+    }
     this._map = null;
 
     return this;
