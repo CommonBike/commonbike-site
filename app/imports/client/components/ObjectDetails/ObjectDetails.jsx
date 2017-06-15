@@ -17,11 +17,21 @@ import CheckInOutProcessOpenKeylocker from '../CheckInOutProcess/CheckInOutProce
 import CheckInOutProcessOpenBikelocker from '../CheckInOutProcess/CheckInOutProcessOpenBikelocker';
 import CheckInOutProcessSkopeiLock from '../CheckInOutProcess/CheckInOutProcessSkopeiLock';
 import ManageApiKeys from '../ManageApiKeys/ManageApiKeys';
+import Balance from '/imports/client/components/Balance/Balance.jsx';
 
 class ObjectDetails extends Component {
 
   constructor(props) {
     super(props);
+  }
+
+  getBalance(item) {
+    if(item&&item.wallet) {
+       return (<Balance label="SALDO" address={item.wallet.address} providerurl="https://ropsten.infura.io/sCQUO1V3FOo" />);
+    } else {
+       console.log('no wallet!', item)
+       return (<div />);
+     }
   }
 
   renderCheckInOutProcess() {
@@ -92,6 +102,8 @@ class ObjectDetails extends Component {
         { this.props.isEditable?
           <ManageApiKeys keyOwnerId={this.props.object._id} keyType="object" />
           :null }
+
+        <div>{ this.getBalance( this.props.object ) }</div>
 
         { this.renderCheckInOutProcess() }
 

@@ -4,6 +4,7 @@ import { Objects } from '/imports/api/objects.js';
 import { Transactions } from '/imports/api/transactions.js';
 import '/imports/api/users.js';
 import { getUserDescription } from '/imports/api/users.js';
+import BikeCoin from '/server/api/BikeCoin.js';
 
 var testUsers = [
     {name:"admin",email:"admin@commonbike.com",
@@ -187,11 +188,19 @@ export const checkTestUsers = function() {
       if(hithere) {
       id = hithere._id;
     } else {
+      // assign new keypair to object
+      var keypair = BikeCoin.newKeypair();
+
       id = Accounts.createUser({
         email: userData.email,
         password: userData.password,
         profile: { name: userData.name,
-                   avatar: userData.avatar || GetRandomAvatar() }
+                   avatar: userData.avatar || GetRandomAvatar(),
+                   wallet: {
+                     address:keypair.address,
+                     privatekey:keypair.privatekey
+                   }
+        }
       });
 
       // // email verification
@@ -303,6 +312,14 @@ export const checkTestLocations = function() {
           description: 'tijdelijk gratis'
         };
 
+        // assign new keypair to object
+        var keypair = BikeCoin.newKeypair();
+
+        var walletinfo = {
+          address:keypair.address,
+          privatekey:keypair.privatekey
+        }
+
         var keyid = Objects.insert({
           locationId: locationId,
           title: bike.title,
@@ -313,7 +330,8 @@ export const checkTestLocations = function() {
                    timestamp: timestamp,
                    userDescription: '' },
           lock: lockinfo,
-          price: priceinfo
+          price: priceinfo,
+          wallet: walletinfo
         });
       }
     });

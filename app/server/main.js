@@ -7,6 +7,7 @@ import { Settings } from '/imports/api/settings.js';
 import '/imports/api/api-keys.js'
 import { Log } from '/imports/api/log.js'
 import '/imports/server/testdata.js'
+import BikeCoin from '/server/api/BikeCoin.js';
 
 Meteor.startup(() => {
 	// code to run on server at startup
@@ -15,30 +16,13 @@ Meteor.startup(() => {
 	if(false) {
 		var myObjects = Objects.find().fetch();
 		_.each(myObjects, function (objectData) {
-
-		    var timestamp =  new Date().valueOf();
-		    var length = 5;
-		    var base = Math.pow(10, length+1);
-		    var code = Math.floor(base + Math.random() * base)
-		    var keycode = code.toString().substring(1, length+1);
-
-			if(!objectData.state) {
-			    Objects.update(objectData._id, {$set:{
-			      state: {state: 'available',
-	              		  userId: null,
-	                      timestamp: timestamp}
-			    }});
-			}
-
-			if(!objectData.lock) {
-			    Objects.update(objectData._id, {$set:{
-			      lock: {type: 'plainkey',
-			             settings: {keyid: keycode }
-			         }
-			    }});
+			if(!objectData.wallet || (object.wallet.address=='' && object.wallet.privatekey=='')) {
+					var keypair = BikeCoin.newKeypair();
+					console.log('add wallet to object' + objectData.title);
+			    Objects.update(objectData._id, {$set : { 'wallet.address' : keypair.address,
+				                                          'wallet.privatekey' :  keypair.privatekey	}});
 			}
 		});
-
 	}
 
 
@@ -65,12 +49,7 @@ Meteor.startup(() => {
 		if(user.profile && user.profile.wallet &&
 		   user.profile.wallet.address=='' && user.profile.wallet.privatekey=='') {
 
-			console.log('creating new keypair for user ' + user.name);
-
-		  var BikeCoin = require('/server/api/BikeCoin.js');
-
 			var keypair = BikeCoin.newKeypair();
-
 			Meteor.users.update(user._id, {$set : { 'profile.wallet.address' : keypair.address,
 		                                          'profile.wallet.privatekey' :  keypair.privatekey	}});
 		}

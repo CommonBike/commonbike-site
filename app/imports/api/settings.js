@@ -284,7 +284,7 @@ if (Meteor.isServer) {
 					Settings.update(settings._id, settings, {validate: false});
 				}
 
-				if(settings.bikecoin.wallet.address=='' && settings.bikecoin.wallet.address=='') {
+				if(settings.bikecoin.wallet.address=='' && settings.bikecoin.wallet.privatekey=='') {
 					var BikeCoin = require('/server/api/BikeCoin.js');
 
 					var keypair = BikeCoin.newKeypair();
