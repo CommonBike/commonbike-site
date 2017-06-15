@@ -43,6 +43,12 @@ export default class BikeCoin {
           BikeCoin.contract = contract
 
           // TODO:
+          // var settingsId = Settings.findOne()._id;
+          // var data = { 'bikecoin.token_address': contract.address, // (will be available after mining!)
+          //              'bikecoin.token_abi': abi }
+          //
+          // Meteor.call('settings.update', settings._id, data);
+
           //    settings.bikecoin.token_address = contract.address (will be available after mining!)
           //    settings.bikecoin.token_abi = abi
 
