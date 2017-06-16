@@ -377,8 +377,9 @@ if (Meteor.isServer) {
 						enabled:true,
 						lat_lng: [999,999]
 				  },
-          {
-					onboarding: { enabled:false },
+					onboarding: {
+						enabled:false
+					},
 					bikecoin: {
 						enabled:false,
 						provider_url: '',

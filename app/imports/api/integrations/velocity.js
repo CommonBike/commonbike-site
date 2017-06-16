@@ -5,9 +5,9 @@ if(Meteor.isServer) {
 
   class VelocityAPIClass {
     constructor() {
-      var settings = getSettingsServerSide().velocity;
-      console.log('settings', settings);
-      this.enabled = settings.enabled;
+      // var settings = getSettingsServerSide().velocity;
+      // console.log('settings', settings);
+      this.enabled = false ; //settings.enabled;
   	}
 
     checkUserEmailAddress(emailAddress) {
