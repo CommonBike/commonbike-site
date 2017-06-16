@@ -1,9 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base'
 
+import { Settings } from '/imports/api/settings.js';
+import '/imports/api/transactions.js';
 import '/imports/api/users.js'
-import { Objects } from '/imports/api/objects.js'; 
-import { Settings } from '/imports/api/settings.js'; 
+import { Locations, toGeoJSONPoint, Address2GeoJSONPoint } from '/imports/api/locations.js';
+import { Objects } from '/imports/api/objects.js';
+import '/imports/api/api-keys.js'
+import { Log } from '/imports/api/log.js'
+import '/imports/server/testdata.js'
+import '/imports/api/databasetools.js';
+import '/imports/api/integrations/goabout.js';
+import '/imports/api/integrations/velocity.js';
 
 Meteor.startup(() => {
 	// code to run on server at startup
@@ -12,7 +20,7 @@ Meteor.startup(() => {
 	if(false) {
 		var myObjects = Objects.find().fetch();
 		_.each(myObjects, function (objectData) {
-		    
+
 		    var timestamp =  new Date().valueOf();
 		    var length = 5;
 		    var base = Math.pow(10, length+1);
@@ -47,30 +55,41 @@ Meteor.startup(() => {
 			if(!user.profile || !user.profile.avatar) {
 				Meteor.users.update(user._id, {$set : { 'profile.avatar' : '' }});
 			}
-		});	
+		});
 	}
 
-	// move price from hardcoded to object
-	if(false) {
-		var newprice = { 
-			value: '0',
-			currency: 'euro',
-			timeunit: 'day',
-			description: 'tijdelijk gratis' 
-		};
+	if(true) {
+		var myLocations = Locations.find().fetch();
+		_.each(myLocations, function (locationData) {
+			if(locationData.coordinates) {
+		    Locations.update(locationData._id, {$unset:{ coordinates: "" }});
+			}
+			if(locationData.point) {
+		    Locations.update(locationData._id, {$unset:{ point: "" }});
+			}
+			if(locationData.loc) {
+		    Locations.update(locationData._id, {$unset:{ loc: "" }});
+			}
+			if(!locationData.locationType) {
+				locationData.locationType = 'commonbike'
+				locationData.externalId = ''
 
-		var myObjects = Objects.find().fetch();
+				Locations.update(locationData._id, locationData, {validate: false});
+			}
+		});
 		_.each(myObjects, function (objectData) {
-			if(!objectData.price||!!objectData.price.value||
-			   !objectData.price.currency||!!objectData.price.timeunit||
-			   !objectData.description ) {
-			    Objects.update(objectData._id, {$set:{ price: newprice }});
-
-			    var desc = 'price set to ' + newprice.description + ' for ' + objectData.title;
-				Meteor.call('transactions.addTransaction', 'SET_PRICE', desc, null, null, objectData._id);
+			if(objectData.coordinates) {
+		    Objects.update(objectData._id, {$unset:{ coordinates: "" }});
+			}
+			if(objectData.point) {
+		    Objects.update(objectData._id, {$unset:{ point: "" }});
+			}
+			if(objectData.loc) {
+		    Locations.update(objectData._id, {$unset:{ loc: "" }});
 			}
 		});
 	}
+
 });
 
 Meteor.methods( {

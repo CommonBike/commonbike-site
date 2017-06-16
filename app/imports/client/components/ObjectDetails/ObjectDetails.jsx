@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import R from 'ramda';
 import { RedirectTo } from '/client/main'
+import { StyleProvider } from '../../StyleProvider.js'
 
 // Import components
 import EditObject from '../../containers/EditObject/EditObject';
@@ -14,6 +15,10 @@ import CheckInOutProcessPlainKey from '../CheckInOutProcess/CheckInOutProcessPla
 import CheckInOutProcessAxaELock from '../CheckInOutProcess/CheckInOutProcessAxaELock';
 import CheckInOutProcessOpenKeylocker from '../CheckInOutProcess/CheckInOutProcessOpenKeylocker';
 import CheckInOutProcessOpenBikelocker from '../CheckInOutProcess/CheckInOutProcessOpenBikelocker';
+import CheckInOutProcessOpenELock from '../CheckInOutProcess/CheckInOutProcessOpenELock';
+import CheckInOutProcessSkopeiLock from '../CheckInOutProcess/CheckInOutProcessSkopeiLock';
+import CheckInOutProcessGoAboutLock from '../CheckInOutProcess/CheckInOutProcessGoAboutLock';
+import ManageApiKeys from '../ManageApiKeys/ManageApiKeys';
 
 class ObjectDetails extends Component {
 
@@ -24,22 +29,58 @@ class ObjectDetails extends Component {
   renderCheckInOutProcess() {
     if( ! this.props.object.lock ) return <div />;
 
+    var validUser = (Meteor.userId()==this.props.object.state.userId)||this.props.isEditable;
+
+    if(this.props.object.state.state=="inuse"&&!validUser) {
+      return (
+        <div style={s.base}>
+          <ul style={s.list}>
+            <li style={s.listitem,s.mediumFont}>IN GEBRUIK</li>
+          </ul>
+        </div>
+      );
+    } else if(this.props.object.state.state!="available"&&!validUser) {
+      return (
+        <div style={s.base}>
+          <ul style={s.list}>
+            <li style={s.listitem,s.mediumFont}>NIET BESCHIKBAAR</li>
+          </ul>
+        </div>
+      );
+    }
+
     var lockType = this.props.object.lock.type;
 
-    if(lockType=='open-bikelocker')
+    // If not logged in: refer to login page
+    if( ! this.props.currentUser)
+      return <Button onClick={RedirectTo.bind(this, '/login?redirectTo=/bike/details/'+this.props.object._id)}>Log in om te reserveren</Button>
+
+    else if(lockType=='open-bikelocker')
       return <CheckInOutProcessOpenBikelocker
           object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
 
+    else if(lockType=='open-elock')
+      return <CheckInOutProcessOpenELock
+          object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
+
     else if(lockType=='open-keylocker')
-      return <CheckInOutProcessOpenKeylocker 
+      return <CheckInOutProcessOpenKeylocker
           object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
-    
+
     else if(lockType=='axa-elock')
-      return <CheckInOutProcessAxaELock 
+      return <CheckInOutProcessAxaELock
           object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
-    
+
+    else if(lockType=='skopei-v1')
+      return <CheckInOutProcessSkopeiLock
+          object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
+
+    else if(lockType=='goabout-v1')
+      return <CheckInOutProcessGoAboutLock
+          object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
+
     else
-      return <CheckInOutProcessPlainKey 
+      return <CheckInOutProcessPlainKey
           object={this.props.object} isProvider={this.props.isEditable} locationId={this.props.location._id} />
   }
 
@@ -52,58 +93,40 @@ class ObjectDetails extends Component {
         </p>
 
         <center>
-          <MapSummary item={this.props.location} width={400} height={300}/>
+          <MapSummary item={this.props.location} width={400} height={120}/>
         </center>
 
         <ObjectBlock
           item={this.props.object} />
 
-        { this.props.isEditable? 
+        { this.props.isEditable?
           <EditObject objectId={this.props.object._id} />
           :null }
 
+        { this.props.isEditable?
+          <ManageApiKeys keyOwnerId={this.props.object._id} keyType="object" />
+          :null }
 
         { this.renderCheckInOutProcess() }
-        
+
       </div>
     );
   }
 }
 
-var s = {
-  base: {
-    fontSize: 'default',
-    lineHeight: 'default',
-    padding: '20px 20px 0 20px',
-    textAlign: 'center',
-    minHeight: 'calc(100vh - 74px)',
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'column'
-  },
-  intro: {
-    padding: '0px 5px 0px 70px',
-    margin: '0 auto',
-    maxWidth: '400px',
-    textAlign: 'left',
-    minHeight: '80px',
-    fontSize: '1.2em',
-    fontWeight: '500',
-    maxWidth: '300px',
-    background: 'url("/files/ObjectDetails/marker.svg") 0 0 / auto 60px no-repeat',
-  },
-}
+var s = StyleProvider.getInstance().checkInOutProcess;
 
 ObjectDetails.propTypes = {
-  object: PropTypes.object,
-  location: PropTypes.object,
+  currentUser: PropTypes.object,
   isEditable: PropTypes.any,
+  location: PropTypes.object,
+  object: PropTypes.object,
 };
 
 ObjectDetails.defaultProps = {
-  object: {},
+  isEditable: false,
   location: {},
-  isEditable: false
+  object: {},
 }
 
 export default ObjectDetails

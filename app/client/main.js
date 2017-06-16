@@ -6,7 +6,7 @@ import {render} from 'react-dom'
 import {BrowserRouter as Router, Switch, Route, withRouter} from 'react-router-dom'
 import Redirect from 'react-router/Redirect'
 
-import Settings from '/imports/api/settings.js'; 
+import Settings from '/imports/api/settings.js';
 
 import UserApp from '/imports/client/components/UserApp/UserApp.jsx'
 import Landing from '/imports/client/components/Landing/Landing.jsx'
@@ -16,24 +16,28 @@ import ContentPage from '/imports/client/components/ContentPage/ContentPage.jsx'
 import Login from '/imports/client/components/Login/Login.jsx'
 import CustomPage from '/imports/client/components/CustomPage/CustomPage.jsx'
 import Profile from '/imports/client/components/Profile/Profile.jsx'
-import LocationList from '/imports/client/containers/LocationList/LocationList.jsx'
+import LocationsOverview from '/imports/client/containers/LocationsOverview/LocationsOverview.jsx'
 import LocationDetails from '/imports/client/containers/LocationDetails/LocationDetails.jsx'
 import TransactionList from '/imports/client/containers/TransactionList/TransactionList.jsx'
 import AdminUsersList from '/imports/client/containers/AdminUsersList/AdminUsersList.jsx'
 import ObjectList from '/imports/client/containers/ObjectList/ObjectList.jsx'
-import LocationsMap from '/imports/client/components/LocationsMap/LocationsMap.jsx'
 import ObjectDetails from '/imports/client/containers/ObjectDetails/ObjectDetails.jsx'
 import CommonBikeUI from '/imports/client/commonbike-ui.jsx'
 import AdminTools from '/imports/client/components/AdminTools/AdminTools.jsx'
+import LogList from '/imports/client/containers/LogList/LogList.jsx'
 import NoMatch from '/imports/client/components/NoMatch/NoMatch.jsx'
 
 const UserAppLanding = () => (<UserApp showPageHeader={false} content={<Landing/>} />)
-const UserAppAbout = () => (<UserApp content={<ContentPage><About /></ContentPage>} />) 
-const UserAppJoin = () => (<UserApp content={<ContentPage><Join /></ContentPage>} />) 
-const UserAppLogin = () => (<UserApp content={<CustomPage><Login /></CustomPage>} />) // Login redirectTo={params.redirectTo}
+const UserAppAbout = () => (<UserApp content={<ContentPage><About /></ContentPage>} />)
+const UserAppJoin = () => (<UserApp content={<ContentPage><Join /></ContentPage>} />)
+const UserAppLogin = ({match}) => {
+  // TEMPORARY because I can't find the way to get query params via react-router:
+  var redirectTo = window.location.search.split('=')[1];
+  return (<UserApp content={<CustomPage><Login redirectTo={redirectTo} /></CustomPage>} />)
+}
 const UserAppProfile = () => (<UserApp content={<div><Profile isEditable="true" /></div>} />)
 
-const UserAppLocationList = () => (<UserApp showPageHeader={false} content={<div><LocationsMap /><LocationList /></div>} />)
+const UserAppLocationsOverview = () => (<UserApp showPageHeader={false} content={<LocationsOverview />} />)
 const UserAppLocationDetails = ({match}) => {
   return (
     <UserApp content={<LocationDetails locationId={match.params.locationId} />} />
@@ -47,6 +51,8 @@ const UserAppObjectList = () => (<UserApp content={<ObjectList showPrice={true} 
 const UserAppTransactionList = () => (<UserApp content={<TransactionList />} />)
 
 const AdminAppTransactionList = () => (<UserApp content={<TransactionList admin="true" />} />)
+
+const AdminAppLogList = () => (<UserApp content={<LogList admin="true" />} />)
 
 const UserAppRentalList = () => (<UserApp content={<ObjectList rentalsMode={true} showState={true} showRentalDetails={true} />} />)
 
@@ -67,7 +73,7 @@ const UserAppCustomPageObjectDetailsCheckin = ({match}) => {
   )
 }
 
-const UserAppAdminLocationList = () => (<UserApp content={<LocationList isEditable="true" />} />)
+const UserAppAdminLocationsOverview = () => (<UserApp content={<LocationsOverview isEditable="true" />} />)
 const UserAppAdminLocationDetails = ({match}) => {
   return (
     <UserApp content={<LocationDetails locationId={match.params.locationId} isEditable="true"/>} />
@@ -140,26 +146,28 @@ class AppRoutes extends React.Component {
       <Route exact path='/' component={UserAppLanding}/>
       <Route path='/about' component={UserAppAbout}/>
       <Route path='/join' component={UserAppJoin}/>
-      <Route path='/login' component={UserAppLogin}/> 
 
-      <RouteWhenLoggedIn path='/profile' component={UserAppProfile}/> 
-      <RouteWhenLoggedIn path='/locations' component={UserAppLocationList}/> 
-      <RouteWhenLoggedIn path='/map' component={UserAppLocationsMap}/> 
-      <RouteWhenLoggedIn path='/objects' component={UserAppObjectList}/> 
-      <RouteWhenLoggedIn path='/transactions' component={UserAppTransactionList}/> 
-      <RouteWhenLoggedIn path='/location/:locationId' component={UserAppLocationDetails}/> 
-      <RouteWhenLoggedIn path='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/> 
-      <RouteWhenLoggedIn path='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/> 
-      <RouteWhenLoggedIn path='/commonbike-ui' component={CommonBikeUI}/> 
-      
-      <RouteWhenLoggedIn path='/admin/locations' component={UserAppAdminLocationList}/> 
-      <RouteWhenLoggedIn path='/admin/rentals' component={UserAppRentalList}/> 
-      <RouteWhenLoggedIn path='/admin/location/:locationId' component={UserAppAdminLocationDetails}/> 
-      <RouteWhenLoggedIn path='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/> 
+      <Route path='/login' component={UserAppLogin}/>
+      <Route path='/locations' component={UserAppLocationsOverview}/>
+      <Route path='/map' component={UserAppLocationsMap}/>
+      <Route path='/objects' component={UserAppObjectList}/>
+      <Route path='/location/:locationId' component={UserAppLocationDetails}/>
+      <Route path='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/>
 
-      <RouteWhenAdmin path='/admin/users' component={UserAppAdminAdminUsersList}/> 
-      <RouteWhenAdmin path='/admin/admintools' component={UserAppAdminAdminTools}/> 
-      <RouteWhenAdmin path='/admin/transactions' component={AdminAppTransactionList}/> 
+      <RouteWhenLoggedIn path='/profile' component={UserAppProfile}/>
+      <RouteWhenLoggedIn path='/transactions' component={UserAppTransactionList}/>
+      <RouteWhenLoggedIn path='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/>
+      <RouteWhenLoggedIn path='/commonbike-ui' component={CommonBikeUI}/>
+
+      <RouteWhenLoggedIn path='/admin/locations' component={UserAppAdminLocationsOverview}/>
+      <RouteWhenLoggedIn path='/admin/rentals' component={UserAppRentalList}/>
+      <RouteWhenLoggedIn path='/admin/location/:locationId' component={UserAppAdminLocationDetails}/>
+      <RouteWhenLoggedIn path='/admin/bike/details/:objectId' component={UserAppCustomAdminPageObjectDetails}/>
+
+      <RouteWhenAdmin path='/admin/users' component={UserAppAdminAdminUsersList}/>
+      <RouteWhenAdmin path='/admin/admintools' component={UserAppAdminAdminTools}/>
+      <RouteWhenAdmin path='/admin/transactions' component={AdminAppTransactionList}/>
+      <RouteWhenLoggedIn path='/admin/log' component={AdminAppLogList}/>
 
       <Route component={NoMatch}/>
      </Switch>
@@ -182,6 +190,6 @@ class App extends React.Component {
 //
 Meteor.startup(() => {
   Meteor.subscribe("settings");
-  
+
   render(<App/>, document.getElementById('root'))
 })

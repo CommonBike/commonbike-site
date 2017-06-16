@@ -6,7 +6,7 @@ import R from 'ramda';
 import { RedirectTo } from '/client/main'
 
 // Import models
-import { Locations } from '/imports/api/locations.js'; 
+import { Locations } from '/imports/api/locations.js';
 
 // Import components
 import Block from '../../components/Block/Block';
@@ -15,14 +15,14 @@ class LocationBlock extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.state = { title: props.item.title, imageUrl: props.item.imageUrl }
   }
-    
+
   //+handleChange :: Event -> StateChange
   handleChange(e) {
     this.state.title = e.target.value;
-    
+
     Meteor.call('locations.update', this.props.item._id, this.state);
   }
 

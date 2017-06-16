@@ -1,6 +1,6 @@
 export const StyleProvider = (function () {
     var instance;
- 
+
     return {
         getInstance: function () {
             if (!instance) {
@@ -16,8 +16,12 @@ var AllStyles = {
 	  base: {
 	    fontSize: 'default',
 	    lineHeight: 'default',
-	    padding: '20px 20px 0 20px',
+      padding: '20px 20px 0 20px',
 	    textAlign: 'center',
+      minHeight: 'calc(100vh - 74px)',
+      display: 'flex',
+      justifyContent: 'space-below',
+      flexDirection: 'column'
 	  },
 	  button: {
 	    display: 'block'
@@ -37,7 +41,11 @@ var AllStyles = {
 	    fontWeight: '500',
 	    listStyle: 'none',
 	  },
-	  largerFont: {
+    mediumFont: {
+	    fontSize: '2em',
+	    fontWeight: '1000',
+	  },
+	  largeFont: {
 	    fontSize: '4em',
 	    fontWeight: '1000',
 	  },
@@ -69,6 +77,17 @@ var AllStyles = {
 	    minHeight: '80px',
 	    fontSize: '1.2em',
 	    fontWeight: 500,
-	  }
+	  },
+    intro: {
+      padding: '0px 5px 0px 70px',
+      margin: '0 auto',
+      maxWidth: '400px',
+      textAlign: 'left',
+      minHeight: '80px',
+      fontSize: '1.2em',
+      fontWeight: '500',
+      maxWidth: '300px',
+      background: 'url("/files/ObjectDetails/marker.svg") 0 0 / auto 30px no-repeat',
+    },
 	}
 }

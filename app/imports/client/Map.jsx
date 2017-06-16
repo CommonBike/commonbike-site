@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { createContainer } from 'meteor/react-meteor-data';
 import L from 'leaflet'
-import { Settings } from '/imports/api/settings.js'; 
+import { Settings } from '/imports/api/settings.js';
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/watchPosition
 // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition
@@ -57,7 +57,7 @@ class Map extends Component {
     L.tileLayer(url, {
       attribution: '<a href="http://mapbox.com">Mapbox</a> | <a href="http://openstreetmap.org">OpenStreetMap</a>',
       maxZoom: 22,
-      id: this.props.style,  
+      id: this.props.style,
       accessToken: this.props.accessToken
     }).addTo(myMap)
 
@@ -84,12 +84,12 @@ class Map extends Component {
     } else { // !useCustomMarkerIcon
       marker = L.marker(item.lat_lng).addTo(myMap)
     }
-    
+
     marker.bindPopup(`<b>${item.title}</b><br>${item.address}`).openPopup()
 
     myMarker = L.circleMarker(myLatLng).addTo(myMap)
     myMarker.bindPopup(`<b>You are here</b>`)
-  
+
     this.watchMyLatLng()
   }
 

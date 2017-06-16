@@ -5,8 +5,9 @@ import { RedirectTo } from '/client/main'
 
 // Import components
 import RaisedButton from '../Button/RaisedButton';
-import '../../../api/users.js'; 
+import '../../../api/users.js';
 import EditSettings from '/imports/client/containers/EditSettings/EditSettings.jsx'
+import ManageApiKeys from '../ManageApiKeys/ManageApiKeys';
 
 class Profile extends Component {
   constructor(props) {
@@ -14,31 +15,31 @@ class Profile extends Component {
   }
 
   reservations() {
-    RedirectTo('/objects') 
+    RedirectTo('/objects')
   }
 
-  locations() { 
-    RedirectTo('/admin/locations') 
+  locations() {
+    RedirectTo('/admin/locations')
   }
 
-  rentals() { 
-    RedirectTo('/admin/rentals') 
+  rentals() {
+    RedirectTo('/admin/rentals')
   }
 
-  transactions() { 
-    RedirectTo('/transactions') 
+  transactions() {
+    RedirectTo('/transactions')
   }
 
   manageusers() {
-    RedirectTo('/admin/users') 
+    RedirectTo('/admin/users')
   }
 
   admintools() {
-    RedirectTo('/admin/admintools') 
+    RedirectTo('/admin/admintools')
   }
 
-  logout() { 
-    Meteor.logout(); 
+  logout() {
+    Meteor.logout();
     RedirectTo('/')
   }
 
@@ -64,7 +65,7 @@ class Profile extends Component {
 
   getMyLocationsButton() {
     // bestaande providers en gebruikers met rechten kunnen locaties beheren
-    var show = this.props.currentUser && this.props.currentUser.profile && 
+    var show = this.props.currentUser && this.props.currentUser.profile &&
                         (this.props.currentUser.profile.provider_locations ||
                          this.props.currentUser.profile.cancreatelocations)
 
@@ -80,7 +81,7 @@ class Profile extends Component {
   }
 
   getMyRentalsButton() {
-    var show = this.props.currentUser && this.props.currentUser.profile && 
+    var show = this.props.currentUser && this.props.currentUser.profile &&
                (this.props.currentUser.profile.provider_locations ||
                 this.props.currentUser.profile.cancreatelocations)
 
@@ -137,13 +138,17 @@ class Profile extends Component {
             { this.getUserPersonalia() }
           </p>
 
-          <RaisedButton onClick={this.reservations.bind(this)}>MIJN RESERVERINGEN</RaisedButton>
+          <RaisedButton onClick={() => RedirectTo('/locations')}>ZOEK</RaisedButton>
 
-          <RaisedButton onClick={this.transactions.bind(this)}>MIJN GESCHIEDENIS</RaisedButton>
+          <RaisedButton onClick={this.reservations.bind(this)}>FIETS</RaisedButton>
+
+          <RaisedButton onClick={this.transactions.bind(this)}>GESCHIEDENIS</RaisedButton>
 
           { this.getMyLocationsButton() }
 
           { this.getMyRentalsButton() }
+
+          {/* }<ManageApiKeys keyOwnerId={Meteor.userId()} keyType="user" /> */}
 
           { this.getManageUsersButton() }
 

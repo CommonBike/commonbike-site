@@ -86,22 +86,32 @@ if (Meteor.isServer) {
   	},
   	'transactions.changeStateForObject'(newstate, actiondescription, objectid, locationid) {
   		var userid = Meteor.userId();
-  	  var userdata = Meteor.users.findOne({_id:userid}, {emails:1});
-  	  var locationdata = Locations.findOne({_id: locationid}, {title: 1});
+      if(userid&&userid!=null) {
+        var userdata = Meteor.users.findOne({_id:userid}, {emails:1});
+        userDescription = userdata.emails[0].address;
+      } else {
+        userDescription = "anoniem";
+      }
+      if(locationid&&locationid!=null) {
+        var locationdata = Locations.findOne({_id: locationid}, {title: 1});
+        locationtitle = locationdata.title;
+      } else {
+        locationtitle = 'onbekend';
+      }
       var objectdata = Objects.findOne({_id: objectid}, {title: 1});
 
-  		var description = "gebruiker \'" + userdata.emails[0].address + '\' heeft ' + actiondescription + ' op locatie \'' + locationdata.title + '\'';
+  		var description = "gebruiker \'" + userDescription + '\' heeft ' + actiondescription + ' op locatie \'' + locationtitle + '\'';
 
   		Meteor.call('transactions.addTransaction', 'SET_STATE_' + newstate.toUpperCase(), description, userid, locationid, objectid, null)
 
       if(newstate=='reserved') {
-        Integrations.slack.sendNotification('Fiets '+ objectdata.title + ' is gereserveerd bij ' + locationdata.title);
+        Integrations.slack.sendNotification('Fiets '+ objectdata.title + ' is gereserveerd bij ' + locationtitle);
       } else if(newstate=='inuse') {
-        Integrations.slack.sendNotification('Fiets '+ objectdata.title + ' is opgehaald bij ' + locationdata.title);
+        Integrations.slack.sendNotification('Fiets '+ objectdata.title + ' is opgehaald bij ' + locationtitle);
       } else if(newstate=='available') {
-        Integrations.slack.sendNotification('Fiets '+ objectdata.title + ' is teruggezet bij ' + locationdata.title);
+        Integrations.slack.sendNotification('Fiets '+ objectdata.title + ' is teruggezet bij ' + locationtitle);
       } else if(newstate=='outoforder') {
-        Integrations.slack.sendNotification('Fiets '+ objectdata.title + ' is buiten gebruik bij ' + locationdata.title);
+        Integrations.slack.sendNotification('Fiets '+ objectdata.title + ' is buiten gebruik bij ' + locationtitle);
       }
   	}     
   })
