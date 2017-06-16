@@ -118,7 +118,8 @@ class SkopeiAPIClass {
 
 		// context contains all info that is required for processing in the callback
 		var context = {
-			objectId: objectId
+			objectId: objectId,
+      ElockID : ElockID
 		}
 
     // Ask the API to do a reservation
@@ -148,6 +149,8 @@ class SkopeiAPIClass {
 		  return false;
 		}))
 
+    // this.getLockInformation(ElockID, args.DateStart, args.DateEnd);
+
 	  return true;
 	}
 
@@ -162,6 +165,8 @@ class SkopeiAPIClass {
 	  	Meteor.call('log.write', `No object or unable to use skopei driver for non skopei object`);
 	  	return false;
 	  }
+
+
 
 		rentalInfo = object.state.rentalInfo;
     Meteor.call('log.write', 'endRentBike', rentalInfo);
@@ -206,6 +211,22 @@ class SkopeiAPIClass {
 
     return true;
 	}
+
+  getLockInformation(ElockID,dateStartISO, dateEndISO) {
+			// var args = { Reservation: {ExternalID: commonbikeReservationID, DateStart: dateStartISO, DateEnd: dateEndISO},
+			//              Reservationitems : { 'Vehicle':[{ ReservationItemData: {ElockID: ElockID, ExternalID: commonbikeReservationID, Code: Code}}] }}; // { }
+			var args = { Lock: {ElockID: ElockID, PeriodFrom: dateStartISO, PeriodTill: dateEndISO}}; // { }
+			this.addAuthentication(args);
+	    this.SoapClient.getLockInformation(args, Meteor.bindEnvironment(function(err, result) {
+	    		if(err) {
+            Meteor.call('log.write', 'getLockInformation: SOAP error', err);
+	    		} else {
+            Meteor.call('log.write', 'getLockInformation: ', JSON.stringify(result, null, 4));
+	    		}
+	    }.bind(this)));
+
+      return 'OK'
+  }
 
 	getReservationData(objectId) {
     if(!getSettingsServerSide().skopei.enabled) {
@@ -264,6 +285,23 @@ class SkopeiAPIClass {
 	}
 }
 
+function log_line(line, append=true, filename="./soaplog.txt") {
+	// var fs = require('fs');
+  console.log(line);
+	// if(append) {
+	// 	fs.appendFile(filename, line + "\n", function(err) {
+	// 	    if(err) {
+	// 	        return console.log(err);
+	// 	    }
+	// 	});
+	// } else {
+	// 	fs.writeFile(filename, line + "\n", function(err) {
+	// 	    if(err) {
+	// 	        return console.log(err);
+	// 	    }
+	// 	});
+	// }
+}
 
 export const SkopeiAPI = new SkopeiAPIClass()
 
