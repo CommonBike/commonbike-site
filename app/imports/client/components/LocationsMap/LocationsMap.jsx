@@ -135,6 +135,11 @@ class LocationsMapComponent extends Component {
 
     var settings = this.props.settings;
 
+    if (settings.mapbox.userId.startsWith('<')) {
+      console.warn(settings.mapbox.userId)
+      return
+    }
+
     // https://www.mapbox.com/api-documentation/#retrieve-a-static-map-image
     // const url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
     const url = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'
