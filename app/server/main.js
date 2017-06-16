@@ -12,9 +12,8 @@ import '/imports/server/testdata.js'
 import '/imports/api/databasetools.js';
 import '/imports/api/integrations/goabout.js';
 import '/imports/api/integrations/velocity.js';
+import '/imports/api/paymentservices/mollie.js';
 import BikeCoin from '/server/api/BikeCoin.js';
-import PaymentService from '/server/paymentservices/mollie.js';
-PaymentService()
 
 
 Meteor.startup(() => {
