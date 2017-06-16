@@ -13,6 +13,9 @@ import '/imports/api/databasetools.js';
 import '/imports/api/integrations/goabout.js';
 import '/imports/api/integrations/velocity.js';
 import BikeCoin from '/server/api/BikeCoin.js';
+import PaymentService from '/server/paymentservices/mollie.js';
+PaymentService()
+
 
 Meteor.startup(() => {
 	// code to run on server at startup
@@ -70,7 +73,7 @@ Meteor.startup(() => {
 			if(locationData.loc) {
 		    Locations.update(locationData._id, {$unset:{ loc: "" }});
 			}
-      
+
 			if(!locationData.locationType) {
 				locationData.locationType = 'commonbike'
 				locationData.externalId = ''
@@ -78,7 +81,7 @@ Meteor.startup(() => {
 				Locations.update(locationData._id, locationData, {validate: false});
 			}
 		});
-    
+
 		_.each(myObjects, function (objectData) {
 			if(objectData.coordinates) {
 		    Objects.update(objectData._id, {$unset:{ coordinates: "" }});
