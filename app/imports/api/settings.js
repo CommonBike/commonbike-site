@@ -301,17 +301,6 @@ if (Meteor.isServer) {
 	    // Make sure this runs serverside only
 	    if ( ! Meteor.isServer) throw new Meteor.Error('not-authorized');
 
-			if(Meteor.users.find().fetch().length==0) {
-				Accounts.createUser({
-				                            username: 'commonbike-admin',
-				                            email : 'info@common.bike',
-				                            password : 'commonbike-admin-!!##',
-				                            profile  : {
-				                                active: true
-				                            }
-				    });
-			}
-
 	    // for now there is only one settings profile
 		  var settings = Settings.findOne({profileName: defaultProfileName});
 	    if( !settings) {
@@ -392,7 +381,7 @@ if (Meteor.isServer) {
 					},
 	    	}
 
-		    try {
+				try {
 		      check(settings, SettingsSchema);
 		    } catch(ex) {
 		      console.log('data for new settings does not match schema: ' + ex.message);
@@ -402,9 +391,21 @@ if (Meteor.isServer) {
 
 				Settings.update(settingsId, settings, {validate: false});
 
+				if(Meteor.users.find().fetch().length==0) {
+					Accounts.createUser({
+					                            username: 'commonbike-admin',
+					                            email : 'info@common.bike',
+					                            password : 'commonbike-admin-!!##',
+					                            profile  : {
+					                                active: true
+					                            }
+					    });
+				}
+
 		    var description = 'Standaard instellingen aangemaakt';
 		    Meteor.call('transactions.addTransaction', 'CREATE_SETTINGS', description, Meteor.userId(), null, null, settings);
 	    } else {
+				console.log('check existing settings')
 				if(!settings.openbikelocker) {
 					settings.openbikelocker = {
 						twilio_enabled:false,

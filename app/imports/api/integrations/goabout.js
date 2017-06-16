@@ -22,8 +22,12 @@ gGoAboutAuthUserURL = "https://auth.goabout.com/token";
 
 class GoAboutAPIClass {
   constructor() {
-    var settings = getSettingsServerSide().goabout;
-    this.enabled = settings.enabled;
+    if(getSettingsServerSide().goabout) {
+      this.enabled = getSettingsServerSide().goabout.enabled;
+    } else {
+      this.enabled = false;
+    }
+
     this.lastCheck = 0;
 	}
 
