@@ -311,7 +311,7 @@ if (Meteor.isServer) {
 	    		version: latestSettingsVersion,
 	    		mapbox: {
 					  style: 'mapbox.streets',
-					  userId: '<fill in mapbox access token here>'
+					  userId: '<mapbox access token has not been set in system settings>'
 					},
 	    		slack: {
   				  notify:false,
@@ -352,23 +352,10 @@ if (Meteor.isServer) {
 					  clientsecret: '',
 					  userbearertoken: ''
 					},
-					bikecoin : {
-					  enabled:false,
-					  provider_url : '',
-					  "token_address" : '',
-					  "token_abi" : [],
-					  "wallet" : {
-					              "address" : '',
-					              "privatekey" : ''
-					  }
-					},
 					gps: {
 						enabled:true,
 						lat_lng: [999,999]
 				  },
-					onboarding: {
-						enabled:false
-					},
 					bikecoin: {
 						enabled:false,
 						provider_url: '',
@@ -456,6 +443,15 @@ if (Meteor.isServer) {
 					console.log('adding bikecoin keypair to general settings')
 					Settings.update(settings._id, settings, {validate: false});
 				}
+
+				if(settings.mapbox.userId.substring(0,3)!='pk.') {
+					console.log('setting mapbox userId');
+				  settings.mapbox.userId='pk.eyJ1IjoiZXJpY3ZycCIsImEiOiJjaWhraHE5ajIwNmRqdGpqN2h2ZXhqMnRsIn0.1FBWllDyQ_nSlHFE2jMLDA';
+
+					console.log('setting provider URL to ropsten testnet');
+					Settings.update(settings._id, settings, {validate: false});
+				}
+
 
 				if(settings.bikecoin.provider_url=='') {
 				  settings.bikecoin.provider_url='https://ropsten.infura.io/sCQUO1V3FOoOUWGZBtig';
