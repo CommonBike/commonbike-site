@@ -41,7 +41,7 @@ if (Meteor.isServer) {
         return this.ready();
     }
 
-  	return Log.find( Roles.userIsInRole( this.userId, 'admin' ) ? {}: {false});
+  	return Roles.userIsInRole( this.userId, 'admin' ) ? Log.find() : [];
   });
 
 	Meteor.methods({
