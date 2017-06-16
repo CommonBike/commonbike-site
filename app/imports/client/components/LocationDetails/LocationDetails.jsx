@@ -6,6 +6,7 @@ import R from 'ramda';
 import EditLocation from '../../containers/EditLocation/EditLocation';
 import RaisedButton from '../Button/RaisedButton.jsx'
 import ObjectBlock from '../../containers/ObjectBlock/ObjectBlock';
+import ManageApiKeys from '../ManageApiKeys/ManageApiKeys';
 import ManageUserlist from '../ManageUserlist/ManageUserlist';
 import MapSummary from '../../MapSummary'
 
@@ -13,6 +14,8 @@ class LocationDetails extends Component {
 
   constructor(props) {
     super(props);
+
+    Meteor.call('goabout.checklocations');
   }
 
   newObject() {
@@ -32,17 +35,21 @@ class LocationDetails extends Component {
         </center>
 
 
-        { this.props.isEditable? 
+        { this.props.isEditable?
           <EditLocation locationId={this.props.location._id} />
           :null }
 
-        { this.props.isEditable? 
+        { this.props.isEditable?
           <ManageUserlist methodsBaseName='locationprovider'
                           parentId={this.props.locationId} />
           :null }
 
+        {/* this.props.isEditable?
+          <ManageApiKeys keyOwnerId={this.props.locationId} keyType="location" />
+          :null */}
+
         <RaisedButton style={Object.assign({display: 'none'}, this.props.isEditable && {display: 'block'})} onClick={this.newObject.bind(this)}>
-          Nieuwe fiets
+          NIEUWE FIETS
         </RaisedButton>
 
         { this.props.objects.length != 0 ?
@@ -56,7 +63,7 @@ class LocationDetails extends Component {
                               showRentalDetails={this.props.isEditable} />
                             , this.props.objects)
           :
-          <p style={s.paragraph}>GEEN FIETSEN BESCHIKBAAR</p> 
+          <p style={s.paragraph}>GEEN FIETSEN BESCHIKBAAR</p>
         }
 
 
@@ -80,7 +87,7 @@ var s = {
     minHeight: '80px',
     fontSize: '1.2em',
     fontWeight: '500',
-    background: 'url("/files/LocationDetails/marker.svg") 0 0 / auto 60px no-repeat',
+    background: 'url("/files/LocationDetails/marker.svg") 0 0 / auto 30px no-repeat',
   },
 
 }

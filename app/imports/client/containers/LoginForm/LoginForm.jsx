@@ -10,37 +10,57 @@ class LoginForm extends Component {
     super(props);
   }
 
-  //+ loginHandler :: Object -> void 
+  //+ loginHandler :: Object -> void
   loginHandler(userCredentials) {
     let self = this;
     Meteor.loginWithPassword(userCredentials.username, userCredentials.password, function(err) {
       if(err) {
         alert(err.reason)
       } else {
-        if (self.props.loginCallback)
+        if (self.props.loginCallback) {
           self.props.loginCallback()
+        }
       }
     });
   }
 
-  //+ signUpHandler :: Object -> void 
+  openLink() {
+    console.log("open new window")
+    var link = "https://www.bikepassepartout.com";
+    var win = window.open(link, "_blank");
+    win.focus();
+  }
+
+
+  //+ signUpHandler :: Object -> void
   signUpHandler(userCredentials) {
     Accounts.createUser({
       email: userCredentials.email,
       password: userCredentials.password
     }, function(err){
       if(err) {
-        let msg = err.reason;
-        if(err.error == 403) msg += ' Great that you did join CommonBike! You will receive an email notification soon.';
+        // if(err.error == 403 && err.message != 'User validation failed [403]') {
+        //   // goto
+        //   msg = '{ Please register with bikepasspartout first }.';
+        //   this.openlink();
+        // } else {
+        //   let msg = err.reason;
+        // }
 
+        msg = 'Please register with bikepasspartout first.';
         alert(msg);
-        console.log(err);
+
+        this.openLink();
+        // console.log(err);
       }
-    });
+    }.bind(this));
+
     if(this.props.callback) {
       this.props.callback()
     }
+
   }
+
 
   render() {
     return (

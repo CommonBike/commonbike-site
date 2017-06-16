@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo';
 
-import { Locations } from '/imports/api/locations.js'; 
-import { getUserDescription } from '/imports/api/users.js'; 
-import { Integrations } from '/imports/api/integrations.js'; 
+import { Locations } from '/imports/api/locations.js'; // , geoJSONPointSchema
+import { getUserDescription } from '/imports/api/users.js';
+import { Integrations } from '/imports/api/integrations.js';
 
 export const Objects = new Mongo.Collection('objects');
 
@@ -27,6 +27,11 @@ export const StateSchema = new SimpleSchema({
     type: String,
     label: "Description",
     defaultValue: ''
+  },
+  rentalInfo: {
+    type: Object,
+    blackbox: true,
+    optional: true
   },
 });
 
@@ -85,6 +90,16 @@ export const ObjectsSchema = new SimpleSchema({
   lock: {
     type: Object,
     blackbox: true
+  },
+  lat_lng: {
+    type:   Array,
+    label: "GPS location",
+    maxCount: 2
+  },
+  'lat_lng.$': {
+    type: Number,
+    decimal: true,
+    optional: true
   }
 });
 
@@ -94,7 +109,7 @@ if (Meteor.isServer) {
   });
 }
 
-var getStateChangeNeatDescription = (objectTitle, newState) => {
+export function getStateChangeNeatDescription(objectTitle, newState) {
   var description = ""
   if(newState=='reserved') {
     description = objectTitle + " gereserveerd"
@@ -103,7 +118,7 @@ var getStateChangeNeatDescription = (objectTitle, newState) => {
   } else if(newState=='available') {
     description = objectTitle + " teruggebracht"
   } else if(newState=='outoforder') {
-    description = objectTitle + " buiten bedrijf gesteld" 
+    description = objectTitle + " buiten bedrijf gesteld"
   } else {
     description = objectTitle + " in toestand '" + newState + "' gezet"
   }
@@ -111,7 +126,7 @@ var getStateChangeNeatDescription = (objectTitle, newState) => {
   return description;
 }
 
-export const createObject = (locationId, title) => { 
+export const createObject = (locationId, title) => {
   // set SimpleSchema.debug to true to get more info about schema errors
   SimpleSchema.debug = true
 
@@ -138,7 +153,8 @@ export const createObject = (locationId, title) => {
     price: {value: '0',
             currency: 'euro',
             timeunit: 'day',
-            description: 'tijdelijk gratis'}
+            description: 'tijdelijk gratis'},
+    	    lat_lng: [0, 0]
   }
 
   try {
@@ -180,7 +196,7 @@ Meteor.methods({
       description += ' op locatie ' + location.title;
       slackmessage += ' bij ' + location.title;
     }
-    Meteor.call('transactions.addTransaction', 'ADD_OBJECT', description, Meteor.userId(), object.locationId, objectId, data);    
+    Meteor.call('transactions.addTransaction', 'ADD_OBJECT', description, Meteor.userId(), object.locationId, objectId, data);
     Integrations.slack.sendNotification(slackmessage);
   },
   'objects.update'(objectId, data) {
@@ -189,8 +205,8 @@ Meteor.methods({
     if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
 
     // check(data, ObjectsSchema);
-	
-	  var strippedTitle = data.title.replace(/<.*?>/g, " ").replace(/\s+/g, " ").trim();	
+
+	  var strippedTitle = data.title.replace(/<.*?>/g, " ").replace(/\s+/g, " ").trim();
 
     Objects.update(objectId, {$set:{
       locationId: data.locationId,
@@ -207,7 +223,7 @@ Meteor.methods({
     //   var location = Locations.findOne(object.locationId, {title:1});
     //   description += ' op locatie ' + location.title;
     // }
-    // Meteor.call('transactions.addTransaction', 'CHANGE_OBJECT', description, Meteor.userId(), object.locationId, objectId, data);    
+    // Meteor.call('transactions.addTransaction', 'CHANGE_OBJECT', description, Meteor.userId(), object.locationId, objectId, data);
   },
   'objects.applychanges'(_id, changes) {
 
@@ -219,10 +235,10 @@ Meteor.methods({
       var object = Objects.findOne(_id);
 
       var logchanges = {};
-      Object.keys(changes).forEach((fieldname) => { 
+      Object.keys(changes).forEach((fieldname) => {
         // convert dot notation to actual value
         val = new Function('_', 'return _.' + fieldname)(object);
-        logchanges[fieldname] = { new: changes[fieldname], 
+        logchanges[fieldname] = { new: changes[fieldname],
                                   prev: val||'undefined' };
       });
 
@@ -230,7 +246,7 @@ Meteor.methods({
       Objects.update(_id, {$set : changes} );
 
       var description = getUserDescription(Meteor.user()) + ' heeft de instellingen van object ' + object.title + ' gewijzigd';
-      Meteor.call('transactions.addTransaction', 'CHANGESETTINGS_OBJECT', description, Meteor.userId(), null, _id, JSON.stringify(logchanges));    
+      Meteor.call('transactions.addTransaction', 'CHANGESETTINGS_OBJECT', description, Meteor.userId(), null, _id, JSON.stringify(logchanges));
     } else {
       console.log('unable to update object with id ' + _id);
       console.log(context);
@@ -248,26 +264,28 @@ Meteor.methods({
       description += ' op locatie ' + location.title;
       slackmessage += ' bij ' + location.title;
     }
-    Meteor.call('transactions.addTransaction', 'REMOVE_OBJECT', description, Meteor.userId(), object.locationId, object);    
+    Meteor.call('transactions.addTransaction', 'REMOVE_OBJECT', description, Meteor.userId(), object.locationId, object);
     Integrations.slack.sendNotification(slackmessage);
   },
-  'objects.setState'(objectId, userId, locationId, newState, userDescription){
+  'objects.setState'(objectId, userId, locationId, newState, userDescription, rentalInfo){
     // Make sure the user is logged in
     if (! Meteor.userId()) throw new Meteor.Error('not-authorized');
 
     // console.log('setstate userDescription: ' + userDescription)
+    // console.log('setstate object: ' + userId, Meteor.userId())
 
     var timestamp = new Date().valueOf();
     Objects.update({_id: objectId}, { $set: {
         'state.userId': userId,
         'state.state': newState,
         'state.timestamp': timestamp,
-        'state.userDescription': userDescription||'anonymous' }
+        'state.userDescription': userDescription||'anonymous',
+        'state.rentalInfo': rentalInfo||{} }
     });
 
     var object = Objects.findOne(objectId, {title:1});
     var description = getStateChangeNeatDescription(object.title, newState);
-    Meteor.call('transactions.changeStateForObject', newState, description, objectId, locationId);    
+    Meteor.call('transactions.changeStateForObject', newState, description, objectId, locationId);
 
     return;
   },

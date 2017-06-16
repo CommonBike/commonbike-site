@@ -69,10 +69,25 @@ class EditFields extends Component {
         );
 
         break;
+      case 'message':
+        return (
+          <div style={s.message} key={key}>{field.text}</div>
+        );
+
+        break;
       case 'text':
         return (
           <div style={s.editline} key={key}>
             <input style={s.control} type='INPUT' key={field.fieldname} name={field.fieldname} defaultValue={field.fieldvalue} onChange={this.onFieldChange.bind(this)} />
+            <label style={s.label} key={'label_'+field.fieldname} htmlFor={field.fieldname}>{field.label}</label>
+          </div>
+        );
+
+        break;
+      case 'text-readonly':
+        return (
+          <div style={s.editline} key={key}>
+            <input style={s.control} type='INPUT' key={field.fieldname} name={field.fieldname} defaultValue={field.fieldvalue} onChange={this.onFieldChange.bind(this)} readOnly />
             <label style={s.label} key={'label_'+field.fieldname} htmlFor={field.fieldname}>{field.label}</label>
           </div>
         );
@@ -110,7 +125,7 @@ class EditFields extends Component {
         );
 
         break;
-      default: 
+      default:
         return (<div />);
         break;
     }
@@ -121,7 +136,7 @@ class EditFields extends Component {
       <div style={s.box}>
         <div style={s.titelbox}>
           {this.props.title}
-          <img src={ s.images.details } style={s.editicon} alt="toggle" onClick={() => this.setState(prevState => ({ showDetails: ! prevState.showDetails}))} />
+          <img src={ s.images.details } style={s.editicon} alt="" onClick={() => this.setState(prevState => ({ showDetails: ! prevState.showDetails}))} />
         </div>
 
         { this.state.showDetails?
@@ -130,13 +145,13 @@ class EditFields extends Component {
             }
             <div style={s.confirmline}>
                 <div />
-                <img src={s.images.yes} style={s.icon} onClick={this.apply.bind(this)} hidden={Object.keys(this.state.changes).length==0}/>          
-                <img src={s.images.no} style={s.icon} onClick={this.reset.bind(this)} />          
+                <img src={s.images.yes} style={s.icon} onClick={this.apply.bind(this)} hidden={Object.keys(this.state.changes).length==0}/>
+                <img src={s.images.no} style={s.icon} onClick={this.reset.bind(this)} />
             </div>
           </form>
           :null
         }
-      </div> 
+      </div>
     );
   }
 }
@@ -202,6 +217,13 @@ var s = {
     padding: '5px',
     margin: '0 0 5px 0'
   },
+  message: {
+    textAlign: 'center',
+    fontSize: '14px',
+    width: '100%',
+    padding: '5px',
+    margin: '0 0 5px 0'
+  },
   label: {
     order: '1',
     width: '6em',
@@ -234,7 +256,7 @@ EditFields.propTypes = {
             React.PropTypes.shape({
               fieldname: React.PropTypes.string,
               fieldvalue: React.PropTypes.oneOfType([
-                React.PropTypes.string,   
+                React.PropTypes.string,
                 React.PropTypes.number,
                 React.PropTypes.bool]),
               controltype: React.PropTypes.string,
@@ -245,8 +267,8 @@ EditFields.propTypes = {
 };
 
 EditFields.defaultProps = {
-  title: 'Instellingen',
-  fields: [] 
+  title: 'INSTELLINGEN',
+  fields: []
 }
 
 export default EditFields

@@ -1,0 +1,887 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="522a472b-d22f-4878-a44a-fe4d0e192c27" activeEnvironment="Default" name="Skopei API" resourceRoot="" soapui-version="5.3.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="1a6f6e7a-2591-430d-bcc4-f94f85dc770f" wsaVersion="NONE" name="BasicHttpsBinding_Interface_ReservationV1" type="wsdl" bindingName="{Skopei/Reservation}BasicHttpsBinding_Interface_ReservationV1" soapVersion="1_1" anonymous="optional" definition="https://backend-tst.skopei.com/webservice/ReservationV1.svc?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://backend-tst.skopei.com/webservice/ReservationV1.svc?wsdl"><con:part><con:url>https://backend-tst.skopei.com/webservice/ReservationV1.svc?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="Webservice_ReservationV1" targetNamespace="Skopei/Reservation" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="Skopei/Reservation" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+  <wsp:Policy wsu:Id="BasicHttpsBinding_Interface_ReservationV1_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false"/>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256/>
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict/>
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="Skopei/Reservation/Imports">
+      <xsd:import schemaLocation="https://backend-tst.skopei.com/webservice/ReservationV1.svc?xsd=xsd0" namespace="Skopei/Reservation"/>
+      <xsd:import schemaLocation="https://backend-tst.skopei.com/webservice/ReservationV1.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/"/>
+      <xsd:import schemaLocation="https://backend-tst.skopei.com/webservice/ReservationV1.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/"/>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="Interface_ReservationV1_TestWebservice_InputMessage">
+    <wsdl:part name="parameters" element="tns:TestWebservice"/>
+  </wsdl:message>
+  <wsdl:message name="Interface_ReservationV1_TestWebservice_OutputMessage">
+    <wsdl:part name="parameters" element="tns:TestWebserviceResponse"/>
+  </wsdl:message>
+  <wsdl:message name="Interface_ReservationV1_checkVehicleReservation_InputMessage">
+    <wsdl:part name="parameters" element="tns:checkVehicleReservation"/>
+  </wsdl:message>
+  <wsdl:message name="Interface_ReservationV1_checkVehicleReservation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:checkVehicleReservationResponse"/>
+  </wsdl:message>
+  <wsdl:message name="Interface_ReservationV1_addVehicleReservation_InputMessage">
+    <wsdl:part name="parameters" element="tns:addVehicleReservation"/>
+  </wsdl:message>
+  <wsdl:message name="Interface_ReservationV1_addVehicleReservation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:addVehicleReservationResponse"/>
+  </wsdl:message>
+  <wsdl:message name="Interface_ReservationV1_cancelVehicleReservation_InputMessage">
+    <wsdl:part name="parameters" element="tns:cancelVehicleReservation"/>
+  </wsdl:message>
+  <wsdl:message name="Interface_ReservationV1_cancelVehicleReservation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:cancelVehicleReservationResponse"/>
+  </wsdl:message>
+  <wsdl:message name="Interface_ReservationV1_getLockInformation_InputMessage">
+    <wsdl:part name="parameters" element="tns:getLockInformation"/>
+  </wsdl:message>
+  <wsdl:message name="Interface_ReservationV1_getLockInformation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getLockInformationResponse"/>
+  </wsdl:message>
+  <wsdl:message name="Interface_ReservationV1_setLockInformation_InputMessage">
+    <wsdl:part name="parameters" element="tns:setLockInformation"/>
+  </wsdl:message>
+  <wsdl:message name="Interface_ReservationV1_setLockInformation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:setLockInformationResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="Interface_ReservationV1">
+    <wsdl:operation name="TestWebservice">
+      <wsdl:input wsaw:Action="Skopei/Reservation/Interface_ReservationV1/TestWebservice" message="tns:Interface_ReservationV1_TestWebservice_InputMessage"/>
+      <wsdl:output wsaw:Action="Skopei/Reservation/Interface_ReservationV1/TestWebserviceResponse" message="tns:Interface_ReservationV1_TestWebservice_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="checkVehicleReservation">
+      <wsdl:input wsaw:Action="Skopei/Reservation/Interface_ReservationV1/checkVehicleReservation" message="tns:Interface_ReservationV1_checkVehicleReservation_InputMessage"/>
+      <wsdl:output wsaw:Action="Skopei/Reservation/Interface_ReservationV1/checkVehicleReservationResponse" message="tns:Interface_ReservationV1_checkVehicleReservation_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="addVehicleReservation">
+      <wsdl:input wsaw:Action="Skopei/Reservation/Interface_ReservationV1/addVehicleReservation" message="tns:Interface_ReservationV1_addVehicleReservation_InputMessage"/>
+      <wsdl:output wsaw:Action="Skopei/Reservation/Interface_ReservationV1/addVehicleReservationResponse" message="tns:Interface_ReservationV1_addVehicleReservation_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="cancelVehicleReservation">
+      <wsdl:input wsaw:Action="Skopei/Reservation/Interface_ReservationV1/cancelVehicleReservation" message="tns:Interface_ReservationV1_cancelVehicleReservation_InputMessage"/>
+      <wsdl:output wsaw:Action="Skopei/Reservation/Interface_ReservationV1/cancelVehicleReservationResponse" message="tns:Interface_ReservationV1_cancelVehicleReservation_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="getLockInformation">
+      <wsdl:input wsaw:Action="Skopei/Reservation/Interface_ReservationV1/getLockInformation" message="tns:Interface_ReservationV1_getLockInformation_InputMessage"/>
+      <wsdl:output wsaw:Action="Skopei/Reservation/Interface_ReservationV1/getLockInformationResponse" message="tns:Interface_ReservationV1_getLockInformation_OutputMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="setLockInformation">
+      <wsdl:input wsaw:Action="Skopei/Reservation/Interface_ReservationV1/setLockInformation" message="tns:Interface_ReservationV1_setLockInformation_InputMessage"/>
+      <wsdl:output wsaw:Action="Skopei/Reservation/Interface_ReservationV1/setLockInformationResponse" message="tns:Interface_ReservationV1_setLockInformation_OutputMessage"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpsBinding_Interface_ReservationV1" type="tns:Interface_ReservationV1">
+    <wsp:PolicyReference URI="#BasicHttpsBinding_Interface_ReservationV1_policy"/>
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="TestWebservice">
+      <soap:operation soapAction="Skopei/Reservation/Interface_ReservationV1/TestWebservice" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="checkVehicleReservation">
+      <soap:operation soapAction="Skopei/Reservation/Interface_ReservationV1/checkVehicleReservation" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addVehicleReservation">
+      <soap:operation soapAction="Skopei/Reservation/Interface_ReservationV1/addVehicleReservation" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelVehicleReservation">
+      <soap:operation soapAction="Skopei/Reservation/Interface_ReservationV1/cancelVehicleReservation" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLockInformation">
+      <soap:operation soapAction="Skopei/Reservation/Interface_ReservationV1/getLockInformation" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setLockInformation">
+      <soap:operation soapAction="Skopei/Reservation/Interface_ReservationV1/setLockInformation" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Webservice_ReservationV1">
+    <wsdl:port name="BasicHttpsBinding_Interface_ReservationV1" binding="tns:BasicHttpsBinding_Interface_ReservationV1">
+      <soap:address location="https://backend-tst.skopei.com/webservice/ReservationV1.svc"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>https://backend-tst.skopei.com/webservice/ReservationV1.svc?xsd=xsd0</con:url><con:content><![CDATA[<xs:schema elementFormDefault="qualified" targetNamespace="Skopei/Reservation" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="Skopei/Reservation">
+  <xs:import schemaLocation="https://backend-tst.skopei.com/webservice/ReservationV1.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/"/>
+  <xs:element name="TestWebservice">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="Text" nillable="true" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TestWebserviceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="TestWebserviceResult" nillable="true" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="checkVehicleReservation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ID" nillable="true" type="xs:string"/>
+        <xs:element minOccurs="0" name="Hash" nillable="true" type="xs:string"/>
+        <xs:element minOccurs="0" name="MessageID" nillable="true" type="xs:string"/>
+        <xs:element minOccurs="0" name="Reservation" nillable="true" type="q1:Reservation" xmlns:q1="http://schemas.datacontract.org/2004/07/"/>
+        <xs:element minOccurs="0" name="Reservationitems" nillable="true" type="q2:ArrayOfVehicle" xmlns:q2="http://schemas.datacontract.org/2004/07/"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="checkVehicleReservationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="checkVehicleReservationResult" nillable="true" type="q3:ReservationData" xmlns:q3="http://schemas.datacontract.org/2004/07/"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="addVehicleReservation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ID" nillable="true" type="xs:string"/>
+        <xs:element minOccurs="0" name="Hash" nillable="true" type="xs:string"/>
+        <xs:element minOccurs="0" name="MessageID" nillable="true" type="xs:string"/>
+        <xs:element minOccurs="0" name="Reservation" nillable="true" type="q4:Reservation" xmlns:q4="http://schemas.datacontract.org/2004/07/"/>
+        <xs:element minOccurs="0" name="Reservationitems" nillable="true" type="q5:ArrayOfVehicle" xmlns:q5="http://schemas.datacontract.org/2004/07/"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="addVehicleReservationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="addVehicleReservationResult" nillable="true" type="q6:ReservationData" xmlns:q6="http://schemas.datacontract.org/2004/07/"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cancelVehicleReservation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ID" nillable="true" type="xs:string"/>
+        <xs:element minOccurs="0" name="Hash" nillable="true" type="xs:string"/>
+        <xs:element minOccurs="0" name="MessageID" nillable="true" type="xs:string"/>
+        <xs:element minOccurs="0" name="Reservation" nillable="true" type="q7:Reservation" xmlns:q7="http://schemas.datacontract.org/2004/07/"/>
+        <xs:element minOccurs="0" name="Reservationitems" nillable="true" type="q8:ArrayOfVehicle" xmlns:q8="http://schemas.datacontract.org/2004/07/"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cancelVehicleReservationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="cancelVehicleReservationResult" nillable="true" type="q9:ReservationData" xmlns:q9="http://schemas.datacontract.org/2004/07/"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getLockInformation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ID" nillable="true" type="xs:string"/>
+        <xs:element minOccurs="0" name="Hash" nillable="true" type="xs:string"/>
+        <xs:element minOccurs="0" name="MessageID" nillable="true" type="xs:string"/>
+        <xs:element minOccurs="0" name="Lock" nillable="true" type="q10:Lock" xmlns:q10="http://schemas.datacontract.org/2004/07/"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getLockInformationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="getLockInformationResult" nillable="true" type="q11:LockData" xmlns:q11="http://schemas.datacontract.org/2004/07/"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="setLockInformation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ID" nillable="true" type="xs:string"/>
+        <xs:element minOccurs="0" name="Hash" nillable="true" type="xs:string"/>
+        <xs:element minOccurs="0" name="MessageID" nillable="true" type="xs:string"/>
+        <xs:element minOccurs="0" name="Lock" nillable="true" type="q12:Lock" xmlns:q12="http://schemas.datacontract.org/2004/07/"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="setLockInformationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="setLockInformationResult" nillable="true" type="q13:LockData" xmlns:q13="http://schemas.datacontract.org/2004/07/"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part><con:part><con:url>https://backend-tst.skopei.com/webservice/ReservationV1.svc?xsd=xsd2</con:url><con:content><![CDATA[<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/">
+  <xs:complexType name="Reservation">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DateEnd" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="DateStart" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Email" nillable="true" type="tns:ReservationEmail"/>
+      <xs:element minOccurs="0" name="ExternalID" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ID" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="SMS" nillable="true" type="tns:ReservationSMS"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Reservation" nillable="true" type="tns:Reservation"/>
+  <xs:complexType name="ReservationEmail">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Address" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="AddressFrom" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Body" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="NameFrom" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="SendMinutesBeforeStart" type="xs:int"/>
+      <xs:element minOccurs="0" name="Subject" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ReservationEmail" nillable="true" type="tns:ReservationEmail"/>
+  <xs:complexType name="ReservationSMS">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Body" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="NameFrom" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="SendMinutesBeforeStart" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ReservationSMS" nillable="true" type="tns:ReservationSMS"/>
+  <xs:complexType name="ArrayOfVehicle">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Vehicle" nillable="true" type="tns:Vehicle"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfVehicle" nillable="true" type="tns:ArrayOfVehicle"/>
+  <xs:complexType name="Vehicle">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ReservationItemData" nillable="true" type="tns:ReservationItemData"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Vehicle" nillable="true" type="tns:Vehicle"/>
+  <xs:complexType name="ReservationItemData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ElockID" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ExternalID" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ExtraElockID" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ID" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Pincode" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ReservationItemData" nillable="true" type="tns:ReservationItemData"/>
+  <xs:complexType name="ReservationData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Reservation" nillable="true" type="tns:Reservation"/>
+      <xs:element minOccurs="0" name="Reservationitems" nillable="true" type="tns:ArrayOfVehicle"/>
+      <xs:element minOccurs="0" name="Result" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ReservationData" nillable="true" type="tns:ReservationData"/>
+  <xs:complexType name="Lock">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BatteryLogItems" nillable="true" type="tns:ArrayOfBatteryLog"/>
+      <xs:element minOccurs="0" name="Batterylevel" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="BatterylevelTimestamp" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="ElockID" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="GPSLatitude" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="GPSLogItems" nillable="true" type="tns:ArrayOfGPSLog"/>
+      <xs:element minOccurs="0" name="GPSLongitude" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="GPSTimestamp" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Geofence" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Hardwareversion" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="PeriodFrom" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="PeriodTill" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Reservation" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Softwareversion" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Lock" nillable="true" type="tns:Lock"/>
+  <xs:complexType name="ArrayOfBatteryLog">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BatteryLog" nillable="true" type="tns:BatteryLog"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBatteryLog" nillable="true" type="tns:ArrayOfBatteryLog"/>
+  <xs:complexType name="BatteryLog">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Batterylevel" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Timestamp" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BatteryLog" nillable="true" type="tns:BatteryLog"/>
+  <xs:complexType name="ArrayOfGPSLog">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="GPSLog" nillable="true" type="tns:GPSLog"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfGPSLog" nillable="true" type="tns:ArrayOfGPSLog"/>
+  <xs:complexType name="GPSLog">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Fix" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="GPSLatitude" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="GPSLongitude" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string"/>
+      <xs:element minOccurs="0" name="Timestamp" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GPSLog" nillable="true" type="tns:GPSLog"/>
+  <xs:complexType name="LockData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Lock" nillable="true" type="tns:Lock"/>
+      <xs:element minOccurs="0" name="Result" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LockData" nillable="true" type="tns:LockData"/>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part><con:part><con:url>https://backend-tst.skopei.com/webservice/ReservationV1.svc?xsd=xsd1</con:url><con:content><![CDATA[<xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/">
+  <xs:element name="anyType" nillable="true" type="xs:anyType"/>
+  <xs:element name="anyURI" nillable="true" type="xs:anyURI"/>
+  <xs:element name="base64Binary" nillable="true" type="xs:base64Binary"/>
+  <xs:element name="boolean" nillable="true" type="xs:boolean"/>
+  <xs:element name="byte" nillable="true" type="xs:byte"/>
+  <xs:element name="dateTime" nillable="true" type="xs:dateTime"/>
+  <xs:element name="decimal" nillable="true" type="xs:decimal"/>
+  <xs:element name="double" nillable="true" type="xs:double"/>
+  <xs:element name="float" nillable="true" type="xs:float"/>
+  <xs:element name="int" nillable="true" type="xs:int"/>
+  <xs:element name="long" nillable="true" type="xs:long"/>
+  <xs:element name="QName" nillable="true" type="xs:QName"/>
+  <xs:element name="short" nillable="true" type="xs:short"/>
+  <xs:element name="string" nillable="true" type="xs:string"/>
+  <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte"/>
+  <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt"/>
+  <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong"/>
+  <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort"/>
+  <xs:element name="char" nillable="true" type="tns:char"/>
+  <xs:simpleType name="char">
+    <xs:restriction base="xs:int"/>
+  </xs:simpleType>
+  <xs:element name="duration" nillable="true" type="tns:duration"/>
+  <xs:simpleType name="duration">
+    <xs:restriction base="xs:duration">
+      <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?"/>
+      <xs:minInclusive value="-P10675199DT2H48M5.4775808S"/>
+      <xs:maxInclusive value="P10675199DT2H48M5.4775807S"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="guid" nillable="true" type="tns:guid"/>
+  <xs:simpleType name="guid">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:attribute name="FactoryType" type="xs:QName"/>
+  <xs:attribute name="Id" type="xs:ID"/>
+  <xs:attribute name="Ref" type="xs:IDREF"/>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://backend-tst.skopei.com/webservice/ReservationV1.svc</con:endpoint></con:endpoints><con:operation id="494a9fb5-e987-44c2-9bcb-29759b628f28" isOneWay="false" action="Skopei/Reservation/Interface_ReservationV1/addVehicleReservation" name="addVehicleReservation" bindingOperationName="addVehicleReservation" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="5b990613-9b3f-4905-9019-8250de6ebbed" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://backend-tst.skopei.com/webservice/ReservationV1.svc</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:res="Skopei/Reservation" xmlns:ns="http://schemas.datacontract.org/2004/07/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <res:addVehicleReservation>\r
+         <res:ID>COMMONBIKE</res:ID>\r
+         <res:Hash>1C87A68FAD132EAAA675DB8634E49A5F7AB2FC8502C533B8C4EEE8BADE775782</res:Hash>\r
+         <res:MessageID>94210</res:MessageID>\r
+         <res:Reservation>\r
+            <ns:DateEnd>2017-04-12T10:16:39.813Z</ns:DateEnd>\r
+            <ns:DateStart>2017-04-11T10:16:39.813Z</ns:DateStart>\r
+            <ns:ExternalID>5437710000</ns:ExternalID>\r
+         </res:Reservation>\r
+         <res:Reservationitems>\r
+            <ns:Vehicle>\r
+               <ns:ReservationItemData>\r
+                  <ns:Code>9999</ns:Code>\r
+                  <ns:ElockID>160020</ns:ElockID>\r
+                  <ns:ExternalID>5437710000</ns:ExternalID>\r
+               </ns:ReservationItemData>\r
+            </ns:Vehicle>\r
+         </res:Reservationitems>\r
+      </res:addVehicleReservation>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="Skopei/Reservation/Interface_ReservationV1/addVehicleReservation"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="9255a992-204b-4643-8a59-6f0430eec2f4" isOneWay="false" action="Skopei/Reservation/Interface_ReservationV1/cancelVehicleReservation" name="cancelVehicleReservation" bindingOperationName="cancelVehicleReservation" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="60e9c12b-de98-4e2c-aa44-45c660e4b91f" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://backend-tst.skopei.com/webservice/ReservationV1.svc</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:res="Skopei/Reservation" xmlns:ns="http://schemas.datacontract.org/2004/07/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <res:cancelVehicleReservation>\r
+         <!--Optional:-->\r
+         <res:ID>?</res:ID>\r
+         <!--Optional:-->\r
+         <res:Hash>?</res:Hash>\r
+         <!--Optional:-->\r
+         <res:MessageID>?</res:MessageID>\r
+         <!--Optional:-->\r
+         <res:Reservation>\r
+            <!--Optional:-->\r
+            <ns:DateEnd>?</ns:DateEnd>\r
+            <!--Optional:-->\r
+            <ns:DateStart>?</ns:DateStart>\r
+            <!--Optional:-->\r
+            <ns:Email>\r
+               <!--Optional:-->\r
+               <ns:Address>?</ns:Address>\r
+               <!--Optional:-->\r
+               <ns:AddressFrom>?</ns:AddressFrom>\r
+               <!--Optional:-->\r
+               <ns:Body>?</ns:Body>\r
+               <!--Optional:-->\r
+               <ns:NameFrom>?</ns:NameFrom>\r
+               <!--Optional:-->\r
+               <ns:SendMinutesBeforeStart>?</ns:SendMinutesBeforeStart>\r
+               <!--Optional:-->\r
+               <ns:Subject>?</ns:Subject>\r
+            </ns:Email>\r
+            <!--Optional:-->\r
+            <ns:ExternalID>?</ns:ExternalID>\r
+            <!--Optional:-->\r
+            <ns:ID>?</ns:ID>\r
+            <!--Optional:-->\r
+            <ns:SMS>\r
+               <!--Optional:-->\r
+               <ns:Body>?</ns:Body>\r
+               <!--Optional:-->\r
+               <ns:NameFrom>?</ns:NameFrom>\r
+               <!--Optional:-->\r
+               <ns:PhoneNumber>?</ns:PhoneNumber>\r
+               <!--Optional:-->\r
+               <ns:SendMinutesBeforeStart>?</ns:SendMinutesBeforeStart>\r
+            </ns:SMS>\r
+         </res:Reservation>\r
+         <!--Optional:-->\r
+         <res:Reservationitems>\r
+            <!--Zero or more repetitions:-->\r
+            <ns:Vehicle>\r
+               <!--Optional:-->\r
+               <ns:ReservationItemData>\r
+                  <!--Optional:-->\r
+                  <ns:Code>?</ns:Code>\r
+                  <!--Optional:-->\r
+                  <ns:Description>?</ns:Description>\r
+                  <!--Optional:-->\r
+                  <ns:ElockID>?</ns:ElockID>\r
+                  <!--Optional:-->\r
+                  <ns:ExternalID>?</ns:ExternalID>\r
+                  <!--Optional:-->\r
+                  <ns:ExtraElockID>?</ns:ExtraElockID>\r
+                  <!--Optional:-->\r
+                  <ns:ID>?</ns:ID>\r
+                  <!--Optional:-->\r
+                  <ns:Pincode>?</ns:Pincode>\r
+               </ns:ReservationItemData>\r
+            </ns:Vehicle>\r
+         </res:Reservationitems>\r
+      </res:cancelVehicleReservation>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="Skopei/Reservation/Interface_ReservationV1/cancelVehicleReservation"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="d9432fdf-d6e4-4f61-8d21-cde207bbcf7f" isOneWay="false" action="Skopei/Reservation/Interface_ReservationV1/checkVehicleReservation" name="checkVehicleReservation" bindingOperationName="checkVehicleReservation" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="6254be8d-a5c3-4253-8bf1-13765d9132b8" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://backend-tst.skopei.com/webservice/ReservationV1.svc</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:res="Skopei/Reservation" xmlns:ns="http://schemas.datacontract.org/2004/07/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <res:checkVehicleReservation>\r
+         <!--Optional:-->\r
+         <res:ID>?</res:ID>\r
+         <!--Optional:-->\r
+         <res:Hash>?</res:Hash>\r
+         <!--Optional:-->\r
+         <res:MessageID>?</res:MessageID>\r
+         <!--Optional:-->\r
+         <res:Reservation>\r
+            <!--Optional:-->\r
+            <ns:DateEnd>?</ns:DateEnd>\r
+            <!--Optional:-->\r
+            <ns:DateStart>?</ns:DateStart>\r
+            <!--Optional:-->\r
+            <ns:Email>\r
+               <!--Optional:-->\r
+               <ns:Address>?</ns:Address>\r
+               <!--Optional:-->\r
+               <ns:AddressFrom>?</ns:AddressFrom>\r
+               <!--Optional:-->\r
+               <ns:Body>?</ns:Body>\r
+               <!--Optional:-->\r
+               <ns:NameFrom>?</ns:NameFrom>\r
+               <!--Optional:-->\r
+               <ns:SendMinutesBeforeStart>?</ns:SendMinutesBeforeStart>\r
+               <!--Optional:-->\r
+               <ns:Subject>?</ns:Subject>\r
+            </ns:Email>\r
+            <!--Optional:-->\r
+            <ns:ExternalID>?</ns:ExternalID>\r
+            <!--Optional:-->\r
+            <ns:ID>?</ns:ID>\r
+            <!--Optional:-->\r
+            <ns:SMS>\r
+               <!--Optional:-->\r
+               <ns:Body>?</ns:Body>\r
+               <!--Optional:-->\r
+               <ns:NameFrom>?</ns:NameFrom>\r
+               <!--Optional:-->\r
+               <ns:PhoneNumber>?</ns:PhoneNumber>\r
+               <!--Optional:-->\r
+               <ns:SendMinutesBeforeStart>?</ns:SendMinutesBeforeStart>\r
+            </ns:SMS>\r
+         </res:Reservation>\r
+         <!--Optional:-->\r
+         <res:Reservationitems>\r
+            <!--Zero or more repetitions:-->\r
+            <ns:Vehicle>\r
+               <!--Optional:-->\r
+               <ns:ReservationItemData>\r
+                  <!--Optional:-->\r
+                  <ns:Code>?</ns:Code>\r
+                  <!--Optional:-->\r
+                  <ns:Description>?</ns:Description>\r
+                  <!--Optional:-->\r
+                  <ns:ElockID>?</ns:ElockID>\r
+                  <!--Optional:-->\r
+                  <ns:ExternalID>?</ns:ExternalID>\r
+                  <!--Optional:-->\r
+                  <ns:ExtraElockID>?</ns:ExtraElockID>\r
+                  <!--Optional:-->\r
+                  <ns:ID>?</ns:ID>\r
+                  <!--Optional:-->\r
+                  <ns:Pincode>?</ns:Pincode>\r
+               </ns:ReservationItemData>\r
+            </ns:Vehicle>\r
+         </res:Reservationitems>\r
+      </res:checkVehicleReservation>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="Skopei/Reservation/Interface_ReservationV1/checkVehicleReservation"/></con:call></con:operation><con:operation id="019a9311-0e6f-4ed9-b4a9-cbdfdaa9609c" isOneWay="false" action="Skopei/Reservation/Interface_ReservationV1/getLockInformation" name="getLockInformation" bindingOperationName="getLockInformation" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="1273de09-89c3-46f0-bd42-ded1b9b05935" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://backend-tst.skopei.com/webservice/ReservationV1.svc</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:res="Skopei/Reservation" xmlns:ns="http://schemas.datacontract.org/2004/07/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <res:getLockInformation>\r
+         <!--Optional:-->\r
+         <res:ID>?</res:ID>\r
+         <!--Optional:-->\r
+         <res:Hash>?</res:Hash>\r
+         <!--Optional:-->\r
+         <res:MessageID>?</res:MessageID>\r
+         <!--Optional:-->\r
+         <res:Lock>\r
+            <!--Optional:-->\r
+            <ns:BatteryLogItems>\r
+               <!--Zero or more repetitions:-->\r
+               <ns:BatteryLog>\r
+                  <!--Optional:-->\r
+                  <ns:Batterylevel>?</ns:Batterylevel>\r
+                  <!--Optional:-->\r
+                  <ns:Timestamp>?</ns:Timestamp>\r
+               </ns:BatteryLog>\r
+            </ns:BatteryLogItems>\r
+            <!--Optional:-->\r
+            <ns:Batterylevel>?</ns:Batterylevel>\r
+            <!--Optional:-->\r
+            <ns:BatterylevelTimestamp>?</ns:BatterylevelTimestamp>\r
+            <!--Optional:-->\r
+            <ns:Description>?</ns:Description>\r
+            <!--Optional:-->\r
+            <ns:ElockID>?</ns:ElockID>\r
+            <!--Optional:-->\r
+            <ns:GPSLatitude>?</ns:GPSLatitude>\r
+            <!--Optional:-->\r
+            <ns:GPSLogItems>\r
+               <!--Zero or more repetitions:-->\r
+               <ns:GPSLog>\r
+                  <!--Optional:-->\r
+                  <ns:Fix>?</ns:Fix>\r
+                  <!--Optional:-->\r
+                  <ns:GPSLatitude>?</ns:GPSLatitude>\r
+                  <!--Optional:-->\r
+                  <ns:GPSLongitude>?</ns:GPSLongitude>\r
+                  <!--Optional:-->\r
+                  <ns:Status>?</ns:Status>\r
+                  <!--Optional:-->\r
+                  <ns:Timestamp>?</ns:Timestamp>\r
+               </ns:GPSLog>\r
+            </ns:GPSLogItems>\r
+            <!--Optional:-->\r
+            <ns:GPSLongitude>?</ns:GPSLongitude>\r
+            <!--Optional:-->\r
+            <ns:GPSTimestamp>?</ns:GPSTimestamp>\r
+            <!--Optional:-->\r
+            <ns:Geofence>?</ns:Geofence>\r
+            <!--Optional:-->\r
+            <ns:Hardwareversion>?</ns:Hardwareversion>\r
+            <!--Optional:-->\r
+            <ns:PeriodFrom>?</ns:PeriodFrom>\r
+            <!--Optional:-->\r
+            <ns:PeriodTill>?</ns:PeriodTill>\r
+            <!--Optional:-->\r
+            <ns:Reservation>?</ns:Reservation>\r
+            <!--Optional:-->\r
+            <ns:Softwareversion>?</ns:Softwareversion>\r
+            <!--Optional:-->\r
+            <ns:Status>?</ns:Status>\r
+         </res:Lock>\r
+      </res:getLockInformation>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="Skopei/Reservation/Interface_ReservationV1/getLockInformation"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="e0b11bd0-1511-498c-93dd-e54b08852a08" isOneWay="false" action="Skopei/Reservation/Interface_ReservationV1/setLockInformation" name="setLockInformation" bindingOperationName="setLockInformation" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="989ef48f-cec1-4b37-83b5-8855302b1a3e" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://backend-tst.skopei.com/webservice/ReservationV1.svc</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:res="Skopei/Reservation" xmlns:ns="http://schemas.datacontract.org/2004/07/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <res:setLockInformation>\r
+         <!--Optional:-->\r
+         <res:ID>?</res:ID>\r
+         <!--Optional:-->\r
+         <res:Hash>?</res:Hash>\r
+         <!--Optional:-->\r
+         <res:MessageID>?</res:MessageID>\r
+         <!--Optional:-->\r
+         <res:Lock>\r
+            <!--Optional:-->\r
+            <ns:BatteryLogItems>\r
+               <!--Zero or more repetitions:-->\r
+               <ns:BatteryLog>\r
+                  <!--Optional:-->\r
+                  <ns:Batterylevel>?</ns:Batterylevel>\r
+                  <!--Optional:-->\r
+                  <ns:Timestamp>?</ns:Timestamp>\r
+               </ns:BatteryLog>\r
+            </ns:BatteryLogItems>\r
+            <!--Optional:-->\r
+            <ns:Batterylevel>?</ns:Batterylevel>\r
+            <!--Optional:-->\r
+            <ns:BatterylevelTimestamp>?</ns:BatterylevelTimestamp>\r
+            <!--Optional:-->\r
+            <ns:Description>?</ns:Description>\r
+            <!--Optional:-->\r
+            <ns:ElockID>?</ns:ElockID>\r
+            <!--Optional:-->\r
+            <ns:GPSLatitude>?</ns:GPSLatitude>\r
+            <!--Optional:-->\r
+            <ns:GPSLogItems>\r
+               <!--Zero or more repetitions:-->\r
+               <ns:GPSLog>\r
+                  <!--Optional:-->\r
+                  <ns:Fix>?</ns:Fix>\r
+                  <!--Optional:-->\r
+                  <ns:GPSLatitude>?</ns:GPSLatitude>\r
+                  <!--Optional:-->\r
+                  <ns:GPSLongitude>?</ns:GPSLongitude>\r
+                  <!--Optional:-->\r
+                  <ns:Status>?</ns:Status>\r
+                  <!--Optional:-->\r
+                  <ns:Timestamp>?</ns:Timestamp>\r
+               </ns:GPSLog>\r
+            </ns:GPSLogItems>\r
+            <!--Optional:-->\r
+            <ns:GPSLongitude>?</ns:GPSLongitude>\r
+            <!--Optional:-->\r
+            <ns:GPSTimestamp>?</ns:GPSTimestamp>\r
+            <!--Optional:-->\r
+            <ns:Geofence>?</ns:Geofence>\r
+            <!--Optional:-->\r
+            <ns:Hardwareversion>?</ns:Hardwareversion>\r
+            <!--Optional:-->\r
+            <ns:PeriodFrom>?</ns:PeriodFrom>\r
+            <!--Optional:-->\r
+            <ns:PeriodTill>?</ns:PeriodTill>\r
+            <!--Optional:-->\r
+            <ns:Reservation>?</ns:Reservation>\r
+            <!--Optional:-->\r
+            <ns:Softwareversion>?</ns:Softwareversion>\r
+            <!--Optional:-->\r
+            <ns:Status>?</ns:Status>\r
+         </res:Lock>\r
+      </res:setLockInformation>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="Skopei/Reservation/Interface_ReservationV1/setLockInformation"/></con:call></con:operation><con:operation id="73309c79-e2ab-4c38-a729-8e176c75605d" isOneWay="false" action="Skopei/Reservation/Interface_ReservationV1/TestWebservice" name="TestWebservice" bindingOperationName="TestWebservice" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="61042ec8-d70d-4a41-bf98-a575d5b0230c" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://backend-tst.skopei.com/webservice/ReservationV1.svc</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:res="Skopei/Reservation">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <res:TestWebservice>\r
+         <!--Optional:-->\r
+         <res:Text>HALLO WERELD</res:Text>\r
+      </res:TestWebservice>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="Skopei/Reservation/Interface_ReservationV1/TestWebservice"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite id="c0edcee6-ff39-4020-92c0-42ad5347a82f" name="BasicHttpsBinding_Interface_ReservationV1 TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="397d4483-d2d9-4b88-a45e-d7ce94612277" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="addVehicleReservation TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="073c0131-c496-449e-9407-1d387c80f586" name="addVehicleReservation"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>BasicHttpsBinding_Interface_ReservationV1</con:interface><con:operation>addVehicleReservation</con:operation><con:request name="addVehicleReservation" id="0e861710-e1a4-4258-bca9-93260e1c0528"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://backend-tst.skopei.com/webservice/ReservationV1.svc</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:res="Skopei/Reservation" xmlns:ns="http://schemas.datacontract.org/2004/07/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <res:addVehicleReservation>\r
+         <!--Optional:-->\r
+         <res:ID>?</res:ID>\r
+         <!--Optional:-->\r
+         <res:Hash>?</res:Hash>\r
+         <!--Optional:-->\r
+         <res:MessageID>?</res:MessageID>\r
+         <!--Optional:-->\r
+         <res:Reservation>\r
+            <!--Optional:-->\r
+            <ns:DateEnd>?</ns:DateEnd>\r
+            <!--Optional:-->\r
+            <ns:DateStart>?</ns:DateStart>\r
+            <!--Optional:-->\r
+            <ns:Email>\r
+               <!--Optional:-->\r
+               <ns:Address>?</ns:Address>\r
+               <!--Optional:-->\r
+               <ns:AddressFrom>?</ns:AddressFrom>\r
+               <!--Optional:-->\r
+               <ns:Body>?</ns:Body>\r
+               <!--Optional:-->\r
+               <ns:NameFrom>?</ns:NameFrom>\r
+               <!--Optional:-->\r
+               <ns:SendMinutesBeforeStart>?</ns:SendMinutesBeforeStart>\r
+               <!--Optional:-->\r
+               <ns:Subject>?</ns:Subject>\r
+            </ns:Email>\r
+            <!--Optional:-->\r
+            <ns:ExternalID>?</ns:ExternalID>\r
+            <!--Optional:-->\r
+            <ns:ID>?</ns:ID>\r
+            <!--Optional:-->\r
+            <ns:SMS>\r
+               <!--Optional:-->\r
+               <ns:Body>?</ns:Body>\r
+               <!--Optional:-->\r
+               <ns:NameFrom>?</ns:NameFrom>\r
+               <!--Optional:-->\r
+               <ns:PhoneNumber>?</ns:PhoneNumber>\r
+               <!--Optional:-->\r
+               <ns:SendMinutesBeforeStart>?</ns:SendMinutesBeforeStart>\r
+            </ns:SMS>\r
+         </res:Reservation>\r
+         <!--Optional:-->\r
+         <res:Reservationitems>\r
+            <!--Zero or more repetitions:-->\r
+            <ns:Vehicle>\r
+               <!--Optional:-->\r
+               <ns:ReservationItemData>\r
+                  <!--Optional:-->\r
+                  <ns:Code>?</ns:Code>\r
+                  <!--Optional:-->\r
+                  <ns:Description>?</ns:Description>\r
+                  <!--Optional:-->\r
+                  <ns:ElockID>?</ns:ElockID>\r
+                  <!--Optional:-->\r
+                  <ns:ExternalID>?</ns:ExternalID>\r
+                  <!--Optional:-->\r
+                  <ns:ExtraElockID>?</ns:ExtraElockID>\r
+                  <!--Optional:-->\r
+                  <ns:ID>?</ns:ID>\r
+                  <!--Optional:-->\r
+                  <ns:Pincode>?</ns:Pincode>\r
+               </ns:ReservationItemData>\r
+            </ns:Vehicle>\r
+         </res:Reservationitems>\r
+      </res:addVehicleReservation>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="Skopei/Reservation/Interface_ReservationV1/addVehicleReservation"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="02f2bd33-3dee-49dd-b4cd-e69c122a98c0" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="getLockInformation TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="b2031119-f534-4cdb-b3ff-cc1c76042a35" name="getLockInformation"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>BasicHttpsBinding_Interface_ReservationV1</con:interface><con:operation>getLockInformation</con:operation><con:request name="getLockInformation" id="9decbacd-fe0d-4894-aa66-a16eb62a76a7"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://backend-tst.skopei.com/webservice/ReservationV1.svc</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:res="Skopei/Reservation" xmlns:ns="http://schemas.datacontract.org/2004/07/">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <res:getLockInformation>\r
+         <!--Optional:-->\r
+         <res:ID>?</res:ID>\r
+         <!--Optional:-->\r
+         <res:Hash>?</res:Hash>\r
+         <!--Optional:-->\r
+         <res:MessageID>?</res:MessageID>\r
+         <!--Optional:-->\r
+         <res:Lock>\r
+            <!--Optional:-->\r
+            <ns:BatteryLogItems>\r
+               <!--Zero or more repetitions:-->\r
+               <ns:BatteryLog>\r
+                  <!--Optional:-->\r
+                  <ns:Batterylevel>?</ns:Batterylevel>\r
+                  <!--Optional:-->\r
+                  <ns:Timestamp>?</ns:Timestamp>\r
+               </ns:BatteryLog>\r
+            </ns:BatteryLogItems>\r
+            <!--Optional:-->\r
+            <ns:Batterylevel>?</ns:Batterylevel>\r
+            <!--Optional:-->\r
+            <ns:BatterylevelTimestamp>?</ns:BatterylevelTimestamp>\r
+            <!--Optional:-->\r
+            <ns:Description>?</ns:Description>\r
+            <!--Optional:-->\r
+            <ns:ElockID>?</ns:ElockID>\r
+            <!--Optional:-->\r
+            <ns:GPSLatitude>?</ns:GPSLatitude>\r
+            <!--Optional:-->\r
+            <ns:GPSLogItems>\r
+               <!--Zero or more repetitions:-->\r
+               <ns:GPSLog>\r
+                  <!--Optional:-->\r
+                  <ns:Fix>?</ns:Fix>\r
+                  <!--Optional:-->\r
+                  <ns:GPSLatitude>?</ns:GPSLatitude>\r
+                  <!--Optional:-->\r
+                  <ns:GPSLongitude>?</ns:GPSLongitude>\r
+                  <!--Optional:-->\r
+                  <ns:Status>?</ns:Status>\r
+                  <!--Optional:-->\r
+                  <ns:Timestamp>?</ns:Timestamp>\r
+               </ns:GPSLog>\r
+            </ns:GPSLogItems>\r
+            <!--Optional:-->\r
+            <ns:GPSLongitude>?</ns:GPSLongitude>\r
+            <!--Optional:-->\r
+            <ns:GPSTimestamp>?</ns:GPSTimestamp>\r
+            <!--Optional:-->\r
+            <ns:Geofence>?</ns:Geofence>\r
+            <!--Optional:-->\r
+            <ns:Hardwareversion>?</ns:Hardwareversion>\r
+            <!--Optional:-->\r
+            <ns:PeriodFrom>?</ns:PeriodFrom>\r
+            <!--Optional:-->\r
+            <ns:PeriodTill>?</ns:PeriodTill>\r
+            <!--Optional:-->\r
+            <ns:Reservation>?</ns:Reservation>\r
+            <!--Optional:-->\r
+            <ns:Softwareversion>?</ns:Softwareversion>\r
+            <!--Optional:-->\r
+            <ns:Status>?</ns:Status>\r
+         </res:Lock>\r
+      </res:getLockInformation>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="Skopei/Reservation/Interface_ReservationV1/getLockInformation"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="6c1f2ac7-1163-45f4-a6e5-17e8369a4e7b" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TestWebservice TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="06c361c9-e7c6-4f07-9fb6-ef4b14db0614" name="TestWebservice"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>BasicHttpsBinding_Interface_ReservationV1</con:interface><con:operation>TestWebservice</con:operation><con:request name="TestWebservice" id="e9ae4a8b-0e6e-495a-95a9-92b80869a90a"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://backend-tst.skopei.com/webservice/ReservationV1.svc</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:res="Skopei/Reservation">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <res:TestWebservice>\r
+         <!--Optional:-->\r
+         <res:Text>?</res:Text>\r
+      </res:TestWebservice>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="Skopei/Reservation/Interface_ReservationV1/TestWebservice"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>

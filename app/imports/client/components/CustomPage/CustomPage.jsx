@@ -27,7 +27,7 @@ var s = {
     fontSize: 'default',
     lineHeight: 'default',
     margin: '0 auto',
-    width: '100%',
+    // width: '76%',
     display: 'flex',
     textAlign: 'center',
     flexDirection: 'column',

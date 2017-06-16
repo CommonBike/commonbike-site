@@ -1,7 +1,10 @@
 import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo';
 import { Accounts } from 'meteor/accounts-base'
-import { Integrations } from '/imports/api/integrations.js'; 
+import { Integrations } from '/imports/api/integrations.js';
+import { getSettingsServerSide } from '/imports/api/settings.js';
+import { VelocityAPI } from '/imports/api/integrations/velocity.js'
+
 
 // publish all users if current user is administrator (for client side adminstration)
 if(Meteor.isServer) {
@@ -19,7 +22,7 @@ if(Meteor.isServer) {
   });
 }
 
-// general purpose functions 
+// general purpose functions
 export const getUserDescription = (user) => {
   var description = '';
   if(user.emails && user.emails.length>0 && user.emails[0].address) {
@@ -31,8 +34,44 @@ export const getUserDescription = (user) => {
   return description;
 }
 
-// user profile data serverside  functions
+// user profile data serverside functions
 if(Meteor.isServer) {
+
+  // Validate username, sending a specific error message on failure.
+  Accounts.validateNewUser((user) => {
+
+    if(user.emails && user.emails.length>0 && user.emails[0].address) {
+      user_email = user.emails[0].address;
+      user_pass = user.services.password
+      console.log(JSON.stringify(user, 0,2));
+    }
+
+    else {
+      return false;
+    }
+
+    // If VeloCity onboarding is not enabled: user is validated by default
+    if ( ! getSettingsServerSide().velocity.enabled) {
+      return true;
+    }
+
+    // If VeloCity onboarding is enabled: check if email address is on the list
+    else {
+      return VelocityAPI.checkUserEmailAddress(user_email)
+    }
+  });
+
+  Accounts.onCreateUser((options, user) => {
+    // We still want the default hook's 'profile' behavior.
+    user.profile = options.profile || {};
+
+    if(getSettingsServerSide().onboarding.enabled||getSettingsServerSide().velocity.enabled) {
+      user.profile.active = true;
+    }
+
+    return user;
+  });
+
   Meteor.methods({
     'currentuser.update_avatar'(new_avatar_url) {
       if(this.userId) {
@@ -92,6 +131,6 @@ if(Meteor.isServer) {
       }
 
       Meteor.users.update(userId, {$set : { 'profile.cancreatelocations' : isActive }});
-    },
+    }
   })
 }

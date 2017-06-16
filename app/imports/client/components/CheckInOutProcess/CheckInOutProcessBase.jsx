@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 
-import { getUserDescription } from '/imports/api/users.js'; 
+import { getUserDescription } from '/imports/api/users.js';
 
 // Import components
 import Button from '../Button/Button';
@@ -11,32 +11,35 @@ class CheckInOutProcessBase extends Component {
     super(props);
   }
 
-  setObjectReserved() {
-    var newState = 'reserved';
+  validStates() {
+    var validStates = ['reserved', 'inuse', 'available', 'outoforder']
+
+    return validStates;
+  }
+
+  setObjectState(newState) {
+    if(!this.validStates().includes(newState)) {
+      return;
+    }
+    var rentalInfo = {};
     var user = getUserDescription(Meteor.user());
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), this.props.object.locationId,newState, user);
+    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), this.props.object.locationId, newState, user, rentalInfo);
+  }
+
+  setObjectReserved() {
+    this.setObjectState('reserved');
   }
 
   setObjectInUse() {
-    var newState = 'inuse'
-    var user = getUserDescription(Meteor.user());
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), this.props.object.locationId, newState, user);
-  }
-
-  openLock() {
-    // var userDescription = getUserDescription(Meteor.user());
-    // console.log('lock opened on bike ' +  this.props.object._id + ' by user ' + userDescription)
+    this.setObjectState('inuse');
   }
 
   setObjectAvailable() {
-    var newState = 'available'
-    Meteor.call('objects.setState', this.props.object._id, null, this.props.object.locationId, newState, '');
+    this.setObjectState('available');
   }
 
   setObjectOutOfOrder() {
-    var newState = 'outoforder'
-    var user = getUserDescription(Meteor.user());
-    Meteor.call('objects.setState', this.props.object._id, Meteor.userId(), this.props.object.locationId, newState, user);
+    this.setObjectState('outoforder');
   }
 
   renderButtonsForProvider() {
@@ -46,7 +49,7 @@ class CheckInOutProcessBase extends Component {
         return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Annuleer Verhuur</Button>);
       } else if(this.props.object.state.state=='outoforder') {
         return (<Button onClick={() => this.setObjectAvailable() } buttonStyle="hugeSmallerFont">Maak Beschikbaar</Button>);
-      } 
+      }
 
       return (<Button onClick={() => this.setObjectOutOfOrder() } buttonStyle="hugeSmallerFont">Maak Niet Beschikbaar</Button>);
   }

@@ -5,8 +5,9 @@ import { RedirectTo } from '/client/main'
 
 // Import components
 import RaisedButton from '../Button/RaisedButton';
-import { getUserDescription } from '/imports/api/users.js'; 
+import { getUserDescription } from '/imports/api/users.js';
 
+// import { Backuplist } from '/imports/api/databasetools.js';
 
 class AdminTools extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class AdminTools extends Component {
     RedirectTo('/admin/transactions');
   }
 
-  clearTransactions() { 
+  clearTransactions() {
     if( !confirm('Weet je zeker dat je de complete transactie historie wilt wissen? Dit kan niet ongedaan gemaakt worden.')) {
       return;
     }
@@ -45,7 +46,7 @@ class AdminTools extends Component {
     alert('De testdata is verwijderd!');
   }
 
-  insertTestUsers() { 
+  insertTestUsers() {
     if( !confirm('Weet je zeker dat je de testgebruikers wilt toevoegen? Doe dit nooit op de productieserver.')) {
       return;
     }
@@ -65,23 +66,20 @@ class AdminTools extends Component {
     alert('De testdata is toegevoegd!');
   }
 
+  showLog() {
+    RedirectTo('/admin/log');
+  }
+
   databaseCheckup() {
-    
+
   }
 
   databaseBackup() {
-
+    Meteor.call('databasetools.backup');
   }
 
-  databaseRestore() {
-
-  }
-
-  getOnlineOfflineButton() {
-  }
-
-  goOfflineOnline() { 
-    
+  databaseRestore(path) {
+    Meteor.call('databasetools.restore', path);
   }
 
   render() {
@@ -91,14 +89,6 @@ class AdminTools extends Component {
           <RaisedButton onClick={this.showAllTransactions.bind(this)}>ALLE TRANSACTIES TONEN</RaisedButton>
 
           <RaisedButton onClick={this.clearTransactions.bind(this)}>TRANSACTIES OPSCHONEN</RaisedButton>
-        </div>
-
-        <div style={s.centerbox} hidden>
-          <RaisedButton onClick={this.databaseCheckup.bind(this)}>DATABASE CHECKUP</RaisedButton>
-
-          <RaisedButton onClick={this.databaseBackup.bind(this)}>DATABASE BACKUP</RaisedButton>
-
-          <RaisedButton onClick={this.databaseRestore.bind(this)}>DATABASE RESTORE</RaisedButton>
         </div>
 
         <div style={s.centerbox}>
@@ -112,10 +102,21 @@ class AdminTools extends Component {
           <RaisedButton onClick={this.insertTestData.bind(this)}>TESTDATA TOEVOEGEN</RaisedButton>
 
         </div>
+        <div style={s.centerbox}>
+          <RaisedButton onClick={this.showLog.bind(this)}>LOG TONEN</RaisedButton>
+        </div>
       </div>
     );
   }
 }
+
+// <div style={s.centerbox}>
+//   <RaisedButton hidden onClick={this.databaseCheckup.bind(this)}>DATABASE CHECKUP</RaisedButton>
+//
+//   <RaisedButton onClick={this.databaseBackup.bind(this)}>DATABASE BACKUP</RaisedButton>
+//
+//              { this.props.backuplist.map(item =>  <RaisedButton key={item.name} onClick={this.databaseRestore.bind(this, item.name)}>RESTORE BACKUP {item.name.toUpperCase()}</RaisedButton>) }
+// </div>
 
 var s = {
   base: {
@@ -140,20 +141,19 @@ var s = {
 }
 
 AdminTools.propTypes = {
-  locations: PropTypes.array,
-  isEditable: PropTypes.any,
-  clickItemHandler: PropTypes.any,
+//  backuplist: PropTypes.array,
 };
 
 AdminTools.defaultProps = {
-  isEditable: false
+//  backuplist: []
 }
 
 export default createContainer((props) => {
   Meteor.subscribe('users');
+//  Meteor.subscribe('backuplist');
 
   return {
-    currentUser: Meteor.users.findOne()
+//    backuplist : Backuplist.find().fetch()
   };
 }, AdminTools);
 
