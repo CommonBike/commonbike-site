@@ -393,6 +393,7 @@ void loop() {
 
 void do_cycle() {
   // first get current commonbike status
+  
   String commonbikeStatus = pollCommonbikeStatus("");
 
   // check if there are requests

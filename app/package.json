@@ -6,7 +6,7 @@
     "start": "meteor run --settings settings.json"
   },
   "dependencies": {
-    "bcrypt": "^0.8.7",
+    "bcrypt": "^1.0.2",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
     "bufferutil": "^1.2.1",
@@ -31,7 +31,8 @@
     "react-tap-event-plugin": "^1.0.0",
     "soap": "git+ssh://git@github.com/mosbuma/node-soap.git",
     "swipe-js-iso": "^2.0.3",
-    "twilio": "^3.3.0",
+    "truffle-hdwallet-provider": "0.0.3",
+    "twilio": "^3.0.0",
     "utf-8-validate": "^1.2.1"
   }
 }

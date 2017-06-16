@@ -28,12 +28,20 @@ LogSchema = new SimpleSchema({
 });
 
 if (Meteor.isServer) {
+
+  export const logwrite = function (description, extraData) {
+    console.log('LOG:' + description);
+
+    var timestamp = new Date();
+    var id = Log.insert({timestamp: timestamp,datetime: timestamp.toISOString(), description: description, data: extraData});
+  }
+
   Meteor.publish('log', function logPublication() {
     if (!this.userId) {
         return this.ready();
     }
 
-  	return Log.find( Roles.userIsInRole( this.userId, 'admin' ) ? {}: {false});
+  	return Roles.userIsInRole( this.userId, 'admin' ) ? Log.find() : [];
   });
 
 	Meteor.methods({
@@ -43,14 +51,14 @@ if (Meteor.isServer) {
         Log.remove({});
 
         var description = getUserDescription(Meteor.user()) + ' heeft het log gewist';
-        Meteor.call('log.write', 'CLEAR_LOG', description, null);    
+        Meteor.call('log.write', 'CLEAR_LOG', description, null);
     },
    	'log.write'(description, extraData) {
         console.log('LOG:' + description);
 
   		  var timestamp = new Date();
 
-  		  var id = Log.insert({timestamp: timestamp,datetime: timestamp.toISOString(), description: description, data: extraData}); 
+  		  var id = Log.insert({timestamp: timestamp,datetime: timestamp.toISOString(), description: description, data: extraData});
 
   		  return id;
   	}

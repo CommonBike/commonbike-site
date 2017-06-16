@@ -11,6 +11,7 @@ import Avatar from '/imports/client/components/Avatar/Avatar.jsx';
 import CheckInCode from '/imports/client/components/CheckInCode/CheckInCode.jsx';
 import LoginForm from '/imports/client/components/LoginForm/LoginForm.jsx';
 import MapSummary from '/imports/client/MapSummary.jsx'
+import Balance from '/imports/client/components/Balance/Balance.jsx';
 
 class CommonBikeUI extends Component {
 
@@ -35,6 +36,7 @@ class CommonBikeUI extends Component {
   render() {
     return (
      <div style={s.base}>
+        <Balance title="saldo" address="161ca556b59a3a8e5d5fcd9e5e1208c08222e777" providerurl="https://ropsten.infura.io/sCQUO1V3FOo"></Balance>
 
         <h2>Velocity Onboarding</h2>
         <RaisedButton onClick={this.onTestVelocity}>Test Velocity Onboarding</RaisedButton>

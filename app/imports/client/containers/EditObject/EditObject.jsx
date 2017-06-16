@@ -218,6 +218,29 @@ class EditObject extends Component {
     return fields;
   }
 
+  getCoinFields() {
+    fields = [
+      {
+          controltype: 'header',
+          label: 'CommonBikeCoin'
+      },
+      {
+          fieldname: 'object.wallet.address',
+          fieldvalue: this.props.object.wallet.address,
+          controltype: 'text',
+          label: 'Address'
+      },
+      {
+          fieldname: 'object.wallet.privatekey',
+          fieldvalue: this.props.object.wallet.privatekey,
+          controltype: 'text',
+          label: 'Private Key'
+      },
+    ]
+
+    return fields;
+  }
+
   render() {
   	if(!this.props.object) {
     	return ( <div />);
@@ -338,6 +361,8 @@ class EditObject extends Component {
   	fields = fields.concat(this.getLockFields());
 
     fields = fields.concat(this.getRentalFields());
+
+    fields = fields.concat(this.getCoinFields());
 
     return (
       <EditFields fields={fields} apply={this.update.bind(this)} />

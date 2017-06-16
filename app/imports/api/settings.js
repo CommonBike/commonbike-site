@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo';
 import { getUserDescription } from '/imports/api/users.js';
+import { CoinSchema } from '/imports/api/bikecoin.js';
 
 export const Settings = new Mongo.Collection('settings');
 
@@ -212,6 +213,31 @@ export const GPSSchema = new SimpleSchema({
   }
 });
 
+export const CoinSettingsSchema = new SimpleSchema({
+	'enabled': {
+    type: Boolean,
+    label: "bikecoin.enabled",
+    defaultValue: 'true'
+  },
+	'provider_url': {
+    type: String,
+    label: "bikecoin.provider_url",
+    defaultValue: ''
+  },
+	'token_address': {
+    type: String,
+    label: "bikecoin.token_address",
+    defaultValue: ''
+  },
+	'token_abi': {
+    type: String,
+    label: "bikecoin.token_abi",
+    defaultValue: ''
+  },
+	wallet: {
+		type: CoinSchema
+	}
+})
 
 // for now there is only one set of settings. Later on profilename can be used later
 // to use different settings for different instances
@@ -263,6 +289,9 @@ export const SettingsSchema = new SimpleSchema({
   },
 	gps: {
     type: GPSSchema
+  },
+	bikecoin: {
+	    type: CoinSettingsSchema
   },
 });
 
@@ -348,6 +377,18 @@ if (Meteor.isServer) {
 						enabled:true,
 						lat_lng: [999,999]
 				  },
+          {
+					onboarding: { enabled:false },
+					bikecoin: {
+						enabled:false,
+						provider_url: '',
+						token_address: '',
+						token_abi: '',
+						wallet: {
+							address: '',
+							privatekey: ''
+						}
+					},
 	    	}
 
 		    try {
@@ -375,10 +416,42 @@ if (Meteor.isServer) {
 				}
 
 				if(!settings.onboarding) {
-					settings.onboarding = {
-						enabled:true
+					settings.onboarding = { enabled: false };
+
+					Settings.update(settings._id, settings, {validate: false});
+				}
+
+				if(!settings.bikecoin) {
+					settings.bikecoin = {
+						enabled:false,
+						provider_url: '',
+						token_address: '',
+						token_abi: '',
+						wallet: {
+							address: '',
+							privatekey: ''
+						}
 					}
 
+					console.log('adding bikecoin settings')
+					Settings.update(settings._id, settings, {validate: false});
+				}
+
+				if(settings.bikecoin.wallet.address=='' && settings.bikecoin.wallet.privatekey=='') {
+					var BikeCoin = require('/server/api/BikeCoin.js');
+
+					var keypair = BikeCoin.newKeypair();
+					settings.bikecoin.wallet.address = keypair.address;
+				  settings.bikecoin.wallet.privatekey = keypair.privatekey;
+
+					console.log('adding bikecoin keypair to general settings')
+					Settings.update(settings._id, settings, {validate: false});
+				}
+
+				if(settings.bikecoin.provider_url=='') {
+				  settings.bikecoin.provider_url='https://ropsten.infura.io/sCQUO1V3FOoOUWGZBtig';
+
+					console.log('setting provider URL to ropsten testnet');
 					Settings.update(settings._id, settings, {validate: false});
 				}
 
@@ -448,6 +521,7 @@ if (Meteor.isServer) {
 		      check(settings, SettingsSchema);
 		    } catch(ex) {
 		      console.log('data for settings does not match schema: ' + ex.message);
+					console.log(JSON.stringify(ex.message));
 			  	throw new Meteor.Error('invalid-settings');
 		    }
 	    }
@@ -498,4 +572,5 @@ if (Meteor.isServer) {
 	Meteor.startup(() => {
 		Meteor.call('settings.check');
 	});
+
 }

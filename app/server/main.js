@@ -12,6 +12,7 @@ import '/imports/server/testdata.js'
 import '/imports/api/databasetools.js';
 import '/imports/api/integrations/goabout.js';
 import '/imports/api/integrations/velocity.js';
+import BikeCoin from '/server/api/BikeCoin.js';
 
 Meteor.startup(() => {
 	// code to run on server at startup
@@ -20,7 +21,6 @@ Meteor.startup(() => {
 	if(false) {
 		var myObjects = Objects.find().fetch();
 		_.each(myObjects, function (objectData) {
-
 		    var timestamp =  new Date().valueOf();
 		    var length = 5;
 		    var base = Math.pow(10, length+1);
@@ -70,6 +70,7 @@ Meteor.startup(() => {
 			if(locationData.loc) {
 		    Locations.update(locationData._id, {$unset:{ loc: "" }});
 			}
+      
 			if(!locationData.locationType) {
 				locationData.locationType = 'commonbike'
 				locationData.externalId = ''
@@ -77,6 +78,7 @@ Meteor.startup(() => {
 				Locations.update(locationData._id, locationData, {validate: false});
 			}
 		});
+    
 		_.each(myObjects, function (objectData) {
 			if(objectData.coordinates) {
 		    Objects.update(objectData._id, {$unset:{ coordinates: "" }});
@@ -89,6 +91,37 @@ Meteor.startup(() => {
 			}
 		});
 	}
+
+  var myUsers = Meteor.users.find().fetch();
+	_.each(myUsers, function (user) {
+		if(!user.profile || !user.profile.active) {
+			Meteor.users.update(user._id, {$set : { 'profile.active' : false }});
+		}
+		if(!user.profile || !user.profile.name) {
+			Meteor.users.update(user._id, {$set : { 'profile.name' : 'anonymous' }});
+		}
+		if(!user.profile || !user.profile.avatar) {
+			Meteor.users.update(user._id, {$set : { 'profile.avatar' : '' }});
+		}
+		if(!user.profile || !user.profile.cancreatelocations) {
+			Meteor.users.update(user._id, {$set : { 'profile.cancreatelocations' : 'false' }});
+		}
+
+		if(!user.profile || !user.profile.wallet) {
+			Meteor.users.update(user._id, {$set : { 'profile.wallet.address' : '',
+		                                          'profile.wallet.privatekey' : '' }});
+		}
+
+		if(user.profile && user.profile.wallet &&
+		   user.profile.wallet.address=='' && user.profile.wallet.privatekey=='') {
+
+			var keypair = BikeCoin.newKeypair();
+			Meteor.users.update(user._id, {$set : { 'profile.wallet.address' : keypair.address,
+		                                          'profile.wallet.privatekey' :  keypair.privatekey	}});
+		}
+
+	});
+
 
 });
 

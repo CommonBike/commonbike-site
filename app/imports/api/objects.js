@@ -4,6 +4,11 @@ import { Mongo } from 'meteor/mongo';
 import { Locations } from '/imports/api/locations.js'; // , geoJSONPointSchema
 import { getUserDescription } from '/imports/api/users.js';
 import { Integrations } from '/imports/api/integrations.js';
+import { CoinSchema } from '/imports/api/bikecoin.js';
+
+if(Meteor.isServer) {
+  import BikeCoin from '/server/api/BikeCoin.js';
+}
 
 export const Objects = new Mongo.Collection('objects');
 
@@ -100,7 +105,10 @@ export const ObjectsSchema = new SimpleSchema({
     type: Number,
     decimal: true,
     optional: true
-  }
+  },
+  'wallet': {
+    type: CoinSchema
+  },
 });
 
 if (Meteor.isServer) {
@@ -154,7 +162,10 @@ export const createObject = (locationId, title) => {
             currency: 'euro',
             timeunit: 'day',
             description: 'tijdelijk gratis'},
-    	    lat_lng: [0, 0]
+    	    lat_lng: [0, 0],
+    wallet: { address : '',
+              privatekey :  ''
+            }
   }
 
   try {
@@ -184,6 +195,11 @@ Meteor.methods({
   	// Strip HTML Tags
     data.title = data.title.replace(/<.*?>/g, " ").replace(/\s+/g, " ").trim();
 
+    // assign new keypair to object
+    var keypair = BikeCoin.newKeypair();
+    data.wallet.address=keypair.address;
+    data.wallet.privatekey=keypair.privatekey;
+
     // Insert object
     var objectId = Objects.insert(data);
 
@@ -197,7 +213,9 @@ Meteor.methods({
       slackmessage += ' bij ' + location.title;
     }
     Meteor.call('transactions.addTransaction', 'ADD_OBJECT', description, Meteor.userId(), object.locationId, objectId, data);
-    Integrations.slack.sendNotification(slackmessage);
+    if (Meteor.isServer) {
+      Integrations.slack.sendNotification(slackmessage);
+    }
   },
   'objects.update'(objectId, data) {
 

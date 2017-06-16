@@ -4,7 +4,33 @@ import { Accounts } from 'meteor/accounts-base'
 import { Integrations } from '/imports/api/integrations.js';
 import { getSettingsServerSide } from '/imports/api/settings.js';
 import { VelocityAPI } from '/imports/api/integrations/velocity.js'
+import { CoinSchema } from '/imports/api/bikecoin.js';
 
+export const UserProfileSchema = new SimpleSchema({
+  active: {
+    type: Boolean,
+    label: "Active",
+    defaultValue: 'false'
+  },
+  'name': {
+    type: String,
+    label: "Name",
+    defaultValue: 'anonymous'
+  },
+  'avatar': {
+    type: String,
+    label: "Avatar",
+    defaultValue: ''
+  },
+  cancreatelocations: {
+    type: Boolean,
+    label: "Can Create Locations",
+    defaultValue: 'false'
+  },
+  wallet: {
+    type: CoinSchema
+  },
+});
 
 // publish all users if current user is administrator (for client side adminstration)
 if(Meteor.isServer) {
@@ -100,7 +126,24 @@ if(Meteor.isServer) {
         return
       }
 
-      Meteor.users.update(userId, {$set : { 'profile.active' : isActive }});
+      var data = { 'profile.active' : isActive }
+
+      var user = Meteor.users.findOne(userId);
+      if(user) {
+        if(!user.profile || !user.profile.wallet || (user.profile.wallet.address=='' && user.profile.wallet.privatekey=='')) {
+
+          console.log('Added keypair to user during activation');
+
+          var BikeCoin = require('/server/api/BikeCoin.js');
+          var keypair = BikeCoin.newKeypair();
+          data = { 'profile.active' : isActive,
+                   'profile.wallet.address':  keypair.address,
+    		           'profile.wallet.privatekey':  keypair.privatekey
+                  }
+        }
+  		}
+
+      Meteor.users.update(userId, {$set : data});
 
       if(isActive) {
         Integrations.slack.sendNotification('Er is een nieuwe deelnemer geactiveerd!');
@@ -131,6 +174,28 @@ if(Meteor.isServer) {
       }
 
       Meteor.users.update(userId, {$set : { 'profile.cancreatelocations' : isActive }});
+    },
+    'currentuser.AutoOnboard'() {
+      if(!this.userId) {
+        return
+      }
+
+      if(!getSettingsServerSide().onboarding.enabled) {
+        return
+      }
+
+      console.log('AutoOnboarding user ' + this.userId);
+
+      var BikeCoin = require('/server/api/BikeCoin.js');
+			var keypair = BikeCoin.newKeypair();
+      Meteor.users.update(this.userId, {$set : { 'profile.active' : true,
+                                                 'profile.wallet' : { address : keypair.address,
+                                                                      privatekey :  keypair.privatekey
+                                                                    }
+                                                }
+                                        });
+
+      Integrations.slack.sendNotification('Er is een nieuwe deelnemer geactiveerd!');
     }
   })
 }

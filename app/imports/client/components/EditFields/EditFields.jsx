@@ -61,7 +61,7 @@ class EditFields extends Component {
     );
   }
 
-  getField(field, key) {
+  getField(field, key, actionhandler) {
     switch (field.controltype) {
       case 'header':
         return (
@@ -125,10 +125,24 @@ class EditFields extends Component {
         );
 
         break;
+      case 'serverside-action':
+        return (
+          <div style={s.editline} key={key}>
+            <img style={s.controlicon} src={s.images.yes} onClick={()=>{actionhandler(field.fieldname)}} />
+            <label style={s.label} key={'label_'+field.fieldname} htmlFor={field.fieldname}>{field.label}</label>
+          </div>
+        );
+
+        break;
       default:
         return (<div />);
         break;
     }
+  }
+
+  actionhandler(name) {
+    console.log('calling ' + name);
+    Meteor.call(name);
   }
 
   render() {
@@ -140,8 +154,8 @@ class EditFields extends Component {
         </div>
 
         { this.state.showDetails?
-          <form style={ s.editform } ref="theforminquestion">
-            { R.map((field) => this.getField(field, field.label+'.'+field.fieldname||'control') , this.props.fields) // || 'control' -> because label has no fieldname
+          <form type="" style={ s.editform } ref="theforminquestion">
+            { R.map((field) => this.getField(field, field.label+'.'+field.fieldname||'control', this.actionhandler.bind(this)) , this.props.fields) // || 'control' -> because label has no fieldname
             }
             <div style={s.confirmline}>
                 <div />
@@ -235,6 +249,13 @@ var s = {
     flex: '1 1 auto',
     textAlign: 'left'
   },
+  controlicon: {
+    order: '2',
+    // flex: '1 1 auto',
+    textAlign: 'left',
+    height:' 64px',
+    width:'49px'
+  },
   icon: {
     width:'49px',
     height:' 64px'
@@ -263,12 +284,19 @@ EditFields.propTypes = {
               label: React.PropTypes.string
             })
           ),
+  handlers: React.PropTypes.arrayOf(
+            React.PropTypes.shape({
+              name: React.PropTypes.string,
+              functionname:PropTypes.func
+            })
+          ),
   apply: PropTypes.func
 };
 
 EditFields.defaultProps = {
   title: 'INSTELLINGEN',
-  fields: []
+  fields: [],
+  handlers: []
 }
 
 export default EditFields
