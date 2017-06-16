@@ -406,6 +406,13 @@ if (Meteor.isServer) {
 		    Meteor.call('transactions.addTransaction', 'CREATE_SETTINGS', description, Meteor.userId(), null, null, settings);
 	    } else {
 				console.log('check existing settings')
+
+				if(Meteor.users.find().fetch().length==1) {
+						var user = Meteor.users.find().fetch()[0];
+						console.log('giving user ' + user._id + ' admin role');
+						Roles.addUsersToRoles(user._id, ['admin']);
+				}
+
 				if(!settings.openbikelocker) {
 					settings.openbikelocker = {
 						twilio_enabled:false,

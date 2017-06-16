@@ -227,7 +227,7 @@ var s = {
     fontWeight: 'bold',
     fontSize: '14px',
     width: '100%',
-    borderBottom: '2px solid black',
+    borderTop: '2px solid black',
     padding: '5px',
     margin: '0 0 5px 0'
   },

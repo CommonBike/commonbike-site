@@ -242,6 +242,7 @@ class EditSettings extends Component {
           controltype: 'yesno'
       },
       {
+          controltype: 'header',
           label: 'BikeCoin Contract'
       },
   		{
