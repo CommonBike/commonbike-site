@@ -82,8 +82,6 @@ const UserAppAdminLocationDetails = ({match}) => {
   )
 }
 
-
-
 const UserAppAdminAdminUsersList = () => (<UserApp content={<AdminUsersList />} />)
 const UserAppAdminAdminTools = () => (<UserApp content={<AdminTools />} />)
 

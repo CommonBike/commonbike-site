@@ -10,6 +10,7 @@ import Hr from '/imports/client/components/Hr/Hr.jsx';
 import Avatar from '/imports/client/components/Avatar/Avatar.jsx';
 import CheckInCode from '/imports/client/components/CheckInCode/CheckInCode.jsx';
 import LoginForm from '/imports/client/components/LoginForm/LoginForm.jsx';
+import FeedbackWidget from '/imports/client/containers/FeedbackWidget/FeedbackWidget.jsx';
 import MapSummary from '/imports/client/MapSummary.jsx'
 import Balance from '/imports/client/components/Balance/Balance.jsx';
 
@@ -41,6 +42,12 @@ class CommonBikeUI extends Component {
 
         <h2>PaymentService</h2>
         <RaisedButton onClick={this.onTestPaymentService}>Test PaymentService</RaisedButton>
+
+        <h2>FeedbackWidget</h2>
+
+        <FeedbackWidget />
+
+        <h1>Buttons</h1>
 
         <h2>GoAbout</h2>
         <RaisedButton onClick={this.onTestGoAbout}>Test GoAbout API</RaisedButton>
