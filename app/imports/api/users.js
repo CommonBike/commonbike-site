@@ -3,7 +3,6 @@ import { Mongo } from 'meteor/mongo';
 import { Accounts } from 'meteor/accounts-base'
 import { Integrations } from '/imports/api/integrations.js';
 import { getSettingsServerSide } from '/imports/api/settings.js';
-import { VelocityAPI } from '/imports/api/integrations/velocity.js'
 import { CoinSchema } from '/imports/api/bikecoin.js';
 
 export const UserProfileSchema = new SimpleSchema({
@@ -74,22 +73,14 @@ if(Meteor.isServer) {
       return false;
     }
 
-    // If VeloCity onboarding is not enabled: user is validated by default
-    if ( ! getSettingsServerSide().velocity.enabled) {
-      return true;
-    }
-
-    // If VeloCity onboarding is enabled: check if email address is on the list
-    else {
-      return VelocityAPI.checkUserEmailAddress(user_email)
-    }
+    return true;
   });
 
   Accounts.onCreateUser((options, user) => {
     // We still want the default hook's 'profile' behavior.
     user.profile = options.profile || {};
 
-    if(getSettingsServerSide().onboarding.enabled||getSettingsServerSide().velocity.enabled) {
+    if(getSettingsServerSide().onboarding.enabled) {
       user.profile.active = true;
     }
 

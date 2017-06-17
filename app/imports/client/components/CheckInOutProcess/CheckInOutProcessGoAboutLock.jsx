@@ -29,7 +29,6 @@ class CheckInOutProcessGoAboutLock extends CheckInOutProcessBase {
   }
 
   openLink() {
-    console.log('openlink');
     var link = "https://goabout.com/checkout/overview?productUrl=https%253A%252F%252Fapi.goabout.com%252Fproduct%252F302&discountcode=" + this.props.object.state.rentalInfo.pincode;
     var win = window.open(link);
     win.focus();
@@ -45,8 +44,8 @@ class CheckInOutProcessGoAboutLock extends CheckInOutProcessBase {
           <ul style={s.list}>
             <Button onClick={()=>this.openLink().bind(this)} buttonStyle="hugeSmallerFont">RENT FOR FREE</Button>
             <li style={s.listitem}>Open the bike with the GoAbout App</li>
-            <li style={s.listitem}><a target="_blank" href="https://itunes.apple.com/nl/app/goabout/id1096695338?mt=8"><img src="/files/Velocity/appstore.png" alt="Download in the app store" /></a></li>
-            <li style={s.listitem}><a target="_blank" href="https://play.google.com/store/apps/details?id=com.goabout.goaboutapp"><img src="/files/Velocity/playstore.png" alt="Download in the app store" /></a></li>
+            <li style={s.listitem}><a target="_blank" href="https://itunes.apple.com/nl/app/goabout/id1096695338?mt=8"><img src="/files/ProviderLogos/appstore.png" alt="Download in the app store" /></a></li>
+            <li style={s.listitem}><a target="_blank" href="https://play.google.com/store/apps/details?id=com.goabout.goaboutapp"><img src="/files/ProviderLogos/playstore.png" alt="Download in the app store" /></a></li>
           </ul>
           </div>
           : <div /> }

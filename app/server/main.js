@@ -11,7 +11,6 @@ import { Log } from '/imports/api/log.js'
 import '/imports/server/testdata.js'
 import '/imports/api/databasetools.js';
 import '/imports/api/integrations/goabout.js';
-import '/imports/api/integrations/velocity.js';
 import '/imports/api/paymentservices/mollie.js';
 
 Meteor.startup(() => {

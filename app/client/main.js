@@ -178,6 +178,7 @@ const AppRoutesWithRouterContext = withRouter(AppRoutes)
 
 //
 class App extends React.Component {
+
   render() {
     return (
       <Router>
@@ -190,6 +191,12 @@ class App extends React.Component {
 //
 Meteor.startup(() => {
   Meteor.subscribe("settings");
+
+  // run once to get rid of the annoying service worker errors in the console
+  // navigator.serviceWorker.getRegistrations().then(function(registrations) {
+	//  for(let registration of registrations) {
+	//    registration.unregister()
+	// } })
 
   render(<App/>, document.getElementById('root'))
 })

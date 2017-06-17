@@ -7,7 +7,6 @@ import { RedirectTo } from '/client/main'
 
 // Import components
 import CommonBikeLogo from '../CommonBikeLogo/CommonBikeLogo.jsx'
-import VelocityLogo from '../VelocityLogo/VelocityLogo.jsx'
 import RaisedButton from '../Button/RaisedButton.jsx';
 
 class Landing extends Component {
@@ -25,7 +24,6 @@ class Landing extends Component {
       <div style={s.base} ref="base">
 
         <CommonBikeLogo style={s.logo} />
-        <VelocityLogo style={s.logo2} />
 
         <StyleRoot>
           <p style={s.introText}>

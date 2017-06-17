@@ -9,7 +9,7 @@ const latestSettingsVersion = 1;		// FUTURE: for automatic update of settings la
 export const defaultProfileName = 'default';   // FUTURE: multiple profiles
 
 // set fields/objects that are also visible to the client here
-const publicFieldset = {profileName:1, mapbox:1, veiligstallen:1, gps: 1};
+const publicFieldset = {profileName:1, mapbox:1, gps: 1};
 
 if (Meteor.isServer) {
 	Meteor.publish('settings', function settingsPublication(profileName) {
@@ -129,7 +129,7 @@ export const OnboardingSchema = new SimpleSchema({
   'enabled': {
     type: Boolean,
     label: "onboarding.enabled",
-    defaultValue: 'true'
+    defaultValue: 'false'
   }
 });
 
@@ -157,19 +157,6 @@ export const SkopeiSchema = new SimpleSchema({
     label: "skopei.clientkey",
     defaultValue: ''
   },
-});
-
-export const VelocitySchema = new SimpleSchema({
-	'enabled': {
-    type: Boolean,
-    label: "velocity.enabled",
-    defaultValue: 'false'
-  },
-	'token': {
-    type: String,
-    label: "velocity.token",
-    defaultValue: '<fill in token here>'
-  }
 });
 
 export const GoAboutSchema = new SimpleSchema({
@@ -277,9 +264,9 @@ export const SettingsSchema = new SimpleSchema({
 	skopei: {
     type: SkopeiSchema
   },
-	velocity: {
-    type: VelocitySchema
-  },
+	// velocity: {
+  //   type: VelocitySchema
+  // },
 	goabout: {
     type: GoAboutSchema
   },
@@ -332,7 +319,7 @@ if (Meteor.isServer) {
 						twilio_fromnumber: ""
 					},
 					onboarding: {
-					  enabled:true
+					  enabled:false
 					},
 					backup: {
 					  location:''
@@ -341,10 +328,6 @@ if (Meteor.isServer) {
 					  enabled:false,
 					  clientid: '',
 					  clientkey: ''
-					},
-					velocity : {
-					  enabled:false,
-					  token: ''
 					},
 					goabout : {
 					  enabled:false,
@@ -381,6 +364,12 @@ if (Meteor.isServer) {
 		    var description = 'Standaard instellingen aangemaakt';
 		    Meteor.call('transactions.addTransaction', 'CREATE_SETTINGS', description, Meteor.userId(), null, null, settings);
 	    } else {
+				if(settings.velocity) {
+					console.log('remove velocity settings')
+					Settings.update(settings._id, {$unset:{ velocity: "" }});
+					unset(settings.velocity)
+				}
+
 				if(!settings.openbikelocker) {
 					settings.openbikelocker = {
 						twilio_enabled:false,

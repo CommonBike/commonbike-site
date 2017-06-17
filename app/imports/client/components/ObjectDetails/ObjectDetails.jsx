@@ -117,7 +117,7 @@ class ObjectDetails extends Component {
           <ManageApiKeys keyOwnerId={this.props.object._id} keyType="object" />
           :null }
 
-        <div>{ this.getBalance( this.props.object ) }</div>
+{/*}        <div>{ this.getBalance( this.props.object ) }</div> */}
 
         { this.renderCheckInOutProcess() }
 
