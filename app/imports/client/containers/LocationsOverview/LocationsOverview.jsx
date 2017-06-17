@@ -36,7 +36,7 @@ class LocationList extends Component {
     if(locationName){
       Meteor.call('locations.insert', {
         title: locationName,
-        imageUrl: 'https://cdn2.iconfinder.com/data/icons/location-3/128/Location-26-512.png'
+        imageUrl: '/files/IconsButtons/Location-26-512.png' // https://cdn2.iconfinder.com/data/icons/location-3/128/Location-26-512.png
       }, this.newLocationAdded.bind(this));
     }
   }

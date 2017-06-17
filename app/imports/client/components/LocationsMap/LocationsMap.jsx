@@ -373,8 +373,7 @@ var s = {
   images: {
     veiligstallen: '/files/Veiligstallen/icon.png',
     veiligstallengrijs: '/files/Veiligstallen/icon-grijs.png',
-    // hier: 'https://cdn2.iconfinder.com/data/icons/mini-icon-set-map-location/91/Location_28-48.png'
-    hier: 'https://einheri.nl/assets/img/home_files/compass-black.svg'
+    hier: '/files/LocationsMap/compass-black.svg' // 'https://einheri.nl/assets/img/home_files/compass-black.svg'
   },
   searchForLocation: {
     position: 'relative',

@@ -149,7 +149,7 @@ var s = {
   addicon: {
     height:'48px',
     width:' 48px',
-    background: 'url("https://cdn1.iconfinder.com/data/icons/general-9/500/add-48.png") center center / contain no-repeat',
+    background: 'url("/files/IconsButtons/add-48.png") center center / contain no-repeat', // https://cdn1.iconfinder.com/data/icons/general-9/500/add-48.png
     border: 'none'
   },
 
@@ -159,8 +159,8 @@ var s = {
   },
 
   images: {
-    details: 'https://cdn1.iconfinder.com/data/icons/general-9/500/more-48.png',
-    trashcan: 'https://cdn4.iconfinder.com/data/icons/miu/24/editor-trash-delete-recycle-bin-glyph-48.png'
+    details: '/files/IconsButtons/more-48.png', // https://cdn1.iconfinder.com/data/icons/general-9/500/more-48.png
+    trashcan: '/files/IconsButtons/editor-trash-delete-recycle-bin-glyph-48.png', // https://cdn4.iconfinder.com/data/icons/miu/24/editor-trash-delete-recycle-bin-glyph-48.png
   },
 
   textField: {

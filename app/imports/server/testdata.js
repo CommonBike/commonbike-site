@@ -37,10 +37,10 @@ var testLocations = [
    bikeimage: '/files/Block/bike.png',
    bikes: [ { title: 'Skopei Demo Bike (160020)', description: 'de Skopei fiets met nummer 160020', state: 'available',
               locktype: 'skopei-v1', locksettings: { elockid: '160020'}},
-            // { title: 'Skopei Demo Bike (160021)', description: 'de Skopei fiets met nummer 160021 ', state: 'available',
-            //   locktype: 'skopei-v1', locksettings: { elockid: '160021'}},
-            // { title: 'Skopei Demo Bike (170178)', description: 'de Skopei fiets met nummer 170178', state: 'available',
-            //   locktype: 'skopei-v1', locksettings: { elockid: '170178'}},
+            { title: 'Skopei Demo Bike (160021)', description: 'de Skopei fiets met nummer 160021 ', state: 'available',
+              locktype: 'skopei-v1', locksettings: { elockid: '160021'}},
+            { title: 'Skopei Demo Bike (170178)', description: 'de Skopei fiets met nummer 170178', state: 'available',
+              locktype: 'skopei-v1', locksettings: { elockid: '170178'}},
             { title: 'GoAbout Demo Bike', description: 'de GoAbout fiets met nummer xxxx', state: 'available',
               locktype: 'goabout-v1', locksettings: { elockid: '170178', code: 'asdfasdfasdfasdfasdf' }},
             { title: 'OpenELock Demo Bike', description: 'de CommonBike Elock fiets met nummer xxxx', state: 'available',
@@ -55,15 +55,15 @@ var testLocations = [
             // { title: 'Batavus 5', description: 'Fietsnr. 1166', state: 'outoforder'}
               ]
   },
-  // {title:"S2M",
-  //  description: "The heart and mind",
-  //  address:"Moreelsepark 65, Utrecht, Netherlands",
-  //  imageUrl:'https://cdn1.iconfinder.com/data/icons/UrbanStories-png-Artdesigner-lv/256/Bicycle_by_Artdesigner.lv.png',
-  //  providers:["s2m@commonbike.com", "user2@commonbike.com"],
-  //  bikeimage: '/files/Block/bike.png',
-  //  bikes: [ { title: 'Skopei Demo Bike', description: 'Skopei demonstratiefiets met eLock', state: 'available'},
-  //           { title: 'Giant 1', description: 'Damesfiets 33879', state: 'available'}, ]
-  // },
+  {title:"S2M",
+   description: "The heart and mind",
+   address:"Moreelsepark 65, Utrecht, Netherlands",
+   imageUrl:'https://cdn1.iconfinder.com/data/icons/UrbanStories-png-Artdesigner-lv/256/Bicycle_by_Artdesigner.lv.png',
+   providers:["s2m@commonbike.com", "user2@commonbike.com"],
+   bikeimage: '/files/Block/bike.png',
+   bikes: [ { title: 'Skopei Demo Bike', description: 'Skopei demonstratiefiets met eLock', state: 'available'},
+            { title: 'Giant 1', description: 'Damesfiets 33879', state: 'available'}, ]
+  },
   {title:"Lockers Zeist",
    address:"Utrechtseweg 2, 3732 HB De Bilt, Netherlands",
    lat_lng: [52.098325, 5.212101],
@@ -87,17 +87,17 @@ var testLocations = [
             { title: 'Bikelocker H', description: 'rechterkluis', state: 'available',
               locktype: 'open-bikelocker'} ]
   },
-  // {title:"Easyfiets - Bij Leiden CS",
-  //  address: "Bargelaan 68, 2333 CV Leiden",
-  //  lat_lng: [ 52.166636, 4.481510],
-  //  imageUrl:'/files/Testdata/easyfiets-logo.jpg',
-  //  providers:["easyfiets@commonbike.com"],
-  //  bikeimage: '/files/Testdata/easyfiets-bike.jpg',
-  //  bikes: [ { title: 'Easyfiets 1', description: 'Herenfiets', state: 'available',
-  //             locktype: 'plainkey', locksettings: { keyid: '1001' }},
-  //           { title: 'Easyfiets 5', description: 'Damesfiets', state: 'available',
-  //             locktype: 'plainkey', locksettings: { keyid: '2361' }} ]
-  // },
+  {title:"Easyfiets - Bij Leiden CS",
+   address: "Bargelaan 68, 2333 CV Leiden",
+   lat_lng: [ 52.166636, 4.481510],
+   imageUrl:'/files/Testdata/easyfiets-logo.jpg',
+   providers:["easyfiets@commonbike.com"],
+   bikeimage: '/files/Testdata/easyfiets-bike.jpg',
+   bikes: [ { title: 'Easyfiets 1', description: 'Herenfiets', state: 'available',
+              locktype: 'plainkey', locksettings: { keyid: '1001' }},
+            { title: 'Easyfiets 5', description: 'Damesfiets', state: 'available',
+              locktype: 'plainkey', locksettings: { keyid: '2361' }} ]
+  },
   // {title:"Easyfiets - Bij Leiden Lammenschans",
   //  address: "Kamerlingh Onnesplein 4, 2313 VL Leiden, the Netherlands",
   //  lat_lng: [52.146937, 4.492933],
@@ -207,9 +207,8 @@ export const checkTestUsers = function() {
         }
       });
 
-      // // email verification
-      // var anavatar = GetRandomAvatar();
-      // Meteor.users.update({_id: id}, {$set:{'avatar': anavatar}});
+      var anavatar = GetRandomAvatar();
+      Meteor.users.update({_id: id}, {$set:{'avatar': anavatar}});
 
       // email verification
       Meteor.users.update({_id: id}, {$set:{'emails.0.verified': true, 'profile.active':true}});

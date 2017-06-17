@@ -378,28 +378,9 @@ if (Meteor.isServer) {
 
 				Settings.update(settingsId, settings, {validate: false});
 
-				if(Meteor.users.find().fetch().length==0) {
-					Accounts.createUser({
-					                            username: 'commonbike-admin',
-					                            email : 'info@common.bike',
-					                            password : 'commonbike-admin-!!##',
-					                            profile  : {
-					                                active: true
-					                            }
-					    });
-				}
-
 		    var description = 'Standaard instellingen aangemaakt';
 		    Meteor.call('transactions.addTransaction', 'CREATE_SETTINGS', description, Meteor.userId(), null, null, settings);
 	    } else {
-				console.log('check existing settings')
-
-				if(Meteor.users.find().fetch().length==1) {
-						var user = Meteor.users.find().fetch()[0];
-						console.log('giving user ' + user._id + ' admin role');
-						Roles.addUsersToRoles(user._id, ['admin']);
-				}
-
 				if(!settings.openbikelocker) {
 					settings.openbikelocker = {
 						twilio_enabled:false,
@@ -413,6 +394,20 @@ if (Meteor.isServer) {
 
 				if(!settings.onboarding) {
 					settings.onboarding = { enabled: false };
+
+					Settings.update(settings._id, settings, {validate: false});
+				}
+
+				if(settings.mapbox.userId.substring(0,3)!='pk.') {
+					console.log('setting mapbox userId');
+				  settings.mapbox.userId='pk.eyJ1IjoiZXJpY3ZycCIsImEiOiJjaWhraHE5ajIwNmRqdGpqN2h2ZXhqMnRsIn0.1FBWllDyQ_nSlHFE2jMLDA';
+					Settings.update(settings._id, settings, {validate: false});
+				}
+
+				if(!settings.backup) {
+					settings.backup = {
+						location:'~/backup-commonbike'
+					}
 
 					Settings.update(settings._id, settings, {validate: false});
 				}
@@ -433,55 +428,11 @@ if (Meteor.isServer) {
 					Settings.update(settings._id, settings, {validate: false});
 				}
 
-				if(settings.bikecoin.enabled && settings.bikecoin.wallet.address=='' && settings.bikecoin.wallet.privatekey=='') {
-					var BikeCoin = require('/server/api/BikeCoin.js');
-
-					var keypair = BikeCoin.newKeypair();
-					settings.bikecoin.wallet.address = keypair.address;
-				  settings.bikecoin.wallet.privatekey = keypair.privatekey;
-
-					console.log('adding bikecoin keypair to general settings')
-					Settings.update(settings._id, settings, {validate: false});
-				}
-
-				if(settings.mapbox.userId.substring(0,3)!='pk.') {
-					console.log('setting mapbox userId');
-				  settings.mapbox.userId='pk.eyJ1IjoiZXJpY3ZycCIsImEiOiJjaWhraHE5ajIwNmRqdGpqN2h2ZXhqMnRsIn0.1FBWllDyQ_nSlHFE2jMLDA';
-
-					console.log('setting provider URL to ropsten testnet');
-					Settings.update(settings._id, settings, {validate: false});
-				}
-
-
-				if(settings.bikecoin.provider_url=='') {
-				  settings.bikecoin.provider_url='https://ropsten.infura.io/sCQUO1V3FOoOUWGZBtig';
-
-					console.log('setting provider URL to ropsten testnet');
-					Settings.update(settings._id, settings, {validate: false});
-				}
-
-				if(!settings.backup) {
-					settings.backup = {
-						location:'~/backup-commonbike'
-					}
-
-					Settings.update(settings._id, settings, {validate: false});
-				}
-
 				if(!settings.skopei) {
 					settings.skopei = {
 						enabled:false,
 						clientid: '',
 						clientkey: ''
-					}
-
-					Settings.update(settings._id, settings, {validate: false});
-				}
-
-				if(!settings.velocity) {
-					settings.velocity = {
-						enabled:false,
-						token: ''
 					}
 
 					Settings.update(settings._id, settings, {validate: false});
@@ -493,21 +444,6 @@ if (Meteor.isServer) {
 						clientid: '',
 						clientsecret: '',
 						userbearertoken: ''
-					}
-
-					Settings.update(settings._id, settings, {validate: false});
-				}
-
-				if(!settings.bikecoin) {
-					settings.bikecoin = {
-						enabled:false,
-						provider_url : '',
-		        "token_address" : '',
-		        "token_abi" : [],
-						"wallet" : {
-						            "address" : '',
-						            "privatekey" : ''
-		        }
 					}
 
 					Settings.update(settings._id, settings, {validate: false});
@@ -530,6 +466,47 @@ if (Meteor.isServer) {
 			  	throw new Meteor.Error('invalid-settings');
 		    }
 	    }
+
+			// Do settings initialisation below this line. Code above assures that the
+			// structures are present in the database, code below should set values
+			// so that it works out of the box when doing a fresh installation
+			if(settings.bikecoin.provider_url=='') {
+				// key generation will fail if there is no provider_url set
+				settings.bikecoin.provider_url='https://ropsten.infura.io/sCQUO1V3FOoOUWGZBtig';
+
+				console.log('setting provider URL to ropsten testnet');
+				Settings.update(settings._id, settings, {validate: false});	// todo: make net selectable in the configuration
+			}
+
+			if(settings.bikecoin.wallet.address=='' && settings.bikecoin.wallet.privatekey=='') {
+				var keypair = BikeCoin.newKeypair();
+				settings.bikecoin.wallet.address = keypair.address;
+				settings.bikecoin.wallet.privatekey = keypair.privatekey;
+
+				console.log('adding bikecoin keypair to general settings')
+				Settings.update(settings._id, settings, {validate: false});
+			}
+
+			if(Meteor.users.find().fetch().length==0) {
+				console.log('create genesis user');
+
+				Accounts.createUser({
+						username: 'commonbike-admin',
+						email : 'info@common.bike',
+						password : 'commonbike-admin-!!##',
+						profile  : {
+								active: true
+						}
+				});
+			}
+
+			if(Meteor.users.find().fetch().length==1) {
+					var user = Meteor.users.find().fetch()[0];
+					if(!Roles.userIsInRole(user._id, ["admin"])) {
+						console.log('giving user ' + user._id + ' admin role');
+						Roles.addUsersToRoles(user._id, ['admin']);
+					}
+			}
 	  },
 	  'settings.update'(settingsId, settings) {
 	    // Make sure an adminuser is logged in

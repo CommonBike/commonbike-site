@@ -265,9 +265,9 @@ var s = {
     height:' auto'
   },
   images: {
-    details: 'https://cdn1.iconfinder.com/data/icons/general-9/500/more-48.png',
-    yes: 'https://cdn3.iconfinder.com/data/icons/flat-actions-icons-9/792/Tick_Mark_Dark-128.png',
-    no: 'https://cdn3.iconfinder.com/data/icons/flat-actions-icons-9/792/Close_Icon_Dark-128.png'
+    details: '/files/IconsButtons/more-48.png', // https://cdn1.iconfinder.com/data/icons/general-9/500/more-48.png
+    yes: '/files/IconsButtons/Tick_Mark_Dark-128.png', // 'https://cdn3.iconfinder.com/data/icons/flat-actions-icons-9/792/Tick_Mark_Dark-128.png',
+    no: '/files/IconsButtons/Close_Icon_Dark-128.png' // 'https://cdn3.iconfinder.com/data/icons/flat-actions-icons-9/792/Close_Icon_Dark-128.png'
   },
 }
 

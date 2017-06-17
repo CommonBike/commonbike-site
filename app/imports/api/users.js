@@ -65,11 +65,9 @@ if(Meteor.isServer) {
 
   // Validate username, sending a specific error message on failure.
   Accounts.validateNewUser((user) => {
-
     if(user.emails && user.emails.length>0 && user.emails[0].address) {
       user_email = user.emails[0].address;
       user_pass = user.services.password
-      console.log(JSON.stringify(user, 0,2));
     }
 
     else {
@@ -132,16 +130,13 @@ if(Meteor.isServer) {
       if(user) {
         if(!user.profile || !user.profile.wallet || (user.profile.wallet.address=='' && user.profile.wallet.privatekey=='')) {
 
-          console.log('Added keypair to user during activation');
-
-          var BikeCoin = require('/server/api/BikeCoin.js');
           var keypair = BikeCoin.newKeypair();
           data = { 'profile.active' : isActive,
                    'profile.wallet.address':  keypair.address,
     		           'profile.wallet.privatekey':  keypair.privatekey
                   }
         }
-  		}
+      }
 
       Meteor.users.update(userId, {$set : data});
 
@@ -186,7 +181,6 @@ if(Meteor.isServer) {
 
       console.log('AutoOnboarding user ' + this.userId);
 
-      var BikeCoin = require('/server/api/BikeCoin.js');
 			var keypair = BikeCoin.newKeypair();
       Meteor.users.update(this.userId, {$set : { 'profile.active' : true,
                                                  'profile.wallet' : { address : keypair.address,

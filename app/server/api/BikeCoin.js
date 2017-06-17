@@ -25,17 +25,28 @@ export default class BikeCoin {
 
   // General purpose helpers
   static settings() {
-    console.log(Settings.findOne().bikecoin)
+    return Settings.findOne().bikecoin;
   }
 
   static newKeypair() {
     const seedPhrase = bip39.generateMnemonic()
-    const provider   = new HDWalletProvider(seedPhrase, Settings.findOne().bikecoin.provider_url)
 
-    return {
-      address: '0x' + provider.wallet.getAddress().toString("hex"),
-      privatekey: seedPhrase,
+    let wallet
+    if(BikeCoin.settings().provider_url!='') {
+       var provider = new HDWalletProvider(seedPhrase, BikeCoin.settings().provider_url)
+       wallet = {
+         address: '0x' + provider.wallet.getAddress().toString("hex"),
+         privatekey: seedPhrase,
+       }
+    } else {
+      console.log('unable to create wallet - no provider url set');
+      wallet = {
+        address: '',
+        privatekey:  ''
+      }
     }
+
+    return wallet
   }
 
   static web3(seedPhrase) { // note: we only need to supply seedPhrase when we need to sign a transaction!
