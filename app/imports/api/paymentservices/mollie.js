@@ -8,6 +8,23 @@ if (Meteor.isServer) {
   const apiKey = 'test_URmqjja4mgBjPmVSnPjc5waVmumDtP'
   mollie.setApiKey(apiKey)
 
+  const bluebird = require("bluebird")
+  // console.log('bluebird promise...')
+  // console.log(promise)
+
+  // console.log('meteor/promise...')   // import { Promise } from 'meteor/promise'
+  // console.log(Promise)
+
+  const mollie_payments_create_withCB = (args, cb) => {
+    mollie.payments.create(args, (payment) => cb(null, payment))
+  }
+  const mollie_payments_create = bluebird.promisify(mollie_payments_create_withCB)
+
+  const mollie_payments_get_withCB = (args, cb) => {
+    mollie.payments.get(args, (payment) => cb(null, payment))
+  }
+  const mollie_payments_get    = bluebird.promisify(mollie_payments_get_withCB)
+
   let paymentId = undefined // XXX this will soon move to a payments collection
 
   Meteor.methods({
@@ -20,29 +37,30 @@ if (Meteor.isServer) {
       const customerId = this.userId
 
       // https://www.mollie.com/nl/docs/reference/payments/create
-      // XXX run this sychronously so we can return the redirectUrl to the client
-      mollie.payments.create({
+      const payment = Promise.await(mollie_payments_create({
         amount:      amount,
         description: 'Buy BikeCoins',
         redirectUrl: `${baseUrl}/payment/${orderId}`,
         webhookUrl:  `${baseUrl}/payment/webhook`
-      }, function (payment) {
-        if (payment.error) {
-          console.error(payment)
-          return
-        }
+      }))
 
-        paymentId = payment.id // XXX only for now
-        const order = {
-          paymentId: payment.id,
-          orderId: orderId,
-          customerId: customerId
-        }
-        // TODO: store order object in 'payments' Mongo collection
+      if (payment.error) {
+        console.error(payment)
+        return
+      }
 
-        // console.log(payment)
-        console.log('paymentservice.create', amount, 'euro(s) in order', orderId, 'by visiting', payment.links.paymentUrl)
-      }) // end of payment callback
+      // console.log(payment)
+      paymentId = payment.id // XXX only for now
+      const order = {
+        paymentId: payment.id,
+        orderId: orderId,
+        customerId: customerId
+      }
+      // console.log(order)
+      // TODO: store order object in 'payments' Mongo collection
+
+      console.log('order', orderId, 'for', amount, 'euro handled by visiting', payment.links.paymentUrl)
+      return payment.links.paymentUrl
     }, // end of 'paymentservice.create' server method
 
     // TODO: we should have a webhook function here that is handled on the server instead of on the client
@@ -53,24 +71,19 @@ if (Meteor.isServer) {
 
       // TODO: get data from payments collection
 
-      const orderStatus = '<result in server log>'
+      const payment = Promise.await(mollie_payments_get(paymentId))
+      if (payment.error) {
+        console.error(payment)
+        return
+      }
 
-      // XXX run this sychronously so we can return the redirectUrl to the client
-      mollie.payments.get(paymentId, function (payment) {
-        if (payment.error) {
-          console.error(payment)
-          return
-        }
+      console.log('order', orderId, 'with paymentId', paymentId, 'is', payment.status)
 
-        console.log('order', orderId, 'with paymentId', paymentId, 'has status', payment.status)
+      // if (payment.isPaid()) {
+      //   console.log('order', orderId, 'payment received')
+      // }
 
-        // if (payment.isPaid()) {
-        //   console.log('order', orderId, 'payment received')
-        // }
-      })
-
-      // console.log('order', orderId, 'has status', orderStatus)
-      return orderStatus
+      return payment.status
     },
 
   }) // end of Meteor.methods
