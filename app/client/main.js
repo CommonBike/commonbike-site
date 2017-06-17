@@ -25,6 +25,8 @@ import ObjectDetails from '/imports/client/containers/ObjectDetails/ObjectDetail
 import CommonBikeUI from '/imports/client/commonbike-ui.jsx'
 import AdminTools from '/imports/client/components/AdminTools/AdminTools.jsx'
 import LogList from '/imports/client/containers/LogList/LogList.jsx'
+import PaymentWebhook from '/imports/client/components/PaymentWebhook/PaymentWebhook.jsx'
+import PaymentOrder from '/imports/client/components/PaymentOrder/PaymentOrder.jsx'
 import NoMatch from '/imports/client/components/NoMatch/NoMatch.jsx'
 
 const UserAppLanding = () => (<UserApp showPageHeader={false} content={<Landing/>} />)
@@ -158,6 +160,9 @@ class AppRoutes extends React.Component {
       <RouteWhenLoggedIn path='/transactions' component={UserAppTransactionList}/>
       <RouteWhenLoggedIn path='/bike/checkin/:objectId' component={UserAppCustomPageObjectDetailsCheckin}/>
       <RouteWhenLoggedIn path='/commonbike-ui' component={CommonBikeUI}/>
+
+      <Route path='/payment/webhook' component={PaymentWebhook}/>
+      <RouteWhenLoggedIn path='/payment/:orderId' component={PaymentOrder}/>
 
       <RouteWhenLoggedIn path='/admin/locations' component={UserAppAdminLocationsOverview}/>
       <RouteWhenLoggedIn path='/admin/rentals' component={UserAppRentalList}/>
