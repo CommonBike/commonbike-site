@@ -1,4 +1,5 @@
 import React from 'react'
+import RaisedButton from '/imports/client/components/Button/RaisedButton.jsx';
 
 class PaymentOrder extends React.Component {
   constructor(props) {
@@ -7,7 +8,7 @@ class PaymentOrder extends React.Component {
     const { orderId } = props.match.params
     this.state = {
       orderId: orderId,
-      orderStatus: '<unknown>'
+      orderStatus: '?'
     }
 
     // console.log('PaymentOrder', this.state)
@@ -20,11 +21,16 @@ class PaymentOrder extends React.Component {
     )
   }
 
+  onAgain() {
+    document.location = "/commonbike-ui"
+  }
+
   render() {
     return (
       <div>
-        <h2>PaymentOrder</h2>
-        <p>orderId {this.state.orderId} status is {this.state.orderStatus}</p>
+        <h2>order {this.state.orderId} is {this.state.orderStatus}</h2>
+        <RaisedButton onClick={this.onAgain}>Again</RaisedButton>
+
       </div>
     )
   } // end of render()

@@ -15,6 +15,13 @@ import Balance from '/imports/client/components/Balance/Balance.jsx';
 
 class CommonBikeUI extends Component {
 
+  onTestPaymentService() {
+    Meteor.call('paymentservice.create', 0.42, (error, result) => {
+      console.log(error || result)
+      document.location = result
+    })
+  }
+
   onTestGoAbout() {
     Meteor.call('goabout.checklocations', (error, result) => {
       console.log(error || result)
@@ -31,6 +38,9 @@ class CommonBikeUI extends Component {
     return (
      <div style={s.base}>
         <Balance title="saldo" address="161ca556b59a3a8e5d5fcd9e5e1208c08222e777" providerurl="https://ropsten.infura.io/sCQUO1V3FOo"></Balance>
+
+        <h2>PaymentService</h2>
+        <RaisedButton onClick={this.onTestPaymentService}>Test PaymentService</RaisedButton>
 
         <h2>GoAbout</h2>
         <RaisedButton onClick={this.onTestGoAbout}>Test GoAbout API</RaisedButton>
