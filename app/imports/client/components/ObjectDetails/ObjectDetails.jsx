@@ -99,7 +99,7 @@ class ObjectDetails extends Component {
       <div style={s.base}>
 
         <p style={s.intro}>
-          <i><span dangerouslySetInnerHTML={{__html: this.props.location.title}} /></i>
+          Reserveer bij:<br /><span dangerouslySetInnerHTML={{__html: this.props.location.title}} />
         </p>
 
         <center>

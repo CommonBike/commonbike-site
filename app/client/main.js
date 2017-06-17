@@ -29,7 +29,7 @@ import PaymentWebhook from '/imports/client/components/PaymentWebhook/PaymentWeb
 import PaymentOrder from '/imports/client/components/PaymentOrder/PaymentOrder.jsx'
 import NoMatch from '/imports/client/components/NoMatch/NoMatch.jsx'
 
-const UserAppLanding = () => (<UserApp showPageHeader={false} content={<Landing/>} />)
+const UserAppLanding = () => (<UserApp showPageHeader={false} content={<Landing/>} background="#00d0a2"  />)
 const UserAppAbout = () => (<UserApp content={<ContentPage><About /></ContentPage>} />)
 const UserAppJoin = () => (<UserApp content={<ContentPage><Join /></ContentPage>} />)
 const UserAppLogin = ({match}) => {
@@ -42,7 +42,7 @@ const UserAppProfile = () => (<UserApp content={<div><Profile isEditable="true" 
 const UserAppLocationsOverview = () => (<UserApp showPageHeader={false} content={<LocationsOverview />} />)
 const UserAppLocationDetails = ({match}) => {
   return (
-    <UserApp content={<LocationDetails locationId={match.params.locationId} />} />
+    <UserApp content={<LocationDetails locationId={match.params.locationId} background="#fff"/>} />
   )
 }
 
@@ -60,7 +60,7 @@ const UserAppRentalList = () => (<UserApp content={<ObjectList rentalsMode={true
 
 const UserAppCustomPageObjectDetails = ({match}) => {
   return (
-    <UserApp content={<CustomPage backgroundColor="#f9f9f9"><ObjectDetails objectId={match.params.objectId}/></CustomPage>} />
+    <UserApp content={<CustomPage backgroundColor="#fff"><ObjectDetails objectId={match.params.objectId}/></CustomPage>} />
   )
 }
 const UserAppCustomAdminPageObjectDetails = ({match}) => {

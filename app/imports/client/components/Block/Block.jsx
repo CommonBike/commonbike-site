@@ -82,9 +82,8 @@ class Block extends Component {
   render() {
     return (
       <article style={Object.assign({}, s.base, ! this.props.isEditable && {cursor: 'pointer'})} onClick={this.props.onClick} ref="base">
-        <div style={s.avatar} onClick={this.props.newAvatar}>
-          <img src={this.props.item.imageUrl ? this.props.item.imageUrl : '/files/Block/bike.png'} alt="Bike" title="Le bike." />
-        </div>
+        <div style={s.avatar} onClick={this.props.newAvatar} style={Object.assign({}, s.avatar, {backgroundImage: 'url("'+this.props.item.imageUrl+'")'})}
+          onClick={this.props.newAvatar} />
 
         <div style={s.textWrapper} ref="textWrapper">
 
@@ -123,6 +122,11 @@ var s = {
   },
   avatar: {
     flex: 1,
+    width: '80px',
+    height: '80px',
+    backgroundPosition: 'center center',
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
     maxHeight: '148px'
   },
   textWrapper: {
