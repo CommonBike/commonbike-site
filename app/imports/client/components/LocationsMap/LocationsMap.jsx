@@ -90,7 +90,7 @@ class LocationsMapComponent extends Component {
     }.bind(this));
 
     var trackingMarkersGroup = L.featureGroup().addTo(map);   // no tracking marker yet!
-    // this.toggleTrackUser()   // Velocity: Always show the initially set position, reposition when user clicks compass icon
+    this.toggleTrackUser()
 
     // var parkingstates = {
     //   states: [
@@ -197,8 +197,6 @@ class LocationsMapComponent extends Component {
     //     var clickedMarker = event.layer;
     //     RedirectTo('/location/' + clickedMarker.locationId);
     // }.bind(this));
-
-    // return locationMarkersGroup;
   }
 
   initializeObjectsMarkers() {
@@ -311,7 +309,7 @@ class LocationsMapComponent extends Component {
   //     return;
   //   }
   //
-  //   omnivore.kml('/files/Veiligstallen/veiligstallen.kml', null, this.state.parkingMarkersGroup).addTo(this.state.map);
+  // omnivore.kml('/files/ProviderLogos/Veiligstallen/veiligstallen.kml', null, this.state.parkingMarkersGroup).addTo(this.state.map);
   // }
   //
   // toggleParking() {
@@ -371,9 +369,9 @@ var s = {
     margin: '15px 20px'
   },
   images: {
-    veiligstallen: '/files/Veiligstallen/icon.png',
-    veiligstallengrijs: '/files/Veiligstallen/icon-grijs.png',
-    hier: '/files/LocationsMap/compass-black.svg' // 'https://einheri.nl/assets/img/home_files/compass-black.svg'
+    veiligstallen: '/files/ProviderLogos/Veiligstallen/icon.png',
+    veiligstallengrijs: '/files/ProviderLogos/Veiligstallen/icon-grijs.png',
+    hier: '/files/IconsButtons/compass-black.svg' // 'https://einheri.nl/assets/img/home_files/compass-black.svg'
   },
   searchForLocation: {
     position: 'relative',

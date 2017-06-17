@@ -28,12 +28,6 @@ class CommonBikeUI extends Component {
     })
   }
 
-  onTestVelocity() {
-    Meteor.call('velocity.checkuser', 'mosbuma@bumos.nl', (error, result) => {
-      console.log(error || result)
-    })
-  }
-
   onTestSoap() {
     Meteor.call('testsoap', (error, result) => {
       console.log(error || result)
@@ -47,9 +41,6 @@ class CommonBikeUI extends Component {
 
         <h2>PaymentService</h2>
         <RaisedButton onClick={this.onTestPaymentService}>Test PaymentService</RaisedButton>
-
-        <h2>Velocity Onboarding</h2>
-        <RaisedButton onClick={this.onTestVelocity}>Test Velocity Onboarding</RaisedButton>
 
         <h2>GoAbout</h2>
         <RaisedButton onClick={this.onTestGoAbout}>Test GoAbout API</RaisedButton>

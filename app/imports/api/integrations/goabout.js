@@ -150,7 +150,7 @@ class GoAboutAPIClass {
             "locationId" : locationId,
             "title" : item.label,
             "description" : "",
-            "imageUrl" : "/files/Velocity/go-about-logo.png",
+            "imageUrl" : "/files/ProviderLogos/go-about-logo.png",
             "state" : {
                 "state" : state,
                 "userId" : null,
@@ -251,8 +251,7 @@ class GoAboutAPIClass {
           description: item.instructions,
           locationType: 'goabout',
           externalId: item.id.toString(),
-          // imageUrl: '/files/Velocity/velocity-logo.png'
-          imageUrl : "/files/Velocity/go-about-logo.png",
+          imageUrl : "/files/ProviderLogos/go-about-logo.png",
         }
 
         var locationId;

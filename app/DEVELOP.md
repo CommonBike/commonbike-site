@@ -7,6 +7,7 @@
 - [Configuring login services](#3-configuring-login-services-like-facebook-and-twitter)
 - [Used libraries](#4-used-libraries)
 - [Used techniques](#5-used-techniques)
+- [Testing](#6-testing)
 - [Future plans / Participate!](#future-plans--participate)
 
 ## 1. How to start
@@ -66,6 +67,10 @@ What code libraries are used?
 What code techniques are used?
 
 - Semantic versioning ([semver](https://docs.npmjs.com/getting-started/semantic-versioning))
+
+## 6. Testing
+
+- A test script can be found at ([testscript](https://docs.google.com/spreadsheets/d/1JcdxosiQe3FDUTKkx9ksgosLR1Stom-sKoKXga8RATo/edit?usp=sharing))
 
 ## Future plans / Participate!
 

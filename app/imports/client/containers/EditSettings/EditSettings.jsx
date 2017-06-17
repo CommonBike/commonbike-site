@@ -217,22 +217,6 @@ class EditSettings extends Component {
       },
       {
           controltype: 'header',
-          label: 'Velocity Options'
-      },
-      {
-          fieldname: 'velocity.enabled',
-          fieldvalue: this.props.settings.velocity.enabled,
-          label: 'Enabled',
-          controltype: 'yesno'
-      },
-      {
-          fieldname: 'velocity.token',
-          fieldvalue: this.props.settings.velocity.token,
-          controltype: 'text',
-          label: 'Onboarding Token'
-      },
-      {
-          controltype: 'header',
           label: 'Use GPS Location'
       },
       {
