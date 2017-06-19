@@ -42,7 +42,7 @@ if (Meteor.isServer) {
         description: 'Buy BikeCoins',
         redirectUrl: `${baseUrl}/payment/${orderId}`,
         webhookUrl:  `${baseUrl}/payment/webhook`
-      }))
+      })) 
 
       if (payment.error) {
         console.error(payment)
