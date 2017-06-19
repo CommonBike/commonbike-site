@@ -8,7 +8,7 @@ class Balance extends Component {
   constructor(props) {
     super(props);
 
-    console.log('balance constructor called');
+    // console.log('balance constructor called');
 
     var Web3 = require("web3")
     this.web3 = new Web3(new Web3.providers.HttpProvider(this.props.providerurl));
@@ -18,7 +18,7 @@ class Balance extends Component {
       this.web3.eth.watch('chain').changed((i)=>console.log('chain changed!'));
     };
 
-    this.state = { balance: "??????"};
+    this.state = { balance: 0};
   }
 
   updateEtherBalance() {
@@ -31,16 +31,22 @@ class Balance extends Component {
     //   this.setState({balance: Web3.fromWei(balance, 'ether').toNumber()});
     // }).bind(this);
 
+    if (!this.props.address) return
+    // console.log(this.props.address)
+
     var balanceWei = this.web3.eth.getBalance(this.props.address);
     var balanceEth = this.web3.fromWei(balanceWei, 'ether').toNumber()
-    console.log('new balance set for ' + this.props.address + ' ' + balanceEth)
-    this.setState({balance: balanceEth});
+
+    if (balanceEth !== this.state.balance) {
+      // console.log('new balance set for ' + this.props.address + ' ' + balanceEth)
+      this.setState({balance: balanceEth});
+    }
   }
 
   componentDidMount() {
     this.updateEtherBalance();
 
-    this.interval = setInterval(()=>this.updateEtherBalance(), 5000);
+    this.interval = setInterval(()=>this.updateEtherBalance(), 1000);
   }
 
   componentWillUnmount() {
@@ -52,7 +58,7 @@ class Balance extends Component {
     return (
       <div style={s.balance} ref="base">
         <div style={s.label}>{this.props.label}</div>
-        <div style={s.label}>{this.state.balance}</div>
+        <div style={s.label}>{this.state.balance} ETH</div>
       </div>
     );
   }
