@@ -18,35 +18,37 @@ class Balance extends Component {
       this.web3.eth.watch('chain').changed((i)=>console.log('chain changed!'));
     };
 
-    this.state = { balance: 0};
+    this.state = { balanceEth: 0, balanceBC: 0};
   }
 
-  updateEtherBalance() {
-    // this.web3.eth.getBalance(this.props.address, (err, balance) => {
-    //   if (err) {
-    //     this.setState({balance: "-------"});
-    //     return;
-    //   }
-    //
-    //   this.setState({balance: Web3.fromWei(balance, 'ether').toNumber()});
-    // }).bind(this);
+  updateBalances() {
+    const { address } = this.props
+    if (!address) return
+    // console.log(address)
 
-    if (!this.props.address) return
-    // console.log(this.props.address)
-
-    var balanceWei = this.web3.eth.getBalance(this.props.address);
+    var balanceWei = this.web3.eth.getBalance(address);
     var balanceEth = this.web3.fromWei(balanceWei, 'ether').toNumber()
-
-    if (balanceEth !== this.state.balance) {
-      // console.log('new balance set for ' + this.props.address + ' ' + balanceEth)
-      this.setState({balance: balanceEth});
+    if (balanceEth !== this.state.balanceEth) {
+      // console.log(address, 'owns', balanceEth, 'ETH')
+      this.setState({balanceEth: balanceEth});
     }
+
+    BikeCoin.bikeCoinsInstance().balanceOf(address, (err, balance) => {
+      if (err) { console.error(err); return; }
+      const balanceBC = balance.toNumber() / Math.pow(10, BikeCoin.decimalUnits)
+      if (balanceBC !== this.state.balanceBC) {
+        // console.log(address, 'owns', balanceBC, BikeCoin.tokenSymbol)
+        this.setState({balanceBC: balanceBC});
+      }
+    })
+
+    // BikeCoin.bikeCoinsBalanceOfUser()
   }
 
   componentDidMount() {
-    this.updateEtherBalance();
+    this.updateBalances();
 
-    this.interval = setInterval(()=>this.updateEtherBalance(), 1000);
+    this.interval = setInterval(()=>this.updateBalances(), 1000);
   }
 
   componentWillUnmount() {
@@ -58,7 +60,8 @@ class Balance extends Component {
     return (
       <div style={s.balance} ref="base">
         <div style={s.label}>{this.props.label}</div>
-        <div style={s.label}>{this.state.balance} ETH</div>
+        {this.props.showETH && <div style={s.label}>{this.state.balanceEth} ETH</div>}
+        {this.props.showBC  && <div style={s.label}>{this.state.balanceBC} BC</div>}
       </div>
     );
   }
@@ -101,13 +104,17 @@ var s = {
 Balance.propTypes = {
   label: PropTypes.string.isRequired,
   address: PropTypes.string.isRequired,
-  providerurl: PropTypes.string.isRequired
+  providerurl: PropTypes.string.isRequired,
+  showETH: PropTypes.bool,
+  showBC: PropTypes.bool,
 };
 
 Balance.defaultProps = {
   label: 'SALDO',
   address: '',
-  providerurl: ''
+  providerurl: '',
+  showETH: true,
+  showBC: true,
 }
 
 export default Radium(Balance);

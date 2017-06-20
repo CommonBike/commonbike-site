@@ -1,3 +1,5 @@
+global.Buffer = global.Buffer || require("buffer").Buffer; // https://github.com/feross/buffer // see: https://github.com/meteor/meteor/issues/8645
+
 import { Settings } from '/imports/api/settings.js';
 import { logwrite } from '/imports/api/log.js';
 
@@ -56,7 +58,10 @@ export default class BikeCoin {
   }
 
   static bikeCoinsBalance(address) {
-    BikeCoin.bikeCoinsInstance().balanceOf(address, (err, nBikeCoins) => console.log(address, 'owns', nBikeCoins.toNumber() / Math.pow(10, this.decimalUnits), this.tokenSymbol))
+    BikeCoin.bikeCoinsInstance().balanceOf(address, (err, balance) => {
+      if (err) { console.error(err); return; }
+      console.log(address, 'owns', balance.toNumber() / Math.pow(10, this.decimalUnits), this.tokenSymbol)
+    })
   }
 
   static bikeCoinsBalanceOfUser(userId) {
