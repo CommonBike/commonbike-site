@@ -2,18 +2,18 @@ import { Settings } from '/imports/api/settings.js';
 import { logwrite } from '/imports/api/log.js';
 
 // used in the utility functions
-import { getUserDescription } from '/imports/api/users.js';
 import { Objects } from '/imports/api/objects.js';
 
-const initialSupply = 1000000
-const tokenName     = 'BikeCoin'
-const decimalUnits  = 2
-const tokenSymbol   = 'BC'
-
-const gasMargin = 100000
-const gasPrice = 20000000000
-
 export default class BikeCoin {
+  // constants
+  static initialSupply = 1000000
+  static tokenName     = 'BikeCoin'
+  static decimalUnits  = 2
+  static tokenSymbol   = 'BC'
+
+  static gasMargin = 100000
+  static gasPrice = 20000000000
+
   // General purpose helpers
   static settings() {
     return Settings.findOne().bikecoin;
@@ -56,7 +56,14 @@ export default class BikeCoin {
   }
 
   static bikeCoinsBalance(address) {
-    BikeCoin.bikeCoinsInstance().balanceOf(address, (err, nBikeCoins) => console.log(address, 'owns', nBikeCoins.toNumber() / Math.pow(10, decimalUnits), tokenSymbol))
+    BikeCoin.bikeCoinsInstance().balanceOf(address, (err, nBikeCoins) => console.log(address, 'owns', nBikeCoins.toNumber() / Math.pow(10, this.decimalUnits), this.tokenSymbol))
+  }
+
+  static bikeCoinsBalanceOfUser(userId) {
+    var aUser = Meteor.users.findOne(userId || Meteor.userId(), {'wallet.address':1});
+    if(!aUser) return 0.0;
+
+    return BikeCoin.bikeCoinsBalance(aUser.profile.wallet.address);
   }
 
   static bikeCoinsBalanceOfApp() {
@@ -69,11 +76,11 @@ export default class BikeCoin {
     // console.log(fromSeedPhrase, toAddress, amount, fromAddress)
 
     BikeCoin.bikeCoinsInstance(fromSeedPhrase).transfer(
-      toAddress, Math.floor(amount * Math.pow(10, decimalUnits)),
-      {from: fromAddress, gas: gasMargin + 21000, gasPrice: gasPrice},
+      toAddress, Math.floor(amount * Math.pow(10, this.decimalUnits)),
+      {from: fromAddress, gas: this.gasMargin + 21000, gasPrice: this.gasPrice},
       (err, result) => {
         if (err) { console.error(err); return; }
-        console.log(fromAddress, 'sent', amount, tokenSymbol, 'to', toAddress, 'with txhash', result)
+        console.log(fromAddress, 'sent', amount, this.tokenSymbol, 'to', toAddress, 'with txhash', result)
       }
     )
   }
@@ -102,7 +109,7 @@ export default class BikeCoin {
     // console.log('fromAddress', fromAddress)
 
     web3.eth.sendTransaction(
-      {from: fromAddress, to: toAddress, value: web3.toWei(amount, 'ether'), gas: gasMargin + 21000, gasPrice: gasPrice},
+      {from: fromAddress, to: toAddress, value: web3.toWei(amount, 'ether'), gas: this.gasMargin + 21000, gasPrice: this.gasPrice},
       (err, result) => {
         if (err) { console.error(err); return; }
         console.log(fromAddress, 'sent', amount, 'ETH to', toAddress, 'with txhash', result)
@@ -115,7 +122,7 @@ export default class BikeCoin {
   }
 
   static etherBalanceOfUser(userId) {
-    var aUser = Meteor.users.findOne(userId, {'wallet.address':1});
+    var aUser = Meteor.users.findOne(userId || Meteor.userId(), {'wallet.address':1});
     if(!aUser) return 0.0;
 
     return BikeCoin.etherBalance(aUser.profile.wallet.address);
@@ -129,3 +136,5 @@ export default class BikeCoin {
   }
 
 } // end of class BikeCoin
+
+global.BikeCoin = BikeCoin  // Client and ServerSide

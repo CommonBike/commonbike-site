@@ -1,17 +1,23 @@
- global.BikeCoinServerSide = BikeCoinServerSide
+import { Settings } from '/imports/api/settings.js';
+import { logwrite } from '/imports/api/log.js';
 
- export class BikeCoinServerSide {
+// used in the utility functions
+import { getUserDescription } from '/imports/api/users.js';
+import { Objects } from '/imports/api/objects.js';
+
+
+export default class BikeCoinServerSide {
 
    // BikeCoin related helpers
    static deploy(filename = 'token/BikeCoin.sol') {
-     const { provider_url, wallet } = Settings.findOne().bikecoin
+     const { wallet } = Settings.findOne().bikecoin
      const web3 = BikeCoin.web3(wallet.privatekey)
 
      // cwd = ~/GitHub/commonbike-site/app/.meteor/local/build/programs/server
      var fs = require("fs")
-//       var solc = require('solc')
-    var solc = {}
+     var solc = require('solc')
      const source = fs.readFileSync('../../../../../imports/api/smartcontracts/' + filename, 'utf8');
+
      const compiledContract = solc.compile(source, 1) // 1 = enable optimizer
 
      const contractName = ':BikeCoin'
@@ -20,9 +26,14 @@
      const contract     = web3.eth.contract(JSON.parse(abi))
 
      web3.eth.estimateGas({data: '0x' + bytecode}, Meteor.bindEnvironment((error, contractGasEstimate) => {
+       if (error) {
+         console.error(error)
+         return
+       }
+
        contract.new(
-         initialSupply, tokenName, decimalUnits, tokenSymbol,
-         {from: wallet.address, data: bytecode, gas: gasMargin + contractGasEstimate, gasPrice: gasPrice},
+         BikeCoin.initialSupply, BikeCoin.tokenName, BikeCoin.decimalUnits, BikeCoin.tokenSymbol,
+         {from: wallet.address, data: bytecode, gas: BikeCoin.gasMargin + contractGasEstimate, gasPrice: BikeCoin.gasPrice},
          Meteor.bindEnvironment((error, contract) => {
            if (error) {
              Meteor.call('log.write', "BikeCoin: Unable to deploy", JSON.stringify(error));
@@ -111,6 +122,8 @@
     }
 
     logwrite('New version of BikeCoin contract deployed by user ' + Meteor.userId());
-    BikeCoin.deploy();
+    BikeCoinServerSide.deploy();
   },
 });
+
+global.BikeCoinServerSide = BikeCoinServerSide
