@@ -4,6 +4,7 @@ import { Accounts } from 'meteor/accounts-base'
 import { Settings } from '/imports/api/settings.js';
 import '/imports/api/transactions.js';
 import '/imports/api/users.js'
+import BikeCoin from '/imports/api/bikecoin.js'
 import { Locations, toGeoJSONPoint, Address2GeoJSONPoint } from '/imports/api/locations.js';
 import { Objects } from '/imports/api/objects.js';
 import '/imports/api/api-keys.js'

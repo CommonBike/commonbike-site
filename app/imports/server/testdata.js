@@ -4,7 +4,7 @@ import { Objects } from '/imports/api/objects.js';
 import { Transactions } from '/imports/api/transactions.js';
 import '/imports/api/users.js';
 import { getUserDescription } from '/imports/api/users.js';
-import BikeCoin from '/imports/api/BikeCoin.js';
+import BikeCoin from '/imports/api/bikecoin.js';
 
 var testUsers = [
     {name:"admin",email:"admin@commonbike.com",

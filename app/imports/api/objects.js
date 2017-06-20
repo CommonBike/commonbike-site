@@ -5,7 +5,7 @@ import { Locations } from '/imports/api/locations.js'; // , geoJSONPointSchema
 import { getUserDescription } from '/imports/api/users.js';
 import { Integrations } from '/imports/api/integrations.js';
 import { CoinSchema } from '/imports/api/settings.js';
-import BikeCoin from '/imports/api/BikeCoin.js';
+
 
 export const Objects = new Mongo.Collection('objects');
 

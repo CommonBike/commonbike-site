@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo';
 import { getUserDescription } from '/imports/api/users.js';
+import BikeCoin from '/imports/api/bikecoin.js';
 
 export const Settings = new Mongo.Collection('settings');
 
@@ -280,15 +281,8 @@ export const SettingsSchema = new SimpleSchema({
 	skopei: {
     type: SkopeiSchema
   },
-	// velocity: {
-  //   type: VelocitySchema
-  // },
 	goabout: {
     type: GoAboutSchema
-  },
-	bikecoin: {				// ignore this: is used in bikecoin branch
-		type: Object,
-		blackbox: true
   },
 	gps: {
     type: GPSSchema

@@ -7,6 +7,7 @@ import {BrowserRouter as Router, Switch, Route, withRouter} from 'react-router-d
 import Redirect from 'react-router/Redirect'
 
 import Settings from '/imports/api/settings.js';
+import BikeCoin from '/imports/api/bikecoin.js'
 
 import UserApp from '/imports/client/components/UserApp/UserApp.jsx'
 import Landing from '/imports/client/components/Landing/Landing.jsx'
