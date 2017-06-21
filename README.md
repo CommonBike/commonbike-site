@@ -11,6 +11,8 @@ This repository exists of the Meteor app for CommonBike.
 
 Server is now running at [localhost:3000](http://localhost:3000)
 
+Look [here](Dockerstart.md) for steps to set up your Docker version of this.
+
 > Do you use the CommonBike app for the first time? See [app/DEVELOP.md](app/DEVELOP.md) for useful information.
 
 ## Participate!

@@ -1,0 +1,34 @@
+machine:
+  node:
+#    version: 4.2.6
+    
+dependencies:
+  cache_directories:
+    - ~/.meteor
+  override:
+    - if [ -d ~/.meteor ]; then sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor; fi
+    - if [ ! -e $HOME/.meteor/meteor ]; then curl https://install.meteor.com | sh; fi
+    - npm install -g node-gyp
+#    - npm install -g selenium-standalone
+    - npm install
+    - meteor npm install --save babel-runtime
+#    - cd app; meteor update --patch
+#    - npm install --production
+
+test:
+  override:
+#    - cd app; meteor --settings settings_demo.json
+    - cd app; meteor add dispatch:mocha
+    - cd app; meteor test --once --driver-package dispatch:mocha
+
+general:
+  artifacts:
+    - "validate.json" # a single file, relative to the build directory
+    - "package.json"
+    
+deployment:
+  prod:
+    branch: cicd
+    commands:
+    heroku:
+      appname: peter-bike-heroku-cd

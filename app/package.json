@@ -8,6 +8,7 @@
   "dependencies": {
     "bcrypt": "^1.0.2",
     "bluebird": "^3.5.0",
+    "babel-runtime": "^6.23.0",
     "body-parser": "^1.17.2",
     "bufferutil": "^1.2.1",
     "connect": "^3.6.1",
@@ -20,7 +21,7 @@
     "mollie-api-node": "^1.3.5",
     "radium": "^0.18.1",
     "ramda": "^0.22.1",
-    "react": "=15.4.0",
+    "react": "^15.4.0",
     "react-addons-pure-render-mixin": "^15.3.1",
     "react-contenteditable": "^2.0.1",
     "react-copy-to-clipboard": "^5.0.0",

@@ -1,0 +1,41 @@
+language: node_js
+sudo: required
+dist: trusty
+node_js:
+  - "4"
+# devs now use 4.7.3 for node. 3.10.9 for npm
+env:
+  - CXX=g++-4.8
+#  - LAIKA_OPTIONS="-t 5000"
+services:
+  - mongodb
+  - docker
+
+before_install:
+#  - npm install # bloody version issues. Google for yourself babel-runtime
+#  - "curl -L https://raw.githubusercontent.com/arunoda/travis-ci-meteor-packages/master/configure.sh | /bin/sh"
+  - npm -v; 
+  - cd app
+  - npm install -g npm; npm -v
+  - npm install --production # e.g. minify js, delete dev packages
+  - npm install -g node-gyp
+  - curl https://install.meteor.com | /bin/sh
+  #  - meteor npm install --save babel-runtime
+  - sudo ln -s /usr/bin/nodejs /usr/bin/node
+
+  - echo meteor # 
+#  - meteor npm install --save babel-runtime react react-dom react-router ramda radium react-swipe fluture react-contenteditable leaflet
+install:
+#  - npm install --production
+  
+before_script:
+  - "export PATH=$HOME/.meteor:$PATH"
+script: 
+  - meteor build --allow-superuser --directory ../mrt_build --server-only
+  
+after_success:
+  - cd ..
+  - sh .travis/deploy_dockerhub.sh
+  - docker images
+  - echo $TRAVIS_BRANCH
+  - test “$TRAVIS_BRANCH” = “cicd” && sh .travis/deploy_heroku.sh
