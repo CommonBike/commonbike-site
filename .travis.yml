@@ -14,16 +14,19 @@ services:
 before_install:
 #  - npm install # bloody version issues. Google for yourself babel-runtime
 #  - "curl -L https://raw.githubusercontent.com/arunoda/travis-ci-meteor-packages/master/configure.sh | /bin/sh"
-  - npm -v; npm install -g npm; npm -v
-  - curl https://install.meteor.com | /bin/sh
-  - meteor npm install --save babel-runtime
-  - npm install -g node-gyp
-  - sudo ln -s /usr/bin/nodejs /usr/bin/node
+  - npm -v; 
   - cd app
+  - npm install -g npm; npm -v
+  - npm install --production # e.g. minify js, delete dev packages
+  - npm install -g node-gyp
+  - curl https://install.meteor.com | /bin/sh
+  #  - meteor npm install --save babel-runtime
+  - sudo ln -s /usr/bin/nodejs /usr/bin/node
+
   - echo meteor # 
-  - meteor npm install --save babel-runtime react react-dom react-router ramda radium react-swipe fluture react-contenteditable leaflet
+#  - meteor npm install --save babel-runtime react react-dom react-router ramda radium react-swipe fluture react-contenteditable leaflet
 install:
-  - npm install --production
+#  - npm install --production
   
 before_script:
   - "export PATH=$HOME/.meteor:$PATH"
