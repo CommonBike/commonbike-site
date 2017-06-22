@@ -4,8 +4,7 @@ import { Mongo } from 'meteor/mongo';
 import { Locations } from '/imports/api/locations.js'; // , geoJSONPointSchema
 import { getUserDescription } from '/imports/api/users.js';
 import { Integrations } from '/imports/api/integrations.js';
-import { CoinSchema } from '/imports/api/settings.js';
-
+import { CoinSchema } from '/imports/api/bikecoinschema.js';
 
 export const Objects = new Mongo.Collection('objects');
 
@@ -103,7 +102,7 @@ export const ObjectsSchema = new SimpleSchema({
     decimal: true,
     optional: true
   },
-  'wallet': {
+  wallet: {
     type: CoinSchema
   },
 });
@@ -159,10 +158,9 @@ export const createObject = (locationId, title) => {
             currency: 'euro',
             timeunit: 'day',
             description: 'tijdelijk gratis'},
-    	    lat_lng: [0, 0],
+    lat_lng: [0, 0],
     wallet: { address : '',
-              privatekey :  ''
-            }
+              privatekey :  '' }
   }
 
   try {

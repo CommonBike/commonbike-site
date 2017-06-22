@@ -1,6 +1,40 @@
 import { ApiKeys } from '/imports/api/api-keys.js'
 import { Objects, getStateChangeNeatDescription } from '/imports/api/objects.js'
 
+// demo of open-bikelocker / keylocker API usage (localhost)
+//
+// 1. Create a new bike with name "API Demo bike"
+// 2. Go to bike settings (click info from my locations -> location -> API Demo Bike)
+// 3. Set lock type to "open-bikelocker" (Instellingen -> Slot section -> open bikelocker -> save settings)
+// 4. Create an API key for the lock (API keys -> set beschrijving to "api demo" -> click "+")
+// 5. Copy API key to a text document (click on clipboard icon)
+//
+// now test the API:
+//
+// using a webbrowser:
+//
+// set in use:
+//   http://localhost:3000/api/locker/v1?api_key=<your key here>&cardhash=00000000&pincode=12345&timestamp=1&action=inuse
+//
+// set available:
+//   http://localhost:3000/api/locker/v1?api_key=<your key here>&cardhash=00000000&pincode=12345&timestamp=1&action=available
+//
+// using curl:
+//
+// set in use:
+// curl -X POST \
+//   http://localhost:3000/api/locker/v1/ \
+//   -H 'cache-control: no-cache' \
+//   -H 'content-type: application/x-www-form-urlencoded' \
+//   -d 'api_key=<your key here>&cardhash=00000000&pincode=12345&timestamp=1&action=inuse'
+//
+// set available:
+// curl -X POST \
+//   http://localhost:3000/api/locker/v1/ \
+//   -H 'cache-control: no-cache' \
+//   -H 'content-type: application/x-www-form-urlencoded' \
+//   -d 'api_key=<your key here>&cardhash=00000000&pincode=12345&timestamp=1&action=available'
+
 lockerAPI = {
   authentication: function( apiKey ) {
     var getObject = ApiKeys.findOne( { "key": apiKey, "type": "object" }, { fields: { "ownerid": 1 } } );

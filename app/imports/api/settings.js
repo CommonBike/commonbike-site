@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo';
 import { getUserDescription } from '/imports/api/users.js';
 import BikeCoin from '/imports/api/bikecoin.js';
+import {CoinSchema} from '/imports/api/bikecoinschema.js';
 
 export const Settings = new Mongo.Collection('settings');
 
@@ -45,19 +46,6 @@ if (Meteor.isServer) {
 		return Settings.findOne({profileName: profileName});
 	}
 }
-
-export const CoinSchema = new SimpleSchema({
-  'address': {
-    type: String,
-    label: "Address",
-    defaultValue: ''
-  },
-  'privatekey': {
-    type: String,
-    label: "Private Key",
-    defaultValue: ''
-  }
-});
 
 export const MapboxSchema = new SimpleSchema({
   'style': {

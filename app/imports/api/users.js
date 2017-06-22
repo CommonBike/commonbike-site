@@ -3,7 +3,7 @@ import { Mongo } from 'meteor/mongo';
 import { Accounts } from 'meteor/accounts-base'
 import { Integrations } from '/imports/api/integrations.js';
 import { getSettingsServerSide } from '/imports/api/settings.js';
-import { CoinSchema } from '/imports/api/settings.js';
+import { CoinSchema } from '/imports/api/bikecoinschema.js';
 
 export const UserProfileSchema = new SimpleSchema({
   active: {
