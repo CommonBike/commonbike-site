@@ -75,23 +75,26 @@ export default class BikeCoin {
     BikeCoin.bikeCoinsBalance(Settings.findOne().bikecoin.wallet.address)
   }
 
-  static bikeCoinsSend(fromSeedPhrase, toAddress, amount=0.01) {
+  static bikeCoinsSend(fromSeedPhrase, toAddress, amount = 0.01, nonce = undefined) {
     const web3 = BikeCoin.web3(fromSeedPhrase)
     const fromAddress = web3.currentProvider.getAddress().toString('hex')
     // console.log(fromSeedPhrase, toAddress, amount, fromAddress)
 
+    let data = {from: fromAddress, gas: this.gasMargin + 21000, gasPrice: this.gasPrice}
+    if (typeof(nonce) !== 'undefined') data.nonce = nonce
+
     BikeCoin.bikeCoinsInstance(fromSeedPhrase).transfer(
       toAddress, Math.floor(amount * Math.pow(10, this.decimalUnits)),
-      {from: fromAddress, gas: this.gasMargin + 21000, gasPrice: this.gasPrice},
-      (err, result) => {
+      data,
+      (err, txhash) => {
         if (err) { console.error(err); return; }
-        console.log(fromAddress, 'sent', amount, this.tokenSymbol, 'to', toAddress, 'with txhash', result)
+        console.log(fromAddress, 'sent', amount, this.tokenSymbol, 'to', toAddress, 'with txhash', txhash)
       }
     )
   }
 
-  static bikeCoinsSendByApp(toAddress, amount=0.01) { // owner is the account the deployed the BikeCoin (this script/webapp)
-    BikeCoin.bikeCoinsSend(Settings.findOne().bikecoin.wallet.privatekey, toAddress, amount)
+  static bikeCoinsSendByApp(toAddress, amount = 0.01, nonce = undefined) { // owner is the account the deployed the BikeCoin (this script/webapp)
+    BikeCoin.bikeCoinsSend(Settings.findOne().bikecoin.wallet.privatekey, toAddress, amount, nonce)
   }
 
   // ETH related helpers
@@ -108,22 +111,25 @@ export default class BikeCoin {
     BikeCoin.etherBalance(Settings.findOne().bikecoin.wallet.address)
   }
 
-  static etherSend(fromSeedPhrase, toAddress, amount=0.01) {
+  static etherSend(fromSeedPhrase, toAddress, amount = 0.01, nonce = undefined) {
     const web3 = BikeCoin.web3(fromSeedPhrase)
     const fromAddress = web3.currentProvider.getAddress().toString('hex')
     // console.log('fromAddress', fromAddress)
 
+    let data = {from: fromAddress, to: toAddress, value: web3.toWei(amount, 'ether'), gas: this.gasMargin + 21000, gasPrice: this.gasPrice}
+    if (typeof(nonce) !== 'undefined') data.nonce = nonce
+
     web3.eth.sendTransaction(
-      {from: fromAddress, to: toAddress, value: web3.toWei(amount, 'ether'), gas: this.gasMargin + 21000, gasPrice: this.gasPrice},
-      (err, result) => {
+      data,
+      (err, txhash) => {
         if (err) { console.error(err); return; }
-        console.log(fromAddress, 'sent', amount, 'ETH to', toAddress, 'with txhash', result)
+        console.log(fromAddress, 'sent', amount, 'ETH to', toAddress, 'with txhash', txhash)
       }
     )
   }
 
-  static etherSendByApp(toAddress, amount=0.01) { // owner is the account the deployed the BikeCoin (this script/webapp)
-    BikeCoin.etherSend(Settings.findOne().bikecoin.wallet.privatekey, toAddress, amount)
+  static etherSendByApp(toAddress, amount = 0.01, nonce = undefined) { // owner is the account the deployed the BikeCoin (this script/webapp)
+    BikeCoin.etherSend(Settings.findOne().bikecoin.wallet.privatekey, toAddress, amount, nonce)
   }
 
   static etherBalanceOfUser(userId) {
