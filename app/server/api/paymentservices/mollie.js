@@ -1,4 +1,4 @@
-import { Settings } from '/imports/api/settings.js';
+import { getSettingsServerSide, Settings } from '/imports/api/settings.js';
 
 const Payments = new Mongo.Collection('payments') // XXX We probably want this have schema attached and moved somewhere else
 global.Payments = Payments  // for debugging
@@ -83,7 +83,9 @@ Meteor.methods({
     check(amount, Number)
     if (!this.userId) throw new Meteor.Error('not-authorized');
 
-    const baseUrl = Meteor.settings.private.baseUrl || 'https://develop.common.bike' // XXX get this from settings instead?
+    var settings = getSettingsServerSide();
+
+    const baseUrl = settings.baseUrl || 'https://develop.common.bike' // XXX get this from settings instead?
     const internalPaymentId = Random.id()
 
     // https://www.mollie.com/nl/docs/reference/payments/create

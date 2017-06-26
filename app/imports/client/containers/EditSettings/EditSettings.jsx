@@ -45,6 +45,16 @@ class EditSettings extends Component {
   	var fields = [
       {
           controltype: 'header',
+          label: 'Server'
+      },
+      {
+          fieldname: 'baseurl',
+          fieldvalue: this.props.settings.baseurl,
+          controltype: 'text',
+          label: 'Base URL (server url)'
+  		},
+      {
+          controltype: 'header',
           label: 'Map'
       },
   		{
@@ -275,7 +285,11 @@ class EditSettings extends Component {
           fieldvalue: this.props.settings.bikecoin.wallet.privatekey,
           controltype: 'text',
           label: 'Private Key'
-      }
+      },
+      {
+          controltype: 'header',
+          label: ''
+      },
   	]
 
     var handlers = [

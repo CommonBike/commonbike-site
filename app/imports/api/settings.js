@@ -248,6 +248,11 @@ export const SettingsSchema = new SimpleSchema({
     label: "settings structure version",
     defaultValue: latestSettingsVersion
   },
+	baseurl: {
+    type: String,
+    label: "base url",
+    defaultValue: ''
+  },
   mapbox: {
     type: MapboxSchema
   },
@@ -294,6 +299,7 @@ if (Meteor.isServer) {
 	    		_id: settingsId,
 	    		profileName: defaultProfileName,
 	    		version: latestSettingsVersion,
+					baseurl: '',
 	    		mapbox: {
 					  style: 'mapbox.streets',
 					  userId: '<mapbox access token has not been set in system settings>'
@@ -366,6 +372,12 @@ if (Meteor.isServer) {
 					console.log('remove velocity settings')
 					Settings.update(settings._id, {$unset:{ velocity: "" }});
 					unset(settings.velocity)
+				}
+
+				if(!settings.baseurl) {
+					settings.baseurl = '';
+
+					Settings.update(settings._id, settings, {validate: false});
 				}
 
 				if(!settings.openbikelocker) {
