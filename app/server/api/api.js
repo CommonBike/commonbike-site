@@ -1,5 +1,6 @@
 import { ApiKeys } from '/imports/api/api-keys.js'
 import { Objects, getStateChangeNeatDescription } from '/imports/api/objects.js'
+import { UpdatePaymentOrder, UpdateAllPaymentOrders } from '/server/api/paymentservices/mollie.js'
 
 // demo of open-bikelocker / keylocker API usage (localhost)
 //
@@ -209,6 +210,27 @@ lockerAPI = {
   }
 };
 
+//
+const paymentAPI = {
+  handleRequest: function(req, res) {
+    res.statusCode = 200 // res.writeHead(200, { 'Content-Type': 'text/plain' })
+    res.end()
+
+    const externalPaymentId = req.body.id
+    check(externalPaymentId, String)
+    let paymentOrder = Payments.findOne({externalPaymentId: externalPaymentId})
+    if (!paymentOrder) {
+      console.error('Unknown externalPaymentId', externalPaymentId)
+      return
+    }
+
+    // console.log('FOUND PAYMENTORDER', paymentOrder)
+    // console.log('visited payment webhook: UpdatePaymentOrder', externalPaymentId)
+    UpdatePaymentOrder(paymentOrder)
+  }
+}
+
+//
 var bodyParser = require("body-parser");
 //    .use(bodyParser.json())
 
@@ -216,14 +238,16 @@ WebApp.connectHandlers
     .use(bodyParser.urlencoded({ extended: true }))
     .use(bodyParser.json())
     .use('/api/locker/v1', function (req, res) {
+      res.setHeader( 'Access-Control-Allow-Origin', '*' );
 
-  res.setHeader( 'Access-Control-Allow-Origin', '*' );
-
-  if ( req.method === "OPTIONS" ) {
-    res.setHeader( 'Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept' );
-    res.setHeader( 'Access-Control-Allow-Methods', 'POST, GET, OPTIONS' ); // PUT, DELETE -> not used / accepted
-    res.end( 'Set OPTIONS.' );
-  } else {
-    lockerAPI.handleRequest( req, res, 'object' );
-  }
-});
+      if ( req.method === "OPTIONS" ) {
+        res.setHeader( 'Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept' );
+        res.setHeader( 'Access-Control-Allow-Methods', 'POST, GET, OPTIONS' ); // PUT, DELETE -> not used / accepted
+        res.end( 'Set OPTIONS.' );
+      } else {
+        lockerAPI.handleRequest( req, res, 'object' );
+      }
+    })
+    .use('/api/payment/webhook/mollie/v1', function (req, res) {
+      paymentAPI.handleRequest(req, res)
+    })

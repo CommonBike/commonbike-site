@@ -12,11 +12,11 @@ class Balance extends Component {
 
     var Web3 = require("web3")
     this.web3 = new Web3(new Web3.providers.HttpProvider(this.props.providerurl));
-    if(this.web3.eth && this.web3.eth.watch) {
-      console.log('has watch function!');
-      // this.web3.eth.watch('chain').changed(()=>this.updateEtherBalance().bind(this));
-      this.web3.eth.watch('chain').changed((i)=>console.log('chain changed!'));
-    };
+    // if(this.web3.eth && this.web3.eth.watch) {
+    //   console.log('has watch function!');
+    //   // this.web3.eth.watch('chain').changed(()=>this.updateEtherBalance().bind(this));
+    //   this.web3.eth.watch('chain').changed((i)=>console.log('chain changed!'));
+    // };
 
     this.state = { balanceEth: 0, balanceBC: 0};
   }
@@ -25,13 +25,6 @@ class Balance extends Component {
     const { address } = this.props
     if (!address) return
     // console.log(address)
-
-    var balanceWei = this.web3.eth.getBalance(address);
-    var balanceEth = this.web3.fromWei(balanceWei, 'ether').toNumber()
-    if (balanceEth !== this.state.balanceEth) {
-      // console.log(address, 'owns', balanceEth, 'ETH')
-      this.setState({balanceEth: balanceEth});
-    }
 
     BikeCoin.bikeCoinsInstance().balanceOf(address, (err, balance) => {
       if (err) { console.error(err); return; }
@@ -42,7 +35,13 @@ class Balance extends Component {
       }
     })
 
-    // BikeCoin.bikeCoinsBalanceOfUser()
+    var balanceWei = this.web3.eth.getBalance(address);
+    var balanceEth = this.web3.fromWei(balanceWei, 'ether').toNumber()
+    if (balanceEth !== this.state.balanceEth) {
+      // console.log(address, 'owns', balanceEth, 'ETH')
+      this.setState({balanceEth: balanceEth});
+    }
+
   }
 
   componentDidMount() {

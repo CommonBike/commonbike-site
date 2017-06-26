@@ -12,7 +12,7 @@ import { Log } from '/imports/api/log.js'
 import '/imports/server/testdata.js'
 import '/imports/api/databasetools.js';
 import '/imports/api/integrations/goabout.js';
-import '/imports/api/paymentservices/mollie.js';
+import '/server/api/paymentservices/mollie.js'; // methods
 
 Meteor.startup(() => {
 	// code to run on server at startup

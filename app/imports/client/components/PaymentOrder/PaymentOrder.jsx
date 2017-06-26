@@ -5,17 +5,18 @@ class PaymentOrder extends React.Component {
   constructor(props) {
     super(props)
 
-    const { orderId } = props.match.params
+    const { internalPaymentId } = props.match.params
     this.state = {
-      orderId: orderId,
-      orderStatus: '?'
+      internalPaymentId: internalPaymentId,
+      paymentStatus: '?'
     }
 
     // console.log('PaymentOrder', this.state)
 
-    Meteor.call('paymentservice.orderstatus', orderId,
+    Meteor.call('paymentservice.getstatus', internalPaymentId,
       (error, status) => {
-        this.setState({orderStatus: status})
+        if (error) return console.error(error)
+        this.setState({paymentStatus: status})
         // console.log(status)
       }
     )
@@ -28,7 +29,7 @@ class PaymentOrder extends React.Component {
   render() {
     return (
       <div>
-        <h2>order {this.state.orderId} is {this.state.orderStatus}</h2>
+        <h2>Payment order {this.state.internalPaymentId} is {this.state.paymentStatus}</h2>
         <RaisedButton onClick={this.onAgain}>Again</RaisedButton>
 
       </div>

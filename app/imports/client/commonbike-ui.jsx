@@ -19,6 +19,8 @@ class CommonBikeUI extends Component {
   state = { address: undefined }
 
   updateAddress() {
+    // XXX user.profile.wallet has empty strings for new (regular) users?
+    // XXX settings.wallet should not be send to admin clients!
     this.setState({address: Meteor.user() && Meteor.user().profile.wallet.address})
   }
 
@@ -32,7 +34,7 @@ class CommonBikeUI extends Component {
   }
 
   onTestPaymentService() {
-    Meteor.call('paymentservice.create', 0.42, (error, result) => {
+    Meteor.call('paymentservice.create', 10.0, (error, result) => {
       console.log(error || result)
       document.location = result
     })
