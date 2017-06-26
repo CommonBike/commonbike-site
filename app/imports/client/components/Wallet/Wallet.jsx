@@ -7,7 +7,7 @@ import { StyleProvider } from '../../StyleProvider.js'
 // Import components
 import Balance from '/imports/client/components/Balance/Balance.jsx';
 
-class WalletView extends Component {
+class Wallet extends Component {
 
   constructor(props) {
     super(props);
@@ -20,9 +20,7 @@ class WalletView extends Component {
   render() {
     return (
       <div style={s.base}>
-        { item&&item.wallet ?
-           <Balance label="SALDO" address={this.props.wallet_address} providerurl="this.props.providerurl" /> : <div />
-         }
+        <Balance label="SALDO" address={this.props.address} providerurl={this.props.providerurl} /> : <div />
 
         <Button onClick={() => this.buyBikeCoin(100) } buttonStyle="hugeSmallerFont">BUY 100 BIKECOIN</Button>
       </div>
@@ -32,17 +30,16 @@ class WalletView extends Component {
 
 var s = StyleProvider.getInstance().checkInOutProcess;
 
-WalletView.propTypes = {
-  address: PropTypes.String,
-  isEditable: PropTypes.any,
-  location: PropTypes.object,
-  object: PropTypes.object,
+Wallet.propTypes = {
+  wallettype: PropTypes.string,
+  providerurl: PropTypes.string,
+  address: PropTypes.string
 };
 
-WalletView.defaultProps = {
-  isEditable: false,
-  location: {},
-  object: {},
+Wallet.defaultProps = {
+  wallettype: 'user',
+  providerurl: '',
+  address: ''
 }
 
-export default WalletView
+export default Wallet

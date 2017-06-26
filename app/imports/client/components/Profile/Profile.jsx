@@ -22,6 +22,10 @@ class Profile extends Component {
     RedirectTo('/admin/locations')
   }
 
+  wallet() {
+    RedirectTo('/wallet')
+  }
+
   rentals() {
     RedirectTo('/admin/rentals')
   }
@@ -143,6 +147,8 @@ class Profile extends Component {
           <RaisedButton onClick={this.reservations.bind(this)}>FIETS</RaisedButton>
 
           <RaisedButton onClick={this.transactions.bind(this)}>GESCHIEDENIS</RaisedButton>
+
+          <RaisedButton onClick={this.wallet.bind(this)}>PORTEMONNEE</RaisedButton>
 
           { this.getMyLocationsButton() }
 

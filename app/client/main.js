@@ -17,6 +17,7 @@ import ContentPage from '/imports/client/components/ContentPage/ContentPage.jsx'
 import Login from '/imports/client/components/Login/Login.jsx'
 import CustomPage from '/imports/client/components/CustomPage/CustomPage.jsx'
 import Profile from '/imports/client/components/Profile/Profile.jsx'
+import UserWallet from '/imports/client/containers/Wallet/UserWallet.jsx'
 import LocationsOverview from '/imports/client/containers/LocationsOverview/LocationsOverview.jsx'
 import LocationDetails from '/imports/client/containers/LocationDetails/LocationDetails.jsx'
 import TransactionList from '/imports/client/containers/TransactionList/TransactionList.jsx'
@@ -39,6 +40,7 @@ const UserAppLogin = ({match}) => {
   return (<UserApp content={<CustomPage><Login redirectTo={redirectTo} /></CustomPage>} />)
 }
 const UserAppProfile = () => (<UserApp content={<div><Profile isEditable="true" /></div>} />)
+const UserAppUserWallet = () => (<UserApp content={<div><UserWallet /></div>} />)
 
 const UserAppLocationsOverview = () => (<UserApp showPageHeader={false} content={<LocationsOverview />} />)
 const UserAppLocationDetails = ({match}) => {
@@ -152,6 +154,7 @@ class AppRoutes extends React.Component {
       <Route path='/locations' component={UserAppLocationsOverview}/>
       <Route path='/map' component={UserAppLocationsMap}/>
       <Route path='/objects' component={UserAppObjectList}/>
+      <Route path='/wallet' component={UserAppUserWallet}/>
       <Route path='/location/:locationId' component={UserAppLocationDetails}/>
       <Route path='/bike/details/:objectId' component={UserAppCustomPageObjectDetails}/>
 
