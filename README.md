@@ -13,6 +13,8 @@ Server is now running at [localhost:3000](http://localhost:3000)
 
 Look [here](Dockerstart.md) for steps to set up your Docker version of this.
 
+Look [here for a demo of continous integration set up](https://github.com/pve/meteor-ci-demo)
+
 > Do you use the CommonBike app for the first time? See [app/DEVELOP.md](app/DEVELOP.md) for useful information.
 
 ## Participate!
@@ -23,3 +25,4 @@ Join us on [Slack](http://slack.common.bike) and other communication channels. (
 
 - [Demo](https://common.bike)
 - [Documentation](https://github.com/CommonBike/commonbike-documentation/wiki)
+
