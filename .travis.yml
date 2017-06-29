@@ -3,7 +3,7 @@ sudo: required
 dist: trusty
 node_js:
 - '4'
-- '7'
+# - '7'
 
 services:
 - mongodb
@@ -16,7 +16,7 @@ before_install:
 - npm install -g node-gyp
 - curl https://install.meteor.com | /bin/sh
 - sudo ln -s /usr/bin/nodejs /usr/bin/node
-- meteor npm install --save soap
+# - meteor npm install --save soap
 - heroku
 
 before_script:
@@ -26,7 +26,6 @@ script:
 
 deploy:
   provider: heroku
-  api_key:
-    secure: BfB6Tjgdpb3jqz1q7nn0OJSaxQE5SI8PkNLQ8u7xXWiAmx/ZYSPhG6Oen2jV2i047Ofi+PWdruMZuCJu/EMp3MU5mK1CXaUcZ4ZEhoR4hr69f33i2MquhkPjQfsRmv29YHuZH1sA/azJ2NxZA7Cd71MM1f3300hFNn2Z7p9WGLfpufdN6cz+GsJAPlQ6iSSTk+0BOppH2Z17tdDEvyrp/5KRkOq90IofSHn4W3jnw+t6rx8AeE2GSLPMls5cVXCoUt6Qsow63XTDzbi2TDqGS3g8lrFnb+bhvB5XrRRrTHcNJGmU1XuXjUbIz+V28tOCpom8jKZOV0CbK0hcaD2VGyMKsL1oSjjjvLHP0zd4mGZMrxvkkkvoMwQNVZDM8vPgRYcNBMpGhhMVmf3oh2HjTW0tdwBMNWcr8UnldoXKtrEtEINWBXWmunTmvvQLdsBoxpnTHUrUUpJcavWR7dz3PwdYPM10XNK5EMHvJOX09yKZBtQwPH1mIpAu65hwCMlRS5yqiAdXSNTH+GFoMCi/4YKuhECzjS4xk5zLcn4b4zo8Stdd8UaXtVam4lFKqc4kxKu3Q0Q4P/0sBKl1tzYmHLMjmpPirBTXYz3vSJa5UVHMosaq7dMA34GeAeDSKWh19ow11gF8y88XaKKhlSxcwLtYw+uge9nfOT3L+NtzIw8=
+  api_key: $HEROKU_API_KEY
   app: 
     master: pve-commonbike-site
