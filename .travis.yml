@@ -11,11 +11,12 @@ services:
 before_install:
 - npm -v;
 - cd app
+- sudo ln -s /usr/bin/nodejs /usr/bin/node
 - npm install -g npm; npm -v
 - npm install --production
 - npm install -g node-gyp
+- npm install --production
 - curl https://install.meteor.com | /bin/sh
-- sudo ln -s /usr/bin/nodejs /usr/bin/node
 # - meteor npm install --save soap
 - heroku
 
