@@ -23,6 +23,7 @@ before_script:
 - export PATH=$HOME/.meteor:$PATH
 script:
 - meteor test --once --driver-package dispatch:mocha
+- TEST_BROWSER_DRIVER=phantomjs meteor test --once --full-app --driver-package dispatch:mocha
 - meteor build --allow-superuser --directory ../mrt_build --server-only
 
 deploy:
