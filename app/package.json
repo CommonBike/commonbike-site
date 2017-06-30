@@ -24,5 +24,8 @@
     "react-tap-event-plugin": "^1.0.0",
     "swipe-js-iso": "^2.0.3",
     "utf-8-validate": "^1.2.1"
+  },
+  "devDependencies": {
+    "phantomjs-prebuilt": "^2.1.14"
   }
 }
