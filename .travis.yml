@@ -13,12 +13,11 @@ before_install:
 - cd app
 - sudo ln -s /usr/bin/nodejs /usr/bin/node
 - npm install -g npm; npm -v
-- npm install --production
 - npm install -g node-gyp
 - npm install --production
 - curl https://install.meteor.com | /bin/sh
-# - meteor npm install --save soap
 - heroku
+- meteor add dispatch:mocha
 
 before_script:
 - export PATH=$HOME/.meteor:$PATH
