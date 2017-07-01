@@ -26,3 +26,4 @@ Join us on [Slack](http://slack.common.bike) and other communication channels. (
 - [Demo](https://common.bike)
 - [Documentation](https://github.com/CommonBike/commonbike-documentation/wiki)
 
+Travis build status: [![Build Status](https://travis-ci.org/pve/commonbike-site-2.svg?branch=master)](https://travis-ci.org/pve/commonbike-site-2)
