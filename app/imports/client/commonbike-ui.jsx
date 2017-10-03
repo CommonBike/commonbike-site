@@ -46,6 +46,12 @@ class CommonBikeUI extends Component {
     })
   }
 
+  onTestSkopei() {
+    Meteor.call('skopei.checklocations', (error, result) => {
+      console.log(error || result)
+    })
+  }
+
   onTestSoap() {
     Meteor.call('testsoap', (error, result) => {
       console.log(error || result)
@@ -65,6 +71,9 @@ class CommonBikeUI extends Component {
         <FeedbackWidget />
 
         <h1>Buttons</h1>
+
+        <h2>Skopei</h2>
+        <RaisedButton onClick={this.onTestSkopei}>Test Skopei API</RaisedButton>
 
         <h2>GoAbout</h2>
         <RaisedButton onClick={this.onTestGoAbout}>Test GoAbout API</RaisedButton>

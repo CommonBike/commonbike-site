@@ -73,7 +73,6 @@ export const UpdateAllPaymentOrders = () => { // note: also called in by visitin
   }
 }
 
-
 const oneMinute = 60 * 1000
 Meteor.setInterval(UpdateAllPaymentOrders, oneMinute)
 
@@ -84,8 +83,7 @@ Meteor.methods({
     if (!this.userId) throw new Meteor.Error('not-authorized');
 
     var settings = getSettingsServerSide();
-
-    const baseUrl = settings.baseUrl || 'https://develop.common.bike' // XXX get this from settings instead?
+    const baseUrl = settings.baseUrl || 'https://develop.common.bike'
     const internalPaymentId = Random.id()
 
     // https://www.mollie.com/nl/docs/reference/payments/create

@@ -228,6 +228,40 @@ class SkopeiAPIClass {
       return 'OK'
   }
 
+  getBikeStatus(objectId) {
+
+    // unvalidated code
+
+    if(!getSettingsServerSide().skopei.enabled) {
+      Meteor.call('log.write', `Skopei integration has been disabled`);
+	  	return false;
+    }
+
+    // Check if given Object exists on given Location
+	  var object = Objects.findOne(objectId, {title:1, locationId:1});
+	  if(!object||object.lock.type!='skopei-v1') {
+	  	Meteor.call('log.write', `No object or unable to use skopei driver for non skopei object`);
+	  	return false;
+	  }
+
+    // Check if Object has an e-lock
+		ElockID = object.lock.settings.elockid;
+		if(ElockID==0) {
+	  	Meteor.call('log.write', `Skopei lock ID is not set for this object`);
+	  	return false;
+		}
+
+		var dateStart = new Date();
+		dateStart.setUTCHours(dateStart.getUTCHours());
+
+		var dateEnd = new Date(dateStart);
+		dateEnd.setUTCHours(dateStart.getUTCHours()+1);
+
+    this.getLockInformation(ElockID, args.DateStart, args.DateEnd);
+
+	  return true;
+	}
+
 	getReservationData(objectId) {
     if(!getSettingsServerSide().skopei.enabled) {
       Meteor.call('log.write', `Skopei integration has been disabled`);
@@ -314,5 +348,8 @@ Meteor.methods( {
   },
   'skopei.logrentalInfo'(objectId) {
     return SkopeiAPI.getReservationData(objectId);
+  },
+  'skopei.getBikeStatus'(objectId) {
+    return SkopeiAPI.getBikeStatus(objectId);
   }
 });
