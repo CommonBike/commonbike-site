@@ -1,0 +1,34 @@
+language: node_js
+sudo: required
+dist: trusty
+node_js:
+- '4'
+# - '7'
+
+services:
+- mongodb
+- docker
+before_install:
+- npm -v;
+- cd app
+- sudo ln -s /usr/bin/nodejs /usr/bin/node
+- npm install -g npm; npm -v
+- npm install -g node-gyp
+- npm install --production
+- curl https://install.meteor.com | /bin/sh
+- heroku
+- meteor add dispatch:mocha
+
+before_script:
+- export PATH=$HOME/.meteor:$PATH
+script:
+- meteor test --once --driver-package dispatch:mocha
+- # TEST_BROWSER_DRIVER=phantomjs meteor test --once --full-app --driver-package dispatch:mocha
+- meteor build --allow-superuser --directory ../mrt_build --server-only
+
+deploy:
+  provider: heroku
+  api_key: $HEROKU_API_KEY
+  app: 
+    master: pve-commonbike-site
+    develop: pve-commonbike-site
