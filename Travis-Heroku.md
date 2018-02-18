@@ -46,5 +46,15 @@ Github to Slack is set up in Slack -> Integrations/App Directory
 
 Travis to Slack is set up in Slack -> Integrations/App Directory, which also needs to be reflected in the .travis.yml file.
 
-Heroku to Slack
+Heroku to Slack:
+
+Consult https://stackoverflow.com/questions/45604177/slack-heroku-send-notification-to-slack-whenever-my-heroku-app-is-down
+
+Command line:
+```
+heroku addons:create deployhooks:http
+```
+On the Heroku dashboard you will have to look under 'installed add-ons' for further configuration.
+
+Beyond this, you need to fiddle with webhooks, IFTTT or Zapier.
 
