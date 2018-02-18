@@ -12,9 +12,9 @@ Required to get this working:
 
 # Travis
 
-In the Travis settings you need to set (adapt) HEROKU_API_KEY with you Heroku API key, and HEROKU_ to the Heroku application name (see below).
+In the Travis settings you need to set (adapt) HEROKU_API_KEY with you Heroku API key.
 
-Adapt .travis.yml, and the HEROKU_ to reflect your application name, and then you are ready to trigger a build by pushing to the master branch.
+Adapt .travis.yml, to reflect your application name, and then you are ready to trigger a build by pushing to the master branch.
 
 Travis build status: 
 [![Build Status](https://api.travis-ci.org/pve/commonbike-site.svg?branch=develop)](https://travis-ci.org/pve/common-bike-site), adapt this to the right travis link.
