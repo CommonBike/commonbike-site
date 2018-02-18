@@ -5,6 +5,12 @@ node_js:
 - '4'
 # - '7'
 
+notifications:
+  slack:
+    rooms:
+      - clubcloud:MGqgjpE8TmCoy5aOjZNBOjfZ#dev
+      - clubcloud:MGqgjpE8TmCoy5aOjZNBOjfZ#random
+
 services:
 - mongodb
 - docker
@@ -31,4 +37,4 @@ deploy:
   api_key: $HEROKU_API_KEY
   app: 
 #    master: pve-commonbike-site # deploy the master branch to this heroku app
-    develop: pve-commonbike-site
+    develop: pve-commonbike-site-develop # deploy the develop branch to this heroku app
