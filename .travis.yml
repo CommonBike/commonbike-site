@@ -9,7 +9,7 @@ notifications:
   slack:
     rooms:
       - clubcloud:MGqgjpE8TmCoy5aOjZNBOjfZ#dev
-      - clubcloud:MGqgjpE8TmCoy5aOjZNBOjfZ#random
+      - commonbike:TYSf4JtCadL0eWgQvShh95RA#travis
 
 services:
 - mongodb
