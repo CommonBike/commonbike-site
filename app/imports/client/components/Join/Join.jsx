@@ -24,7 +24,7 @@ class Join extends Component {
         <h1>CommonBike: Waar wil je fietsen?</h1>
 
         <p>
-          Een fiets pakken en inleveren waar jij wilt. Hoe tof is dat? Kies waar je wilt fietsen en reserveer met je smartphone. Zo ben je er zeker van dat er een fiets voor je klaar staat. Binnenkort gaan we live op een intercity station. Samen breiden we dan snel uit.
+          Een fiets pakken en inleveren waar jij wilt. Hoe tof is dat? Kies waar je wilt fietsen en open het slot met je smartphone. Binnenkort gaan we weer live. Samen breiden we dan snel uit.
         </p>
 
         <p>
@@ -38,7 +38,7 @@ class Join extends Component {
         <h2>Hoe werkt het?</h2>
 
         <p>
-          Overal een fiets met één account. Bike sharing van en voor ons allemaal. Aanmelden is gratis. Een fiets reserveer je op je smartphone en je krijgt de sleutel van de stalling medewerker of je opent het slot met je phone.
+          Overal een fiets pakken met één account. Bike sharing van en voor ons allemaal. Aanmelden is gratis. Je krijgt de sleutel van de stalling medewerker of je opent het slot met je phone.
         </p>
 
         <h2>Open source?</h2>
