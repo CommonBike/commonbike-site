@@ -5,6 +5,12 @@ node_js:
 - '4'
 # - '7'
 
+notifications:
+  slack:
+    rooms:
+      - clubcloud:MGqgjpE8TmCoy5aOjZNBOjfZ#dev
+      - commonbike:TYSf4JtCadL0eWgQvShh95RA#travis
+
 services:
 - mongodb
 - docker
@@ -23,12 +29,12 @@ before_script:
 - export PATH=$HOME/.meteor:$PATH
 script:
 - meteor test --once --driver-package dispatch:mocha
-- # TEST_BROWSER_DRIVER=phantomjs meteor test --once --full-app --driver-package dispatch:mocha
+# - TEST_BROWSER_DRIVER=phantomjs meteor test --once --full-app --driver-package dispatch:mocha
 - meteor build --allow-superuser --directory ../mrt_build --server-only
 
 deploy:
   provider: heroku
   api_key: $HEROKU_API_KEY
   app: 
-    master: pve-commonbike-site
-    develop: pve-commonbike-site
+#    master: pve-commonbike-site # deploy the master branch to this heroku app
+    develop: pve-commonbike-site-develop # deploy the develop branch to this heroku app
