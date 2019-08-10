@@ -107,29 +107,6 @@ export const VeiligstallenSchema = new SimpleSchema({
   }
 });
 
-export const OpenBikeLockerSchema = new SimpleSchema({
-  'twilio_enabled': {
-    type: Boolean,
-    label: "openbikelocker.twilio_enabled",
-    defaultValue: 'false'
-  },
-  'twilio_accountsid': {
-    type: String,
-    label: "openbikelocker.twilio_accountsid",
-    defaultValue: ''
-  },
-  'twilio_authtoken': {
-    type: String,
-    label: "openbikelocker.twilio_authtoken",
-    defaultValue: ''
-  },
-	'twilio_fromnumber': {
-    type: String,
-    label: "openbikelocker.twilio_fromnumber",
-    defaultValue: ''
-  }
-});
-
 export const OnboardingSchema = new SimpleSchema({
   'enabled': {
     type: Boolean,
@@ -262,9 +239,6 @@ export const SettingsSchema = new SimpleSchema({
   veiligstallen: {
   	type: VeiligstallenSchema
   },
-	openbikelocker: {
-  	type: OpenBikeLockerSchema
-  },
 	onboarding: {
 		type: OnboardingSchema
   },
@@ -316,12 +290,6 @@ if (Meteor.isServer) {
   				  kmlURL: '<fill in Webhook URL here, channel and name below, set notify to true>',
   				  kmlLastDownloadTimestamp: 0
 	    		},
-					openbikelocker: {
-						twilio_enabled:false,
-						twilio_accountsid: "",
-						twilio_authtoken: "",
-						twilio_fromnumber: ""
-					},
 					onboarding: {
 					  enabled:false
 					},
@@ -380,13 +348,10 @@ if (Meteor.isServer) {
 					Settings.update(settings._id, settings, {validate: false});
 				}
 
-				if(!settings.openbikelocker) {
-					settings.openbikelocker = {
-						twilio_enabled:false,
-						twilio_accountsid: "",
-						twilio_authtoken: "",
-						twilio_fromnumber: ""
-					}
+				if(settings.openbikelocker) {
+					console.log('remove openbikelocker settings')
+					Settings.update(settings._id, {$unset:{ openbikelocker: "" }});
+					delete settings.openbikelocker
 
 					Settings.update(settings._id, settings, {validate: false});
 				}

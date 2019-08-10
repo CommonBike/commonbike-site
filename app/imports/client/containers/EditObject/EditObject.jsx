@@ -94,10 +94,10 @@ class EditObject extends Component {
     } else if(lockType=='open-bikelocker') {
       fields = [
         {
-            fieldname: 'lock.settings.phonenr',
-            fieldvalue: this.props.object.lock.settings.phonenr,
+            fieldname: 'lock.settings.callbackurl',
+            fieldvalue: this.props.object.lock.settings.callbackurl,
             controltype: 'text',
-            label: 'Inbelnummer'
+            label: 'Callback URL'
         }
       ]
     } else {

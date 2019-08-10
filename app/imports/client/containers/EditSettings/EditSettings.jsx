@@ -128,34 +128,6 @@ class EditSettings extends Component {
       },
       {
           controltype: 'header',
-          label: 'Openbikelocker'
-      },
-      {
-          fieldname: 'openbikelocker.twilio_enabled',
-          fieldvalue: this.props.settings.openbikelocker.twilio_enabled,
-          label: 'Dialout Enabled',
-          controltype: 'yesno'
-      },
-      {
-          fieldname: 'openbikelocker.twilio_accountsid',
-          fieldvalue: this.props.settings.openbikelocker.twilio_accountsid,
-          controltype: 'text',
-          label: 'Twilio AccoutSid'
-      },
-      {
-          fieldname: 'openbikelocker.twilio_authtoken',
-          fieldvalue: this.props.settings.openbikelocker.twilio_authtoken,
-          controltype: 'text',
-          label: 'Twilio AuthToken'
-      },
-      {
-          fieldname: 'openbikelocker.twilio_fromnumber',
-          fieldvalue: this.props.settings.openbikelocker.twilio_fromnumber,
-          controltype: 'text',
-          label: 'Twilio From Phonenumber'
-      },
-      {
-          controltype: 'header',
           label: 'Automatic Onboarding'
       },
   		{

@@ -53,8 +53,8 @@ const int LED_RED = D1;
 const int LED_GREEN = D2;
 const int LED_BLUE = D4;
 
-const int SIM900_TXD = D7;
-const int SIM900_RXD = D8;
+//const int SIM900_TXD = D7;
+//const int SIM900_RXD = D8;
 
 void printEncryptionType(int thisType) {
   // read the encryption type and print out the name:

@@ -50,9 +50,11 @@ class SkopeiAPIClass {
 
 		var createClient = this.promise.promisify(require('soap').createClient);
 		createClient(gSkopeiURL).then(Meteor.bindEnvironment(function(client)  {
+      console.log('created soapclient')
         this.SoapClient = client;
       }.bind(this))
     ).catch(function(e) {
+      console.log('unable to create soapclient')
       console.error(e.stack)
     })
 	}

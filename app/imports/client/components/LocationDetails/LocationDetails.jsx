@@ -15,7 +15,7 @@ class LocationDetails extends Component {
   constructor(props) {
     super(props);
 
-    Meteor.call('goabout.checklocations');
+//    Meteor.call('goabout.checklocations');
   }
 
   newObject() {

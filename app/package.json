@@ -33,7 +33,6 @@
     "soap": "https://github.com/mosbuma/node-soap.git",
     "swipe-js-iso": "^2.0.3",
     "truffle-hdwallet-provider": "0.0.3",
-    "twilio": "^3.0.0",
     "utf-8-validate": "^1.2.1"
   },
   "devDependencies": {

@@ -1,6 +1,7 @@
 import { ApiKeys } from '/imports/api/api-keys.js'
 import { Objects, getStateChangeNeatDescription } from '/imports/api/objects.js'
 import { UpdatePaymentOrder, UpdateAllPaymentOrders } from '/server/api/paymentservices/mollie.js'
+import { Settings } from '/imports/api/settings.js';
 
 // demo of open-bikelocker / keylocker API usage (localhost)
 //
